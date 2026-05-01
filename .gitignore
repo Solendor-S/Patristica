@@ -39,3 +39,6 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# large database asset (copy manually from BibleApp/App/data/bible.db)
+assets/db/bible.db

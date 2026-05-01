@@ -28,7 +28,12 @@
     },
     "plugins": [
       "expo-sqlite",
-      "expo-asset"
+      [
+        "expo-asset",
+        {
+          "assets": ["assets/db/bible.db"]
+        }
+      ]
     ]
   }
 }
