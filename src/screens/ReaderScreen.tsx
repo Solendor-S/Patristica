@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import {
-  View, Text, FlatList, TouchableOpacity, Share,
+  View, Text, FlatList, TouchableOpacity, Share, Modal, ScrollView,
   StyleSheet, ActivityIndicator, StatusBar, Animated,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
@@ -17,6 +17,132 @@ type Props = {
   route: RouteProp<BibleStackParamList, 'Reader'>
 }
 
+// ── Share range modal ─────────────────────────────────────
+
+function ShareModal({
+  visible, onClose, book, chapter, verses, anchorVerse,
+}: {
+  visible: boolean
+  onClose: () => void
+  book: string
+  chapter: number
+  verses: BibleVerse[]
+  anchorVerse: number
+}) {
+  const [fromVerse, setFromVerse] = useState(anchorVerse)
+  const [toVerse, setToVerse]     = useState(anchorVerse)
+
+  // Reset when modal opens
+  useEffect(() => {
+    if (visible) {
+      setFromVerse(anchorVerse)
+      setToVerse(anchorVerse)
+    }
+  }, [visible, anchorVerse])
+
+  const maxVerse = verses.length > 0 ? verses[verses.length - 1].verse : 1
+
+  const adjustFrom = (delta: number) => {
+    setFromVerse(v => {
+      const next = Math.max(1, Math.min(toVerse, v + delta))
+      return next
+    })
+  }
+
+  const adjustTo = (delta: number) => {
+    setToVerse(v => {
+      const next = Math.max(fromVerse, Math.min(maxVerse, v + delta))
+      return next
+    })
+  }
+
+  const rangeVerses = verses.filter(v => v.verse >= fromVerse && v.verse <= toVerse)
+
+  const buildShareText = () => {
+    const ref = fromVerse === toVerse
+      ? `${book} ${chapter}:${fromVerse}`
+      : `${book} ${chapter}:${fromVerse}–${toVerse}`
+    const body = rangeVerses
+      .map(v => (fromVerse === toVerse ? v.text : `[${v.verse}] ${v.text}`))
+      .join(' ')
+    return `${ref} — ${body}`
+  }
+
+  const doShare = async () => {
+    onClose()
+    await Share.share({ message: buildShareText() })
+  }
+
+  return (
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+      <View style={modal.overlay}>
+        <View style={modal.sheet}>
+          <Text style={modal.title}>Share Verse Range</Text>
+
+          {/* From row */}
+          <View style={modal.row}>
+            <Text style={modal.rowLabel}>From</Text>
+            <View style={modal.stepper}>
+              <TouchableOpacity onPress={() => adjustFrom(-1)} style={modal.stepBtn} activeOpacity={0.7}>
+                <Ionicons name="remove" size={18} color={Colors.textSecondary} />
+              </TouchableOpacity>
+              <Text style={modal.stepValue}>{fromVerse}</Text>
+              <TouchableOpacity onPress={() => adjustFrom(1)} style={modal.stepBtn} activeOpacity={0.7}>
+                <Ionicons name="add" size={18} color={Colors.textSecondary} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* To row */}
+          <View style={modal.row}>
+            <Text style={modal.rowLabel}>To</Text>
+            <View style={modal.stepper}>
+              <TouchableOpacity onPress={() => adjustTo(-1)} style={modal.stepBtn} activeOpacity={0.7}>
+                <Ionicons name="remove" size={18} color={Colors.textSecondary} />
+              </TouchableOpacity>
+              <Text style={modal.stepValue}>{toVerse}</Text>
+              <TouchableOpacity onPress={() => adjustTo(1)} style={modal.stepBtn} activeOpacity={0.7}>
+                <Ionicons name="add" size={18} color={Colors.textSecondary} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Preview */}
+          <ScrollView style={modal.preview} contentContainerStyle={{ padding: 12 }}>
+            <Text style={modal.previewRef}>
+              {fromVerse === toVerse
+                ? `${book} ${chapter}:${fromVerse}`
+                : `${book} ${chapter}:${fromVerse}–${toVerse}`}
+            </Text>
+            {rangeVerses.map(v => (
+              <Text key={v.verse} style={modal.previewText}>
+                {fromVerse !== toVerse && (
+                  <Text style={modal.previewNum}>[{v.verse}] </Text>
+                )}
+                {v.text}
+                {' '}
+              </Text>
+            ))}
+          </ScrollView>
+
+          {/* Buttons */}
+          <View style={modal.btnRow}>
+            <TouchableOpacity style={modal.cancelBtn} onPress={onClose} activeOpacity={0.7}>
+              <Text style={modal.cancelLabel}>Cancel</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={modal.shareBtn} onPress={doShare} activeOpacity={0.7}>
+              <Ionicons name="share-outline" size={16} color={Colors.bgPrimary} />
+              <Text style={modal.shareLabel}>Share</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  )
+}
+
+// ── Reader screen ─────────────────────────────────────────
+
 export default function ReaderScreen({ navigation, route }: Props) {
   const db = useSQLiteContext()
   const { setSelected } = useSelectedVerse()
@@ -24,6 +150,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [loading, setLoading] = useState(true)
   const [selectedVerse, setSelectedVerse] = useState<number | null>(null)
   const [bookmarked, setBookmarked] = useState(false)
+  const [shareModalOpen, setShareModalOpen] = useState(false)
   const actionBarHeight = useRef(new Animated.Value(0)).current
 
   const book    = route.params?.book    ?? 'Genesis'
@@ -49,7 +176,6 @@ export default function ReaderScreen({ navigation, route }: Props) {
     }
   }, [verses])
 
-  // Show/hide action bar when verse selected
   useEffect(() => {
     Animated.spring(actionBarHeight, {
       toValue: selectedVerse !== null ? 1 : 0,
@@ -66,13 +192,6 @@ export default function ReaderScreen({ navigation, route }: Props) {
     const next = selectedVerse === verse ? null : verse
     setSelectedVerse(next)
     setSelected(next !== null ? { book, chapter, verse: next } : null)
-  }
-
-  const shareVerse = async () => {
-    if (selectedVerse === null) return
-    const v = verses.find(v => v.verse === selectedVerse)
-    if (!v) return
-    await Share.share({ message: `${book} ${chapter}:${selectedVerse} — ${v.text}` })
   }
 
   const toggleBookmark = async () => {
@@ -145,7 +264,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
         />
       )}
 
-      {/* Verse action bar — slides up when a verse is selected */}
+      {/* Action bar */}
       <Animated.View style={[styles.actionBar, { height: actionBarMaxHeight, overflow: 'hidden' }]}>
         <TouchableOpacity style={styles.actionBtn} onPress={toggleBookmark} activeOpacity={0.7}>
           <Ionicons
@@ -157,7 +276,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
             {bookmarked ? 'Bookmarked' : 'Bookmark'}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.actionBtn} onPress={shareVerse} activeOpacity={0.7}>
+        <TouchableOpacity style={styles.actionBtn} onPress={() => setShareModalOpen(true)} activeOpacity={0.7}>
           <Ionicons name="share-outline" size={22} color={Colors.textSecondary} />
           <Text style={styles.actionLabel}>Share</Text>
         </TouchableOpacity>
@@ -167,7 +286,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
         </TouchableOpacity>
       </Animated.View>
 
-      {/* Chapter prev/next */}
+      {/* Footer */}
       <View style={styles.footer}>
         <TouchableOpacity
           style={[styles.footerBtn, !canGoPrev && styles.footerBtnDisabled]}
@@ -182,6 +301,18 @@ export default function ReaderScreen({ navigation, route }: Props) {
           <Ionicons name="chevron-forward" size={20} color={Colors.textSecondary} />
         </TouchableOpacity>
       </View>
+
+      {/* Share range modal */}
+      {selectedVerse !== null && (
+        <ShareModal
+          visible={shareModalOpen}
+          onClose={() => setShareModalOpen(false)}
+          book={book}
+          chapter={chapter}
+          verses={verses}
+          anchorVerse={selectedVerse}
+        />
+      )}
     </View>
   )
 }
@@ -244,4 +375,54 @@ const styles = StyleSheet.create({
   footerBtnDisabled:   { opacity: 0.3 },
   footerLabel:         { fontSize: 14, fontWeight: '600', color: Colors.textSecondary },
   footerLabelDisabled: { color: Colors.textMuted },
+})
+
+const modal = StyleSheet.create({
+  overlay: {
+    flex: 1, backgroundColor: 'rgba(0,0,0,0.6)',
+    justifyContent: 'flex-end',
+  },
+  sheet: {
+    backgroundColor: Colors.bgSecondary,
+    borderTopLeftRadius: 20, borderTopRightRadius: 20,
+    paddingTop: 20, paddingHorizontal: 20, paddingBottom: 32,
+    gap: 16,
+  },
+  title: { fontSize: 17, fontWeight: '700', color: Colors.textPrimary, textAlign: 'center' },
+
+  row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  rowLabel: { fontSize: 15, color: Colors.textSecondary, fontWeight: '600' },
+
+  stepper: {
+    flexDirection: 'row', alignItems: 'center', gap: 0,
+    backgroundColor: Colors.bgTertiary, borderRadius: 10,
+    overflow: 'hidden',
+  },
+  stepBtn: { paddingHorizontal: 16, paddingVertical: 10 },
+  stepValue: {
+    fontSize: 17, fontWeight: '700', color: Colors.textPrimary,
+    minWidth: 36, textAlign: 'center',
+  },
+
+  preview: {
+    backgroundColor: Colors.bgCard, borderRadius: 10,
+    maxHeight: 180,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: Colors.border,
+  },
+  previewRef:  { fontSize: 13, fontWeight: '700', color: Colors.accent, marginBottom: 6 },
+  previewText: { fontSize: 14, lineHeight: 22, color: Colors.textPrimary },
+  previewNum:  { fontWeight: '700', color: Colors.textMuted },
+
+  btnRow: { flexDirection: 'row', gap: 12 },
+  cancelBtn: {
+    flex: 1, paddingVertical: 14, borderRadius: 12,
+    backgroundColor: Colors.bgTertiary, alignItems: 'center',
+  },
+  cancelLabel: { fontSize: 15, fontWeight: '600', color: Colors.textSecondary },
+  shareBtn: {
+    flex: 2, paddingVertical: 14, borderRadius: 12,
+    backgroundColor: Colors.accent, alignItems: 'center',
+    flexDirection: 'row', justifyContent: 'center', gap: 8,
+  },
+  shareLabel: { fontSize: 15, fontWeight: '700', color: Colors.bgPrimary },
 })

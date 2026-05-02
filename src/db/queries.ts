@@ -87,11 +87,13 @@ export async function getCrossRefs(
   verse: number
 ): Promise<CrossRef[]> {
   return db.getAllAsync<CrossRef>(
-    `SELECT cr.ref_book, cr.ref_chapter, cr.ref_verse, COALESCE(bv.text, '') as text
+    `SELECT cr.to_book AS ref_book, cr.to_chapter AS ref_chapter, cr.to_verse AS ref_verse,
+            COALESCE(bv.text, '') AS text
      FROM cross_refs cr
      LEFT JOIN bible_verses bv
-       ON bv.book = cr.ref_book AND bv.chapter = cr.ref_chapter AND bv.verse = cr.ref_verse
-     WHERE cr.book = ? AND cr.chapter = ? AND cr.verse = ?
+       ON bv.book = cr.to_book AND bv.chapter = cr.to_chapter AND bv.verse = cr.to_verse
+     WHERE cr.from_book = ? AND cr.from_chapter = ? AND cr.from_verse = ?
+     ORDER BY cr.weight DESC
      LIMIT 30`,
     [book, chapter, verse]
   )
