@@ -8,6 +8,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { RouteProp } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import { getChapter, isBookmarked, addBookmark, removeBookmark } from '../db/queries'
+import { useSelectedVerse } from '../context/SelectedVerseContext'
 import { Colors } from '../theme/colors'
 import type { BibleVerse, BibleStackParamList } from '../types'
 
@@ -18,6 +19,7 @@ type Props = {
 
 export default function ReaderScreen({ navigation, route }: Props) {
   const db = useSQLiteContext()
+  const { setSelected } = useSelectedVerse()
   const [verses, setVerses] = useState<BibleVerse[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedVerse, setSelectedVerse] = useState<number | null>(null)
@@ -61,7 +63,9 @@ export default function ReaderScreen({ navigation, route }: Props) {
   }, [selectedVerse])
 
   const selectVerse = (verse: number) => {
-    setSelectedVerse(n => n === verse ? null : verse)
+    const next = selectedVerse === verse ? null : verse
+    setSelectedVerse(next)
+    setSelected(next !== null ? { book, chapter, verse: next } : null)
   }
 
   const toggleBookmark = async () => {

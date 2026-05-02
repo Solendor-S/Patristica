@@ -5,6 +5,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { StyleSheet } from 'react-native'
 import AppNavigator from './src/navigation/AppNavigator'
 import { DatabaseProvider } from './src/db/provider'
+import { SelectedVerseProvider } from './src/context/SelectedVerseContext'
 import { Colors } from './src/theme/colors'
 
 export default function App() {
@@ -12,7 +13,9 @@ export default function App() {
     <GestureHandlerRootView style={styles.root}>
       <StatusBar style="light" backgroundColor={Colors.bgSecondary} />
       <DatabaseProvider>
-        <AppNavigator />
+        <SelectedVerseProvider>
+          <AppNavigator />
+        </SelectedVerseProvider>
       </DatabaseProvider>
     </GestureHandlerRootView>
   )
