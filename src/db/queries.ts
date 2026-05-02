@@ -219,6 +219,39 @@ export async function deleteNote(
   )
 }
 
+// ── History ───────────────────────────────────────────────
+
+export interface HistoryEntry {
+  book: string
+  chapter: number
+  visitedAt: number
+}
+
+export async function recordHistory(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number
+): Promise<void> {
+  await db.runAsync(
+    `INSERT INTO history (book, chapter, visited_at) VALUES (?, ?, ?)
+     ON CONFLICT(book, chapter) DO UPDATE SET visited_at = excluded.visited_at`,
+    [book, chapter, Date.now()]
+  )
+}
+
+export async function getHistory(db: SQLiteDatabase): Promise<HistoryEntry[]> {
+  return db.getAllAsync<HistoryEntry>(
+    `SELECT book, chapter, visited_at AS visitedAt
+     FROM history
+     ORDER BY visited_at DESC
+     LIMIT 200`
+  )
+}
+
+export async function clearHistory(db: SQLiteDatabase): Promise<void> {
+  await db.runAsync('DELETE FROM history')
+}
+
 // ── Distinct books (ordered as they appear in the Bible) ──
 
 export async function getBooks(db: SQLiteDatabase): Promise<string[]> {

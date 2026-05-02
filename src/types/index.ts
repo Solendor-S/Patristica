@@ -64,6 +64,7 @@ export type RootTabParamList = {
   Study: undefined
   Bookmarks: undefined
   Notes: undefined
+  History: undefined
 }
 
 export type BibleStackParamList = {

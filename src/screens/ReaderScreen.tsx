@@ -7,7 +7,7 @@ import { useSQLiteContext } from 'expo-sqlite'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { RouteProp } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
-import { getChapter, isBookmarked, addBookmark, removeBookmark } from '../db/queries'
+import { getChapter, isBookmarked, addBookmark, removeBookmark, recordHistory } from '../db/queries'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
 import { Colors } from '../theme/colors'
 import type { BibleVerse, BibleStackParamList } from '../types'
@@ -164,6 +164,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
     getChapter(db, book, chapter)
       .then(rows => { setVerses(rows); setLoading(false) })
       .catch(() => setLoading(false))
+    recordHistory(db, book, chapter)
   }, [book, chapter])
 
   useEffect(() => {

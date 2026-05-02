@@ -9,6 +9,7 @@ import SearchScreen from '../screens/SearchScreen'
 import StudyScreen from '../screens/StudyScreen'
 import BookmarksScreen from '../screens/BookmarksScreen'
 import NotesScreen from '../screens/NotesScreen'
+import HistoryScreen from '../screens/HistoryScreen'
 import { Colors } from '../theme/colors'
 import type { RootTabParamList } from '../types'
 
@@ -22,6 +23,7 @@ const TAB_ICONS: Record<keyof RootTabParamList, { active: IoniconsName; inactive
   Study:     { active: 'library',       inactive: 'library-outline' },
   Bookmarks: { active: 'bookmark',      inactive: 'bookmark-outline' },
   Notes:     { active: 'pencil',        inactive: 'pencil-outline' },
+  History:   { active: 'time',          inactive: 'time-outline' },
 }
 
 export default function AppNavigator() {
@@ -46,6 +48,7 @@ export default function AppNavigator() {
         <Tab.Screen name="Study"     component={StudyScreen} />
         <Tab.Screen name="Bookmarks" component={BookmarksScreen} />
         <Tab.Screen name="Notes"     component={NotesScreen} />
+        <Tab.Screen name="History"   component={HistoryScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   )
