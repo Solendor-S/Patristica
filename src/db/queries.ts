@@ -159,6 +159,28 @@ export async function removeBookmark(
 
 // ── Notes ─────────────────────────────────────────────────
 
+export interface NoteWithVerse {
+  book: string
+  chapter: number
+  verse: number
+  noteText: string
+  verseText: string
+  updatedAt: number
+}
+
+export async function getAllNotes(db: SQLiteDatabase): Promise<NoteWithVerse[]> {
+  return db.getAllAsync<NoteWithVerse>(
+    `SELECT n.book, n.chapter, n.verse,
+            n.text       AS noteText,
+            n.updated_at AS updatedAt,
+            COALESCE(bv.text, '') AS verseText
+     FROM notes n
+     LEFT JOIN bible_verses bv
+       ON bv.book = n.book AND bv.chapter = n.chapter AND bv.verse = n.verse
+     ORDER BY bv.rowid`
+  )
+}
+
 export async function getNote(
   db: SQLiteDatabase,
   book: string,
