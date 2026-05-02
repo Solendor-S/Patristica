@@ -14,6 +14,8 @@ async function initDb(db: SQLiteDatabase) {
       created_at INTEGER NOT NULL,
       UNIQUE(book, chapter, verse)
     );
+  `)
+  await db.execAsync(`
     CREATE TABLE IF NOT EXISTS notes (
       id         INTEGER PRIMARY KEY AUTOINCREMENT,
       book       TEXT    NOT NULL,
