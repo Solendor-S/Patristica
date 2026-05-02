@@ -73,8 +73,7 @@ export async function getCommentary(
   return db.getAllAsync<CommentaryEntry>(
     `SELECT id, father_name, father_era, excerpt, full_text, source, source_url
      FROM commentary
-     WHERE book = ? AND chapter = ? AND verse = ?
-     ORDER BY father_name`,
+     WHERE book = ? AND chapter = ? AND verse = ?`,
     [book, chapter, verse]
   )
 }

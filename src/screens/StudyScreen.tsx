@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
 import { getCommentary } from '../db/queries'
 import { Colors } from '../theme/colors'
+import { getFatherInfo } from '../data/fatherDates'
 import type { CommentaryEntry } from '../types'
 
 const PREVIEW_LEN = 320
@@ -22,14 +23,16 @@ function EntryCard({ entry }: { entry: CommentaryEntry }) {
 
   const hasMore = entry.full_text.length > entry.excerpt.length
   const body = expanded ? entry.full_text : entry.excerpt
+  const info = getFatherInfo(entry.father_name)
+  const dateLabel = info?.dates ?? entry.father_era
 
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
         <View style={styles.fatherInfo}>
           <Text style={styles.fatherName}>{entry.father_name}</Text>
-          {!!entry.father_era && (
-            <Text style={styles.fatherEra}>{entry.father_era}</Text>
+          {!!dateLabel && (
+            <Text style={styles.fatherEra}>{dateLabel}</Text>
           )}
         </View>
       </View>
@@ -64,7 +67,15 @@ export default function StudyScreen() {
     if (!selected) { setEntries([]); return }
     setLoading(true)
     getCommentary(db, selected.book, selected.chapter, selected.verse)
-      .then(rows => { setEntries(rows); setLoading(false) })
+      .then(rows => {
+        const sorted = [...rows].sort((a, b) => {
+          const aSort = getFatherInfo(a.father_name)?.sort ?? 9999
+          const bSort = getFatherInfo(b.father_name)?.sort ?? 9999
+          return aSort - bSort
+        })
+        setEntries(sorted)
+        setLoading(false)
+      })
       .catch(() => setLoading(false))
   }, [selected])
 
