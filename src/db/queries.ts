@@ -1,5 +1,5 @@
 import type { SQLiteDatabase } from 'expo-sqlite'
-import type { BibleVerse, Bookmark, CommentaryEntry, SearchResult } from '../types'
+import type { BibleVerse, Bookmark, CommentaryEntry, CrossRef, SearchResult } from '../types'
 
 // ── Bible verses ──────────────────────────────────────────
 
@@ -85,10 +85,13 @@ export async function getCrossRefs(
   book: string,
   chapter: number,
   verse: number
-): Promise<{ ref_book: string; ref_chapter: number; ref_verse: number }[]> {
-  return db.getAllAsync(
-    `SELECT ref_book, ref_chapter, ref_verse FROM cross_refs
-     WHERE book = ? AND chapter = ? AND verse = ?
+): Promise<CrossRef[]> {
+  return db.getAllAsync<CrossRef>(
+    `SELECT cr.ref_book, cr.ref_chapter, cr.ref_verse, COALESCE(bv.text, '') as text
+     FROM cross_refs cr
+     LEFT JOIN bible_verses bv
+       ON bv.book = cr.ref_book AND bv.chapter = cr.ref_chapter AND bv.verse = cr.ref_verse
+     WHERE cr.book = ? AND cr.chapter = ? AND cr.verse = ?
      LIMIT 30`,
     [book, chapter, verse]
   )

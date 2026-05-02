@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import {
-  View, Text, FlatList, TouchableOpacity,
+  View, Text, FlatList, TouchableOpacity, Share,
   StyleSheet, ActivityIndicator, StatusBar, Animated,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
@@ -66,6 +66,13 @@ export default function ReaderScreen({ navigation, route }: Props) {
     const next = selectedVerse === verse ? null : verse
     setSelectedVerse(next)
     setSelected(next !== null ? { book, chapter, verse: next } : null)
+  }
+
+  const shareVerse = async () => {
+    if (selectedVerse === null) return
+    const v = verses.find(v => v.verse === selectedVerse)
+    if (!v) return
+    await Share.share({ message: `${book} ${chapter}:${selectedVerse} — ${v.text}` })
   }
 
   const toggleBookmark = async () => {
@@ -149,6 +156,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
           <Text style={[styles.actionLabel, bookmarked && styles.actionLabelActive]}>
             {bookmarked ? 'Bookmarked' : 'Bookmark'}
           </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionBtn} onPress={shareVerse} activeOpacity={0.7}>
+          <Ionicons name="share-outline" size={22} color={Colors.textSecondary} />
+          <Text style={styles.actionLabel}>Share</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionBtn} onPress={() => setSelectedVerse(null)} activeOpacity={0.7}>
           <Ionicons name="close" size={22} color={Colors.textMuted} />

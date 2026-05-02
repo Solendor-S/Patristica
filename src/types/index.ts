@@ -40,6 +40,13 @@ export interface Note {
   updatedAt: number
 }
 
+export interface CrossRef {
+  ref_book: string
+  ref_chapter: number
+  ref_verse: number
+  text: string
+}
+
 export interface CommentaryEntry {
   id: number
   father_name: string
