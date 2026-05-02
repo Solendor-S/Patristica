@@ -219,6 +219,32 @@ export async function deleteNote(
   )
 }
 
+// ── Josephus ──────────────────────────────────────────────
+
+export interface JosephusEntry {
+  ref: string
+  work: string
+  text: string
+  note: string
+}
+
+export async function getJosephusForVerse(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number
+): Promise<JosephusEntry[]> {
+  return db.getAllAsync<JosephusEntry>(
+    `SELECT j.ref, j.work, j.text, jr.note
+     FROM josephus_refs jr
+     JOIN josephus j
+       ON j.work = jr.jos_work AND j.book = jr.jos_book
+      AND j.chapter = jr.jos_chapter AND j.section = jr.jos_section
+     WHERE jr.bible_book = ? AND jr.bible_chapter = ? AND jr.bible_verse = ?`,
+    [book, chapter, verse]
+  )
+}
+
 // ── History ───────────────────────────────────────────────
 
 export interface HistoryEntry {

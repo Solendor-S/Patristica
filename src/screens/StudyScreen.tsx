@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
-  View, Text, FlatList, TouchableOpacity, TextInput, Alert,
+  View, Text, FlatList, TouchableOpacity, TextInput, Alert, ScrollView,
   StyleSheet, ActivityIndicator, StatusBar, LayoutAnimation, KeyboardAvoidingView, Platform,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
@@ -8,12 +8,16 @@ import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
-import { getCommentary, getCrossRefs, getNote, saveNote, deleteNote } from '../db/queries'
+import { getCommentary, getCrossRefs, getNote, saveNote, deleteNote, getJosephusForVerse } from '../db/queries'
+import type { JosephusEntry } from '../db/queries'
 import { getFatherInfo } from '../data/fatherDates'
+import { getHistoricalForVerse, HISTORICAL_SOURCES, CATEGORY_LABEL } from '../data/historicalData'
+import type { HistoricalSource } from '../data/historicalData'
 import { Colors } from '../theme/colors'
 import type { CommentaryEntry, CrossRef, Note, RootTabParamList } from '../types'
 
-type StudyTab = 'fathers' | 'crossrefs' | 'notes'
+type StudyTab = 'fathers' | 'crossrefs' | 'notes' | 'historical'
+type HistMode = 'verse' | 'browse'
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Study'>
 
 // ── Entry card ────────────────────────────────────────────
@@ -161,6 +165,171 @@ function NotesPanel({ book, chapter, verse }: { book: string; chapter: number; v
   )
 }
 
+// ── Historical panel ──────────────────────────────────────
+
+const CATEGORY_COLOR: Record<string, string> = {
+  ancient_author: Colors.accent,
+  archaeology:    '#6dbf6d',
+  manuscript:     '#7ab8e8',
+  inscription:    '#b07ee8',
+}
+
+function HistoricalCard({ entry }: { entry: HistoricalSource }) {
+  const [expanded, setExpanded] = useState(false)
+  const PREVIEW = 280
+  const hasMore = entry.description.length > PREVIEW
+  const body = expanded ? entry.description : entry.description.slice(0, PREVIEW) + (hasMore && !expanded ? '…' : '')
+
+  return (
+    <View style={hist.card}>
+      <View style={hist.cardTop}>
+        <Text style={hist.cardTitle}>{entry.title}</Text>
+        {!!entry.author && <Text style={hist.cardAuthor}>{entry.author}</Text>}
+      </View>
+      <View style={hist.meta}>
+        <View style={[hist.badge, { backgroundColor: CATEGORY_COLOR[entry.category] + '22' }]}>
+          <Text style={[hist.badgeText, { color: CATEGORY_COLOR[entry.category] }]}>
+            {CATEGORY_LABEL[entry.category]}
+          </Text>
+        </View>
+        <Text style={hist.metaText}>{entry.date_desc}</Text>
+        {!!entry.location && <Text style={hist.metaText}>· {entry.location}</Text>}
+      </View>
+      <Text style={hist.body}>{body}</Text>
+      {hasMore && (
+        <TouchableOpacity onPress={() => setExpanded(e => !e)} style={styles.expandBtn} activeOpacity={0.7}>
+          <Text style={styles.expandLabel}>{expanded ? 'Show less' : 'Show more'}</Text>
+          <Ionicons name={expanded ? 'chevron-up' : 'chevron-down'} size={14} color={Colors.accent} />
+        </TouchableOpacity>
+      )}
+      <View style={hist.significance}>
+        <Text style={hist.significanceLabel}>Significance</Text>
+        <Text style={hist.significanceText}>{entry.significance}</Text>
+      </View>
+      <Text style={hist.citation}>{entry.citation}</Text>
+    </View>
+  )
+}
+
+function JosephusCard({ entry }: { entry: JosephusEntry }) {
+  const [expanded, setExpanded] = useState(false)
+  const PREVIEW = 280
+  const hasMore = entry.text.length > PREVIEW
+  const body = expanded ? entry.text : entry.text.slice(0, PREVIEW) + (hasMore && !expanded ? '…' : '')
+
+  return (
+    <View style={hist.card}>
+      <View style={hist.cardTop}>
+        <Text style={hist.cardTitle}>{entry.ref}</Text>
+        <Text style={hist.cardAuthor}>{entry.work}</Text>
+      </View>
+      <View style={hist.meta}>
+        <View style={[hist.badge, { backgroundColor: CATEGORY_COLOR.ancient_author + '22' }]}>
+          <Text style={[hist.badgeText, { color: CATEGORY_COLOR.ancient_author }]}>Ancient Author</Text>
+        </View>
+        <Text style={hist.metaText}>c. 37–100 AD</Text>
+        <Text style={hist.metaText}>· Rome / Judaea</Text>
+      </View>
+      {!!entry.note && (
+        <View style={hist.significance}>
+          <Text style={hist.significanceLabel}>Context</Text>
+          <Text style={hist.significanceText}>{entry.note}</Text>
+        </View>
+      )}
+      <Text style={hist.body}>{body}</Text>
+      {hasMore && (
+        <TouchableOpacity onPress={() => setExpanded(e => !e)} style={styles.expandBtn} activeOpacity={0.7}>
+          <Text style={styles.expandLabel}>{expanded ? 'Show less' : 'Show more'}</Text>
+          <Ionicons name={expanded ? 'chevron-up' : 'chevron-down'} size={14} color={Colors.accent} />
+        </TouchableOpacity>
+      )}
+    </View>
+  )
+}
+
+function HistoricalPanel({
+  selected, mode, onModeChange,
+}: {
+  selected: { book: string; chapter: number; verse: number } | null
+  mode: HistMode
+  onModeChange: (m: HistMode) => void
+}) {
+  const db = useSQLiteContext()
+  const [josephus, setJosephus] = useState<JosephusEntry[]>([])
+  const [historical, setHistorical] = useState<HistoricalSource[]>([])
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (mode !== 'verse' || !selected) { setJosephus([]); setHistorical([]); return }
+    setLoading(true)
+    getJosephusForVerse(db, selected.book, selected.chapter, selected.verse)
+      .then(rows => {
+        setJosephus(rows)
+        setHistorical(getHistoricalForVerse(selected.book, selected.chapter, selected.verse))
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+  }, [mode, selected?.book, selected?.chapter, selected?.verse])
+
+  const browseOT = HISTORICAL_SOURCES.filter(s => s.testament === 'ot').sort((a, b) => a.sort_year - b.sort_year)
+  const browseNT = HISTORICAL_SOURCES.filter(s => s.testament === 'nt').sort((a, b) => a.sort_year - b.sort_year)
+
+  return (
+    <View style={{ flex: 1 }}>
+      {/* Verse / Browse All toggle */}
+      <View style={hist.toggle}>
+        <TouchableOpacity
+          style={[hist.toggleBtn, mode === 'verse' && hist.toggleBtnActive]}
+          onPress={() => onModeChange('verse')} activeOpacity={0.7}
+        >
+          <Text style={[hist.toggleLabel, mode === 'verse' && hist.toggleLabelActive]}>Verse</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[hist.toggleBtn, mode === 'browse' && hist.toggleBtnActive]}
+          onPress={() => onModeChange('browse')} activeOpacity={0.7}
+        >
+          <Text style={[hist.toggleLabel, mode === 'browse' && hist.toggleLabelActive]}>Browse All</Text>
+        </TouchableOpacity>
+      </View>
+
+      {mode === 'verse' ? (
+        !selected ? (
+          <View style={styles.center}>
+            <Ionicons name="earth-outline" size={52} color={Colors.border} />
+            <Text style={styles.emptyTitle}>No verse selected</Text>
+            <Text style={styles.emptyText}>Select a verse to see historical sources</Text>
+          </View>
+        ) : loading ? (
+          <View style={styles.center}><ActivityIndicator color={Colors.accent} size="large" /></View>
+        ) : josephus.length === 0 && historical.length === 0 ? (
+          <View style={styles.center}>
+            <Ionicons name="earth-outline" size={52} color={Colors.border} />
+            <Text style={styles.emptyTitle}>No historical sources</Text>
+            <Text style={styles.emptyText}>No external sources recorded for this verse</Text>
+          </View>
+        ) : (
+          <ScrollView contentContainerStyle={[styles.list, { gap: 10 }]}>
+            {josephus.map((e, i) => <JosephusCard key={`jos-${i}`} entry={e} />)}
+            {historical.map(e => <HistoricalCard key={e.source_key} entry={e} />)}
+          </ScrollView>
+        )
+      ) : (
+        <ScrollView contentContainerStyle={[styles.list, { gap: 0 }]}>
+          <Text style={hist.sectionHeader}>Old Testament ({browseOT.length} sources)</Text>
+          {browseOT.map(e => <HistoricalCard key={e.source_key} entry={e} />)}
+          <Text style={[hist.sectionHeader, { marginTop: 16 }]}>New Testament ({browseNT.length} sources + Josephus)</Text>
+          {browseNT.map(e => <HistoricalCard key={e.source_key} entry={e} />)}
+          <View style={hist.josephusNote}>
+            <Text style={hist.josephusNoteText}>
+              Flavius Josephus (c. 37–100 AD) references appear in Verse mode when you select a verse. His works — <Text style={{ fontStyle: 'italic' }}>Antiquities of the Jews</Text> and <Text style={{ fontStyle: 'italic' }}>The Jewish War</Text> — are the primary non-biblical source for the NT world.
+            </Text>
+          </View>
+        </ScrollView>
+      )}
+    </View>
+  )
+}
+
 // ── Main screen ───────────────────────────────────────────
 
 export default function StudyScreen() {
@@ -172,6 +341,7 @@ export default function StudyScreen() {
   const [entries, setEntries] = useState<CommentaryEntry[]>([])
   const [crossRefs, setCrossRefs] = useState<CrossRef[]>([])
   const [hasNote, setHasNote] = useState(false)
+  const [histMode, setHistMode] = useState<HistMode>('verse')
   const [loadingFathers, setLoadingFathers] = useState(false)
   const [loadingRefs, setLoadingRefs] = useState(false)
 
@@ -286,6 +456,15 @@ export default function StudyScreen() {
                 </View>
               )}
             </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.tab, activeTab === 'historical' && styles.tabActive]}
+              onPress={() => setActiveTab('historical')}
+              activeOpacity={0.7}
+            >
+              <Text style={[styles.tabLabel, activeTab === 'historical' && styles.tabLabelActive]}>
+                Historical
+              </Text>
+            </TouchableOpacity>
           </View>
 
           {/* Loading */}
@@ -319,6 +498,15 @@ export default function StudyScreen() {
               book={selected.book}
               chapter={selected.chapter}
               verse={selected.verse}
+            />
+          )}
+
+          {/* Historical */}
+          {activeTab === 'historical' && (
+            <HistoricalPanel
+              selected={selected}
+              mode={histMode}
+              onModeChange={setHistMode}
             />
           )}
 
@@ -430,6 +618,56 @@ const styles = StyleSheet.create({
 
   emptyTitle: { fontSize: 17, fontWeight: '600', color: Colors.textSecondary, textAlign: 'center' },
   emptyText:  { fontSize: 14, color: Colors.textMuted, textAlign: 'center', lineHeight: 22 },
+})
+
+const hist = StyleSheet.create({
+  toggle: {
+    flexDirection: 'row',
+    margin: 12,
+    backgroundColor: Colors.bgTertiary,
+    borderRadius: 10,
+    padding: 3,
+  },
+  toggleBtn: {
+    flex: 1, paddingVertical: 7, borderRadius: 8, alignItems: 'center',
+  },
+  toggleBtnActive:   { backgroundColor: Colors.bgCard },
+  toggleLabel:       { fontSize: 13, fontWeight: '600', color: Colors.textMuted },
+  toggleLabelActive: { color: Colors.textPrimary },
+
+  card: {
+    backgroundColor: Colors.bgCard,
+    borderRadius: 12, padding: 14,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: Colors.border,
+    marginBottom: 10, gap: 8,
+  },
+  cardTop:   { gap: 2 },
+  cardTitle: { fontSize: 15, fontWeight: '700', color: Colors.textAccent },
+  cardAuthor:{ fontSize: 12, color: Colors.textMuted },
+
+  meta: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 6 },
+  badge: { borderRadius: 6, paddingHorizontal: 7, paddingVertical: 3 },
+  badgeText: { fontSize: 11, fontWeight: '700' },
+  metaText:  { fontSize: 11, color: Colors.textMuted },
+
+  body: { fontSize: 14, lineHeight: 22, color: Colors.textPrimary },
+
+  significance: { backgroundColor: Colors.bgTertiary, borderRadius: 8, padding: 10, gap: 4 },
+  significanceLabel: { fontSize: 11, fontWeight: '700', color: Colors.textMuted, textTransform: 'uppercase', letterSpacing: 0.5 },
+  significanceText:  { fontSize: 13, lineHeight: 20, color: Colors.textSecondary },
+
+  citation: { fontSize: 11, color: Colors.textMuted, fontStyle: 'italic' },
+
+  sectionHeader: {
+    fontSize: 12, fontWeight: '700', color: Colors.textMuted,
+    textTransform: 'uppercase', letterSpacing: 0.6,
+    marginBottom: 10,
+  },
+  josephusNote: {
+    backgroundColor: Colors.bgTertiary, borderRadius: 10,
+    padding: 12, marginTop: 10,
+  },
+  josephusNoteText: { fontSize: 13, lineHeight: 20, color: Colors.textMuted },
 })
 
 const noteStyles = StyleSheet.create({
