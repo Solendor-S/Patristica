@@ -429,38 +429,46 @@ export default function StudyScreen() {
             contentContainerStyle={styles.tabBarContent}
           >
             <TouchableOpacity style={styles.tab} onPress={() => setActiveTab('fathers')} activeOpacity={0.7}>
-              <Text style={[styles.tabLabel, activeTab === 'fathers' && styles.tabLabelActive]}>Church Fathers</Text>
-              {entries.length > 0 && (
-                <View style={[styles.tabBadge, activeTab === 'fathers' && styles.tabBadgeActive]}>
-                  <Text style={[styles.tabBadgeText, activeTab === 'fathers' && styles.tabBadgeTextActive]}>{entries.length}</Text>
-                </View>
-              )}
-              {activeTab === 'fathers' && <View style={styles.tabIndicator} />}
+              <View style={styles.tabInner}>
+                <Text style={[styles.tabLabel, activeTab === 'fathers' && styles.tabLabelActive]}>Church Fathers</Text>
+                {entries.length > 0 && (
+                  <View style={[styles.tabBadge, activeTab === 'fathers' && styles.tabBadgeActive]}>
+                    <Text style={[styles.tabBadgeText, activeTab === 'fathers' && styles.tabBadgeTextActive]}>{entries.length}</Text>
+                  </View>
+                )}
+              </View>
+              <View style={[styles.tabIndicator, { backgroundColor: activeTab === 'fathers' ? Colors.accent : 'transparent' }]} />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.tab} onPress={() => setActiveTab('crossrefs')} activeOpacity={0.7}>
-              <Text style={[styles.tabLabel, activeTab === 'crossrefs' && styles.tabLabelActive]}>Cross-Refs</Text>
-              {crossRefs.length > 0 && (
-                <View style={[styles.tabBadge, activeTab === 'crossrefs' && styles.tabBadgeActive]}>
-                  <Text style={[styles.tabBadgeText, activeTab === 'crossrefs' && styles.tabBadgeTextActive]}>{crossRefs.length}</Text>
-                </View>
-              )}
-              {activeTab === 'crossrefs' && <View style={styles.tabIndicator} />}
+              <View style={styles.tabInner}>
+                <Text style={[styles.tabLabel, activeTab === 'crossrefs' && styles.tabLabelActive]}>Cross-Refs</Text>
+                {crossRefs.length > 0 && (
+                  <View style={[styles.tabBadge, activeTab === 'crossrefs' && styles.tabBadgeActive]}>
+                    <Text style={[styles.tabBadgeText, activeTab === 'crossrefs' && styles.tabBadgeTextActive]}>{crossRefs.length}</Text>
+                  </View>
+                )}
+              </View>
+              <View style={[styles.tabIndicator, { backgroundColor: activeTab === 'crossrefs' ? Colors.accent : 'transparent' }]} />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.tab} onPress={() => setActiveTab('notes')} activeOpacity={0.7}>
-              <Text style={[styles.tabLabel, activeTab === 'notes' && styles.tabLabelActive]}>Notes</Text>
-              {hasNote && (
-                <View style={[styles.tabBadge, activeTab === 'notes' && styles.tabBadgeActive]}>
-                  <Ionicons name="pencil" size={10} color={activeTab === 'notes' ? Colors.accent : Colors.textMuted} />
-                </View>
-              )}
-              {activeTab === 'notes' && <View style={styles.tabIndicator} />}
+              <View style={styles.tabInner}>
+                <Text style={[styles.tabLabel, activeTab === 'notes' && styles.tabLabelActive]}>Notes</Text>
+                {hasNote && (
+                  <View style={[styles.tabBadge, activeTab === 'notes' && styles.tabBadgeActive]}>
+                    <Ionicons name="pencil" size={10} color={activeTab === 'notes' ? Colors.accent : Colors.textMuted} />
+                  </View>
+                )}
+              </View>
+              <View style={[styles.tabIndicator, { backgroundColor: activeTab === 'notes' ? Colors.accent : 'transparent' }]} />
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.tab} onPress={() => setActiveTab('historical')} activeOpacity={0.7}>
-              <Text style={[styles.tabLabel, activeTab === 'historical' && styles.tabLabelActive]}>Historical</Text>
-              {activeTab === 'historical' && <View style={styles.tabIndicator} />}
+              <View style={styles.tabInner}>
+                <Text style={[styles.tabLabel, activeTab === 'historical' && styles.tabLabelActive]}>Historical</Text>
+              </View>
+              <View style={[styles.tabIndicator, { backgroundColor: activeTab === 'historical' ? Colors.accent : 'transparent' }]} />
             </TouchableOpacity>
           </ScrollView>
 
@@ -568,12 +576,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   tab: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    paddingVertical: 10, paddingHorizontal: 14, gap: 6,
+    flexDirection: 'column', alignItems: 'center',
+    paddingTop: 10, paddingHorizontal: 14,
+  },
+  tabInner: {
+    flexDirection: 'row', alignItems: 'center',
+    gap: 6, paddingBottom: 8,
   },
   tabIndicator: {
-    position: 'absolute', bottom: 0, left: 8, right: 8,
-    height: 2, borderRadius: 1, backgroundColor: Colors.accent,
+    height: 2, borderRadius: 1, alignSelf: 'stretch',
   },
   tabActive: {},
   tabLabel:      { fontSize: 13, fontWeight: '600', color: Colors.textMuted },
