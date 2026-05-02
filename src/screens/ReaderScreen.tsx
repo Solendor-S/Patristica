@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import {
   View, Text, FlatList, TouchableOpacity,
-  StyleSheet, ActivityIndicator, StatusBar,
+  StyleSheet, ActivityIndicator, StatusBar, Animated,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { RouteProp } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
-import { getChapter } from '../db/queries'
+import { getChapter, isBookmarked, addBookmark, removeBookmark } from '../db/queries'
 import { Colors } from '../theme/colors'
 import type { BibleVerse, BibleStackParamList } from '../types'
 
@@ -21,6 +21,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [verses, setVerses] = useState<BibleVerse[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedVerse, setSelectedVerse] = useState<number | null>(null)
+  const [bookmarked, setBookmarked] = useState(false)
+  const actionBarHeight = useRef(new Animated.Value(0)).current
 
   const book    = route.params?.book    ?? 'Genesis'
   const chapter = route.params?.chapter ?? 1
@@ -40,17 +42,49 @@ export default function ReaderScreen({ navigation, route }: Props) {
       const idx = verses.findIndex(v => v.verse === route.params.verse)
       if (idx >= 0) {
         setTimeout(() => listRef.current?.scrollToIndex({ index: idx, animated: true }), 300)
-        setSelectedVerse(route.params.verse)
+        selectVerse(route.params.verse)
       }
     }
   }, [verses])
+
+  // Show/hide action bar when verse selected
+  useEffect(() => {
+    Animated.spring(actionBarHeight, {
+      toValue: selectedVerse !== null ? 1 : 0,
+      useNativeDriver: false,
+      bounciness: 0,
+    }).start()
+
+    if (selectedVerse !== null) {
+      isBookmarked(db, book, chapter, selectedVerse).then(setBookmarked)
+    }
+  }, [selectedVerse])
+
+  const selectVerse = (verse: number) => {
+    setSelectedVerse(n => n === verse ? null : verse)
+  }
+
+  const toggleBookmark = async () => {
+    if (selectedVerse === null) return
+    if (bookmarked) {
+      await removeBookmark(db, book, chapter, selectedVerse)
+      setBookmarked(false)
+    } else {
+      await addBookmark(db, book, chapter, selectedVerse)
+      setBookmarked(true)
+    }
+  }
 
   const goChapter = useCallback((delta: number) => {
     navigation.setParams({ book, chapter: chapter + delta, verse: undefined })
   }, [book, chapter])
 
   const canGoPrev = chapter > 1
-  const canGoNext = chapter < (verses.length > 0 ? 999 : 1)
+
+  const actionBarMaxHeight = actionBarHeight.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 52],
+  })
 
   return (
     <View style={styles.container}>
@@ -88,7 +122,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
           renderItem={({ item }) => (
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => setSelectedVerse(n => n === item.verse ? null : item.verse)}
+              onPress={() => selectVerse(item.verse)}
               style={[styles.verseRow, selectedVerse === item.verse && styles.verseRowSelected]}
             >
               <Text style={styles.verseNum}>{item.verse}</Text>
@@ -100,6 +134,24 @@ export default function ReaderScreen({ navigation, route }: Props) {
         />
       )}
 
+      {/* Verse action bar — slides up when a verse is selected */}
+      <Animated.View style={[styles.actionBar, { height: actionBarMaxHeight, overflow: 'hidden' }]}>
+        <TouchableOpacity style={styles.actionBtn} onPress={toggleBookmark} activeOpacity={0.7}>
+          <Ionicons
+            name={bookmarked ? 'bookmark' : 'bookmark-outline'}
+            size={22}
+            color={bookmarked ? Colors.accent : Colors.textSecondary}
+          />
+          <Text style={[styles.actionLabel, bookmarked && styles.actionLabelActive]}>
+            {bookmarked ? 'Bookmarked' : 'Bookmark'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.actionBtn} onPress={() => setSelectedVerse(null)} activeOpacity={0.7}>
+          <Ionicons name="close" size={22} color={Colors.textMuted} />
+          <Text style={styles.actionLabel}>Dismiss</Text>
+        </TouchableOpacity>
+      </Animated.View>
+
       {/* Chapter prev/next */}
       <View style={styles.footer}>
         <TouchableOpacity
@@ -110,11 +162,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
           <Ionicons name="chevron-back" size={20} color={canGoPrev ? Colors.textSecondary : Colors.textMuted} />
           <Text style={[styles.footerLabel, !canGoPrev && styles.footerLabelDisabled]}>Prev</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.footerBtn}
-          onPress={() => goChapter(1)}
-          activeOpacity={0.7}
-        >
+        <TouchableOpacity style={styles.footerBtn} onPress={() => goChapter(1)} activeOpacity={0.7}>
           <Text style={styles.footerLabel}>Next</Text>
           <Ionicons name="chevron-forward" size={20} color={Colors.textSecondary} />
         </TouchableOpacity>
@@ -124,8 +172,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container:  { flex: 1, backgroundColor: Colors.bgPrimary },
-  center:     { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  container: { flex: 1, backgroundColor: Colors.bgPrimary },
+  center:    { flex: 1, alignItems: 'center', justifyContent: 'center' },
 
   header: {
     flexDirection: 'row',
@@ -138,70 +186,47 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: Colors.border,
   },
-  headerTitle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  bookName: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: Colors.textPrimary,
-    letterSpacing: 0.2,
-  },
+  headerTitle: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+  bookName: { fontSize: 18, fontWeight: '700', color: Colors.textPrimary, letterSpacing: 0.2 },
   chapterBtn: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    backgroundColor: Colors.accentDim,
-    borderRadius: 8,
-    marginLeft: 12,
+    paddingHorizontal: 14, paddingVertical: 6,
+    backgroundColor: Colors.accentDim, borderRadius: 8, marginLeft: 12,
   },
-  chapterNum: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: Colors.accent,
-  },
+  chapterNum: { fontSize: 16, fontWeight: '700', color: Colors.accent },
 
   list: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 80 },
   verseRow: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: 6,
-    marginVertical: 1,
+    flexDirection: 'row', paddingVertical: 8,
+    paddingHorizontal: 10, borderRadius: 6, marginVertical: 1,
   },
-  verseRowSelected: {
-    backgroundColor: Colors.accentDim,
-  },
+  verseRowSelected: { backgroundColor: Colors.accentDim },
   verseNum: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: Colors.textMuted,
-    minWidth: 24,
-    marginTop: 3,
-    marginRight: 8,
+    fontSize: 11, fontWeight: '700', color: Colors.textMuted,
+    minWidth: 24, marginTop: 3, marginRight: 8,
   },
-  verseText: {
-    flex: 1,
-    fontSize: 17,
-    lineHeight: 28,
-    color: Colors.textPrimary,
+  verseText: { flex: 1, fontSize: 17, lineHeight: 28, color: Colors.textPrimary },
+  verseTextSelected: { color: Colors.textAccent },
+
+  actionBar: {
+    flexDirection: 'row',
+    backgroundColor: Colors.bgTertiary,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: Colors.borderLight,
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
-  verseTextSelected: {
-    color: Colors.textAccent,
-  },
+  actionBtn: { alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24, paddingVertical: 8, gap: 2 },
+  actionLabel: { fontSize: 11, color: Colors.textMuted, fontWeight: '600', textTransform: 'uppercase', letterSpacing: 0.4 },
+  actionLabelActive: { color: Colors.accent },
 
   footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: 'row', justifyContent: 'space-between',
     backgroundColor: Colors.bgSecondary,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: Colors.border,
-    paddingHorizontal: 24,
-    paddingVertical: 10,
+    borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: Colors.border,
+    paddingHorizontal: 24, paddingVertical: 10,
   },
-  footerBtn:          { flexDirection: 'row', alignItems: 'center', gap: 4, paddingVertical: 4 },
-  footerBtnDisabled:  { opacity: 0.3 },
-  footerLabel:        { fontSize: 14, fontWeight: '600', color: Colors.textSecondary },
-  footerLabelDisabled:{ color: Colors.textMuted },
+  footerBtn:           { flexDirection: 'row', alignItems: 'center', gap: 4, paddingVertical: 4 },
+  footerBtnDisabled:   { opacity: 0.3 },
+  footerLabel:         { fontSize: 14, fontWeight: '600', color: Colors.textSecondary },
+  footerLabelDisabled: { color: Colors.textMuted },
 })

@@ -1,5 +1,5 @@
 import type { SQLiteDatabase } from 'expo-sqlite'
-import type { BibleVerse, CommentaryEntry, SearchResult } from '../types'
+import type { BibleVerse, Bookmark, CommentaryEntry, SearchResult } from '../types'
 
 // ── Bible verses ──────────────────────────────────────────
 
@@ -106,6 +106,51 @@ export async function getChapterCount(
     [book]
   )
   return row?.max_chapter ?? 0
+}
+
+// ── Bookmarks ─────────────────────────────────────────────
+
+export async function getBookmarks(db: SQLiteDatabase): Promise<Bookmark[]> {
+  return db.getAllAsync<Bookmark>(
+    'SELECT book, chapter, verse, created_at as createdAt FROM bookmarks ORDER BY created_at DESC'
+  )
+}
+
+export async function isBookmarked(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number
+): Promise<boolean> {
+  const row = await db.getFirstAsync(
+    'SELECT 1 FROM bookmarks WHERE book = ? AND chapter = ? AND verse = ?',
+    [book, chapter, verse]
+  )
+  return !!row
+}
+
+export async function addBookmark(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number
+): Promise<void> {
+  await db.runAsync(
+    'INSERT OR IGNORE INTO bookmarks (book, chapter, verse, created_at) VALUES (?, ?, ?, ?)',
+    [book, chapter, verse, Date.now()]
+  )
+}
+
+export async function removeBookmark(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number
+): Promise<void> {
+  await db.runAsync(
+    'DELETE FROM bookmarks WHERE book = ? AND chapter = ? AND verse = ?',
+    [book, chapter, verse]
+  )
 }
 
 // ── Distinct books (ordered as they appear in the Bible) ──

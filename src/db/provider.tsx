@@ -1,7 +1,21 @@
 import React, { Suspense } from 'react'
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 import { SQLiteProvider } from 'expo-sqlite'
+import type { SQLiteDatabase } from 'expo-sqlite'
 import { Colors } from '../theme/colors'
+
+async function initDb(db: SQLiteDatabase) {
+  await db.execAsync(`
+    CREATE TABLE IF NOT EXISTS bookmarks (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      book       TEXT    NOT NULL,
+      chapter    INTEGER NOT NULL,
+      verse      INTEGER NOT NULL,
+      created_at INTEGER NOT NULL,
+      UNIQUE(book, chapter, verse)
+    );
+  `)
+}
 
 function Loading() {
   return (
@@ -22,6 +36,7 @@ export function DatabaseProvider({ children }: Props) {
       <SQLiteProvider
         databaseName="bible.db"
         assetSource={{ assetId: require('../../assets/db/bible.db') }}
+        onInit={initDb}
         useSuspense
       >
         {children}
