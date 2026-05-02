@@ -21,7 +21,7 @@ export function DatabaseProvider({ children }: Props) {
     <Suspense fallback={<Loading />}>
       <SQLiteProvider
         databaseName="bible.db"
-        assetSource={require('../../assets/db/bible.db')}
+        assetSource={{ assetId: require('../../assets/db/bible.db') }}
         useSuspense
       >
         {children}

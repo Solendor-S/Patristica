@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
 import { StyleSheet, View } from 'react-native'
 
-import BibleScreen from '../screens/BibleScreen'
+import BibleNavigator from './BibleNavigator'
 import SearchScreen from '../screens/SearchScreen'
 import StudyScreen from '../screens/StudyScreen'
 import BookmarksScreen from '../screens/BookmarksScreen'
@@ -39,7 +39,7 @@ export default function AppNavigator() {
           },
         })}
       >
-        <Tab.Screen name="Bible"     component={BibleScreen} />
+        <Tab.Screen name="Bible"     component={BibleNavigator} />
         <Tab.Screen name="Search"    component={SearchScreen} />
         <Tab.Screen name="Study"     component={StudyScreen} />
         <Tab.Screen name="Bookmarks" component={BookmarksScreen} />

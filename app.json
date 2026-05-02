@@ -21,7 +21,8 @@
         "backgroundColor": "#1a1a1a"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.BibleAndroidApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -31,7 +32,9 @@
       [
         "expo-asset",
         {
-          "assets": ["assets/db/bible.db"]
+          "assets": [
+            "assets/db/bible.db"
+          ]
         }
       ]
     ]
