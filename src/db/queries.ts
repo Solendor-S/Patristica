@@ -1,5 +1,5 @@
 import type { SQLiteDatabase } from 'expo-sqlite'
-import type { BibleVerse, Bookmark, CommentaryEntry, CrossRef, SearchResult } from '../types'
+import type { BibleVerse, Bookmark, CommentaryEntry, CrossRef, Note, SearchResult } from '../types'
 
 // ── Bible verses ──────────────────────────────────────────
 
@@ -153,6 +153,46 @@ export async function removeBookmark(
 ): Promise<void> {
   await db.runAsync(
     'DELETE FROM bookmarks WHERE book = ? AND chapter = ? AND verse = ?',
+    [book, chapter, verse]
+  )
+}
+
+// ── Notes ─────────────────────────────────────────────────
+
+export async function getNote(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number
+): Promise<Note | null> {
+  return db.getFirstAsync<Note>(
+    'SELECT book, chapter, verse, text, updated_at as updatedAt FROM notes WHERE book = ? AND chapter = ? AND verse = ?',
+    [book, chapter, verse]
+  )
+}
+
+export async function saveNote(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number,
+  text: string
+): Promise<void> {
+  await db.runAsync(
+    `INSERT INTO notes (book, chapter, verse, text, updated_at) VALUES (?, ?, ?, ?, ?)
+     ON CONFLICT(book, chapter, verse) DO UPDATE SET text = excluded.text, updated_at = excluded.updated_at`,
+    [book, chapter, verse, text, Date.now()]
+  )
+}
+
+export async function deleteNote(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number
+): Promise<void> {
+  await db.runAsync(
+    'DELETE FROM notes WHERE book = ? AND chapter = ? AND verse = ?',
     [book, chapter, verse]
   )
 }

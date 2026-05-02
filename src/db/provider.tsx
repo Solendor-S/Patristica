@@ -14,6 +14,15 @@ async function initDb(db: SQLiteDatabase) {
       created_at INTEGER NOT NULL,
       UNIQUE(book, chapter, verse)
     );
+    CREATE TABLE IF NOT EXISTS notes (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      book       TEXT    NOT NULL,
+      chapter    INTEGER NOT NULL,
+      verse      INTEGER NOT NULL,
+      text       TEXT    NOT NULL DEFAULT '',
+      updated_at INTEGER NOT NULL,
+      UNIQUE(book, chapter, verse)
+    );
   `)
 }
 

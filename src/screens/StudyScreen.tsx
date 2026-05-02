@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
-  View, Text, FlatList, TouchableOpacity,
-  StyleSheet, ActivityIndicator, StatusBar, LayoutAnimation,
+  View, Text, FlatList, TouchableOpacity, TextInput, Alert,
+  StyleSheet, ActivityIndicator, StatusBar, LayoutAnimation, KeyboardAvoidingView, Platform,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
-import { getCommentary, getCrossRefs } from '../db/queries'
+import { getCommentary, getCrossRefs, getNote, saveNote, deleteNote } from '../db/queries'
 import { getFatherInfo } from '../data/fatherDates'
 import { Colors } from '../theme/colors'
-import type { CommentaryEntry, CrossRef, RootTabParamList } from '../types'
+import type { CommentaryEntry, CrossRef, Note, RootTabParamList } from '../types'
 
-type StudyTab = 'fathers' | 'crossrefs'
+type StudyTab = 'fathers' | 'crossrefs' | 'notes'
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Study'>
 
 // ── Entry card ────────────────────────────────────────────
@@ -71,6 +71,96 @@ function CrossRefCard({ item, onPress }: { item: CrossRef; onPress: () => void }
   )
 }
 
+// ── Notes panel ───────────────────────────────────────────
+
+function NotesPanel({ book, chapter, verse }: { book: string; chapter: number; verse: number }) {
+  const db = useSQLiteContext()
+  const [text, setText] = useState('')
+  const [saved, setSaved] = useState('')
+  const [loading, setLoading] = useState(true)
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    setLoading(true)
+    getNote(db, book, chapter, verse).then(note => {
+      const t = note?.text ?? ''
+      setText(t)
+      setSaved(t)
+      setLoading(false)
+    })
+    return () => { if (saveTimer.current) clearTimeout(saveTimer.current) }
+  }, [book, chapter, verse])
+
+  const handleChange = (val: string) => {
+    setText(val)
+    if (saveTimer.current) clearTimeout(saveTimer.current)
+    saveTimer.current = setTimeout(async () => {
+      if (val.trim()) {
+        await saveNote(db, book, chapter, verse, val)
+      } else {
+        await deleteNote(db, book, chapter, verse)
+      }
+      setSaved(val)
+    }, 800)
+  }
+
+  const handleDelete = () => {
+    if (!saved.trim()) return
+    Alert.alert('Delete note', 'Remove this note?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete', style: 'destructive',
+        onPress: async () => {
+          await deleteNote(db, book, chapter, verse)
+          setText('')
+          setSaved('')
+        },
+      },
+    ])
+  }
+
+  if (loading) {
+    return (
+      <View style={noteStyles.center}>
+        <ActivityIndicator color={Colors.accent} />
+      </View>
+    )
+  }
+
+  const isDirty = text !== saved
+
+  return (
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={120}
+    >
+      <View style={noteStyles.container}>
+        <View style={noteStyles.toolbar}>
+          <Text style={noteStyles.hint}>
+            {isDirty ? 'Saving…' : saved.trim() ? 'Saved' : 'Start typing to add a note'}
+          </Text>
+          {!!saved.trim() && (
+            <TouchableOpacity onPress={handleDelete} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+              <Ionicons name="trash-outline" size={18} color={Colors.textMuted} />
+            </TouchableOpacity>
+          )}
+        </View>
+        <TextInput
+          style={noteStyles.input}
+          value={text}
+          onChangeText={handleChange}
+          multiline
+          placeholder="Your notes on this verse…"
+          placeholderTextColor={Colors.textMuted}
+          textAlignVertical="top"
+          autoCorrect
+        />
+      </View>
+    </KeyboardAvoidingView>
+  )
+}
+
 // ── Main screen ───────────────────────────────────────────
 
 export default function StudyScreen() {
@@ -81,6 +171,7 @@ export default function StudyScreen() {
   const [activeTab, setActiveTab] = useState<StudyTab>('fathers')
   const [entries, setEntries] = useState<CommentaryEntry[]>([])
   const [crossRefs, setCrossRefs] = useState<CrossRef[]>([])
+  const [hasNote, setHasNote] = useState(false)
   const [loadingFathers, setLoadingFathers] = useState(false)
   const [loadingRefs, setLoadingRefs] = useState(false)
 
@@ -104,6 +195,9 @@ export default function StudyScreen() {
     getCrossRefs(db, selected.book, selected.chapter, selected.verse)
       .then(rows => { setCrossRefs(rows); setLoadingRefs(false) })
       .catch(() => setLoadingRefs(false))
+
+    getNote(db, selected.book, selected.chapter, selected.verse)
+      .then(note => setHasNote(!!note?.text?.trim()))
   }, [selected])
 
   const verseRef = selected
@@ -178,6 +272,20 @@ export default function StudyScreen() {
                 </View>
               )}
             </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.tab, activeTab === 'notes' && styles.tabActive]}
+              onPress={() => setActiveTab('notes')}
+              activeOpacity={0.7}
+            >
+              <Text style={[styles.tabLabel, activeTab === 'notes' && styles.tabLabelActive]}>
+                Notes
+              </Text>
+              {hasNote && (
+                <View style={[styles.tabBadge, activeTab === 'notes' && styles.tabBadgeActive]}>
+                  <Ionicons name="pencil" size={10} color={activeTab === 'notes' ? Colors.accent : Colors.textMuted} />
+                </View>
+              )}
+            </TouchableOpacity>
           </View>
 
           {/* Loading */}
@@ -203,6 +311,15 @@ export default function StudyScreen() {
                 renderItem={({ item }) => <EntryCard entry={item} />}
               />
             )
+          )}
+
+          {/* Notes */}
+          {activeTab === 'notes' && (
+            <NotesPanel
+              book={selected.book}
+              chapter={selected.chapter}
+              verse={selected.verse}
+            />
           )}
 
           {/* Cross-refs list */}
@@ -313,4 +430,25 @@ const styles = StyleSheet.create({
 
   emptyTitle: { fontSize: 17, fontWeight: '600', color: Colors.textSecondary, textAlign: 'center' },
   emptyText:  { fontSize: 14, color: Colors.textMuted, textAlign: 'center', lineHeight: 22 },
+})
+
+const noteStyles = StyleSheet.create({
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  container: { flex: 1, padding: 12, gap: 8 },
+  toolbar: {
+    flexDirection: 'row', alignItems: 'center',
+    justifyContent: 'space-between', paddingHorizontal: 4,
+  },
+  hint: { fontSize: 12, color: Colors.textMuted, fontStyle: 'italic' },
+  input: {
+    flex: 1,
+    backgroundColor: Colors.bgCard,
+    borderRadius: 12,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: Colors.border,
+    padding: 14,
+    fontSize: 16,
+    lineHeight: 26,
+    color: Colors.textPrimary,
+  },
 })
