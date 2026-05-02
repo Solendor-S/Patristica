@@ -273,6 +273,8 @@ function HistoricalPanel({
 
   const browseOT = HISTORICAL_SOURCES.filter(s => s.testament === 'ot').sort((a, b) => a.sort_year - b.sort_year)
   const browseNT = HISTORICAL_SOURCES.filter(s => s.testament === 'nt').sort((a, b) => a.sort_year - b.sort_year)
+  const [otOpen, setOtOpen] = useState(true)
+  const [ntOpen, setNtOpen] = useState(true)
 
   return (
     <View style={{ flex: 1 }}>
@@ -315,15 +317,26 @@ function HistoricalPanel({
         )
       ) : (
         <ScrollView contentContainerStyle={[styles.list, { gap: 0 }]}>
-          <Text style={hist.sectionHeader}>Old Testament ({browseOT.length} sources)</Text>
-          {browseOT.map(e => <HistoricalCard key={e.source_key} entry={e} />)}
-          <Text style={[hist.sectionHeader, { marginTop: 16 }]}>New Testament ({browseNT.length} sources + Josephus)</Text>
-          {browseNT.map(e => <HistoricalCard key={e.source_key} entry={e} />)}
-          <View style={hist.josephusNote}>
-            <Text style={hist.josephusNoteText}>
-              Flavius Josephus (c. 37–100 AD) references appear in Verse mode when you select a verse. His works — <Text style={{ fontStyle: 'italic' }}>Antiquities of the Jews</Text> and <Text style={{ fontStyle: 'italic' }}>The Jewish War</Text> — are the primary non-biblical source for the NT world.
-            </Text>
-          </View>
+          <TouchableOpacity style={hist.sectionToggle} onPress={() => setOtOpen(o => !o)} activeOpacity={0.7}>
+            <Ionicons name={otOpen ? 'chevron-down' : 'chevron-forward'} size={14} color={Colors.textMuted} />
+            <Text style={hist.sectionHeader}>Old Testament</Text>
+            <Text style={hist.sectionCount}>{browseOT.length} sources</Text>
+          </TouchableOpacity>
+          {otOpen && browseOT.map(e => <HistoricalCard key={e.source_key} entry={e} />)}
+
+          <TouchableOpacity style={[hist.sectionToggle, { marginTop: 12 }]} onPress={() => setNtOpen(o => !o)} activeOpacity={0.7}>
+            <Ionicons name={ntOpen ? 'chevron-down' : 'chevron-forward'} size={14} color={Colors.textMuted} />
+            <Text style={hist.sectionHeader}>New Testament</Text>
+            <Text style={hist.sectionCount}>{browseNT.length} sources + Josephus</Text>
+          </TouchableOpacity>
+          {ntOpen && browseNT.map(e => <HistoricalCard key={e.source_key} entry={e} />)}
+          {ntOpen && (
+            <View style={hist.josephusNote}>
+              <Text style={hist.josephusNoteText}>
+                Flavius Josephus (c. 37–100 AD) references appear in Verse mode when you select a verse. His works — <Text style={{ fontStyle: 'italic' }}>Antiquities of the Jews</Text> and <Text style={{ fontStyle: 'italic' }}>The Jewish War</Text> — are the primary non-biblical source for the NT world.
+              </Text>
+            </View>
+          )}
         </ScrollView>
       )}
     </View>
@@ -409,7 +422,12 @@ export default function StudyScreen() {
       {selected && (
         <>
           {/* Tab bar */}
-          <View style={styles.tabBar}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.tabBar}
+            contentContainerStyle={styles.tabBarContent}
+          >
             <TouchableOpacity
               style={[styles.tab, activeTab === 'fathers' && styles.tabActive]}
               onPress={() => setActiveTab('fathers')}
@@ -465,7 +483,7 @@ export default function StudyScreen() {
                 Historical
               </Text>
             </TouchableOpacity>
-          </View>
+          </ScrollView>
 
           {/* Loading */}
           {loading && (
@@ -561,14 +579,18 @@ const styles = StyleSheet.create({
   },
 
   tabBar: {
-    flexDirection: 'row',
     backgroundColor: Colors.bgSecondary,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: Colors.border,
+    flexGrow: 0,
+  },
+  tabBarContent: {
+    flexDirection: 'row',
+    paddingHorizontal: 4,
   },
   tab: {
-    flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-    paddingVertical: 10, gap: 6,
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+    paddingVertical: 10, paddingHorizontal: 14, gap: 6,
     borderBottomWidth: 2, borderBottomColor: 'transparent',
   },
   tabActive:     { borderBottomColor: Colors.accent },
@@ -658,10 +680,16 @@ const hist = StyleSheet.create({
 
   citation: { fontSize: 11, color: Colors.textMuted, fontStyle: 'italic' },
 
+  sectionToggle: {
+    flexDirection: 'row', alignItems: 'center', gap: 6,
+    paddingVertical: 8, marginBottom: 8,
+  },
   sectionHeader: {
     fontSize: 12, fontWeight: '700', color: Colors.textMuted,
     textTransform: 'uppercase', letterSpacing: 0.6,
-    marginBottom: 10,
+  },
+  sectionCount: {
+    fontSize: 12, color: Colors.textMuted, marginLeft: 'auto',
   },
   josephusNote: {
     backgroundColor: Colors.bgTertiary, borderRadius: 10,
