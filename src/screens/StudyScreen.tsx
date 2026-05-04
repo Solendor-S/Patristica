@@ -1,22 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import {
-  View, Text, FlatList, TouchableOpacity, TextInput, Alert, ScrollView,
-  StyleSheet, ActivityIndicator, StatusBar, LayoutAnimation, KeyboardAvoidingView, Platform,
+  View, Text, FlatList, TouchableOpacity, ScrollView,
+  StyleSheet, ActivityIndicator, StatusBar, LayoutAnimation,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
-import { getCommentary, getCrossRefs, getNote, saveNote, deleteNote, getJosephusForVerse } from '../db/queries'
+import { getCommentary, getCrossRefs, getJosephusForVerse } from '../db/queries'
 import type { JosephusEntry } from '../db/queries'
 import { getFatherInfo } from '../data/fatherDates'
 import { getHistoricalForVerse, HISTORICAL_SOURCES, CATEGORY_LABEL } from '../data/historicalData'
 import type { HistoricalSource } from '../data/historicalData'
+import CouncilsPanel from './CouncilsPanel'
+import HeresiesPanel from './HeresiesPanel'
+import WordStudyPanel from './WordStudyPanel'
 import { Colors } from '../theme/colors'
 import type { CommentaryEntry, CrossRef, Note, RootTabParamList } from '../types'
 
-type StudyTab = 'fathers' | 'crossrefs' | 'notes' | 'historical'
+type StudyTab = 'fathers' | 'crossrefs' | 'historical' | 'councils' | 'heresies' | 'words'
 type HistMode = 'verse' | 'browse'
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Study'>
 
@@ -32,7 +35,7 @@ function EntryCard({ entry }: { entry: CommentaryEntry }) {
 
   const hasMore = entry.full_text.length > entry.excerpt.length
   const body = expanded ? entry.full_text : entry.excerpt
-  const info = getFatherInfo(entry.father_name)
+  const info = useMemo(() => getFatherInfo(entry.father_name), [entry.father_name])
   const dateLabel = info?.dates ?? entry.father_era
 
   return (
@@ -75,96 +78,6 @@ function CrossRefCard({ item, onPress }: { item: CrossRef; onPress: () => void }
   )
 }
 
-// ── Notes panel ───────────────────────────────────────────
-
-function NotesPanel({ book, chapter, verse }: { book: string; chapter: number; verse: number }) {
-  const db = useSQLiteContext()
-  const [text, setText] = useState('')
-  const [saved, setSaved] = useState('')
-  const [loading, setLoading] = useState(true)
-  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  useEffect(() => {
-    setLoading(true)
-    getNote(db, book, chapter, verse).then(note => {
-      const t = note?.text ?? ''
-      setText(t)
-      setSaved(t)
-      setLoading(false)
-    })
-    return () => { if (saveTimer.current) clearTimeout(saveTimer.current) }
-  }, [book, chapter, verse])
-
-  const handleChange = (val: string) => {
-    setText(val)
-    if (saveTimer.current) clearTimeout(saveTimer.current)
-    saveTimer.current = setTimeout(async () => {
-      if (val.trim()) {
-        await saveNote(db, book, chapter, verse, val)
-      } else {
-        await deleteNote(db, book, chapter, verse)
-      }
-      setSaved(val)
-    }, 800)
-  }
-
-  const handleDelete = () => {
-    if (!saved.trim()) return
-    Alert.alert('Delete note', 'Remove this note?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Delete', style: 'destructive',
-        onPress: async () => {
-          await deleteNote(db, book, chapter, verse)
-          setText('')
-          setSaved('')
-        },
-      },
-    ])
-  }
-
-  if (loading) {
-    return (
-      <View style={noteStyles.center}>
-        <ActivityIndicator color={Colors.accent} />
-      </View>
-    )
-  }
-
-  const isDirty = text !== saved
-
-  return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={120}
-    >
-      <View style={noteStyles.container}>
-        <View style={noteStyles.toolbar}>
-          <Text style={noteStyles.hint}>
-            {isDirty ? 'Saving…' : saved.trim() ? 'Saved' : 'Start typing to add a note'}
-          </Text>
-          {!!saved.trim() && (
-            <TouchableOpacity onPress={handleDelete} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-              <Ionicons name="trash-outline" size={18} color={Colors.textMuted} />
-            </TouchableOpacity>
-          )}
-        </View>
-        <TextInput
-          style={noteStyles.input}
-          value={text}
-          onChangeText={handleChange}
-          multiline
-          placeholder="Your notes on this verse…"
-          placeholderTextColor={Colors.textMuted}
-          textAlignVertical="top"
-          autoCorrect
-        />
-      </View>
-    </KeyboardAvoidingView>
-  )
-}
-
 // ── Historical panel ──────────────────────────────────────
 
 const CATEGORY_COLOR: Record<string, string> = {
@@ -178,7 +91,7 @@ function HistoricalCard({ entry }: { entry: HistoricalSource }) {
   const [expanded, setExpanded] = useState(false)
   const PREVIEW = 280
   const hasMore = entry.description.length > PREVIEW
-  const body = expanded ? entry.description : entry.description.slice(0, PREVIEW) + (hasMore && !expanded ? '…' : '')
+  const body = expanded ? entry.description : entry.description.slice(0, PREVIEW) + (hasMore ? '…' : '')
 
   return (
     <View style={hist.card}>
@@ -215,7 +128,7 @@ function JosephusCard({ entry }: { entry: JosephusEntry }) {
   const [expanded, setExpanded] = useState(false)
   const PREVIEW = 280
   const hasMore = entry.text.length > PREVIEW
-  const body = expanded ? entry.text : entry.text.slice(0, PREVIEW) + (hasMore && !expanded ? '…' : '')
+  const body = expanded ? entry.text : entry.text.slice(0, PREVIEW) + (hasMore ? '…' : '')
 
   return (
     <View style={hist.card}>
@@ -271,8 +184,14 @@ function HistoricalPanel({
       .catch(() => setLoading(false))
   }, [mode, selected?.book, selected?.chapter, selected?.verse])
 
-  const browseOT = HISTORICAL_SOURCES.filter(s => s.testament === 'ot').sort((a, b) => a.sort_year - b.sort_year)
-  const browseNT = HISTORICAL_SOURCES.filter(s => s.testament === 'nt').sort((a, b) => a.sort_year - b.sort_year)
+  const browseOT = useMemo(
+    () => HISTORICAL_SOURCES.filter(s => s.testament === 'ot').sort((a, b) => a.sort_year - b.sort_year),
+    [],
+  )
+  const browseNT = useMemo(
+    () => HISTORICAL_SOURCES.filter(s => s.testament === 'nt').sort((a, b) => a.sort_year - b.sort_year),
+    [],
+  )
   const [otOpen, setOtOpen] = useState(true)
   const [ntOpen, setNtOpen] = useState(true)
 
@@ -353,7 +272,6 @@ export default function StudyScreen() {
   const [activeTab, setActiveTab] = useState<StudyTab>('fathers')
   const [entries, setEntries] = useState<CommentaryEntry[]>([])
   const [crossRefs, setCrossRefs] = useState<CrossRef[]>([])
-  const [hasNote, setHasNote] = useState(false)
   const [histMode, setHistMode] = useState<HistMode>('verse')
   const [loadingFathers, setLoadingFathers] = useState(false)
   const [loadingRefs, setLoadingRefs] = useState(false)
@@ -379,9 +297,7 @@ export default function StudyScreen() {
       .then(rows => { setCrossRefs(rows); setLoadingRefs(false) })
       .catch(() => setLoadingRefs(false))
 
-    getNote(db, selected.book, selected.chapter, selected.verse)
-      .then(note => setHasNote(!!note?.text?.trim()))
-  }, [selected])
+  }, [selected?.book, selected?.chapter, selected?.verse])
 
   const verseRef = selected
     ? `${selected.book} ${selected.chapter}:${selected.verse}`
@@ -394,8 +310,8 @@ export default function StudyScreen() {
     })
   }
 
-  const loading = activeTab === 'fathers' ? loadingFathers : loadingRefs
-  const count = activeTab === 'fathers' ? entries.length : crossRefs.length
+  const loading = activeTab === 'fathers' ? loadingFathers : activeTab === 'crossrefs' ? loadingRefs : false
+  const count   = activeTab === 'fathers' ? entries.length : crossRefs.length
 
   return (
     <View style={styles.container}>
@@ -410,132 +326,126 @@ export default function StudyScreen() {
         )}
       </View>
 
-      {/* No verse selected */}
-      {!selected && (
-        <View style={styles.center}>
-          <Ionicons name="book-outline" size={52} color={Colors.border} />
-          <Text style={styles.emptyTitle}>No verse selected</Text>
-          <Text style={styles.emptyText}>Tap a verse in the Bible tab to study it</Text>
-        </View>
-      )}
+      {/* Tab bar — always visible */}
+      <View style={styles.tabBar}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ flex: 1 }}
+          contentContainerStyle={styles.tabBarContent}
+        >
+          {([
+            { key: 'words',      label: 'Words' },
+            { key: 'fathers',    label: 'Church Fathers', badge: entries.length   || undefined },
+            { key: 'crossrefs',  label: 'Cross-Refs',    badge: crossRefs.length || undefined },
+            { key: 'historical', label: 'Historical' },
+            { key: 'councils',   label: 'Councils' },
+            { key: 'heresies',   label: 'Heresies' },
+          ] as Array<{ key: StudyTab; label: string; badge?: number }>).map(tab => {
+            const active = activeTab === tab.key
+            return (
+              <TouchableOpacity key={tab.key} style={styles.tab} onPress={() => setActiveTab(tab.key)} activeOpacity={0.7}>
+                <View style={styles.tabInner}>
+                  <Text style={[styles.tabLabel, active && styles.tabLabelActive]}>{tab.label}</Text>
+                  {!!tab.badge && (
+                    <View style={[styles.tabBadge, active && styles.tabBadgeActive]}>
+                      <Text style={[styles.tabBadgeText, active && styles.tabBadgeTextActive]}>{tab.badge}</Text>
+                    </View>
+                  )}
+                </View>
+                <View style={[styles.tabIndicator, { backgroundColor: active ? Colors.accent : 'transparent' }]} />
+              </TouchableOpacity>
+            )
+          })}
+        </ScrollView>
+      </View>
 
-      {selected && (
-        <>
-          {/* Tab bar */}
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.tabBar}
-            contentContainerStyle={styles.tabBarContent}
-          >
-            <TouchableOpacity style={styles.tab} onPress={() => setActiveTab('fathers')} activeOpacity={0.7}>
-              <View style={styles.tabInner}>
-                <Text style={[styles.tabLabel, activeTab === 'fathers' && styles.tabLabelActive]}>Church Fathers</Text>
-                {entries.length > 0 && (
-                  <View style={[styles.tabBadge, activeTab === 'fathers' && styles.tabBadgeActive]}>
-                    <Text style={[styles.tabBadgeText, activeTab === 'fathers' && styles.tabBadgeTextActive]}>{entries.length}</Text>
-                  </View>
-                )}
-              </View>
-              <View style={[styles.tabIndicator, { backgroundColor: activeTab === 'fathers' ? Colors.accent : 'transparent' }]} />
-            </TouchableOpacity>
+      <View style={{ flex: 1 }}>
+        {/* Loading */}
+        {loading && (
+          <View style={styles.center}>
+            <ActivityIndicator color={Colors.accent} size="large" />
+          </View>
+        )}
 
-            <TouchableOpacity style={styles.tab} onPress={() => setActiveTab('crossrefs')} activeOpacity={0.7}>
-              <View style={styles.tabInner}>
-                <Text style={[styles.tabLabel, activeTab === 'crossrefs' && styles.tabLabelActive]}>Cross-Refs</Text>
-                {crossRefs.length > 0 && (
-                  <View style={[styles.tabBadge, activeTab === 'crossrefs' && styles.tabBadgeActive]}>
-                    <Text style={[styles.tabBadgeText, activeTab === 'crossrefs' && styles.tabBadgeTextActive]}>{crossRefs.length}</Text>
-                  </View>
-                )}
-              </View>
-              <View style={[styles.tabIndicator, { backgroundColor: activeTab === 'crossrefs' ? Colors.accent : 'transparent' }]} />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.tab} onPress={() => setActiveTab('notes')} activeOpacity={0.7}>
-              <View style={styles.tabInner}>
-                <Text style={[styles.tabLabel, activeTab === 'notes' && styles.tabLabelActive]}>Notes</Text>
-                {hasNote && (
-                  <View style={[styles.tabBadge, activeTab === 'notes' && styles.tabBadgeActive]}>
-                    <Ionicons name="pencil" size={10} color={activeTab === 'notes' ? Colors.accent : Colors.textMuted} />
-                  </View>
-                )}
-              </View>
-              <View style={[styles.tabIndicator, { backgroundColor: activeTab === 'notes' ? Colors.accent : 'transparent' }]} />
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.tab} onPress={() => setActiveTab('historical')} activeOpacity={0.7}>
-              <View style={styles.tabInner}>
-                <Text style={[styles.tabLabel, activeTab === 'historical' && styles.tabLabelActive]}>Historical</Text>
-              </View>
-              <View style={[styles.tabIndicator, { backgroundColor: activeTab === 'historical' ? Colors.accent : 'transparent' }]} />
-            </TouchableOpacity>
-          </ScrollView>
-
-          {/* Loading */}
-          {loading && (
+        {/* Fathers list */}
+        {!loading && activeTab === 'fathers' && (
+          !selected ? (
             <View style={styles.center}>
-              <ActivityIndicator color={Colors.accent} size="large" />
+              <Ionicons name="book-outline" size={52} color={Colors.border} />
+              <Text style={styles.emptyTitle}>No verse selected</Text>
+              <Text style={styles.emptyText}>Tap a verse in the Bible tab to see Church Fathers commentary</Text>
             </View>
-          )}
-
-          {/* Fathers list */}
-          {!loading && activeTab === 'fathers' && (
-            entries.length === 0 ? (
-              <View style={styles.center}>
-                <Ionicons name="chatbubble-ellipses-outline" size={52} color={Colors.border} />
-                <Text style={styles.emptyTitle}>No commentary found</Text>
-                <Text style={styles.emptyText}>No patristic commentary recorded for {verseRef}</Text>
-              </View>
-            ) : (
-              <FlatList
-                data={entries}
-                keyExtractor={e => e.id.toString()}
-                contentContainerStyle={styles.list}
-                renderItem={({ item }) => <EntryCard entry={item} />}
-              />
-            )
-          )}
-
-          {/* Notes */}
-          {activeTab === 'notes' && (
-            <NotesPanel
-              book={selected.book}
-              chapter={selected.chapter}
-              verse={selected.verse}
+          ) : entries.length === 0 ? (
+            <View style={styles.center}>
+              <Ionicons name="chatbubble-ellipses-outline" size={52} color={Colors.border} />
+              <Text style={styles.emptyTitle}>No commentary found</Text>
+              <Text style={styles.emptyText}>No patristic commentary recorded for {verseRef}</Text>
+            </View>
+          ) : (
+            <FlatList
+              data={entries}
+              keyExtractor={e => e.id.toString()}
+              contentContainerStyle={styles.list}
+              renderItem={({ item }) => <EntryCard entry={item} />}
             />
-          )}
+          )
+        )}
 
-          {/* Historical */}
-          {activeTab === 'historical' && (
-            <HistoricalPanel
-              selected={selected}
-              mode={histMode}
-              onModeChange={setHistMode}
+        {/* Cross-refs list */}
+        {!loading && activeTab === 'crossrefs' && (
+          !selected ? (
+            <View style={styles.center}>
+              <Ionicons name="book-outline" size={52} color={Colors.border} />
+              <Text style={styles.emptyTitle}>No verse selected</Text>
+              <Text style={styles.emptyText}>Tap a verse in the Bible tab to see cross-references</Text>
+            </View>
+          ) : crossRefs.length === 0 ? (
+            <View style={styles.center}>
+              <Ionicons name="git-branch-outline" size={52} color={Colors.border} />
+              <Text style={styles.emptyTitle}>No cross-references</Text>
+              <Text style={styles.emptyText}>No cross-references recorded for {verseRef}</Text>
+            </View>
+          ) : (
+            <FlatList
+              data={crossRefs}
+              keyExtractor={r => `${r.ref_book}-${r.ref_chapter}-${r.ref_verse}`}
+              contentContainerStyle={styles.list}
+              renderItem={({ item }) => (
+                <CrossRefCard item={item} onPress={() => goToVerse(item)} />
+              )}
             />
-          )}
+          )
+        )}
 
-          {/* Cross-refs list */}
-          {!loading && activeTab === 'crossrefs' && (
-            crossRefs.length === 0 ? (
-              <View style={styles.center}>
-                <Ionicons name="git-branch-outline" size={52} color={Colors.border} />
-                <Text style={styles.emptyTitle}>No cross-references</Text>
-                <Text style={styles.emptyText}>No cross-references recorded for {verseRef}</Text>
-              </View>
-            ) : (
-              <FlatList
-                data={crossRefs}
-                keyExtractor={r => `${r.ref_book}-${r.ref_chapter}-${r.ref_verse}`}
-                contentContainerStyle={styles.list}
-                renderItem={({ item }) => (
-                  <CrossRefCard item={item} onPress={() => goToVerse(item)} />
-                )}
-              />
-            )
-          )}
-        </>
-      )}
+        {/* Words / Strong's */}
+        {activeTab === 'words' && (
+          !selected ? (
+            <View style={styles.center}>
+              <Ionicons name="book-outline" size={52} color={Colors.border} />
+              <Text style={styles.emptyTitle}>No verse selected</Text>
+              <Text style={styles.emptyText}>Tap a verse in the Bible tab to study its words</Text>
+            </View>
+          ) : (
+            <WordStudyPanel selected={selected} />
+          )
+        )}
+
+        {/* Historical */}
+        {activeTab === 'historical' && (
+          <HistoricalPanel
+            selected={selected}
+            mode={histMode}
+            onModeChange={setHistMode}
+          />
+        )}
+
+        {/* Councils */}
+        {activeTab === 'councils' && <CouncilsPanel />}
+
+        {/* Heresies */}
+        {activeTab === 'heresies' && <HeresiesPanel />}
+      </View>
     </View>
   )
 }
@@ -566,27 +476,30 @@ const styles = StyleSheet.create({
   },
 
   tabBar: {
+    height: 48,
     backgroundColor: Colors.bgSecondary,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: Colors.border,
-    flexGrow: 0,
+    overflow: 'hidden',
   },
   tabBarContent: {
     flexDirection: 'row',
     paddingHorizontal: 4,
+    height: 48,
+    alignItems: 'stretch',
   },
   tab: {
-    flexDirection: 'column', alignItems: 'center',
-    paddingTop: 10, paddingHorizontal: 14,
+    flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end',
+    paddingHorizontal: 14,
+    height: 48,
   },
   tabInner: {
     flexDirection: 'row', alignItems: 'center',
-    gap: 6, paddingBottom: 8,
+    gap: 6, paddingBottom: 8, flex: 1,
   },
   tabIndicator: {
     height: 2, borderRadius: 1, alignSelf: 'stretch',
   },
-  tabActive: {},
   tabLabel:      { fontSize: 13, fontWeight: '600', color: Colors.textMuted },
   tabLabelActive:{ color: Colors.accent },
   tabBadge: {
@@ -691,23 +604,3 @@ const hist = StyleSheet.create({
   josephusNoteText: { fontSize: 13, lineHeight: 20, color: Colors.textMuted },
 })
 
-const noteStyles = StyleSheet.create({
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  container: { flex: 1, padding: 12, gap: 8 },
-  toolbar: {
-    flexDirection: 'row', alignItems: 'center',
-    justifyContent: 'space-between', paddingHorizontal: 4,
-  },
-  hint: { fontSize: 12, color: Colors.textMuted, fontStyle: 'italic' },
-  input: {
-    flex: 1,
-    backgroundColor: Colors.bgCard,
-    borderRadius: 12,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Colors.border,
-    padding: 14,
-    fontSize: 16,
-    lineHeight: 26,
-    color: Colors.textPrimary,
-  },
-})

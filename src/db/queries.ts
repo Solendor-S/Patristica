@@ -45,20 +45,33 @@ export async function getVerse(
 export async function searchVerses(
   db: SQLiteDatabase,
   query: string,
-  translation = 'KJV'
+  translation = 'KJV',
+  book = '',
 ): Promise<SearchResult[]> {
-  const clean = query.trim()
-  if (!clean) return []
-  const like = `%${clean}%`
+  const words = query.trim().split(/\s+/).filter(Boolean)
+  if (words.length === 0) return []
+  const likeArgs = words.map(w => `%${w}%`)
+
+  const scoreExpr = words.map(() => `CASE WHEN LOWER(text) LIKE LOWER(?) THEN 1 ELSE 0 END`).join(' + ')
+  const whereExpr = words.map(() => `LOWER(text) LIKE LOWER(?)`).join(' OR ')
+  const bookClause = book ? ' AND book = ?' : ''
+  const bookArgs = book ? [book] : []
+
   if (translation === 'KJV') {
     return db.getAllAsync<SearchResult>(
-      'SELECT book, chapter, verse, text FROM bible_verses WHERE LOWER(text) LIKE LOWER(?) LIMIT 200',
-      [like]
+      `SELECT book, chapter, verse, text FROM bible_verses
+       WHERE (${whereExpr})${bookClause}
+       ORDER BY (${scoreExpr}) DESC
+       LIMIT 200`,
+      [...likeArgs, ...bookArgs, ...likeArgs],
     )
   }
   return db.getAllAsync<SearchResult>(
-    'SELECT book, chapter, verse, text FROM bible_translations WHERE translation = ? AND LOWER(text) LIKE LOWER(?) LIMIT 200',
-    [translation, like]
+    `SELECT book, chapter, verse, text FROM bible_translations
+     WHERE translation = ? AND (${whereExpr})${bookClause}
+     ORDER BY (${scoreExpr}) DESC
+     LIMIT 200`,
+    [translation, ...likeArgs, ...bookArgs, ...likeArgs],
   )
 }
 
@@ -276,6 +289,135 @@ export async function getHistory(db: SQLiteDatabase): Promise<HistoryEntry[]> {
 
 export async function clearHistory(db: SQLiteDatabase): Promise<void> {
   await db.runAsync('DELETE FROM history')
+}
+
+// ── Highlights ────────────────────────────────────────────
+
+export interface Highlight {
+  book: string
+  chapter: number
+  verse: number
+  color: string
+  createdAt: number
+}
+
+export async function getChapterHighlights(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number
+): Promise<Highlight[]> {
+  return db.getAllAsync<Highlight>(
+    'SELECT book, chapter, verse, color, created_at as createdAt FROM highlights WHERE book = ? AND chapter = ?',
+    [book, chapter]
+  )
+}
+
+export async function getAllHighlights(db: SQLiteDatabase): Promise<Highlight[]> {
+  return db.getAllAsync<Highlight>(
+    'SELECT book, chapter, verse, color, created_at as createdAt FROM highlights ORDER BY created_at DESC'
+  )
+}
+
+export async function setHighlight(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number,
+  color: string
+): Promise<void> {
+  await db.runAsync(
+    `INSERT INTO highlights (book, chapter, verse, color, created_at) VALUES (?, ?, ?, ?, ?)
+     ON CONFLICT(book, chapter, verse) DO UPDATE SET color = excluded.color, created_at = excluded.created_at`,
+    [book, chapter, verse, color, Date.now()]
+  )
+}
+
+export async function removeHighlight(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number
+): Promise<void> {
+  await db.runAsync(
+    'DELETE FROM highlights WHERE book = ? AND chapter = ? AND verse = ?',
+    [book, chapter, verse]
+  )
+}
+
+// ── Strong's / Word Study ─────────────────────────────────
+
+export interface GreekWord {
+  position: number
+  greek: string
+  translit: string
+  strongs: string
+  gloss: string | null
+  morph: string | null
+}
+
+export interface HebrewWord {
+  position: number
+  hebrew: string
+  translit: string
+  strongs: string
+  gloss: string | null
+  morph: string | null
+}
+
+export interface StrongsEntry {
+  number: string
+  lemma: string
+  translit: string
+  pronunciation: string
+  definition: string
+  kjv_usage: string
+}
+
+export async function getGreekWords(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number
+): Promise<GreekWord[]> {
+  return db.getAllAsync<GreekWord>(
+    'SELECT position, greek, translit, strongs, gloss, morph FROM greek_words WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position',
+    [book, chapter, verse]
+  )
+}
+
+export async function getHebrewWords(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number
+): Promise<HebrewWord[]> {
+  return db.getAllAsync<HebrewWord>(
+    'SELECT position, hebrew, translit, strongs, gloss, morph FROM hebrew_words WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position',
+    [book, chapter, verse]
+  )
+}
+
+const STRONGS_NORM_RE: Record<'greek' | 'hebrew', RegExp> = {
+  greek:  /^G0*(\d+)/,
+  hebrew: /^H0*(\d+)/,
+}
+
+export async function getStrongsEntry(
+  db: SQLiteDatabase,
+  type: 'greek' | 'hebrew',
+  num: string
+): Promise<StrongsEntry | null> {
+  const table = type === 'hebrew' ? 'strongs_hebrew' : 'strongs_greek'
+  const query = `SELECT number, lemma, translit, pronunciation, definition, kjv_usage FROM ${table} WHERE number = ?`
+  let row = await db.getFirstAsync<StrongsEntry>(query, [num])
+  if (!row) {
+    const prefix = type === 'greek' ? 'G' : 'H'
+    const m = num.match(STRONGS_NORM_RE[type])
+    if (m) {
+      row = await db.getFirstAsync<StrongsEntry>(query, [`${prefix}${parseInt(m[1])}`])
+    }
+  }
+  return row ?? null
 }
 
 // ── Distinct books (ordered as they appear in the Bible) ──
