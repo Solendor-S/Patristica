@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
   View, Text, FlatList, TouchableOpacity,
   StyleSheet, StatusBar,
 } from 'react-native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { RouteProp } from '@react-navigation/native'
-import { BOOK_MAP } from '../data/books'
-import { Colors } from '../theme/colors'
+import { BOOK_MAP, APOCRYPHA_BOOKS } from '../data/books'
+import { useTheme } from '../context/ThemeContext'
+import { useNavDepth } from '../context/NavDepthContext'
+import type { ThemeColors } from '../theme/themes'
 import type { BibleStackParamList } from '../types'
 
 type Props = {
@@ -14,68 +16,89 @@ type Props = {
   route: RouteProp<BibleStackParamList, 'ChapterPicker'>
 }
 
+const COLS = 5
+
 export default function ChapterPickerScreen({ navigation, route }: Props) {
-  const { book } = route.params
-  const chapterCount = BOOK_MAP[book]?.chapters ?? 1
+  const { colors } = useTheme()
+  const s = useMemo(() => makeStyles(colors), [colors])
+  const { navDepth } = useNavDepth()
+
+  const { book, apocrypha } = route.params
+  const chapterCount = apocrypha
+    ? (APOCRYPHA_BOOKS.find(b => b.name === book)?.chapters ?? 1)
+    : (BOOK_MAP[book]?.chapters ?? 1)
   const chapters = Array.from({ length: chapterCount }, (_, i) => i + 1)
+  const remainder = chapters.length % COLS
+  const data: (number | null)[] = remainder === 0
+    ? chapters
+    : [...chapters, ...Array<null>(COLS - remainder).fill(null)]
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={styles.backText}>✕</Text>
+    <View style={s.container}>
+      <View style={s.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={s.backBtn}>
+          <Text style={s.backText}>✕</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>{book}</Text>
+        <Text style={s.title}>{book}</Text>
       </View>
 
       <FlatList
-        data={chapters}
-        keyExtractor={n => n.toString()}
-        numColumns={5}
-        contentContainerStyle={styles.grid}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.cell}
-            activeOpacity={0.7}
-            onPress={() => navigation.navigate('Reader', { book, chapter: item })}
-          >
-            <Text style={styles.cellText}>{item}</Text>
-          </TouchableOpacity>
-        )}
+        data={data}
+        keyExtractor={(item, i) => item?.toString() ?? `spacer-${i}`}
+        numColumns={COLS}
+        contentContainerStyle={s.grid}
+        renderItem={({ item }) =>
+          item === null
+            ? <View style={[s.cell, s.cellSpacer]} />
+            : (
+              <TouchableOpacity
+                style={s.cell}
+                activeOpacity={0.7}
+                onPress={() =>
+                  navDepth === 'verse'
+                    ? navigation.navigate('VersePicker', { book, chapter: item, apocrypha })
+                    : navigation.navigate('Reader', { book, chapter: item, apocrypha })
+                }
+              >
+                <Text style={s.cellText}>{item}</Text>
+              </TouchableOpacity>
+            )
+        }
       />
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.bgPrimary },
+const makeStyles = (c: ThemeColors) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: c.bgPrimary },
 
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.bgSecondary,
+    backgroundColor: c.bgSecondary,
     paddingHorizontal: 16,
     paddingTop: (StatusBar.currentHeight ?? 0) + 10,
     paddingBottom: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.border,
+    borderBottomColor: c.border,
     gap: 12,
   },
   backBtn: { padding: 4 },
-  backText: { fontSize: 18, color: Colors.textMuted },
-  title: { fontSize: 17, fontWeight: '700', color: Colors.textPrimary },
+  backText: { fontSize: 18, color: c.textMuted },
+  title: { fontSize: 17, fontWeight: '700', color: c.textPrimary },
 
   grid: { padding: 12 },
   cell: {
     flex: 1,
     margin: 5,
     aspectRatio: 1,
-    backgroundColor: Colors.bgTertiary,
+    backgroundColor: c.bgTertiary,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Colors.border,
+    borderColor: c.border,
   },
-  cellText: { fontSize: 16, fontWeight: '600', color: Colors.textPrimary },
+  cellSpacer: { backgroundColor: 'transparent', borderColor: 'transparent' },
+  cellText: { fontSize: 16, fontWeight: '600', color: c.textPrimary },
 })

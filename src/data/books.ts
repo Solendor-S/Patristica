@@ -72,3 +72,32 @@ export const BOOKS: Book[] = [
 ]
 
 export const BOOK_MAP = Object.fromEntries(BOOKS.map(b => [b.name, b]))
+
+export const APOCRYPHA_BOOKS: Book[] = [
+  // Deuterocanon (accepted by Catholic & Orthodox churches)
+  { name: 'Tobit',               chapters: 14,  testament: 'APOC', group: 'Deuterocanon' },
+  { name: 'Judith',              chapters: 16,  testament: 'APOC', group: 'Deuterocanon' },
+  { name: 'Wisdom of Solomon',   chapters: 19,  testament: 'APOC', group: 'Deuterocanon' },
+  { name: 'Sirach',              chapters: 51,  testament: 'APOC', group: 'Deuterocanon' },
+  { name: 'Baruch',              chapters: 6,   testament: 'APOC', group: 'Deuterocanon' },
+  { name: '1 Maccabees',         chapters: 16,  testament: 'APOC', group: 'Deuterocanon' },
+  { name: '2 Maccabees',         chapters: 15,  testament: 'APOC', group: 'Deuterocanon' },
+  { name: '1 Esdras',            chapters: 9,   testament: 'APOC', group: 'Deuterocanon' },
+  { name: '2 Esdras',            chapters: 16,  testament: 'APOC', group: 'Deuterocanon' },
+  { name: 'Prayer of Manasseh',  chapters: 1,   testament: 'APOC', group: 'Deuterocanon' },
+  { name: 'Psalm 151',           chapters: 1,   testament: 'APOC', group: 'Deuterocanon' },
+  { name: 'Prayer of Azariah',   chapters: 1,   testament: 'APOC', group: 'Deuterocanon' },
+  { name: 'Susanna',             chapters: 1,   testament: 'APOC', group: 'Deuterocanon' },
+  { name: 'Bel and the Dragon',  chapters: 1,   testament: 'APOC', group: 'Deuterocanon' },
+  // Broader Canon (accepted by some Orthodox traditions)
+  { name: '3 Maccabees',         chapters: 7,   testament: 'APOC', group: 'Broader Canon' },
+  { name: '4 Maccabees',         chapters: 18,  testament: 'APOC', group: 'Broader Canon' },
+  // Ethiopian Canon
+  { name: '1 Enoch',             chapters: 108, testament: 'APOC', group: 'Ethiopian Canon' },
+  { name: 'Jubilees',            chapters: 50,  testament: 'APOC', group: 'Ethiopian Canon' },
+  { name: '1 Meqabyan',          chapters: 7,   testament: 'APOC', group: 'Ethiopian Canon' },
+  { name: '2 Meqabyan',          chapters: 21,  testament: 'APOC', group: 'Ethiopian Canon' },
+  { name: '3 Meqabyan',          chapters: 10,  testament: 'APOC', group: 'Ethiopian Canon' },
+]
+
+export const APOCRYPHA_BOOK_NAMES = new Set(APOCRYPHA_BOOKS.map(b => b.name))

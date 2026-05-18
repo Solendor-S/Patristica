@@ -1,7 +1,32 @@
 import type { SQLiteDatabase } from 'expo-sqlite'
-import type { BibleVerse, Bookmark, CommentaryEntry, CrossRef, Note, SearchResult } from '../types'
+import type { BibleVerse, Bookmark, CommentaryEntry, CrossRef, Note, SearchResult, TextualVariant } from '../types'
+
+// ── Book name normalisation ────────────────────────────────
+// ASV (and some other translations) store numbered books with Roman numerals
+// (e.g. "I John", "II Corinthians") while the app uses numeric form ("1 John").
+// bookAlt returns the alternative form so queries can match either.
+const NUM_PREFIX: Record<string, string> = { '1 ': 'I ', '2 ': 'II ', '3 ': 'III ' }
+const ROM_PREFIX: Record<string, string> = { 'I ': '1 ', 'II ': '2 ', 'III ': '3 ' }
+function bookAlt(book: string): string | null {
+  for (const [from, to] of Object.entries(NUM_PREFIX))
+    if (book.startsWith(from)) return to + book.slice(from.length)
+  for (const [from, to] of Object.entries(ROM_PREFIX))
+    if (book.startsWith(from)) return to + book.slice(from.length)
+  return null
+}
 
 // ── Bible verses ──────────────────────────────────────────
+
+export async function getApocryphaChapter(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+): Promise<BibleVerse[]> {
+  return db.getAllAsync<BibleVerse>(
+    'SELECT book, chapter, verse, text FROM apocrypha_verses WHERE book = ? AND chapter = ? ORDER BY verse',
+    [book, chapter]
+  )
+}
 
 export async function getChapter(
   db: SQLiteDatabase,
@@ -15,9 +40,12 @@ export async function getChapter(
       [book, chapter]
     )
   }
+  const alt = bookAlt(book)
   return db.getAllAsync<BibleVerse>(
-    'SELECT book, chapter, verse, text FROM bible_translations WHERE translation = ? AND book = ? AND chapter = ? ORDER BY verse',
-    [translation, book, chapter]
+    alt
+      ? 'SELECT book, chapter, verse, text FROM bible_translations WHERE translation = ? AND (book = ? OR book = ?) AND chapter = ? ORDER BY verse'
+      : 'SELECT book, chapter, verse, text FROM bible_translations WHERE translation = ? AND book = ? AND chapter = ? ORDER BY verse',
+    alt ? [translation, book, alt, chapter] : [translation, book, chapter]
   )
 }
 
@@ -34,9 +62,12 @@ export async function getVerse(
       [book, chapter, verse]
     )
   }
+  const alt = bookAlt(book)
   return db.getFirstAsync<BibleVerse>(
-    'SELECT book, chapter, verse, text FROM bible_translations WHERE translation = ? AND book = ? AND chapter = ? AND verse = ?',
-    [translation, book, chapter, verse]
+    alt
+      ? 'SELECT book, chapter, verse, text FROM bible_translations WHERE translation = ? AND (book = ? OR book = ?) AND chapter = ? AND verse = ?'
+      : 'SELECT book, chapter, verse, text FROM bible_translations WHERE translation = ? AND book = ? AND chapter = ? AND verse = ?',
+    alt ? [translation, book, alt, chapter, verse] : [translation, book, chapter, verse]
   )
 }
 
@@ -46,7 +77,7 @@ export async function searchVerses(
   db: SQLiteDatabase,
   query: string,
   translation = 'KJV',
-  book = '',
+  books: string[] = [],
 ): Promise<SearchResult[]> {
   const words = query.trim().split(/\s+/).filter(Boolean)
   if (words.length === 0) return []
@@ -54,8 +85,10 @@ export async function searchVerses(
 
   const scoreExpr = words.map(() => `CASE WHEN LOWER(text) LIKE LOWER(?) THEN 1 ELSE 0 END`).join(' + ')
   const whereExpr = words.map(() => `LOWER(text) LIKE LOWER(?)`).join(' OR ')
-  const bookClause = book ? ' AND book = ?' : ''
-  const bookArgs = book ? [book] : []
+  const bookClause = books.length > 0
+    ? ` AND book IN (${books.map(() => '?').join(',')})`
+    : ''
+  const bookArgs = books.length > 0 ? books : []
 
   if (translation === 'KJV') {
     return db.getAllAsync<SearchResult>(
@@ -66,13 +99,188 @@ export async function searchVerses(
       [...likeArgs, ...bookArgs, ...likeArgs],
     )
   }
+  // Expand book filter to include Roman-numeral aliases (e.g. "1 John" → also "I John")
+  const transBookArgs = books.length > 0
+    ? books.flatMap(b => { const a = bookAlt(b); return a ? [b, a] : [b] })
+    : []
+  const transBookClause = transBookArgs.length > 0
+    ? ` AND book IN (${transBookArgs.map(() => '?').join(',')})`
+    : ''
   return db.getAllAsync<SearchResult>(
     `SELECT book, chapter, verse, text FROM bible_translations
-     WHERE translation = ? AND (${whereExpr})${bookClause}
+     WHERE translation = ? AND (${whereExpr})${transBookClause}
      ORDER BY (${scoreExpr}) DESC
      LIMIT 200`,
-    [translation, ...likeArgs, ...bookArgs, ...likeArgs],
+    [translation, ...likeArgs, ...transBookArgs, ...likeArgs],
   )
+}
+
+// ── Fuzzy search ──────────────────────────────────────────
+
+function levenshtein(a: string, b: string): number {
+  const m = a.length, n = b.length
+  const row: number[] = Array.from({ length: n + 1 }, (_, i) => i)
+  for (let i = 1; i <= m; i++) {
+    let prev = row[0]
+    row[0] = i
+    for (let j = 1; j <= n; j++) {
+      const tmp = row[j]
+      row[j] = a[i - 1] === b[j - 1] ? prev : 1 + Math.min(prev, row[j], row[j - 1])
+      prev = tmp
+    }
+  }
+  return row[n]
+}
+
+function fourGrams(s: string): string[] {
+  const out: string[] = []
+  for (let i = 0; i <= s.length - 4; i++) out.push(s.slice(i, i + 4))
+  return out
+}
+
+export interface FuzzySearchResult extends SearchResult {
+  closestWords: string[]
+}
+
+export async function searchVersesFuzzy(
+  db: SQLiteDatabase,
+  query: string,
+  translation = 'KJV',
+  books: string[] = [],
+): Promise<FuzzySearchResult[]> {
+  const qWords = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
+  if (qWords.length === 0) return []
+
+  // Per-word pattern groups: OR within a word, AND between words.
+  // This ensures candidates contain fragments of every query word,
+  // preventing OT-biased results from burying NT matches under LIMIT.
+  //
+  // Short words (4-7 chars): substitution patterns (word with each char replaced by _)
+  // handle mid-word typos where no 4-gram survives (e.g. "bejin" → "%be_in%" finds "begin").
+  // Long words (8+): 4-grams have enough overlap even with a 1-char typo.
+  const wordPats: string[][] = qWords.map(w => {
+    if (w.length < 4) return [`%${w}%`]
+    if (w.length < 8) {
+      const pats = new Set<string>([`%${w}%`])
+      for (let i = 0; i < w.length; i++)
+        pats.add(`%${w.slice(0, i)}_${w.slice(i + 1)}%`)
+      return [...pats]
+    }
+    return [...new Set(fourGrams(w).map(g => `%${g}%`))]
+  })
+  const allPats = wordPats.flat()
+  const wordWhereExprs = wordPats.map(
+    grp => `(${grp.map(() => 'LOWER(text) LIKE ?').join(' OR ')})`
+  )
+  const whereExpr = wordWhereExprs.join(' AND ')
+  const bookClause = books.length > 0
+    ? ` AND book IN (${books.map(() => '?').join(',')})`
+    : ''
+
+  let candidates: SearchResult[]
+  if (translation === 'KJV') {
+    candidates = await db.getAllAsync<SearchResult>(
+      `SELECT book, chapter, verse, text FROM bible_verses
+       WHERE (${whereExpr})${bookClause}
+       ORDER BY rowid LIMIT 500`,
+      [...allPats, ...books],
+    )
+  } else {
+    candidates = await db.getAllAsync<SearchResult>(
+      `SELECT book, chapter, verse, text FROM bible_translations
+       WHERE translation = ? AND (${whereExpr})${bookClause}
+       ORDER BY rowid LIMIT 500`,
+      [translation, ...allPats, ...books],
+    )
+  }
+
+  // edit-distance threshold scales with word length
+  const maxDist = (len: number) => len >= 12 ? 3 : len >= 8 ? 2 : 1
+
+  const scored: Array<{ r: SearchResult; dist: number; closest: string[] }> = []
+  for (const row of candidates) {
+    const vWords = row.text.toLowerCase().match(/[a-z']+/g) ?? []
+    let total = 0
+    const closest: string[] = []
+    let ok = true
+
+    for (const qw of qWords) {
+      if (qw.length < 4) {
+        if (!vWords.includes(qw)) { ok = false; break }
+        closest.push(qw)
+        continue
+      }
+      const limit = maxDist(qw.length)
+      let bestD = Infinity, bestW = ''
+      for (const vw of vWords) {
+        if (Math.abs(vw.length - qw.length) > limit + 1) continue
+        const d = levenshtein(qw, vw)
+        if (d < bestD) { bestD = d; bestW = vw }
+        if (bestD === 0) break
+      }
+      if (bestD > limit) { ok = false; break }
+      total += bestD
+      closest.push(bestW)
+    }
+
+    if (ok) scored.push({ r: row, dist: total, closest })
+  }
+
+  scored.sort((a, b) => a.dist - b.dist)
+  return scored.slice(0, 100).map(s => ({ ...s.r, closestWords: s.closest }))
+}
+
+// ── Settings (key-value) ──────────────────────────────────
+
+export async function getOnboardingDone(db: SQLiteDatabase): Promise<boolean> {
+  const row = await db.getFirstAsync<{ value: string }>(
+    "SELECT value FROM settings WHERE key = 'onboarding_done'"
+  )
+  return !!row
+}
+
+export async function setOnboardingDone(db: SQLiteDatabase): Promise<void> {
+  await db.runAsync(
+    "INSERT OR REPLACE INTO settings (key, value) VALUES ('onboarding_done', '1')"
+  )
+}
+
+export async function getRedLetterOn(db: SQLiteDatabase): Promise<boolean> {
+  const row = await db.getFirstAsync<{ value: string }>(
+    "SELECT value FROM settings WHERE key = 'red_letter_on'"
+  )
+  return row ? row.value === '1' : true
+}
+
+export async function setRedLetterOn(db: SQLiteDatabase, on: boolean): Promise<void> {
+  await db.runAsync(
+    "INSERT OR REPLACE INTO settings (key, value) VALUES ('red_letter_on', ?)",
+    [on ? '1' : '0']
+  )
+}
+
+// ── Search history ────────────────────────────────────────
+
+export async function getSearchHistory(db: SQLiteDatabase): Promise<string[]> {
+  const rows = await db.getAllAsync<{ query: string }>(
+    'SELECT query FROM search_history ORDER BY ts DESC LIMIT 20'
+  )
+  return rows.map(r => r.query)
+}
+
+export async function addSearchHistory(db: SQLiteDatabase, query: string): Promise<void> {
+  await db.runAsync(
+    'INSERT OR REPLACE INTO search_history (query, ts) VALUES (?, ?)',
+    [query, Date.now()]
+  )
+}
+
+export async function deleteSearchHistory(db: SQLiteDatabase, query?: string): Promise<void> {
+  if (query) {
+    await db.runAsync('DELETE FROM search_history WHERE query = ?', [query])
+  } else {
+    await db.runAsync('DELETE FROM search_history')
+  }
 }
 
 // ── Commentary ────────────────────────────────────────────
@@ -181,17 +389,21 @@ export interface NoteWithVerse {
   updatedAt: number
 }
 
-export async function getAllNotes(db: SQLiteDatabase): Promise<NoteWithVerse[]> {
-  return db.getAllAsync<NoteWithVerse>(
-    `SELECT n.book, n.chapter, n.verse,
-            n.text       AS noteText,
-            n.updated_at AS updatedAt,
-            COALESCE(bv.text, '') AS verseText
-     FROM notes n
-     LEFT JOIN bible_verses bv
-       ON bv.book = n.book AND bv.chapter = n.chapter AND bv.verse = n.verse
-     ORDER BY bv.rowid`
+export async function getAllNotes(
+  userDb: SQLiteDatabase,
+  bibleDb: SQLiteDatabase,
+): Promise<NoteWithVerse[]> {
+  const notes = await userDb.getAllAsync<Omit<NoteWithVerse, 'verseText'>>(
+    `SELECT book, chapter, verse, text AS noteText, updated_at AS updatedAt
+     FROM notes ORDER BY updated_at DESC`
   )
+  return Promise.all(notes.map(async note => {
+    const row = await bibleDb.getFirstAsync<{ text: string }>(
+      'SELECT text FROM bible_verses WHERE book = ? AND chapter = ? AND verse = ?',
+      [note.book, note.chapter, note.verse]
+    )
+    return { ...note, verseText: row?.text ?? '' }
+  }))
 }
 
 export async function getNote(
@@ -228,6 +440,24 @@ export async function deleteNote(
 ): Promise<void> {
   await db.runAsync(
     'DELETE FROM notes WHERE book = ? AND chapter = ? AND verse = ?',
+    [book, chapter, verse]
+  )
+}
+
+// ── Textual variants ──────────────────────────────────────
+
+export async function getVariantsForVerse(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number
+): Promise<TextualVariant[]> {
+  return db.getAllAsync<TextualVariant>(
+    `SELECT id, testament, word_ref, main_type, main_english, main_hebrew,
+            variant_source, variant_source_label, variant_english, variant_hebrew, description
+     FROM textual_variants
+     WHERE book = ? AND chapter = ? AND verse = ?
+     ORDER BY id`,
     [book, chapter, verse]
   )
 }
@@ -344,6 +574,60 @@ export async function removeHighlight(
   )
 }
 
+// ── Lexicon (BDB / Thayer's) ──────────────────────────────
+
+export interface LexiconEntry {
+  number: string
+  lemma: string
+  translit: string
+  pronunciation: string
+  part_of_speech: string
+  strongs_def: string
+  outline: string
+  bdb_text?: string
+  thayers_text?: string
+  kjv_translations: string
+}
+
+const STRONGS_LEXICON_RE: Record<'greek' | 'hebrew', RegExp> = {
+  greek:  /^G0*(\d+)/,
+  hebrew: /^H0*(\d+)/,
+}
+
+async function queryLexicon(
+  db: SQLiteDatabase,
+  table: string,
+  type: 'greek' | 'hebrew',
+  num: string,
+): Promise<LexiconEntry | null> {
+  const q = `SELECT * FROM ${table} WHERE number = ?`
+  let row = await db.getFirstAsync<LexiconEntry>(q, [num])
+  if (!row) {
+    const prefix = type === 'greek' ? 'G' : 'H'
+    const m = num.match(STRONGS_LEXICON_RE[type])
+    if (m) row = await db.getFirstAsync<LexiconEntry>(q, [`${prefix}${parseInt(m[1])}`])
+  }
+  if (!row && type === 'greek') {
+    const stdNum = await bsbGreekFallbackNum(db, num)
+    if (stdNum) row = await db.getFirstAsync<LexiconEntry>(q, [stdNum])
+  }
+  return row ?? null
+}
+
+export async function getBdbEntry(
+  db: SQLiteDatabase,
+  num: string,
+): Promise<LexiconEntry | null> {
+  return queryLexicon(db, 'bdb_hebrew', 'hebrew', num)
+}
+
+export async function getThayersEntry(
+  db: SQLiteDatabase,
+  num: string,
+): Promise<LexiconEntry | null> {
+  return queryLexicon(db, 'thayers_greek', 'greek', num)
+}
+
 // ── Strong's / Word Study ─────────────────────────────────
 
 export interface GreekWord {
@@ -397,9 +681,12 @@ export async function getHebrewWords(
   )
 }
 
-const STRONGS_NORM_RE: Record<'greek' | 'hebrew', RegExp> = {
-  greek:  /^G0*(\d+)/,
-  hebrew: /^H0*(\d+)/,
+async function bsbGreekFallbackNum(db: SQLiteDatabase, num: string): Promise<string | null> {
+  const mapped = await db.getFirstAsync<{ standard_num: string }>(
+    'SELECT standard_num FROM bsb_strongs_map WHERE bsb_num = ?',
+    [num]
+  )
+  return mapped?.standard_num ?? null
 }
 
 export async function getStrongsEntry(
@@ -412,20 +699,204 @@ export async function getStrongsEntry(
   let row = await db.getFirstAsync<StrongsEntry>(query, [num])
   if (!row) {
     const prefix = type === 'greek' ? 'G' : 'H'
-    const m = num.match(STRONGS_NORM_RE[type])
+    const m = num.match(STRONGS_LEXICON_RE[type])
     if (m) {
       row = await db.getFirstAsync<StrongsEntry>(query, [`${prefix}${parseInt(m[1])}`])
     }
   }
+  if (!row && type === 'greek') {
+    const stdNum = await bsbGreekFallbackNum(db, num)
+    if (stdNum) row = await db.getFirstAsync<StrongsEntry>(query, [stdNum])
+  }
   return row ?? null
+}
+
+// ── Strong's Concordance ──────────────────────────────────
+
+export interface StrongsConcordanceResult {
+  book: string
+  chapter: number
+  verse: number
+  word: string
+  translit: string
+  text: string
+}
+
+export async function getStrongsConcordance(
+  db: SQLiteDatabase,
+  lang: 'greek' | 'hebrew',
+  strongs: string,
+): Promise<StrongsConcordanceResult[]> {
+  const table = lang === 'greek' ? 'greek_words' : 'hebrew_words'
+  const wordCol = lang === 'greek' ? 'greek' : 'hebrew'
+  const q = `
+    SELECT w.book, w.chapter, w.verse,
+           w.${wordCol} AS word,
+           w.translit,
+           bv.text
+    FROM ${table} w
+    JOIN bible_verses bv ON bv.book = w.book AND bv.chapter = w.chapter AND bv.verse = w.verse
+    WHERE w.strongs = ?
+    ORDER BY w.rowid`
+
+  let rows = await db.getAllAsync<StrongsConcordanceResult>(q, [strongs])
+  if (!rows.length) {
+    const prefix = lang === 'greek' ? 'G' : 'H'
+    const m = strongs.match(STRONGS_LEXICON_RE[lang])
+    if (m) {
+      const normalized = `${prefix}${parseInt(m[1])}`
+      rows = await db.getAllAsync<StrongsConcordanceResult>(q, [normalized])
+    }
+  }
+  if (!rows.length && lang === 'greek') {
+    const stdNum = await bsbGreekFallbackNum(db, strongs)
+    if (stdNum) rows = await db.getAllAsync<StrongsConcordanceResult>(q, [stdNum])
+  }
+  return rows
+}
+
+// ── Concordance ───────────────────────────────────────────
+
+export interface ConcordanceResult {
+  book: string
+  chapter: number
+  verse: number
+  text: string
+}
+
+export async function getConcordance(
+  db: SQLiteDatabase,
+  word: string,
+  limit = 300,
+): Promise<ConcordanceResult[]> {
+  const w = word.toLowerCase()
+  return db.getAllAsync<ConcordanceResult>(
+    `SELECT book, chapter, verse, text FROM bible_verses
+     WHERE LOWER(' ' || text || ' ') LIKE ?
+        OR LOWER(' ' || text || ' ') LIKE ?
+        OR LOWER(' ' || text || ' ') LIKE ?
+        OR LOWER(' ' || text || ' ') LIKE ?
+        OR LOWER(' ' || text || ' ') LIKE ?
+     ORDER BY rowid
+     LIMIT ?`,
+    [`% ${w} %`, `% ${w},%`, `% ${w}.%`, `% ${w};%`, `% ${w}:%`, limit]
+  )
+}
+
+// ── Verse count in a chapter ──────────────────────────────
+
+export async function getMaxVerse(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+): Promise<number> {
+  const row = await db.getFirstAsync<{ n: number }>(
+    'SELECT MAX(verse) as n FROM bible_verses WHERE book = ? AND chapter = ?',
+    [book, chapter]
+  )
+  return row?.n ?? 1
+}
+
+// ── Single verse text ─────────────────────────────────────
+
+export async function getVerseText(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number,
+  translation = 'KJV',
+): Promise<string | null> {
+  const row = await getVerse(db, book, chapter, verse, translation)
+  return row?.text ?? null
 }
 
 // ── Distinct books (ordered as they appear in the Bible) ──
 
 export async function getBooks(db: SQLiteDatabase): Promise<string[]> {
   const rows = await db.getAllAsync<{ book: string }>(
-    'SELECT DISTINCT book FROM bible_verses ORDER BY MIN(rowid)',
-    []
+    'SELECT DISTINCT book FROM bible_verses ORDER BY MIN(rowid)'
   )
   return rows.map(r => r.book)
+}
+
+// ── Footnotes ─────────────────────────────────────────────
+
+export async function getChapterFootnotes(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+): Promise<import('../types').Footnote[]> {
+  return db.getAllAsync(
+    'SELECT verse, marker, word_index, content FROM verse_footnotes WHERE book=? AND chapter=? ORDER BY verse, marker',
+    [book, chapter]
+  )
+}
+
+// ── Overview ──────────────────────────────────────────────
+
+export interface OverviewVerse { note: string }
+export interface OverviewChapter { themes: string; summary: string }
+export interface BiblehubChapter { essay: string; passages: string }
+export interface BiblesummaryChapter { summary: string }
+export interface OverviewPericope { title: string; verse_start: number; verse_end: number; description: string }
+export interface BiblehubPassage { heading: string; verse_start: number; verse_end: number; text: string }
+
+export async function getOverviewVerse(
+  db: SQLiteDatabase, book: string, chapter: number, verse: number
+): Promise<OverviewVerse | null> {
+  return db.getFirstAsync<OverviewVerse>(
+    'SELECT note FROM overview_verses WHERE book=? AND chapter=? AND verse=?',
+    [book, chapter, verse]
+  )
+}
+
+export async function getOverviewChapter(
+  db: SQLiteDatabase, book: string, chapter: number
+): Promise<OverviewChapter | null> {
+  return db.getFirstAsync<OverviewChapter>(
+    'SELECT themes, summary FROM overview_chapters WHERE book=? AND chapter=?',
+    [book, chapter]
+  )
+}
+
+export async function getBiblehubChapter(
+  db: SQLiteDatabase, book: string, chapter: number
+): Promise<BiblehubChapter | null> {
+  return db.getFirstAsync<BiblehubChapter>(
+    'SELECT essay, passages FROM biblehub_chapters WHERE book=? AND chapter=?',
+    [book, chapter]
+  )
+}
+
+export async function getBiblesummaryChapter(
+  db: SQLiteDatabase, book: string, chapter: number
+): Promise<BiblesummaryChapter | null> {
+  return db.getFirstAsync<BiblesummaryChapter>(
+    'SELECT summary FROM biblesummary_chapters WHERE book=? AND chapter=?',
+    [book, chapter]
+  )
+}
+
+export async function getOverviewPericope(
+  db: SQLiteDatabase, book: string, chapter: number, verse: number
+): Promise<OverviewPericope | null> {
+  return db.getFirstAsync<OverviewPericope>(
+    `SELECT title, verse_start, verse_end, description
+     FROM overview_pericopes
+     WHERE book=? AND chapter=? AND verse_start<=? AND verse_end>=?
+     LIMIT 1`,
+    [book, chapter, verse, verse]
+  )
+}
+
+export async function getBiblehubPassage(
+  db: SQLiteDatabase, book: string, chapter: number, verse: number
+): Promise<BiblehubPassage | null> {
+  const row = await db.getFirstAsync<{ passages: string }>(
+    'SELECT passages FROM biblehub_chapters WHERE book=? AND chapter=?',
+    [book, chapter]
+  )
+  if (!row?.passages) return null
+  const passages: BiblehubPassage[] = JSON.parse(row.passages)
+  return passages.find(p => p.verse_start <= verse && verse <= p.verse_end) ?? null
 }

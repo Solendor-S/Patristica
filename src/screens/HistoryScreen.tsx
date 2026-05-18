@@ -1,34 +1,26 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import {
   View, Text, FlatList, TouchableOpacity,
   StyleSheet, StatusBar, Alert,
 } from 'react-native'
-import { useSQLiteContext } from 'expo-sqlite'
+import { useUserDb } from '../db/UserDbProvider'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
 import { getHistory, clearHistory } from '../db/queries'
 import type { HistoryEntry } from '../db/queries'
-import { Colors } from '../theme/colors'
+import { useTheme } from '../context/ThemeContext'
+import type { ThemeColors } from '../theme/themes'
 import type { RootTabParamList } from '../types'
+import { formatRelative } from '../utils/formatDate'
 
-type NavProp = BottomTabNavigationProp<RootTabParamList, 'History'>
-
-function formatRelative(ts: number): string {
-  const diff = Date.now() - ts
-  const mins  = Math.floor(diff / 60_000)
-  const hours = Math.floor(diff / 3_600_000)
-  const days  = Math.floor(diff / 86_400_000)
-  if (mins < 1)   return 'Just now'
-  if (mins < 60)  return `${mins}m ago`
-  if (hours < 24) return `${hours}h ago`
-  if (days === 1) return 'Yesterday'
-  if (days < 7)   return `${days} days ago`
-  return new Date(ts).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
-}
+type NavProp = BottomTabNavigationProp<RootTabParamList, 'Library'>
 
 export default function HistoryScreen() {
-  const db = useSQLiteContext()
+  const { colors } = useTheme()
+  const s = useMemo(() => makeStyles(colors), [colors])
+
+  const db = useUserDb()
   const navigation = useNavigation<NavProp>()
   const [entries, setEntries] = useState<HistoryEntry[]>([])
 
@@ -63,13 +55,13 @@ export default function HistoryScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>History</Text>
+    <View style={s.container}>
+      <View style={s.header}>
+        <Text style={s.title}>History</Text>
         {entries.length > 0 && (
-          <TouchableOpacity onPress={handleClear} style={styles.clearBtn} activeOpacity={0.7}>
-            <Ionicons name="trash-outline" size={18} color={Colors.textMuted} />
-            <Text style={styles.clearLabel}>Clear</Text>
+          <TouchableOpacity onPress={handleClear} style={s.clearBtn} activeOpacity={0.7}>
+            <Ionicons name="trash-outline" size={18} color={colors.textMuted} />
+            <Text style={s.clearLabel}>Clear</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -77,7 +69,7 @@ export default function HistoryScreen() {
       <FlatList
         data={entries}
         keyExtractor={e => `${e.book}-${e.chapter}`}
-        contentContainerStyle={entries.length === 0 ? styles.emptyContainer : styles.list}
+        contentContainerStyle={entries.length === 0 ? s.emptyContainer : s.list}
         renderItem={({ item, index }) => {
           const prevEntry = entries[index - 1]
           const thisDay  = new Date(item.visitedAt).toDateString()
@@ -87,34 +79,34 @@ export default function HistoryScreen() {
           return (
             <>
               {showDay && (
-                <Text style={styles.dayHeader}>
+                <Text style={s.dayHeader}>
                   {new Date(item.visitedAt).toLocaleDateString('en-AU', {
                     weekday: 'long', day: 'numeric', month: 'long',
                   })}
                 </Text>
               )}
               <TouchableOpacity
-                style={styles.row}
+                style={s.row}
                 onPress={() => handleNavigate(item)}
                 activeOpacity={0.7}
               >
-                <View style={styles.iconWrap}>
-                  <Ionicons name="book-outline" size={18} color={Colors.accent} />
+                <View style={s.iconWrap}>
+                  <Ionicons name="book-outline" size={18} color={colors.accent} />
                 </View>
-                <View style={styles.rowBody}>
-                  <Text style={styles.ref}>{item.book} {item.chapter}</Text>
+                <View style={s.rowBody}>
+                  <Text style={s.ref}>{item.book} {item.chapter}</Text>
                 </View>
-                <Text style={styles.time}>{formatRelative(item.visitedAt)}</Text>
-                <Ionicons name="chevron-forward" size={16} color={Colors.textMuted} style={{ marginLeft: 4 }} />
+                <Text style={s.time}>{formatRelative(item.visitedAt)}</Text>
+                <Ionicons name="chevron-forward" size={16} color={colors.textMuted} style={{ marginLeft: 4 }} />
               </TouchableOpacity>
             </>
           )
         }}
         ListEmptyComponent={
-          <View style={styles.empty}>
-            <Ionicons name="time-outline" size={48} color={Colors.border} />
-            <Text style={styles.emptyTitle}>No history yet</Text>
-            <Text style={styles.emptyText}>Chapters you read will appear here</Text>
+          <View style={s.empty}>
+            <Ionicons name="time-outline" size={48} color={colors.border} />
+            <Text style={s.emptyTitle}>No history yet</Text>
+            <Text style={s.emptyText}>Chapters you read will appear here</Text>
           </View>
         }
       />
@@ -122,29 +114,29 @@ export default function HistoryScreen() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.bgPrimary },
+const makeStyles = (c: ThemeColors) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: c.bgPrimary },
 
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: Colors.bgSecondary,
+    backgroundColor: c.bgSecondary,
     paddingHorizontal: 16,
     paddingTop: (StatusBar.currentHeight ?? 0) + 10,
     paddingBottom: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.border,
+    borderBottomColor: c.border,
   },
-  title:    { fontSize: 18, fontWeight: '700', color: Colors.textPrimary },
+  title:    { fontSize: 18, fontWeight: '700', color: c.textPrimary },
   clearBtn: { flexDirection: 'row', alignItems: 'center', gap: 5 },
-  clearLabel: { fontSize: 13, color: Colors.textMuted, fontWeight: '600' },
+  clearLabel: { fontSize: 13, color: c.textMuted, fontWeight: '600' },
 
   list:           { paddingBottom: 40 },
   emptyContainer: { flex: 1 },
 
   dayHeader: {
-    fontSize: 12, fontWeight: '700', color: Colors.textMuted,
+    fontSize: 12, fontWeight: '700', color: c.textMuted,
     textTransform: 'uppercase', letterSpacing: 0.6,
     paddingHorizontal: 16, paddingTop: 20, paddingBottom: 6,
   },
@@ -155,22 +147,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 13,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.border,
+    borderBottomColor: c.border,
   },
   iconWrap: {
     width: 34, height: 34, borderRadius: 8,
-    backgroundColor: Colors.accentDim,
+    backgroundColor: c.accentDim,
     alignItems: 'center', justifyContent: 'center',
     marginRight: 12,
   },
   rowBody: { flex: 1 },
-  ref:     { fontSize: 16, fontWeight: '600', color: Colors.textPrimary },
-  time:    { fontSize: 12, color: Colors.textMuted },
+  ref:     { fontSize: 16, fontWeight: '600', color: c.textPrimary },
+  time:    { fontSize: 12, color: c.textMuted },
 
   empty: {
     flex: 1, alignItems: 'center', justifyContent: 'center',
     paddingTop: 100, gap: 10,
   },
-  emptyTitle: { fontSize: 17, fontWeight: '600', color: Colors.textSecondary },
-  emptyText:  { fontSize: 14, color: Colors.textMuted, textAlign: 'center', paddingHorizontal: 40 },
+  emptyTitle: { fontSize: 17, fontWeight: '600', color: c.textSecondary },
+  emptyText:  { fontSize: 14, color: c.textMuted, textAlign: 'center', paddingHorizontal: 40 },
 })

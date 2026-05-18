@@ -1,70 +1,202 @@
-import React, { useState, useCallback, useRef, useMemo } from 'react'
+import React, { useState, useCallback, useRef, useMemo, useEffect } from 'react'
 import {
-  View, Text, FlatList, TouchableOpacity,
+  View, Text, FlatList, TouchableOpacity, ScrollView,
   StyleSheet, TextInput, ActivityIndicator,
   Keyboard, StatusBar, Modal,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
+import { useUserDb } from '../db/UserDbProvider'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
-import { searchVerses } from '../db/queries'
+import { searchVerses, searchVersesFuzzy, getSearchHistory, addSearchHistory, deleteSearchHistory } from '../db/queries'
 import { useTranslation, TRANSLATIONS } from '../context/TranslationContext'
 import { BOOKS } from '../data/books'
-import { Colors } from '../theme/colors'
+import { matchBookRefs, type BookRef } from '../lib/parsePassage'
+import { useTheme } from '../context/ThemeContext'
+import type { ThemeColors } from '../theme/themes'
+
+function formatRef(ref: BookRef): string {
+  if (!ref.chapterSpecified) return ref.book
+  if (!ref.verse) return `${ref.book} ${ref.chapter}`
+  return `${ref.book} ${ref.chapter}:${ref.verse}${ref.verseEnd ? `–${ref.verseEnd}` : ''}`
+}
 import type { SearchResult, RootTabParamList } from '../types'
 
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Search'>
+type Testament = 'all' | 'OT' | 'NT'
 
-const OT_BOOKS = BOOKS.filter(b => b.testament === 'OT')
-const NT_BOOKS = BOOKS.filter(b => b.testament === 'NT')
+const OT_BOOKS = BOOKS.filter(b => b.testament === 'OT').map(b => b.name)
+const NT_BOOKS = BOOKS.filter(b => b.testament === 'NT').map(b => b.name)
+
+function filterLabel(testament: Testament, selectedBooks: Set<string>): string {
+  if (selectedBooks.size > 0) {
+    const prefix = testament !== 'all' ? `${testament} · ` : ''
+    if (selectedBooks.size <= 2) return `${prefix}${Array.from(selectedBooks).join(', ')}`
+    return `${prefix}${selectedBooks.size} books`
+  }
+  if (testament === 'OT') return 'Old Testament'
+  if (testament === 'NT') return 'New Testament'
+  return 'All Books'
+}
+
+function booksForSearch(testament: Testament, selectedBooks: Set<string>): string[] {
+  if (selectedBooks.size > 0) return Array.from(selectedBooks)
+  if (testament === 'OT') return OT_BOOKS
+  if (testament === 'NT') return NT_BOOKS
+  return []
+}
 
 export default function SearchScreen() {
+  const { colors } = useTheme()
+  const styles = useMemo(() => makeStyles(colors), [colors])
+  const modal = useMemo(() => makeModal(colors), [colors])
   const db = useSQLiteContext()
+  const userDb = useUserDb()
   const navigation = useNavigation<NavProp>()
   const { translation, setTranslation } = useTranslation()
 
-  const [query, setQuery]           = useState('')
-  const [results, setResults]       = useState<SearchResult[]>([])
-  const [loading, setLoading]       = useState(false)
-  const [searched, setSearched]     = useState(false)
+  const [query, setQuery]             = useState('')
+  const [results, setResults]         = useState<SearchResult[]>([])
+  const [loading, setLoading]         = useState(false)
+  const [searched, setSearched]       = useState(false)
+  const [isFuzzy, setIsFuzzy]         = useState(false)
+  const [correctedTerms, setCorrectedTerms] = useState<string[]>([])
   const [pickerOpen, setPickerOpen] = useState(false)
   const [bookPickerOpen, setBookPickerOpen] = useState(false)
-  const [selectedBook, setSelectedBook]     = useState('')
 
+  // Committed filter state
+  const [testament, setTestament]         = useState<Testament>('all')
+  const [selectedBooks, setSelectedBooks] = useState<Set<string>>(new Set())
+
+  // Draft filter state (inside picker, committed on Apply)
+  const [draftTestament, setDraftTestament]         = useState<Testament>('all')
+  const [draftBooks, setDraftBooks]                 = useState<Set<string>>(new Set())
+
+  const [history, setHistory] = useState<string[]>([])
   const inputRef = useRef<TextInput>(null)
 
-  const queryTrimmed = query.trim()
-  const highlightRegex = useMemo(() => {
-    const words = queryTrimmed.split(/\s+/).filter(Boolean)
-    if (words.length === 0) return null
-    const escaped = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')
-    return new RegExp(`(${escaped})`, 'gi')
-  }, [queryTrimmed])
+  useEffect(() => {
+    getSearchHistory(userDb).then(setHistory).catch(() => {})
+  }, [])
 
-  const doSearch = useCallback(async (q: string, trans = translation, book = selectedBook) => {
+  const removeHistoryItem = useCallback((item: string) => {
+    deleteSearchHistory(userDb, item).catch(() => {})
+    setHistory(prev => prev.filter(h => h !== item))
+  }, [userDb])
+
+  const clearHistory = useCallback(() => {
+    deleteSearchHistory(userDb).catch(() => {})
+    setHistory([])
+  }, [userDb])
+
+  const queryTrimmed = query.trim()
+  const bookRefs = useMemo(() => matchBookRefs(queryTrimmed), [queryTrimmed])
+
+  const highlightRegex = useMemo(() => {
+    const terms = isFuzzy && correctedTerms.length > 0
+      ? correctedTerms
+      : queryTrimmed.split(/\s+/).filter(Boolean)
+    if (terms.length === 0) return null
+    const escaped = terms.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')
+    return new RegExp(`(${escaped})`, 'gi')
+  }, [queryTrimmed, isFuzzy, correctedTerms])
+
+  const doSearch = useCallback(async (
+    q: string,
+    trans = translation,
+    test = testament,
+    selBooks = selectedBooks,
+  ) => {
     const trimmed = q.trim()
     if (!trimmed) return
     Keyboard.dismiss()
     setLoading(true)
     setSearched(true)
-    const rows = await searchVerses(db, trimmed, trans, book)
-    setResults(rows)
+    setIsFuzzy(false)
+    setCorrectedTerms([])
+    addSearchHistory(userDb, trimmed).catch(() => {})
+    setHistory(prev => [trimmed, ...prev.filter(h => h !== trimmed)].slice(0, 20))
+    const books = booksForSearch(test, selBooks)
+    const rows = await searchVerses(db, trimmed, trans, books)
+    const qWords = trimmed.toLowerCase().split(/\s+/).filter(Boolean)
+    const hasTypo = qWords.some(w => w.length >= 4 && !rows.some(r => r.text.toLowerCase().includes(w)))
+    if (hasTypo || rows.length === 0) {
+      // Correct each typo word individually via single-word fuzzy, then re-search
+      const correctedWords = await Promise.all(qWords.map(async w => {
+        if (w.length < 4) return w
+        if (rows.some(r => r.text.toLowerCase().includes(w))) return w
+        const wordFuzzy = await searchVersesFuzzy(db, w, trans, books)
+        return wordFuzzy[0]?.closestWords[0] ?? w
+      }))
+      const anyChanged = correctedWords.some((cw, i) => cw !== qWords[i])
+      if (anyChanged) {
+        const correctedRows = await searchVerses(db, correctedWords.join(' '), trans, books)
+        setResults(correctedRows.length > 0 ? correctedRows : rows)
+        if (correctedRows.length > 0) {
+          setIsFuzzy(true)
+          setCorrectedTerms(correctedWords)
+        }
+      } else {
+        setResults(rows)
+      }
+    } else {
+      setResults(rows)
+    }
     setLoading(false)
-  }, [db, translation, selectedBook])
+  }, [db, translation, testament, selectedBooks])
 
   const navigateToVerse = (result: SearchResult) => {
     navigation.navigate('Bible' as any, {
       screen: 'Reader',
-      params: { book: result.book, chapter: result.chapter, verse: result.verse },
+      params: { book: result.book, chapter: result.chapter, verse: result.verse, _ts: Date.now() },
     })
   }
 
-  const pickBook = (book: string) => {
-    setSelectedBook(book)
-    setBookPickerOpen(false)
-    if (searched && queryTrimmed) doSearch(query, translation, book)
+  const navigateToBook = (book: string, chapter: number, verse?: number) => {
+    navigation.navigate('Bible' as any, {
+      screen: 'Reader',
+      params: { book, chapter, verse, _ts: Date.now() },
+    })
   }
+
+  function openBookPicker() {
+    setDraftTestament(testament)
+    setDraftBooks(new Set(selectedBooks))
+    setBookPickerOpen(true)
+  }
+
+  function applyFilter() {
+    setTestament(draftTestament)
+    setSelectedBooks(draftBooks)
+    setBookPickerOpen(false)
+    if (searched && queryTrimmed) doSearch(query, translation, draftTestament, draftBooks)
+  }
+
+  function clearFilter() {
+    setDraftTestament('all')
+    setDraftBooks(new Set())
+  }
+
+  function toggleDraftBook(book: string) {
+    setDraftBooks(prev => {
+      const next = new Set(prev)
+      if (next.has(book)) next.delete(book); else next.add(book)
+      return next
+    })
+  }
+
+  function selectDraftTestament(t: Testament) {
+    setDraftTestament(t)
+    setDraftBooks(new Set())
+  }
+
+  const visibleBooks = draftTestament === 'OT' ? OT_BOOKS
+    : draftTestament === 'NT' ? NT_BOOKS
+    : null  // null = no book chips (all selected)
+
+  const hasFilter = testament !== 'all' || selectedBooks.size > 0
+  const label = filterLabel(testament, selectedBooks)
 
   return (
     <View style={styles.container}>
@@ -72,14 +204,20 @@ export default function SearchScreen() {
       <View style={styles.header}>
         <Text style={styles.title}>Search</Text>
         <View style={styles.headerBtns}>
-          <TouchableOpacity style={styles.versionBtn} onPress={() => setBookPickerOpen(true)} activeOpacity={0.7}>
-            <Ionicons name="book-outline" size={12} color={Colors.textMuted} />
-            <Text style={styles.versionLabel} numberOfLines={1}>{selectedBook || 'All Books'}</Text>
-            <Ionicons name="chevron-down" size={11} color={Colors.textMuted} />
+          <TouchableOpacity
+            style={[styles.versionBtn, hasFilter && styles.versionBtnActive]}
+            onPress={openBookPicker}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="filter" size={12} color={hasFilter ? colors.accent : colors.textMuted} />
+            <Text style={[styles.versionLabel, hasFilter && styles.versionLabelActive]} numberOfLines={1}>
+              {label}
+            </Text>
+            <Ionicons name="chevron-down" size={11} color={hasFilter ? colors.accent : colors.textMuted} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.versionBtn} onPress={() => setPickerOpen(true)} activeOpacity={0.7}>
             <Text style={styles.versionLabel}>{translation}</Text>
-            <Ionicons name="chevron-down" size={11} color={Colors.textMuted} />
+            <Ionicons name="chevron-down" size={11} color={colors.textMuted} />
           </TouchableOpacity>
         </View>
       </View>
@@ -104,48 +242,75 @@ export default function SearchScreen() {
                   <Text style={[modal.key, translation === t.key && modal.keyActive]}>{t.label}</Text>
                   <Text style={modal.full}>{t.full}</Text>
                 </View>
-                {translation === t.key && <Ionicons name="checkmark" size={18} color={Colors.accent} />}
+                {translation === t.key && <Ionicons name="checkmark" size={18} color={colors.accent} />}
               </TouchableOpacity>
             ))}
           </View>
         </TouchableOpacity>
       </Modal>
 
-      {/* Book picker modal */}
+      {/* Book / testament filter modal */}
       <Modal visible={bookPickerOpen} transparent animationType="slide" onRequestClose={() => setBookPickerOpen(false)}>
         <View style={modal.overlay}>
-          <View style={[modal.sheet, { paddingBottom: 0 }]}>
-            <Text style={modal.title}>Filter by Book</Text>
-            <FlatList
-              data={[{ name: '', testament: 'ALL' as any, chapters: 0 }, ...BOOKS]}
-              keyExtractor={item => item.name || '__all__'}
-              style={{ maxHeight: 460 }}
-              contentContainerStyle={{ paddingBottom: 24 }}
-              ListHeaderComponent={null}
-              renderItem={({ item }) => {
-                if (!item.name) {
+          <View style={modal.filterSheet}>
+            {/* Header */}
+            <View style={modal.filterHeader}>
+              <Text style={modal.title}>Filter by Scope</Text>
+              <TouchableOpacity onPress={() => setBookPickerOpen(false)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+                <Ionicons name="close" size={22} color={colors.textMuted} />
+              </TouchableOpacity>
+            </View>
+
+            {/* Testament toggle */}
+            <View style={modal.testamentRow}>
+              {(['all', 'OT', 'NT'] as Testament[]).map(t => (
+                <TouchableOpacity
+                  key={t}
+                  style={[modal.testamentBtn, draftTestament === t && modal.testamentBtnActive]}
+                  onPress={() => selectDraftTestament(t)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={[modal.testamentLabel, draftTestament === t && modal.testamentLabelActive]}>
+                    {t === 'all' ? 'All' : t === 'OT' ? 'Old Testament' : 'New Testament'}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {/* Book chips */}
+            {visibleBooks && (
+              <ScrollView style={modal.bookScroll} contentContainerStyle={modal.bookChips} showsVerticalScrollIndicator={false}>
+                {visibleBooks.map(book => {
+                  const active = draftBooks.has(book)
                   return (
-                    <TouchableOpacity style={modal.bookRow} activeOpacity={0.7} onPress={() => pickBook('')}>
-                      <Text style={[modal.bookName, !selectedBook && modal.bookNameActive]}>All Books</Text>
-                      {!selectedBook && <Ionicons name="checkmark" size={16} color={Colors.accent} />}
+                    <TouchableOpacity
+                      key={book}
+                      style={[modal.bookChip, active && modal.bookChipActive]}
+                      onPress={() => toggleDraftBook(book)}
+                      activeOpacity={0.7}
+                    >
+                      <Text style={[modal.bookChipLabel, active && modal.bookChipLabelActive]}>{book}</Text>
                     </TouchableOpacity>
                   )
-                }
-                const isOTFirst = item.name === OT_BOOKS[0].name
-                const isNTFirst = item.name === NT_BOOKS[0].name
-                return (
-                  <>
-                    {(isOTFirst || isNTFirst) && (
-                      <Text style={modal.bookSection}>{isOTFirst ? 'Old Testament' : 'New Testament'}</Text>
-                    )}
-                    <TouchableOpacity style={modal.bookRow} activeOpacity={0.7} onPress={() => pickBook(item.name)}>
-                      <Text style={[modal.bookName, selectedBook === item.name && modal.bookNameActive]}>{item.name}</Text>
-                      {selectedBook === item.name && <Ionicons name="checkmark" size={16} color={Colors.accent} />}
-                    </TouchableOpacity>
-                  </>
-                )
-              }}
-            />
+                })}
+              </ScrollView>
+            )}
+
+            {!visibleBooks && (
+              <View style={modal.allBooksNote}>
+                <Text style={modal.allBooksText}>Searching all 66 books</Text>
+              </View>
+            )}
+
+            {/* Footer */}
+            <View style={modal.filterFooter}>
+              <TouchableOpacity style={modal.clearBtn} onPress={clearFilter} activeOpacity={0.7}>
+                <Text style={modal.clearBtnLabel}>Clear</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={modal.applyBtn} onPress={applyFilter} activeOpacity={0.7}>
+                <Text style={modal.applyBtnLabel}>Apply</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -156,7 +321,7 @@ export default function SearchScreen() {
           ref={inputRef}
           style={styles.input}
           placeholder="Search the Bible…"
-          placeholderTextColor={Colors.textMuted}
+          placeholderTextColor={colors.textMuted}
           value={query}
           onChangeText={setQuery}
           onSubmitEditing={() => doSearch(query)}
@@ -174,39 +339,93 @@ export default function SearchScreen() {
         </TouchableOpacity>
       </View>
 
+      {/* Search history */}
+      {!queryTrimmed && history.length > 0 && (
+        <View style={styles.historySection}>
+          <View style={styles.historyHeader}>
+            <Text style={styles.historyLabel}>RECENT SEARCHES</Text>
+            <TouchableOpacity onPress={clearHistory} activeOpacity={0.7}>
+              <Text style={styles.historyClear}>Clear</Text>
+            </TouchableOpacity>
+          </View>
+          {history.map(item => (
+            <TouchableOpacity
+              key={item}
+              style={styles.historyRow}
+              activeOpacity={0.7}
+              onPress={() => { setQuery(item); doSearch(item) }}
+            >
+              <Ionicons name="time-outline" size={16} color={colors.textMuted} />
+              <Text style={styles.historyText}>{item}</Text>
+              <TouchableOpacity hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }} onPress={() => removeHistoryItem(item)}>
+                <Ionicons name="close" size={15} color={colors.textMuted} />
+              </TouchableOpacity>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+
       {/* Results count */}
-      {searched && !loading && (
+      {queryTrimmed !== '' && searched && !loading && (
         <Text style={styles.resultCount}>
           {results.length === 0
             ? 'No results'
-            : `${results.length}${results.length === 200 ? '+' : ''} result${results.length === 1 ? '' : 's'}`}
+            : isFuzzy
+              ? `~${results.length} fuzzy match${results.length === 1 ? '' : 'es'}`
+              : `${results.length}${results.length === 200 ? '+' : ''} result${results.length === 1 ? '' : 's'}`}
+          {hasFilter && <Text style={styles.resultCountFilter}> · {label}</Text>}
         </Text>
+      )}
+
+      {/* Fuzzy banner */}
+      {isFuzzy && correctedTerms.length > 0 && (
+        <View style={styles.fuzzyBanner}>
+          <Text style={styles.fuzzyBannerText}>
+            No exact matches — showing fuzzy results for:{' '}
+            <Text style={styles.fuzzyBannerTerms}>{correctedTerms.join(' ')}</Text>
+          </Text>
+        </View>
       )}
 
       {/* Loading */}
       {loading && (
         <View style={styles.center}>
-          <ActivityIndicator color={Colors.accent} size="large" />
+          <ActivityIndicator color={colors.accent} size="large" />
         </View>
       )}
 
       {/* Results list */}
-      {!loading && (
+      {!loading && queryTrimmed !== '' && (
         <FlatList
           data={results}
           keyExtractor={item => `${item.book}-${item.chapter}-${item.verse}`}
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={styles.list}
+          ListHeaderComponent={bookRefs.length > 0 && queryTrimmed.length >= 2 ? (
+            <View style={styles.jumpSection}>
+              <Text style={styles.jumpLabel}>JUMP TO</Text>
+              <View style={styles.jumpChips}>
+                {bookRefs.map(ref => (
+                  <TouchableOpacity
+                    key={`${ref.book}-${ref.chapter}`}
+                    style={styles.jumpChip}
+                    activeOpacity={0.7}
+                    onPress={() => navigateToBook(ref.book, ref.chapter, ref.verse)}
+                  >
+                    <Ionicons name="book-outline" size={13} color={colors.accent} />
+                    <Text style={styles.jumpChipText}>{formatRef(ref)}</Text>
+                    <Ionicons name="arrow-forward" size={13} color={colors.textMuted} />
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+          ) : null}
           renderItem={({ item }) => {
             const parts = highlightRegex
               ? item.text.split(highlightRegex).map((p, i) => ({ text: p, match: i % 2 === 1 }))
               : [{ text: item.text, match: false }]
             return (
-              <TouchableOpacity
-                style={styles.resultRow}
-                activeOpacity={0.7}
-                onPress={() => navigateToVerse(item)}
-              >
+              <TouchableOpacity style={styles.resultRow} activeOpacity={0.7} onPress={() => navigateToVerse(item)}>
                 <Text style={styles.ref}>{item.book} {item.chapter}:{item.verse}</Text>
                 <Text style={styles.verseText}>
                   {parts.map((p, i) =>
@@ -229,63 +448,68 @@ export default function SearchScreen() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.bgPrimary },
+const makeStyles = (c: ThemeColors) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: c.bgPrimary },
   center:    { flex: 1, alignItems: 'center', justifyContent: 'center', paddingTop: 60 },
 
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: Colors.bgSecondary,
+    backgroundColor: c.bgSecondary,
     paddingHorizontal: 16,
     paddingTop: (StatusBar.currentHeight ?? 0) + 10,
     paddingBottom: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.border,
+    borderBottomColor: c.border,
   },
-  title: { fontSize: 18, fontWeight: '700', color: Colors.textPrimary },
+  title: { fontSize: 18, fontWeight: '700', color: c.textPrimary },
   headerBtns: { flexDirection: 'row', gap: 8, alignItems: 'center' },
   versionBtn: {
     flexDirection: 'row', alignItems: 'center', gap: 3,
     paddingHorizontal: 10, paddingVertical: 6,
-    backgroundColor: Colors.bgTertiary, borderRadius: 8,
-    borderWidth: StyleSheet.hairlineWidth, borderColor: Colors.border,
-    maxWidth: 130,
+    backgroundColor: c.bgTertiary, borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: c.border,
+    maxWidth: 160,
   },
-  versionLabel: { fontSize: 12, fontWeight: '700', color: Colors.textSecondary, letterSpacing: 0.5, flexShrink: 1 },
+  versionBtnActive: {
+    borderColor: c.accent,
+    backgroundColor: c.accentDim,
+  },
+  versionLabel: { fontSize: 12, fontWeight: '700', color: c.textSecondary, letterSpacing: 0.5, flexShrink: 1 },
+  versionLabelActive: { color: c.accent },
 
   searchRow: {
     flexDirection: 'row',
     gap: 8,
     padding: 12,
-    backgroundColor: Colors.bgSecondary,
+    backgroundColor: c.bgSecondary,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.border,
+    borderBottomColor: c.border,
   },
   input: {
     flex: 1,
-    backgroundColor: Colors.bgTertiary,
+    backgroundColor: c.bgTertiary,
     borderRadius: 10,
     paddingHorizontal: 14,
     paddingVertical: 10,
-    color: Colors.textPrimary,
+    color: c.textPrimary,
     fontSize: 15,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Colors.border,
+    borderColor: c.border,
   },
   searchBtn: {
-    backgroundColor: Colors.accent,
+    backgroundColor: c.accent,
     borderRadius: 10,
     paddingHorizontal: 16,
     justifyContent: 'center',
   },
   searchBtnDisabled: { opacity: 0.4 },
-  searchBtnText: { color: Colors.bgPrimary, fontWeight: '700', fontSize: 14 },
+  searchBtnText: { color: c.bgPrimary, fontWeight: '700', fontSize: 14 },
 
   resultCount: {
     fontSize: 12,
-    color: Colors.textMuted,
+    color: c.textMuted,
     paddingHorizontal: 16,
     paddingTop: 10,
     paddingBottom: 4,
@@ -293,62 +517,158 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 0.4,
   },
+  resultCountFilter: { color: c.accent },
 
   list: { paddingBottom: 40 },
   resultRow: {
     paddingHorizontal: 16,
     paddingVertical: 13,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.border,
+    borderBottomColor: c.border,
   },
-  ref: {
-    fontSize: 12,
-    fontWeight: '700',
-    color: Colors.accent,
-    marginBottom: 4,
-    letterSpacing: 0.2,
+  ref: { fontSize: 12, fontWeight: '700', color: c.accent, marginBottom: 4, letterSpacing: 0.2 },
+  verseText: { fontSize: 15, lineHeight: 23, color: c.textSecondary },
+  matchText: { color: c.textPrimary, fontWeight: '700', backgroundColor: c.accentDim },
+  emptyText: { color: c.textMuted, fontSize: 15 },
+
+  fuzzyBanner: {
+    backgroundColor: c.bgCard,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: c.border,
   },
-  verseText: {
-    fontSize: 15,
-    lineHeight: 23,
-    color: Colors.textSecondary,
+  fuzzyBannerText: { fontSize: 13, color: c.textMuted },
+  fuzzyBannerTerms: { color: c.accent, fontWeight: '600' },
+
+  historySection: {
+    paddingTop: 8,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: c.border,
   },
-  matchText: {
-    color: Colors.textPrimary,
-    fontWeight: '700',
-    backgroundColor: Colors.accentDim,
+  historyHeader: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingHorizontal: 16, paddingVertical: 8,
   },
-  emptyText: { color: Colors.textMuted, fontSize: 15 },
+  historyLabel: {
+    fontSize: 11, fontWeight: '700', color: c.textMuted,
+    textTransform: 'uppercase', letterSpacing: 0.6,
+  },
+  historyClear: { fontSize: 13, color: c.accent, fontWeight: '600' },
+  historyRow: {
+    flexDirection: 'row', alignItems: 'center', gap: 12,
+    paddingHorizontal: 16, paddingVertical: 13,
+    borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: c.border,
+  },
+  historyText: { flex: 1, fontSize: 15, color: c.textSecondary },
+
+  jumpSection: {
+    paddingHorizontal: 16, paddingTop: 12, paddingBottom: 8,
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
+  },
+  jumpLabel: {
+    fontSize: 11, fontWeight: '700', color: c.textMuted,
+    textTransform: 'uppercase', letterSpacing: 0.6, marginBottom: 8,
+  },
+  jumpChips: { flexDirection: 'column', gap: 6 },
+  jumpChip: {
+    flexDirection: 'row', alignItems: 'center', gap: 8,
+    paddingHorizontal: 12, paddingVertical: 10,
+    backgroundColor: c.bgSecondary, borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: c.border,
+  },
+  jumpChipText: { flex: 1, fontSize: 14, fontWeight: '600', color: c.textPrimary },
 })
 
-const modal = StyleSheet.create({
+const makeModal = (c: ThemeColors) => StyleSheet.create({
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'flex-end' },
+
+  // Translation picker
   sheet: {
-    backgroundColor: Colors.bgSecondary,
+    backgroundColor: c.bgSecondary,
     borderTopLeftRadius: 20, borderTopRightRadius: 20,
     paddingTop: 20, paddingHorizontal: 20, paddingBottom: 40, gap: 4,
   },
-  title: { fontSize: 17, fontWeight: '700', color: Colors.textPrimary, textAlign: 'center', marginBottom: 8 },
+  title: { fontSize: 17, fontWeight: '700', color: c.textPrimary, textAlign: 'center', marginBottom: 8 },
   row: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     paddingVertical: 14, paddingHorizontal: 4,
-    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: Colors.border,
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
   },
   info: { gap: 2 },
-  key: { fontSize: 16, fontWeight: '700', color: Colors.textPrimary },
-  keyActive: { color: Colors.accent },
-  full: { fontSize: 12, color: Colors.textMuted },
+  key: { fontSize: 16, fontWeight: '700', color: c.textPrimary },
+  keyActive: { color: c.accent },
+  full: { fontSize: 12, color: c.textMuted },
 
-  bookSection: {
-    fontSize: 11, fontWeight: '700', color: Colors.textMuted,
-    textTransform: 'uppercase', letterSpacing: 0.6,
-    paddingHorizontal: 4, paddingTop: 16, paddingBottom: 4,
+  // Book / testament filter
+  filterSheet: {
+    backgroundColor: c.bgSecondary,
+    borderTopLeftRadius: 20, borderTopRightRadius: 20,
+    paddingTop: 20,
+    maxHeight: '80%',
   },
-  bookRow: {
+  filterHeader: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    paddingVertical: 12, paddingHorizontal: 4,
-    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: Colors.border,
+    paddingHorizontal: 20, paddingBottom: 16,
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
   },
-  bookName: { fontSize: 15, color: Colors.textSecondary, fontWeight: '500' },
-  bookNameActive: { color: Colors.accent, fontWeight: '700' },
+
+  testamentRow: {
+    flexDirection: 'row',
+    gap: 8,
+    padding: 16,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: c.border,
+  },
+  testamentBtn: {
+    flex: 1,
+    paddingVertical: 8,
+    borderRadius: 20, borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.bgCard,
+    alignItems: 'center',
+  },
+  testamentBtnActive: { borderColor: c.accent, backgroundColor: c.accentDim },
+  testamentLabel:       { fontSize: 12, fontWeight: '600', color: c.textMuted },
+  testamentLabelActive: { color: c.accent },
+
+  bookScroll: { maxHeight: 280 },
+  bookChips: {
+    flexDirection: 'row', flexWrap: 'wrap',
+    gap: 8, padding: 16,
+  },
+  bookChip: {
+    paddingHorizontal: 12, paddingVertical: 7,
+    borderRadius: 20, borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.bgCard,
+  },
+  bookChipActive: { borderColor: c.accent, backgroundColor: c.accentDim },
+  bookChipLabel:       { fontSize: 13, color: c.textSecondary, fontWeight: '500' },
+  bookChipLabelActive: { color: c.accent, fontWeight: '700' },
+
+  allBooksNote: { alignItems: 'center', paddingVertical: 32 },
+  allBooksText: { fontSize: 14, color: c.textMuted, fontStyle: 'italic' },
+
+  filterFooter: {
+    flexDirection: 'row', gap: 12,
+    padding: 16, paddingBottom: 32,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: c.border,
+  },
+  clearBtn: {
+    flex: 1, paddingVertical: 12,
+    borderRadius: 12, borderWidth: 1,
+    borderColor: c.border,
+    backgroundColor: c.bgCard,
+    alignItems: 'center',
+  },
+  clearBtnLabel: { fontSize: 15, fontWeight: '600', color: c.textSecondary },
+  applyBtn: {
+    flex: 2, paddingVertical: 12,
+    borderRadius: 12,
+    backgroundColor: c.accent,
+    alignItems: 'center',
+  },
+  applyBtnLabel: { fontSize: 15, fontWeight: '700', color: c.bgPrimary },
 })

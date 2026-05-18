@@ -1,33 +1,36 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useMemo } from 'react'
 import {
   View, Text, FlatList, TouchableOpacity,
   StyleSheet, StatusBar, Alert,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
+import { useUserDb } from '../db/UserDbProvider'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
 import { getAllNotes, deleteNote } from '../db/queries'
 import type { NoteWithVerse } from '../db/queries'
-import { Colors } from '../theme/colors'
+import { useTheme } from '../context/ThemeContext'
+import type { ThemeColors } from '../theme/themes'
 import type { RootTabParamList } from '../types'
+import { formatDate } from '../utils/formatDate'
 
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Notes'>
 
-function formatDate(ts: number) {
-  return new Date(ts).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' })
-}
-
 export default function NotesScreen() {
-  const db = useSQLiteContext()
+  const { colors } = useTheme()
+  const s = useMemo(() => makeStyles(colors), [colors])
+
+  const bibleDb = useSQLiteContext()
+  const db = useUserDb()
   const navigation = useNavigation<NavProp>()
   const [notes, setNotes] = useState<NoteWithVerse[]>([])
   const [expanded, setExpanded] = useState<string | null>(null)
 
   useFocusEffect(
     useCallback(() => {
-      getAllNotes(db).then(setNotes)
-    }, [db])
+      getAllNotes(db, bibleDb).then(setNotes)
+    }, [db, bibleDb])
   )
 
   const noteKey = (n: NoteWithVerse) => `${n.book}-${n.chapter}-${n.verse}`
@@ -61,79 +64,71 @@ export default function NotesScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Notes</Text>
+    <View style={s.container}>
+      <View style={s.header}>
+        <Text style={s.title}>Notes</Text>
         {notes.length > 0 && (
-          <Text style={styles.count}>{notes.length}</Text>
+          <Text style={s.count}>{notes.length}</Text>
         )}
       </View>
 
       <FlatList
         data={notes}
         keyExtractor={noteKey}
-        contentContainerStyle={notes.length === 0 ? styles.emptyContainer : styles.list}
+        contentContainerStyle={notes.length === 0 ? s.emptyContainer : s.list}
         renderItem={({ item }) => {
           const key = noteKey(item)
           const isExpanded = expanded === key
           const longNote = item.noteText.length > 160
 
           return (
-            <View style={styles.card}>
-              {/* Card header: ref + date + delete */}
-              <View style={styles.cardHeader}>
+            <View style={s.card}>
+              <View style={s.cardHeader}>
                 <TouchableOpacity onPress={() => handleNavigate(item)} activeOpacity={0.7}>
-                  <Text style={styles.ref}>{item.book} {item.chapter}:{item.verse}</Text>
+                  <Text style={s.ref}>{item.book} {item.chapter}:{item.verse}</Text>
                 </TouchableOpacity>
-                <View style={styles.cardHeaderRight}>
-                  <Text style={styles.date}>{formatDate(item.updatedAt)}</Text>
+                <View style={s.cardHeaderRight}>
+                  <Text style={s.date}>{formatDate(item.updatedAt)}</Text>
                   <TouchableOpacity
                     onPress={() => handleDelete(item)}
                     hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                   >
-                    <Ionicons name="trash-outline" size={16} color={Colors.textMuted} />
+                    <Ionicons name="trash-outline" size={16} color={colors.textMuted} />
                   </TouchableOpacity>
                 </View>
               </View>
 
-              {/* Verse text */}
               {!!item.verseText && (
-                <Text style={styles.verseText} numberOfLines={2}>"{item.verseText}"</Text>
+                <Text style={s.verseText} numberOfLines={2}>"{item.verseText}"</Text>
               )}
 
-              {/* Note text */}
-              <Text
-                style={styles.noteText}
-                numberOfLines={isExpanded ? undefined : 4}
-              >
+              <Text style={s.noteText} numberOfLines={isExpanded ? undefined : 4}>
                 {item.noteText}
               </Text>
 
-              {/* Expand / collapse if long */}
               {longNote && (
-                <TouchableOpacity onPress={() => toggleExpand(key)} activeOpacity={0.7} style={styles.expandBtn}>
-                  <Text style={styles.expandLabel}>{isExpanded ? 'Show less' : 'Show more'}</Text>
+                <TouchableOpacity onPress={() => toggleExpand(key)} activeOpacity={0.7} style={s.expandBtn}>
+                  <Text style={s.expandLabel}>{isExpanded ? 'Show less' : 'Show more'}</Text>
                   <Ionicons
                     name={isExpanded ? 'chevron-up' : 'chevron-down'}
                     size={13}
-                    color={Colors.accent}
+                    color={colors.accent}
                   />
                 </TouchableOpacity>
               )}
 
-              {/* Navigate arrow */}
-              <TouchableOpacity onPress={() => handleNavigate(item)} activeOpacity={0.7} style={styles.goBtn}>
-                <Ionicons name="arrow-forward" size={13} color={Colors.accent} />
-                <Text style={styles.goLabel}>Go to verse</Text>
+              <TouchableOpacity onPress={() => handleNavigate(item)} activeOpacity={0.7} style={s.goBtn}>
+                <Ionicons name="arrow-forward" size={13} color={colors.accent} />
+                <Text style={s.goLabel}>Go to verse</Text>
               </TouchableOpacity>
             </View>
           )
         }}
         ListEmptyComponent={
-          <View style={styles.empty}>
-            <Ionicons name="pencil-outline" size={48} color={Colors.border} />
-            <Text style={styles.emptyTitle}>No notes yet</Text>
-            <Text style={styles.emptyText}>
+          <View style={s.empty}>
+            <Ionicons name="pencil-outline" size={48} color={colors.border} />
+            <Text style={s.emptyTitle}>No notes yet</Text>
+            <Text style={s.emptyText}>
               Tap a verse in the reader, go to the Study tab, then open Notes
             </Text>
           </View>
@@ -143,24 +138,24 @@ export default function NotesScreen() {
   )
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.bgPrimary },
+const makeStyles = (c: ThemeColors) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: c.bgPrimary },
 
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    backgroundColor: Colors.bgSecondary,
+    backgroundColor: c.bgSecondary,
     paddingHorizontal: 16,
     paddingTop: (StatusBar.currentHeight ?? 0) + 10,
     paddingBottom: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.border,
+    borderBottomColor: c.border,
   },
-  title: { fontSize: 18, fontWeight: '700', color: Colors.textPrimary },
+  title: { fontSize: 18, fontWeight: '700', color: c.textPrimary },
   count: {
-    fontSize: 12, fontWeight: '700', color: Colors.bgPrimary,
-    backgroundColor: Colors.accent, borderRadius: 10,
+    fontSize: 12, fontWeight: '700', color: c.bgPrimary,
+    backgroundColor: c.accent, borderRadius: 10,
     paddingHorizontal: 7, paddingVertical: 2,
   },
 
@@ -168,41 +163,31 @@ const styles = StyleSheet.create({
   emptyContainer: { flex: 1 },
 
   card: {
-    backgroundColor: Colors.bgCard,
+    backgroundColor: c.bgCard,
     borderRadius: 12,
     padding: 14,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Colors.border,
+    borderColor: c.border,
     gap: 8,
   },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
+  cardHeader:      { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   cardHeaderRight: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  ref:  { fontSize: 15, fontWeight: '700', color: Colors.textAccent },
-  date: { fontSize: 11, color: Colors.textMuted },
+  ref:  { fontSize: 15, fontWeight: '700', color: c.textAccent },
+  date: { fontSize: 11, color: c.textMuted },
 
-  verseText: {
-    fontSize: 13, lineHeight: 20,
-    color: Colors.textMuted, fontStyle: 'italic',
-  },
-  noteText: {
-    fontSize: 15, lineHeight: 24,
-    color: Colors.textPrimary,
-  },
+  verseText: { fontSize: 13, lineHeight: 20, color: c.textMuted, fontStyle: 'italic' },
+  noteText:  { fontSize: 15, lineHeight: 24, color: c.textPrimary },
 
-  expandBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, alignSelf: 'flex-start' },
-  expandLabel: { fontSize: 13, color: Colors.accent, fontWeight: '600' },
+  expandBtn:   { flexDirection: 'row', alignItems: 'center', gap: 4, alignSelf: 'flex-start' },
+  expandLabel: { fontSize: 13, color: c.accent, fontWeight: '600' },
 
-  goBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, alignSelf: 'flex-end' },
-  goLabel: { fontSize: 12, color: Colors.accent, fontWeight: '600' },
+  goBtn:   { flexDirection: 'row', alignItems: 'center', gap: 4, alignSelf: 'flex-end' },
+  goLabel: { fontSize: 12, color: c.accent, fontWeight: '600' },
 
   empty: {
     flex: 1, alignItems: 'center', justifyContent: 'center',
     paddingTop: 100, gap: 10,
   },
-  emptyTitle: { fontSize: 17, fontWeight: '600', color: Colors.textSecondary },
-  emptyText:  { fontSize: 14, color: Colors.textMuted, textAlign: 'center', paddingHorizontal: 40 },
+  emptyTitle: { fontSize: 17, fontWeight: '600', color: c.textSecondary },
+  emptyText:  { fontSize: 14, color: c.textMuted, textAlign: 'center', paddingHorizontal: 40 },
 })

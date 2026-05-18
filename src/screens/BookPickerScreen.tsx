@@ -1,131 +1,313 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   View, Text, FlatList, TouchableOpacity,
-  StyleSheet, TextInput, StatusBar,
+  StyleSheet, TextInput, StatusBar, SectionList,
 } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { BOOKS } from '../data/books'
-import { Colors } from '../theme/colors'
+import { BOOKS, APOCRYPHA_BOOKS, APOCRYPHA_BOOK_NAMES } from '../data/books'
+import { useTheme } from '../context/ThemeContext'
+import { useNavDepth } from '../context/NavDepthContext'
+import type { ThemeColors } from '../theme/themes'
 import type { BibleStackParamList } from '../types'
 
 type Props = {
   navigation: NativeStackNavigationProp<BibleStackParamList, 'BookPicker'>
 }
 
+type Tab = 'OT' | 'NT' | 'APOC'
+
+const OT_BOOKS = BOOKS.filter(b => b.testament === 'OT')
+const NT_BOOKS = BOOKS.filter(b => b.testament === 'NT')
+
+const TABS: { key: Tab; label: string; count: number }[] = [
+  { key: 'OT',   label: 'Old Testament', count: OT_BOOKS.length },
+  { key: 'NT',   label: 'New Testament', count: NT_BOOKS.length },
+  { key: 'APOC', label: 'Apocrypha',     count: APOCRYPHA_BOOKS.length },
+]
+
+const APOC_SECTIONS = [
+  { title: 'Deuterocanon',   subtitle: 'Catholic & Orthodox churches' },
+  { title: 'Broader Canon',  subtitle: 'Some Orthodox traditions' },
+  { title: 'Ethiopian Canon', subtitle: 'Ethiopian Orthodox church' },
+].map(s => ({
+  ...s,
+  data: APOCRYPHA_BOOKS.filter(b => b.group === s.title),
+}))
+
 export default function BookPickerScreen({ navigation }: Props) {
+  const { colors } = useTheme()
+  const s = useMemo(() => makeStyles(colors), [colors])
+
   const [query, setQuery] = useState('')
+  const [tab, setTab]     = useState<Tab>('OT')
+  const { navDepth } = useNavDepth()
 
-  const filtered = query.trim()
-    ? BOOKS.filter(b => b.name.toLowerCase().includes(query.toLowerCase()))
-    : BOOKS
+  const isSearching = query.trim().length > 0
 
-  const otBooks = filtered.filter(b => b.testament === 'OT')
-  const ntBooks = filtered.filter(b => b.testament === 'NT')
+  const searchResults = useMemo(() => {
+    if (!isSearching) return []
+    const q = query.toLowerCase()
+    const canonical = BOOKS.filter(b => b.name.toLowerCase().includes(q))
+    const apocrypha = APOCRYPHA_BOOKS.filter(b => b.name.toLowerCase().includes(q))
+    return [...canonical, ...apocrypha]
+  }, [query])
 
-  const sections = [
-    ...(otBooks.length > 0 ? [{ title: 'Old Testament', data: otBooks }] : []),
-    ...(ntBooks.length > 0 ? [{ title: 'New Testament', data: ntBooks }] : []),
-  ]
+  const isApocBook = (name: string) => APOCRYPHA_BOOK_NAMES.has(name)
 
-  const items: ({ type: 'header'; title: string } | { type: 'book'; name: string; chapters: number })[] = []
-  for (const s of sections) {
-    items.push({ type: 'header', title: s.title })
-    for (const b of s.data) {
-      items.push({ type: 'book', name: b.name, chapters: b.chapters })
+  const navigateToBook = (name: string) => {
+    const apocrypha = isApocBook(name)
+    if (navDepth === 'book') {
+      navigation.navigate('Reader', { book: name, chapter: 1, apocrypha })
+    } else {
+      navigation.navigate('ChapterPicker', { book: name, apocrypha })
     }
   }
 
+  const tabBooks = tab === 'OT' ? OT_BOOKS : NT_BOOKS
+
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <Text style={styles.backText}>✕</Text>
+    <View style={s.container}>
+      <View style={s.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={s.backBtn}>
+          <Text style={s.backText}>✕</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Select Book</Text>
+        <Text style={s.title}>Select Book</Text>
       </View>
 
       <TextInput
-        style={styles.search}
+        style={s.search}
         placeholder="Search books…"
-        placeholderTextColor={Colors.textMuted}
+        placeholderTextColor={colors.textMuted}
         value={query}
         onChangeText={setQuery}
         autoCorrect={false}
       />
 
-      <FlatList
-        data={items}
-        keyExtractor={(item, i) => i.toString()}
-        renderItem={({ item }) => {
-          if (item.type === 'header') {
-            return <Text style={styles.sectionHeader}>{item.title}</Text>
-          }
-          return (
+      {!isSearching && (
+        <View style={s.tabBar}>
+          {TABS.map(t => (
             <TouchableOpacity
-              style={styles.bookRow}
+              key={t.key}
+              style={[s.tab, tab === t.key && s.tabActive]}
+              onPress={() => setTab(t.key)}
               activeOpacity={0.7}
-              onPress={() => navigation.navigate('Reader', { book: item.name, chapter: 1 })}
             >
-              <Text style={styles.bookName}>{item.name}</Text>
-              <Text style={styles.chapterCount}>{item.chapters} ch</Text>
+              <Text style={[s.tabLabel, tab === t.key && s.tabLabelActive]}>{t.label}</Text>
+              <Text style={[s.tabCount, tab === t.key && s.tabCountActive]}>{t.count} books</Text>
             </TouchableOpacity>
-          )
-        }}
-        contentContainerStyle={{ paddingBottom: 40 }}
-      />
+          ))}
+        </View>
+      )}
+
+      {isSearching && searchResults.length === 0 && (
+        <View style={s.noResults}>
+          <Text style={s.noResultsText}>No books found for "{query}"</Text>
+        </View>
+      )}
+
+      {isSearching && (
+        <FlatList
+          data={searchResults}
+          keyExtractor={item => item.name}
+          numColumns={2}
+          columnWrapperStyle={s.row}
+          contentContainerStyle={s.grid}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={[s.card, item.testament === 'APOC' && s.cardApoc]}
+              activeOpacity={0.7}
+              onPress={() => navigateToBook(item.name)}
+            >
+              <Text style={s.bookName} numberOfLines={2}>{item.name}</Text>
+              <Text style={s.chapterCount}>{item.chapters} ch</Text>
+              {item.testament === 'APOC' && (
+                <Text style={s.apocBadge}>Apocrypha</Text>
+              )}
+            </TouchableOpacity>
+          )}
+        />
+      )}
+
+      {!isSearching && tab !== 'APOC' && (
+        <FlatList
+          key={tab}
+          data={tabBooks}
+          keyExtractor={item => item.name}
+          numColumns={2}
+          columnWrapperStyle={s.row}
+          contentContainerStyle={s.grid}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={s.card}
+              activeOpacity={0.7}
+              onPress={() => navigateToBook(item.name)}
+            >
+              <Text style={s.bookName} numberOfLines={2}>{item.name}</Text>
+              <Text style={s.chapterCount}>{item.chapters} ch</Text>
+            </TouchableOpacity>
+          )}
+        />
+      )}
+
+      {!isSearching && tab === 'APOC' && (
+        <SectionList
+          sections={APOC_SECTIONS}
+          keyExtractor={item => item.name}
+          contentContainerStyle={s.grid}
+          stickySectionHeadersEnabled={false}
+          ListHeaderComponent={
+            <View style={s.disclaimer}>
+              <Ionicons name="information-circle-outline" size={16} color={colors.textMuted} />
+              <Text style={s.disclaimerText}>
+                These writings are not part of the Protestant canon. Shown for historical and devotional study only.
+              </Text>
+            </View>
+          }
+          renderSectionHeader={({ section }) => (
+            <View style={s.sectionHeader}>
+              <Text style={s.sectionTitle}>{section.title}</Text>
+              <Text style={s.sectionSubtitle}>{section.subtitle}</Text>
+            </View>
+          )}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={s.listRow}
+              activeOpacity={0.7}
+              onPress={() => navigateToBook(item.name)}
+            >
+              <View style={s.listRowInner}>
+                <Text style={s.listBookName}>{item.name}</Text>
+                <Text style={s.listChapterCount}>{item.chapters} ch</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
+            </TouchableOpacity>
+          )}
+        />
+      )}
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.bgPrimary },
+const makeStyles = (c: ThemeColors) => StyleSheet.create({
+  container: { flex: 1, backgroundColor: c.bgPrimary },
 
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Colors.bgSecondary,
+    backgroundColor: c.bgSecondary,
     paddingHorizontal: 16,
     paddingTop: (StatusBar.currentHeight ?? 0) + 10,
     paddingBottom: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.border,
+    borderBottomColor: c.border,
     gap: 12,
   },
   backBtn: { padding: 4 },
-  backText: { fontSize: 18, color: Colors.textMuted },
-  title: { fontSize: 17, fontWeight: '700', color: Colors.textPrimary },
+  backText: { fontSize: 18, color: c.textMuted },
+  title: { fontSize: 17, fontWeight: '700', color: c.textPrimary },
 
   search: {
     margin: 12,
-    backgroundColor: Colors.bgTertiary,
+    marginBottom: 0,
+    backgroundColor: c.bgTertiary,
     borderRadius: 10,
     paddingHorizontal: 14,
     paddingVertical: 10,
-    color: Colors.textPrimary,
+    color: c.textPrimary,
     fontSize: 15,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Colors.border,
+    borderColor: c.border,
   },
 
-  sectionHeader: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: Colors.textMuted,
-    letterSpacing: 0.6,
-    textTransform: 'uppercase',
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 6,
+  tabBar: {
+    flexDirection: 'row',
+    marginHorizontal: 12,
+    marginTop: 10,
+    backgroundColor: c.bgTertiary,
+    borderRadius: 10,
+    padding: 3,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: c.border,
   },
-  bookRow: {
+  tab: {
+    flex: 1, alignItems: 'center', paddingVertical: 8,
+    borderRadius: 8, gap: 1,
+  },
+  tabActive: { backgroundColor: c.bgCard },
+  tabLabel: { fontSize: 11, fontWeight: '700', color: c.textMuted },
+  tabLabelActive: { color: c.textPrimary },
+  tabCount: { fontSize: 10, color: c.textMuted },
+  tabCountActive: { color: c.textSecondary },
+
+  noResults: { alignItems: 'center', marginTop: 40 },
+  noResultsText: { fontSize: 14, color: c.textMuted },
+
+  grid: { padding: 12, gap: 8, paddingBottom: 40 },
+  row:  { gap: 8 },
+
+  card: {
+    flex: 1,
+    backgroundColor: c.bgCard,
+    borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: c.border,
+    paddingHorizontal: 14,
+    paddingVertical: 14,
+    gap: 4,
+  },
+  cardApoc: {
+    borderColor: c.textMuted,
+    opacity: 0.85,
+  },
+  bookName: { fontSize: 15, fontWeight: '600', color: c.textPrimary },
+  chapterCount: { fontSize: 11, color: c.textMuted },
+  apocBadge: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: c.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.4,
+    marginTop: 2,
+  },
+
+  disclaimer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+    backgroundColor: c.bgSecondary,
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: c.border,
+  },
+  disclaimerText: {
+    flex: 1,
+    fontSize: 12,
+    color: c.textMuted,
+    lineHeight: 18,
+  },
+
+  sectionHeader: { marginTop: 12, marginBottom: 6 },
+  sectionTitle: {
+    fontSize: 13, fontWeight: '700', color: c.textSecondary,
+    textTransform: 'uppercase', letterSpacing: 0.5,
+  },
+  sectionSubtitle: { fontSize: 11, color: c.textMuted, marginTop: 1 },
+
+  listRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
+    backgroundColor: c.bgCard,
+    borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: c.border,
+    paddingHorizontal: 14,
     paddingVertical: 13,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: Colors.border,
+    marginBottom: 6,
   },
-  bookName: { fontSize: 16, color: Colors.textPrimary, fontWeight: '500' },
-  chapterCount: { fontSize: 13, color: Colors.textMuted },
+  listRowInner: { flex: 1, gap: 2 },
+  listBookName: { fontSize: 15, fontWeight: '600', color: c.textPrimary },
+  listChapterCount: { fontSize: 11, color: c.textMuted },
 })
