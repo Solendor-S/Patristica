@@ -145,6 +145,67 @@ export function decodeMorphology(code: string, lang: 'greek' | 'hebrew'): Parsed
   return lang === 'greek' ? decodeGreek(code) : decodeHebrew(code)
 }
 
+const SHARED_TAG_EXAMPLES: Record<string, string> = {
+  '1st Person': 'I / we — the speaker. "I am the resurrection" (Jesus speaking).',
+  '2nd Person': 'You — the one addressed. "You are Peter" (spoken to Simon).',
+  '3rd Person': 'He / she / it / they — a third party. "He believed" (about Abraham).',
+  'Singular':   'One person or thing. "The Word was God."',
+  'Plural':     'More than one. "You (all) are the light of the world."',
+  'Masculine':  'Grammatical class — e.g. λόγος (word) / זָכָר (male).',
+  'Feminine':   'Grammatical class — e.g. ἀγάπη (love) / נְקֵבָה (female).',
+  'Imperative': '"Repent and be baptised" — a direct command.',
+}
+
+export const GREEK_TAG_EXAMPLES: Record<string, string> = {
+  ...SHARED_TAG_EXAMPLES,
+  'Present':    '"God so loves the world" — the loving is continuous, not a one-time event.',
+  'Imperfect':  '"He was teaching in the synagogue" — describes ongoing past action.',
+  'Future':     '"You will see the Son of Man coming" — a definite future event.',
+  'Aorist':     '"In the beginning God created" — a single completed act, not ongoing.',
+  'Perfect':    '"It is finished" (τετέλεσται) — a past act with effects that still stand.',
+  'Pluperfect': '"He had already healed him" — completed before another past moment.',
+  'Active':          '"God loves" — God is the one performing the action.',
+  'Middle':          '"He armed himself" — the subject acts for his own benefit.',
+  'Passive':         '"He was baptised" — the subject receives the action from another.',
+  'Middle/Passive':  'Form is ambiguous — context determines whether middle or passive.',
+  'Middle Deponent': 'Looks passive/middle but means something active, e.g. "I come" (ἔρχομαι).',
+  'Passive Deponent':'Passive form, active meaning — common in later Greek.',
+  'Indicative':  '"He rose on the third day" — asserts a real, historical fact.',
+  'Subjunctive': '"That you may believe" — expresses purpose or possibility.',
+  'Optative':    '"May it never be!" (μὴ γένοιτο) — Paul\'s strong wish or prayer.',
+  'Infinitive':  '"To love God" — the verb used as a noun or purpose clause.',
+  'Participle':  '"Having risen, he appeared…" — verbal adjective describing circumstances.',
+  'Nominative': '"God loved the world" — God (θεός) is nominative, the one doing the loving.',
+  'Genitive':   '"The love of God" — "of God" (θεοῦ) shows whose love or origin.',
+  'Dative':     '"Grace to you" — "to you" (ὑμῖν) is the recipient, the indirect object.',
+  'Accusative': '"He sent his Son" — "his Son" (τὸν υἱόν) is the direct object.',
+  'Vocative':   '"Our Father" — direct address. "Lord!" (κύριε) is vocative.',
+  'Neuter':    'Grammatical class — e.g. πνεῦμα (spirit), τέκνον (child).',
+  'Proper':    'A personal or place name — e.g. Ἰησοῦς (Jesus), Παῦλος (Paul).',
+}
+
+export const HEBREW_TAG_EXAMPLES: Record<string, string> = {
+  ...SHARED_TAG_EXAMPLES,
+  'Qal':       '"He heard" (שָׁמַע) — the plain active form of the verb.',
+  'Niphal':    '"He was called" — passive or reflexive, e.g. "let it be called seas".',
+  'Piel':      '"He blessed them" — intensive/causative, stronger than Qal.',
+  'Pual':      'Passive of Piel — "they were scattered."',
+  'Hiphil':    '"He made them cross" — causative active, "to cause someone to do".',
+  'Hophal':    '"He was brought" — causative passive, "to be caused to do".',
+  'Hithpael':  '"He sanctified himself" — reflexive or reciprocal intensive.',
+  'Perfect':              '"He spoke" (qatal) — completed action, typically past.',
+  'Imperfect':            '"He will speak" (yiqtol) — incomplete or future action.',
+  'Active Participle':    '"The one keeping" — ongoing action used as a noun or adjective.',
+  'Passive Participle':   '"The written word" — a completed state, used adjectivally.',
+  'Infinitive Construct': '"To love the Lord" — verbal noun, often with a preposition.',
+  'Infinitive Absolute':  '"He surely died" — paired with main verb to intensify meaning.',
+  'Absolute':   '"A king" (מֶלֶךְ) — the noun stands alone.',
+  'Construct':  '"King of Israel" — the noun is bound to the following word.',
+  'Determined': '"The king" (הַמֶּלֶךְ) — equivalent to the English definite article.',
+  'Common': 'Applies to both masculine and feminine, e.g. "the fathers and mothers".',
+  'Dual':   '"Two tablets", "hands", "eyes" — always a pair of the noun.',
+}
+
 export const TAG_DEFINITIONS: Record<string, string> = {
   // Greek tense
   'Present':    'Action occurring now, typically ongoing or repeated.',

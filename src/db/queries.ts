@@ -15,6 +15,39 @@ function bookAlt(book: string): string | null {
   return null
 }
 
+// ── Greek text traditions ─────────────────────────────────
+
+async function getChapterGreek(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  table: string,
+): Promise<BibleVerse[]> {
+  return db.getAllAsync<BibleVerse>(
+    `SELECT book, chapter, verse, GROUP_CONCAT(greek, ' ') AS text
+     FROM (SELECT book, chapter, verse, position, greek FROM ${table}
+           WHERE book = ? AND chapter = ? ORDER BY verse, position)
+     GROUP BY verse ORDER BY verse`,
+    [book, chapter],
+  )
+}
+
+async function getVerseGreek(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number,
+  table: string,
+): Promise<BibleVerse | null> {
+  const row = await db.getFirstAsync<{ text: string }>(
+    `SELECT GROUP_CONCAT(greek, ' ') AS text
+     FROM (SELECT greek FROM ${table} WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position)`,
+    [book, chapter, verse],
+  )
+  if (!row?.text) return null
+  return { book, chapter, verse, text: row.text }
+}
+
 // ── Bible verses ──────────────────────────────────────────
 
 export async function getApocryphaChapter(
@@ -34,6 +67,8 @@ export async function getChapter(
   chapter: number,
   translation = 'KJV'
 ): Promise<BibleVerse[]> {
+  const greekTable = GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]
+  if (greekTable) return getChapterGreek(db, book, chapter, greekTable)
   if (translation === 'KJV') {
     return db.getAllAsync<BibleVerse>(
       'SELECT book, chapter, verse, text FROM bible_verses WHERE book = ? AND chapter = ? ORDER BY verse',
@@ -56,6 +91,8 @@ export async function getVerse(
   verse: number,
   translation = 'KJV'
 ): Promise<BibleVerse | null> {
+  const greekTable = GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]
+  if (greekTable) return getVerseGreek(db, book, chapter, verse, greekTable)
   if (translation === 'KJV') {
     return db.getFirstAsync<BibleVerse>(
       'SELECT book, chapter, verse, text FROM bible_verses WHERE book = ? AND chapter = ? AND verse = ?',
@@ -117,19 +154,57 @@ export async function searchVerses(
 
 // ── Fuzzy search ──────────────────────────────────────────
 
+// Reusable DP rows — JS is single-threaded so these are safe to share.
+const _lvRow:  number[] = []
+const _plRow:  number[] = []
+const _scoreExprCache = new Map<number, string>()
+
 function levenshtein(a: string, b: string): number {
   const m = a.length, n = b.length
-  const row: number[] = Array.from({ length: n + 1 }, (_, i) => i)
+  while (_lvRow.length <= n) _lvRow.push(0)
+  for (let i = 0; i <= n; i++) _lvRow[i] = i
   for (let i = 1; i <= m; i++) {
-    let prev = row[0]
-    row[0] = i
+    let prev = _lvRow[0]
+    _lvRow[0] = i
     for (let j = 1; j <= n; j++) {
-      const tmp = row[j]
-      row[j] = a[i - 1] === b[j - 1] ? prev : 1 + Math.min(prev, row[j], row[j - 1])
+      const tmp = _lvRow[j]
+      _lvRow[j] = a[i - 1] === b[j - 1] ? prev : 1 + Math.min(prev, _lvRow[j], _lvRow[j - 1])
       prev = tmp
     }
   }
-  return row[n]
+  return _lvRow[n]
+}
+
+function buildScoreExpr(count: number): string {
+  let expr = _scoreExprCache.get(count)
+  if (!expr) {
+    expr = Array.from({ length: count }, () => `(CASE WHEN LOWER(text) LIKE ? THEN 1 ELSE 0 END)`).join(' + ')
+    _scoreExprCache.set(count, expr)
+  }
+  return expr
+}
+
+// Returns the minimum edit distance from `a` to any prefix of `b`, and that prefix length.
+// Lets a misspelled query stem match longer derived forms — e.g. "resurect" → prefix "resurrect"
+// inside "resurrection" — so the correction banner shows the stem, not the full suffixed word.
+function prefixLevenshtein(a: string, b: string): { dist: number; len: number } {
+  const m = a.length, n = b.length
+  while (_plRow.length <= n) _plRow.push(0)
+  for (let i = 0; i <= n; i++) _plRow[i] = i
+  for (let i = 1; i <= m; i++) {
+    let prev = _plRow[0]
+    _plRow[0] = i
+    for (let j = 1; j <= n; j++) {
+      const tmp = _plRow[j]
+      _plRow[j] = a[i - 1] === b[j - 1] ? prev : 1 + Math.min(prev, _plRow[j], _plRow[j - 1])
+      prev = tmp
+    }
+  }
+  let dist = _plRow[0], len = 0
+  for (let j = 1; j <= n; j++) {
+    if (_plRow[j] < dist) { dist = _plRow[j]; len = j }
+  }
+  return { dist, len }
 }
 
 function fourGrams(s: string): string[] {
@@ -177,29 +252,23 @@ export async function searchVersesFuzzy(
     ? ` AND book IN (${books.map(() => '?').join(',')})`
     : ''
 
-  let candidates: SearchResult[]
-  if (translation === 'KJV') {
-    candidates = await db.getAllAsync<SearchResult>(
-      `SELECT book, chapter, verse, text FROM bible_verses
-       WHERE (${whereExpr})${bookClause}
-       ORDER BY rowid LIMIT 500`,
-      [...allPats, ...books],
-    )
-  } else {
-    candidates = await db.getAllAsync<SearchResult>(
-      `SELECT book, chapter, verse, text FROM bible_translations
-       WHERE translation = ? AND (${whereExpr})${bookClause}
-       ORDER BY rowid LIMIT 500`,
-      [translation, ...allPats, ...books],
-    )
-  }
+  // Rank candidates by how many n-gram patterns they satisfy — ensures derived
+  // forms like "resurrection" (matches resu+esur+rect = 3) beat unrelated
+  // common-pattern matches like "surely" (matches sure = 1) within the LIMIT.
+  const scoreExpr = buildScoreExpr(allPats.length)
+  const isKJV = translation === 'KJV'
+  const candidates = await db.getAllAsync<SearchResult>(
+    `SELECT book, chapter, verse, text FROM ${isKJV ? 'bible_verses' : 'bible_translations'}
+     WHERE ${isKJV ? '' : 'translation = ? AND '}(${whereExpr})${bookClause}
+     ORDER BY (${scoreExpr}) DESC, rowid LIMIT 500`,
+    [...(isKJV ? [] : [translation]), ...allPats, ...books, ...allPats],
+  )
 
-  // edit-distance threshold scales with word length
   const maxDist = (len: number) => len >= 12 ? 3 : len >= 8 ? 2 : 1
 
   const scored: Array<{ r: SearchResult; dist: number; closest: string[] }> = []
   for (const row of candidates) {
-    const vWords = row.text.toLowerCase().match(/[a-z']+/g) ?? []
+    const vWords: string[] = row.text.toLowerCase().match(/[a-z']+/g) ?? []
     let total = 0
     const closest: string[] = []
     let ok = true
@@ -213,10 +282,18 @@ export async function searchVersesFuzzy(
       const limit = maxDist(qw.length)
       let bestD = Infinity, bestW = ''
       for (const vw of vWords) {
-        if (Math.abs(vw.length - qw.length) > limit + 1) continue
-        const d = levenshtein(qw, vw)
-        if (d < bestD) { bestD = d; bestW = vw }
         if (bestD === 0) break
+        const lenDiff = vw.length - qw.length
+        if (lenDiff < -(limit + 1)) continue
+        if (lenDiff > limit + 1) {
+          // vw is a longer derived form — use prefix distance so bestW becomes the stem
+          // ("resurrect") not the suffixed word ("resurrection")
+          const { dist, len } = prefixLevenshtein(qw, vw)
+          if (dist < bestD) { bestD = dist; bestW = vw.slice(0, len) }
+        } else {
+          const d = levenshtein(qw, vw)
+          if (d < bestD) { bestD = d; bestW = vw }
+        }
       }
       if (bestD > limit) { ok = false; break }
       total += bestD
@@ -630,6 +707,14 @@ export async function getThayersEntry(
 
 // ── Strong's / Word Study ─────────────────────────────────
 
+export type GreekSource = 'sblgnt' | 'tagnt' | 'tr'
+
+const GREEK_SOURCE_TABLE: Record<GreekSource, string> = {
+  sblgnt: 'greek_words',
+  tagnt:  'greek_words_tagnt',
+  tr:     'greek_words_tr',
+}
+
 export interface GreekWord {
   position: number
   greek: string
@@ -661,10 +746,12 @@ export async function getGreekWords(
   db: SQLiteDatabase,
   book: string,
   chapter: number,
-  verse: number
+  verse: number,
+  source: GreekSource = 'sblgnt'
 ): Promise<GreekWord[]> {
+  const table = GREEK_SOURCE_TABLE[source]
   return db.getAllAsync<GreekWord>(
-    'SELECT position, greek, translit, strongs, gloss, morph FROM greek_words WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position',
+    `SELECT position, greek, translit, strongs, gloss, morph FROM ${table} WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position`,
     [book, chapter, verse]
   )
 }
@@ -726,18 +813,20 @@ export async function getStrongsConcordance(
   db: SQLiteDatabase,
   lang: 'greek' | 'hebrew',
   strongs: string,
+  greekSource: GreekSource = 'sblgnt',
 ): Promise<StrongsConcordanceResult[]> {
-  const table = lang === 'greek' ? 'greek_words' : 'hebrew_words'
+  const table = lang === 'greek' ? GREEK_SOURCE_TABLE[greekSource] : 'hebrew_words'
   const wordCol = lang === 'greek' ? 'greek' : 'hebrew'
   const q = `
     SELECT w.book, w.chapter, w.verse,
-           w.${wordCol} AS word,
-           w.translit,
+           MIN(w.${wordCol}) AS word,
+           MIN(w.translit)   AS translit,
            bv.text
     FROM ${table} w
     JOIN bible_verses bv ON bv.book = w.book AND bv.chapter = w.chapter AND bv.verse = w.verse
     WHERE w.strongs = ?
-    ORDER BY w.rowid`
+    GROUP BY w.book, w.chapter, w.verse
+    ORDER BY MIN(w.rowid)`
 
   let rows = await db.getAllAsync<StrongsConcordanceResult>(q, [strongs])
   if (!rows.length) {

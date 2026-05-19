@@ -26,14 +26,20 @@ const TABS: { key: Tab; label: string; count: number }[] = [
   { key: 'APOC', label: 'Apocrypha',     count: APOCRYPHA_BOOKS.length },
 ]
 
+type BookEntry = typeof APOCRYPHA_BOOKS[number]
+type BookPair  = [BookEntry, BookEntry | null]
+
 const APOC_SECTIONS = [
-  { title: 'Deuterocanon',   subtitle: 'Catholic & Orthodox churches' },
-  { title: 'Broader Canon',  subtitle: 'Some Orthodox traditions' },
+  { title: 'Deuterocanon',    subtitle: 'Catholic & Orthodox churches' },
+  { title: 'Broader Canon',   subtitle: 'Some Orthodox traditions' },
   { title: 'Ethiopian Canon', subtitle: 'Ethiopian Orthodox church' },
-].map(s => ({
-  ...s,
-  data: APOCRYPHA_BOOKS.filter(b => b.group === s.title),
-}))
+].map(s => {
+  const books = APOCRYPHA_BOOKS.filter(b => b.group === s.title)
+  const pairs: BookPair[] = []
+  for (let i = 0; i < books.length; i += 2)
+    pairs.push([books[i], books[i + 1] ?? null])
+  return { ...s, data: pairs }
+})
 
 export default function BookPickerScreen({ navigation }: Props) {
   const { colors } = useTheme()
@@ -110,7 +116,7 @@ export default function BookPickerScreen({ navigation }: Props) {
         <FlatList
           data={searchResults}
           keyExtractor={item => item.name}
-          numColumns={2}
+          numColumns={3}
           columnWrapperStyle={s.row}
           contentContainerStyle={s.grid}
           renderItem={({ item }) => (
@@ -134,7 +140,7 @@ export default function BookPickerScreen({ navigation }: Props) {
           key={tab}
           data={tabBooks}
           keyExtractor={item => item.name}
-          numColumns={2}
+          numColumns={3}
           columnWrapperStyle={s.row}
           contentContainerStyle={s.grid}
           renderItem={({ item }) => (
@@ -153,7 +159,7 @@ export default function BookPickerScreen({ navigation }: Props) {
       {!isSearching && tab === 'APOC' && (
         <SectionList
           sections={APOC_SECTIONS}
-          keyExtractor={item => item.name}
+          keyExtractor={([a]) => a.name}
           contentContainerStyle={s.grid}
           stickySectionHeadersEnabled={false}
           ListHeaderComponent={
@@ -170,18 +176,21 @@ export default function BookPickerScreen({ navigation }: Props) {
               <Text style={s.sectionSubtitle}>{section.subtitle}</Text>
             </View>
           )}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={s.listRow}
-              activeOpacity={0.7}
-              onPress={() => navigateToBook(item.name)}
-            >
-              <View style={s.listRowInner}>
-                <Text style={s.listBookName}>{item.name}</Text>
-                <Text style={s.listChapterCount}>{item.chapters} ch</Text>
-              </View>
-              <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
-            </TouchableOpacity>
+          renderItem={({ item: [a, b] }) => (
+            <View style={s.row}>
+              <TouchableOpacity style={s.card} activeOpacity={0.7} onPress={() => navigateToBook(a.name)}>
+                <Text style={s.bookName} numberOfLines={2}>{a.name}</Text>
+                <Text style={s.chapterCount}>{a.chapters} ch</Text>
+              </TouchableOpacity>
+              {b ? (
+                <TouchableOpacity style={s.card} activeOpacity={0.7} onPress={() => navigateToBook(b.name)}>
+                  <Text style={s.bookName} numberOfLines={2}>{b.name}</Text>
+                  <Text style={s.chapterCount}>{b.chapters} ch</Text>
+                </TouchableOpacity>
+              ) : (
+                <View style={[s.card, { opacity: 0 }]} />
+              )}
+            </View>
           )}
         />
       )}
@@ -244,7 +253,7 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   noResultsText: { fontSize: 14, color: c.textMuted },
 
   grid: { padding: 12, gap: 8, paddingBottom: 40 },
-  row:  { gap: 8 },
+  row:  { flexDirection: 'row', gap: 8 },
 
   card: {
     flex: 1,
@@ -252,16 +261,17 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     borderRadius: 10,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: c.border,
-    paddingHorizontal: 14,
-    paddingVertical: 14,
-    gap: 4,
+    paddingHorizontal: 10,
+    paddingVertical: 12,
+    gap: 3,
   },
   cardApoc: {
     borderColor: c.textMuted,
     opacity: 0.85,
   },
-  bookName: { fontSize: 15, fontWeight: '600', color: c.textPrimary },
-  chapterCount: { fontSize: 11, color: c.textMuted },
+
+  bookName: { fontSize: 13, fontWeight: '600', color: c.textPrimary },
+  chapterCount: { fontSize: 10, color: c.textMuted },
   apocBadge: {
     fontSize: 10,
     fontWeight: '700',
@@ -296,18 +306,4 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   },
   sectionSubtitle: { fontSize: 11, color: c.textMuted, marginTop: 1 },
 
-  listRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: c.bgCard,
-    borderRadius: 10,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: c.border,
-    paddingHorizontal: 14,
-    paddingVertical: 13,
-    marginBottom: 6,
-  },
-  listRowInner: { flex: 1, gap: 2 },
-  listBookName: { fontSize: 15, fontWeight: '600', color: c.textPrimary },
-  listChapterCount: { fontSize: 11, color: c.textMuted },
 })

@@ -1,13 +1,18 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useUserDb } from '../db/UserDbProvider'
 
-export type Translation = 'KJV' | 'ASV' | 'WEB'
+export type Translation = 'KJV' | 'ASV' | 'WEB' | 'SBLGNT' | 'TAGNT' | 'TR'
 
-export const TRANSLATIONS: { key: Translation; label: string; full: string }[] = [
-  { key: 'KJV', label: 'KJV', full: 'King James Version' },
-  { key: 'ASV', label: 'ASV', full: 'American Standard Version' },
-  { key: 'WEB', label: 'WEB', full: 'World English Bible' },
+export const TRANSLATIONS: { key: Translation; label: string; full: string; greekOnly?: boolean }[] = [
+  { key: 'KJV',    label: 'KJV',    full: 'King James Version' },
+  { key: 'ASV',    label: 'ASV',    full: 'American Standard Version' },
+  { key: 'WEB',    label: 'WEB',    full: 'World English Bible' },
+  { key: 'SBLGNT', label: 'SBLGNT', full: 'SBL Greek New Testament',              greekOnly: true },
+  { key: 'TAGNT',  label: 'TAGNT',  full: 'Translators Amalgamated GNT (NA28)',   greekOnly: true },
+  { key: 'TR',     label: 'TR',     full: 'Textus Receptus (Scrivener 1894)',      greekOnly: true },
 ]
+
+export const GREEK_TRANSLATIONS = new Set<Translation>(['SBLGNT', 'TAGNT', 'TR'])
 
 const VALID_TRANSLATIONS = new Set<string>(TRANSLATIONS.map(t => t.key))
 
