@@ -17,7 +17,8 @@ import {
 } from '../db/queries'
 import type { ConcordanceResult } from '../db/queries'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
-import { useTranslation, TRANSLATIONS } from '../context/TranslationContext'
+import { useTranslation, TRANSLATIONS, GREEK_TRANSLATIONS } from '../context/TranslationContext'
+import type { Translation } from '../context/TranslationContext'
 import { useOnboarding } from '../context/OnboardingContext'
 import { useRedLetter } from '../context/RedLetterContext'
 import { isRedLetter, splitRedLetterVerse } from '../data/redLetter'
@@ -25,6 +26,8 @@ import type { Segment } from '../data/redLetter'
 import { useTheme } from '../context/ThemeContext'
 import { useLineSpacing } from '../context/LineSpacingContext'
 import { useFontSize, FONT_SIZE_MIN, FONT_SIZE_MAX } from '../context/FontSizeContext'
+import { useReaderFont } from '../context/FontFamilyContext'
+import type { FontScopeKey } from '../context/FontFamilyContext'
 import type { ThemeColors } from '../theme/themes'
 import { BOOKS, BOOK_MAP } from '../data/books'
 import type { BibleVerse, BibleStackParamList, Footnote } from '../types'
@@ -98,7 +101,8 @@ const VerseRow = memo(function VerseRow({
   const { colors } = useTheme()
   const { lineHeight } = useLineSpacing()
   const { fontSize } = useFontSize()
-  const styles = useMemo(() => makeStyles(colors, lineHeight, fontSize), [colors, lineHeight, fontSize])
+  const { fontFamily, fontScope } = useReaderFont()
+  const styles = useMemo(() => makeStyles(colors, lineHeight, fontSize, fontFamily, fontScope), [colors, lineHeight, fontSize, fontFamily, fontScope])
   const isRL = redLetterOn && isRedLetter(book, chapter, verse)
   const segments: Segment[] = isRL ? splitRedLetterVerse(text) : [{ t: text, red: false }]
   const fnByWord = footnotes?.length ? buildFnByWord(text, footnotes) : null
@@ -406,7 +410,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const { colors } = useTheme()
   const { lineHeight } = useLineSpacing()
   const { fontSize, setFontSize } = useFontSize()
-  const styles = useMemo(() => makeStyles(colors, lineHeight, fontSize), [colors, lineHeight, fontSize])
+  const { fontFamily, fontScope } = useReaderFont()
+  const styles = useMemo(() => makeStyles(colors, lineHeight, fontSize, fontFamily, fontScope), [colors, lineHeight, fontSize, fontFamily, fontScope])
   const modal = useMemo(() => makeModal(colors), [colors])
   const noteModal = useMemo(() => makeNoteModal(colors), [colors])
 
@@ -439,6 +444,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [bookmarked, setBookmarked] = useState(false)
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [translationPickerOpen, setTranslationPickerOpen] = useState(false)
+  const [transPickerTab, setTransPickerTab] = useState<'primary' | 'parallel'>('primary')
   const [notesOpen, setNotesOpen] = useState(false)
   const [noteText, setNoteText] = useState('')
   const [noteSaved, setNoteSaved] = useState('')
@@ -451,6 +457,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [footnotesByVerse, setFootnotesByVerse] = useState<Map<number, Footnote[]>>(new Map())
   const [activeFn, setActiveFn] = useState<Footnote | null>(null)
   const [compareTrans, setCompareTrans] = useState<Translation | null>(null)
+  const [parallelOn, setParallelOn] = useState(false)
   const [compareMap, setCompareMap] = useState<Map<number, string>>(new Map())
 
   const [concordanceWord, setConcordanceWord]       = useState('')
@@ -647,7 +654,9 @@ export default function ReaderScreen({ navigation, route }: Props) {
     ])
   }
 
-  const bookIndex  = isApocrypha ? -1 : BOOKS.findIndex(b => b.name === book)
+  const bookIndex    = useMemo(() => isApocrypha ? -1 : BOOKS.findIndex(b => b.name === book), [book, isApocrypha])
+  const isNT         = useMemo(() => !isApocrypha && BOOK_MAP[book]?.testament === 'NT', [book, isApocrypha])
+  const isGreekTrans = useMemo(() => GREEK_TRANSLATIONS.has(translation as any), [translation])
 
   const goChapter = useCallback((delta: number) => {
     if (isApocrypha) {
@@ -683,13 +692,23 @@ export default function ReaderScreen({ navigation, route }: Props) {
       book={book}
       chapter={chapter}
       footnotes={footnotesByVerse.get(item.verse)}
-      compareText={compareTrans ? compareMap.get(item.verse) : undefined}
-      compareLabel={compareTrans ?? undefined}
+      compareText={parallelOn && compareTrans ? compareMap.get(item.verse) : undefined}
+      compareLabel={parallelOn && compareTrans ? compareTrans : undefined}
     />
-  ), [selectedVerse, highlights, selectVerse, openConcordance, redLetterOn, book, chapter, footnotesByVerse, compareTrans, compareMap])
+  ), [selectedVerse, highlights, selectVerse, openConcordance, redLetterOn, book, chapter, footnotesByVerse, compareTrans, parallelOn, compareMap])
   const currentSwatch = currentHighlightColor
     ? HIGHLIGHT_COLORS.find(c => c.key === currentHighlightColor)?.swatch
     : undefined
+
+  const renderTransRow = useCallback((t: typeof TRANSLATIONS[number], active: boolean, onPress: () => void) => (
+    <TouchableOpacity key={t.key} style={modal.translationRow} activeOpacity={0.7} onPress={onPress}>
+      <View style={modal.translationInfo}>
+        <Text style={[modal.translationKey, active && modal.translationKeyActive]}>{t.label}</Text>
+        <Text style={modal.translationFull}>{t.full}</Text>
+      </View>
+      {active && <Ionicons name="checkmark" size={18} color={colors.accent} />}
+    </TouchableOpacity>
+  ), [modal, colors.accent])
 
   return (
     <GestureDetector gesture={pinchGesture}>
@@ -711,11 +730,11 @@ export default function ReaderScreen({ navigation, route }: Props) {
         ) : (
           <TouchableOpacity
             style={styles.translationBtn}
-            onPress={() => setTranslationPickerOpen(true)}
+            onPress={() => { setTransPickerTab('primary'); setTranslationPickerOpen(true) }}
             activeOpacity={0.7}
           >
             <Text style={styles.translationLabel}>
-              {compareTrans ? `${translation} ∥ ${compareTrans}` : translation}
+              {parallelOn && compareTrans ? `${translation} ∥ ${compareTrans}` : translation}
             </Text>
             <Ionicons name="chevron-down" size={11} color={colors.textMuted} />
           </TouchableOpacity>
@@ -733,59 +752,89 @@ export default function ReaderScreen({ navigation, route }: Props) {
       <Modal visible={translationPickerOpen} transparent animationType="fade" onRequestClose={() => setTranslationPickerOpen(false)}>
         <TouchableOpacity style={modal.overlay} activeOpacity={1} onPress={() => setTranslationPickerOpen(false)}>
           <View style={modal.sheet}>
-            <Text style={modal.title}>Bible Translation</Text>
-            {TRANSLATIONS.map(t => (
+            <View style={modal.tabs}>
               <TouchableOpacity
-                key={t.key}
-                style={modal.translationRow}
+                style={[modal.tab, transPickerTab === 'primary' && modal.tabActive]}
+                onPress={() => setTransPickerTab('primary')}
                 activeOpacity={0.7}
-                onPress={() => {
-                  setTranslation(t.key)
-                  if (compareTrans === t.key) setCompareTrans(null)
-                  setTranslationPickerOpen(false)
-                }}
               >
-                <View style={modal.translationInfo}>
-                  <Text style={[modal.translationKey, translation === t.key && modal.translationKeyActive]}>{t.label}</Text>
-                  <Text style={modal.translationFull}>{t.full}</Text>
-                </View>
-                {translation === t.key && (
-                  <Ionicons name="checkmark" size={18} color={colors.accent} />
-                )}
+                <Text style={[modal.tabLabel, transPickerTab === 'primary' && modal.tabLabelActive]}>Primary</Text>
               </TouchableOpacity>
-            ))}
-            <View style={modal.sectionDivider} />
-            <Text style={modal.sectionTitle}>Parallel Translation</Text>
-            {TRANSLATIONS.filter(t => t.key !== translation).map(t => {
-              const active = compareTrans === t.key
-              return (
-                <TouchableOpacity
-                  key={t.key}
-                  style={modal.translationRow}
-                  activeOpacity={0.7}
-                  onPress={() => {
-                    setCompareTrans(active ? null : t.key)
-                    setTranslationPickerOpen(false)
-                  }}
-                >
-                  <View style={modal.translationInfo}>
-                    <Text style={[modal.translationKey, active && modal.translationKeyActive]}>{t.label}</Text>
-                    <Text style={modal.translationFull}>{t.full}</Text>
-                  </View>
-                  {active && <Ionicons name="checkmark" size={18} color={colors.accent} />}
-                </TouchableOpacity>
-              )
-            })}
-            <View style={modal.sectionDivider} />
-            <TouchableOpacity style={modal.rlRow} onPress={toggleRedLetter} activeOpacity={0.7}>
-              <View style={modal.translationInfo}>
-                <Text style={modal.translationKey}>Red Letter</Text>
-                <Text style={modal.translationFull}>Highlight words of Jesus in red</Text>
-              </View>
-              <View style={[modal.rlToggle, redLetterOn && modal.rlToggleOn]}>
-                <View style={[modal.rlThumb, redLetterOn && modal.rlThumbOn]} />
-              </View>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={[modal.tab, transPickerTab === 'parallel' && modal.tabActive]}
+                onPress={() => setTransPickerTab('parallel')}
+                activeOpacity={0.7}
+              >
+                <Text style={[modal.tabLabel, transPickerTab === 'parallel' && modal.tabLabelActive]}>Parallel</Text>
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 16, gap: 4 }}>
+              {transPickerTab === 'primary' ? (
+                <>
+                  <Text style={modal.sectionTitle}>English</Text>
+                  {TRANSLATIONS.filter(t => !t.greekOnly).map(t =>
+                    renderTransRow(t, translation === t.key, () => {
+                      setTranslation(t.key)
+                      if (compareTrans === t.key) setCompareTrans(null)
+                      setTranslationPickerOpen(false)
+                    })
+                  )}
+                  <View style={modal.sectionDivider} />
+                  <Text style={modal.sectionTitle}>Greek New Testament</Text>
+                  {TRANSLATIONS.filter(t => t.greekOnly).map(t =>
+                    renderTransRow(t, translation === t.key, () => {
+                      setTranslation(t.key)
+                      if (compareTrans === t.key) setCompareTrans(null)
+                      setTranslationPickerOpen(false)
+                    })
+                  )}
+                  <View style={modal.sectionDivider} />
+                  <TouchableOpacity style={modal.rlRow} onPress={toggleRedLetter} activeOpacity={0.7}>
+                    <View style={modal.translationInfo}>
+                      <Text style={modal.translationKey}>Red Letter</Text>
+                      <Text style={modal.translationFull}>Highlight words of Jesus in red</Text>
+                    </View>
+                    <View style={[modal.rlToggle, redLetterOn && modal.rlToggleOn]}>
+                      <View style={[modal.rlThumb, redLetterOn && modal.rlThumbOn]} />
+                    </View>
+                  </TouchableOpacity>
+                </>
+              ) : (
+                <>
+                  <TouchableOpacity
+                    style={modal.rlRow}
+                    activeOpacity={0.7}
+                    onPress={() => setParallelOn(v => !v)}
+                    disabled={!compareTrans}
+                  >
+                    <View style={modal.translationInfo}>
+                      <Text style={[modal.translationKey, !compareTrans && modal.disabledText]}>Show Parallel</Text>
+                      <Text style={modal.translationFull}>
+                        {compareTrans ? `Currently: ${compareTrans}` : 'Select a translation below'}
+                      </Text>
+                    </View>
+                    <View style={[modal.rlToggle, parallelOn && compareTrans && modal.rlToggleOn]}>
+                      <View style={[modal.rlThumb, parallelOn && compareTrans && modal.rlThumbOn]} />
+                    </View>
+                  </TouchableOpacity>
+                  <View style={modal.sectionDivider} />
+                  <Text style={modal.sectionTitle}>English</Text>
+                  {TRANSLATIONS.filter(t => !t.greekOnly && t.key !== translation).map(t =>
+                    renderTransRow(t, compareTrans === t.key, () => {
+                      setCompareTrans(t.key); setParallelOn(true); setTranslationPickerOpen(false)
+                    })
+                  )}
+                  <View style={modal.sectionDivider} />
+                  <Text style={modal.sectionTitle}>Greek New Testament</Text>
+                  {TRANSLATIONS.filter(t => t.greekOnly && t.key !== translation).map(t =>
+                    renderTransRow(t, compareTrans === t.key, () => {
+                      setCompareTrans(t.key); setParallelOn(true); setTranslationPickerOpen(false)
+                    })
+                  )}
+                </>
+              )}
+            </ScrollView>
           </View>
         </TouchableOpacity>
       </Modal>
@@ -798,6 +847,11 @@ export default function ReaderScreen({ navigation, route }: Props) {
       ) : loadError ? (
         <View style={styles.center}>
           <Text style={styles.errorText}>{loadError}</Text>
+        </View>
+      ) : isGreekTrans && !isNT ? (
+        <View style={styles.center}>
+          <Text style={styles.errorText}>{translation} is a Greek New Testament only.</Text>
+          <Text style={styles.errorSubText}>Switch to a different translation to read the Old Testament.</Text>
         </View>
       ) : verses.length === 0 ? (
         <View style={styles.center}>
@@ -1020,7 +1074,15 @@ export default function ReaderScreen({ navigation, route }: Props) {
   )
 }
 
-const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17) => StyleSheet.create({
+const _styleCache = new WeakMap<object, Map<string, any>>()
+
+const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fontFamily?: string, fontScope: FontScopeKey = 'verses') => {
+  let m = _styleCache.get(c)
+  if (!m) _styleCache.set(c, m = new Map())
+  const k = `${verseLineHeight}|${verseFontSize}|${fontFamily ?? ''}|${fontScope}`
+  if (m.has(k)) return m.get(k)!
+  const globalFont = fontScope === 'all' ? fontFamily : undefined
+  const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: c.bgPrimary },
   center:      { flex: 1, alignItems: 'center', justifyContent: 'center' },
 
@@ -1036,7 +1098,7 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17) =>
     borderBottomColor: c.border,
   },
   headerTitle: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  bookName: { fontSize: 18, fontWeight: '700', color: c.textPrimary, letterSpacing: 0.2 },
+  bookName: { fontSize: 18, fontWeight: '700', color: c.textPrimary, letterSpacing: 0.2, fontFamily: globalFont },
   translationBtn: {
     flexDirection: 'row', alignItems: 'center', gap: 3,
     paddingHorizontal: 10, paddingVertical: 6,
@@ -1044,15 +1106,16 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17) =>
     borderWidth: StyleSheet.hairlineWidth, borderColor: c.border,
     marginLeft: 10,
   },
-  translationLabel: { fontSize: 12, fontWeight: '700', color: c.textSecondary, letterSpacing: 0.5 },
+  translationLabel: { fontSize: 12, fontWeight: '700', color: c.textSecondary, letterSpacing: 0.5, fontFamily: globalFont },
 
   chapterBtn: {
     paddingHorizontal: 14, paddingVertical: 6,
     backgroundColor: c.accentDim, borderRadius: 8, marginLeft: 8,
   },
-  chapterNum: { fontSize: 16, fontWeight: '700', color: c.accent },
+  chapterNum: { fontSize: 16, fontWeight: '700', color: c.accent, fontFamily: globalFont },
 
-  errorText: { color: c.textMuted, fontSize: 13, textAlign: 'center', paddingHorizontal: 24 },
+  errorText:    { color: c.textMuted, fontSize: 13, textAlign: 'center', paddingHorizontal: 24 },
+  errorSubText: { color: c.textMuted, fontSize: 13, textAlign: 'center', paddingHorizontal: 24, marginTop: 8, opacity: 0.6 },
 
   tourFab: {
     position: 'absolute', bottom: 72, right: 16,
@@ -1082,7 +1145,7 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17) =>
     minWidth: 24, marginTop: 3, marginRight: 8,
   },
   verseBody: { flex: 1 },
-  verseText: { fontSize: verseFontSize, lineHeight: verseLineHeight, color: c.textPrimary },
+  verseText: { fontSize: verseFontSize, lineHeight: verseLineHeight, color: c.textPrimary, fontFamily },
   verseBodyRow:      { flexDirection: 'row', alignItems: 'flex-start' },
   comparePrimary:    { flex: 1 },
   compareDivider:    { width: StyleSheet.hairlineWidth, backgroundColor: c.border, alignSelf: 'stretch', marginHorizontal: 8 },
@@ -1095,7 +1158,7 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17) =>
     textTransform: 'uppercase',
     marginBottom: 3,
   },
-  compareText: { fontSize: verseFontSize - 2, lineHeight: verseLineHeight - 2, color: c.textMuted, fontStyle: 'italic' },
+  compareText: { fontSize: verseFontSize - 2, lineHeight: verseLineHeight - 2, color: c.textPrimary, fontStyle: 'italic', fontFamily },
   verseTextSelected: { color: c.textAccent },
   redLetterText: { color: '#D03030' },
   redLetterSelected: { color: '#FF6B6B' },
@@ -1113,7 +1176,7 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17) =>
   },
   fnPopupMarker: { color: c.accent, fontSize: 14, fontWeight: '700', minWidth: 16 },
   fnPopupDivider: { width: StyleSheet.hairlineWidth, backgroundColor: c.border, alignSelf: 'stretch' },
-  fnPopupContent: { flex: 1, color: c.textSecondary, fontSize: 13, lineHeight: 19 },
+  fnPopupContent: { flex: 1, color: c.textSecondary, fontSize: 13, lineHeight: 19, fontFamily: globalFont },
 
   actionBar: {
     backgroundColor: c.bgTertiary,
@@ -1171,7 +1234,7 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17) =>
   },
   footerBtn:           { flexDirection: 'row', alignItems: 'center', gap: 4, paddingVertical: 4 },
   footerBtnDisabled:   { opacity: 0.3 },
-  footerLabel:         { fontSize: 14, fontWeight: '600', color: c.textSecondary },
+  footerLabel:         { fontSize: 14, fontWeight: '600', color: c.textSecondary, fontFamily: globalFont },
   footerLabelDisabled: { color: c.textMuted },
   studyBtn: {
     flexDirection: 'row', alignItems: 'center', gap: 5,
@@ -1179,16 +1242,19 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17) =>
     paddingHorizontal: 16, paddingVertical: 8,
   },
   studyBtnLabel: { fontSize: 14, fontWeight: '700', color: c.bgPrimary },
-})
+  })
+  m.set(k, s)
+  return s
+}
 
 const makeModal = (c: ThemeColors) => StyleSheet.create({
   overlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'flex-end' },
   sheet: {
     backgroundColor: c.bgSecondary,
     borderTopLeftRadius: 20, borderTopRightRadius: 20,
-    paddingTop: 20, paddingHorizontal: 20, paddingBottom: 32, gap: 16,
+    paddingTop: 20, paddingBottom: 32, maxHeight: '85%',
   },
-  title: { fontSize: 17, fontWeight: '700', color: c.textPrimary, textAlign: 'center' },
+  title: { fontSize: 17, fontWeight: '700', color: c.textPrimary, textAlign: 'center', paddingHorizontal: 20, marginBottom: 4 },
   row: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   rowLabel: { fontSize: 15, color: c.textSecondary, fontWeight: '600' },
   stepper: {
@@ -1216,6 +1282,19 @@ const makeModal = (c: ThemeColors) => StyleSheet.create({
     flexDirection: 'row', justifyContent: 'center', gap: 8,
   },
   shareLabel: { fontSize: 15, fontWeight: '700', color: c.bgPrimary },
+
+  tabs: {
+    flexDirection: 'row',
+    marginHorizontal: 20, marginBottom: 8,
+    backgroundColor: c.bgTertiary,
+    borderRadius: 10, padding: 3,
+  },
+  tab: {
+    flex: 1, paddingVertical: 8, borderRadius: 8, alignItems: 'center',
+  },
+  tabActive: { backgroundColor: c.bgSecondary },
+  tabLabel: { fontSize: 13, fontWeight: '600', color: c.textMuted },
+  tabLabelActive: { color: c.textPrimary },
 
   translationRow: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
@@ -1254,6 +1333,7 @@ const makeModal = (c: ThemeColors) => StyleSheet.create({
     backgroundColor: '#fff',
     alignSelf: 'flex-end',
   },
+  disabledText: { color: c.textMuted },
 })
 
 const makeConc = (c: ThemeColors) => StyleSheet.create({

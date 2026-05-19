@@ -12,6 +12,7 @@ import { UserDbProvider } from './src/db/UserDbProvider'
 import { ThemeProvider, useTheme } from './src/context/ThemeContext'
 import { LineSpacingProvider } from './src/context/LineSpacingContext'
 import { FontSizeProvider } from './src/context/FontSizeContext'
+import { FontFamilyProvider } from './src/context/FontFamilyContext'
 import { NavDepthProvider } from './src/context/NavDepthContext'
 import { StartupModeProvider } from './src/context/StartupModeContext'
 import { SelectedVerseProvider } from './src/context/SelectedVerseContext'
@@ -58,6 +59,7 @@ export default function App() {
           <ThemeProvider>
           <LineSpacingProvider>
           <FontSizeProvider>
+          <FontFamilyProvider>
           <NavDepthProvider>
           <StartupModeProvider>
           <SelectedVerseProvider>
@@ -73,6 +75,7 @@ export default function App() {
           </SelectedVerseProvider>
           </StartupModeProvider>
           </NavDepthProvider>
+          </FontFamilyProvider>
           </FontSizeProvider>
           </LineSpacingProvider>
           </ThemeProvider>

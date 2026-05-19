@@ -4,6 +4,8 @@ import {
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { useTheme } from '../context/ThemeContext'
+import { useReaderFont } from '../context/FontFamilyContext'
+import type { FontScopeKey } from '../context/FontFamilyContext'
 import type { ThemeColors } from '../theme/themes'
 import {
   getOverviewVerse, getOverviewChapter, getBiblehubChapter,
@@ -67,7 +69,8 @@ interface Props {
 
 export default function OverviewPanel({ selected }: Props) {
   const { colors } = useTheme()
-  const s = useMemo(() => makeStyles(colors), [colors])
+  const { fontFamily, fontScope } = useReaderFont()
+  const s = useMemo(() => makeStyles(colors, fontFamily, fontScope), [colors, fontFamily, fontScope])
 
   const db = useSQLiteContext()
   const [scope, setScope] = useState<Scope>('verse')
@@ -120,6 +123,11 @@ export default function OverviewPanel({ selected }: Props) {
     return () => { ignore = true }
   }, [selected?.book, selected?.chapter, selected?.verse])
 
+  const themes: string[] = useMemo(() => {
+    if (!chapterData?.themes) return []
+    try { return JSON.parse(chapterData.themes) } catch { return [] }
+  }, [chapterData?.themes])
+
   if (!selected?.book) {
     return (
       <View style={s.empty}>
@@ -129,10 +137,6 @@ export default function OverviewPanel({ selected }: Props) {
   }
 
   const loading = scope === 'chapter' ? loadingChapter : loadingVerse
-  const themes: string[] = useMemo(() => {
-    if (!chapterData?.themes) return []
-    try { return JSON.parse(chapterData.themes) } catch { return [] }
-  }, [chapterData?.themes])
   const verseRef = `${selected.book} ${selected.chapter}${selected.verse ? `:${selected.verse}` : ''}`
 
   return (
@@ -245,7 +249,15 @@ export default function OverviewPanel({ selected }: Props) {
   )
 }
 
-const makeStyles = (c: ThemeColors) => StyleSheet.create({
+const _styleCache = new WeakMap<object, Map<string, any>>()
+
+const makeStyles = (c: ThemeColors, fontFamily?: string, fontScope: FontScopeKey = 'verses') => {
+  let m = _styleCache.get(c)
+  if (!m) _styleCache.set(c, m = new Map())
+  const k = `${fontFamily ?? ''}|${fontScope}`
+  if (m.has(k)) return m.get(k)!
+  const allFont = fontScope === 'all' ? fontFamily : undefined
+  const s = StyleSheet.create({
   container:    { flex: 1, backgroundColor: c.bgPrimary },
   content:      { padding: 16, gap: 12, paddingBottom: 32 },
   empty:        { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 32 },
@@ -277,6 +289,7 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
     marginBottom: 2,
+    fontFamily: allFont,
   },
 
   themeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 4 },
@@ -313,6 +326,7 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     marginBottom: 6,
+    fontFamily: allFont,
   },
   tagline: {
     fontStyle: 'italic',
@@ -323,10 +337,16 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 2,
+    fontFamily: allFont,
   },
   pericopeRange: {
     color: c.accent,
     fontSize: 12,
     marginBottom: 6,
+    fontFamily: allFont,
   },
-})
+  })
+  m.set(k, s)
+  return s
+}
+

@@ -5,20 +5,30 @@ import {
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { Ionicons } from '@expo/vector-icons'
+import { useUserDb } from '../db/UserDbProvider'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import {
   getGreekWords, getHebrewWords, getStrongsEntry,
   getBdbEntry, getThayersEntry, getVerse, getStrongsConcordance,
 } from '../db/queries'
-import type { GreekWord, HebrewWord, StrongsEntry, LexiconEntry, StrongsConcordanceResult } from '../db/queries'
-import { decodeMorphology, TAG_DEFINITIONS } from '../utils/morphology'
+import type { GreekWord, HebrewWord, StrongsEntry, LexiconEntry, StrongsConcordanceResult, GreekSource } from '../db/queries'
+import { decodeMorphology, TAG_DEFINITIONS, GREEK_TAG_EXAMPLES, HEBREW_TAG_EXAMPLES } from '../utils/morphology'
 import type { SelectedVerse, RootTabParamList } from '../types'
 import { BOOKS } from '../data/books'
 import { useTheme } from '../context/ThemeContext'
+import { useReaderFont } from '../context/FontFamilyContext'
+import type { FontScopeKey } from '../context/FontFamilyContext'
 import type { ThemeColors } from '../theme/themes'
+import { TRANSLATIONS } from '../context/TranslationContext'
 
 const NT_BOOKS = new Set(BOOKS.filter(b => b.testament === 'NT').map(b => b.name))
+
+const HEBREW_TEXT_LABEL = 'TAHOT'
+
+const GREEK_SOURCES = TRANSLATIONS
+  .filter(t => t.greekOnly)
+  .map(t => ({ key: t.key.toLowerCase() as GreekSource, label: t.label, desc: t.full }))
 
 // ── Helpers ───────────────────────────────────────────────
 
@@ -332,12 +342,28 @@ interface Props {
 
 export default function WordStudyPanel({ selected }: Props) {
   const { colors } = useTheme()
-  const s = useMemo(() => makeStyles(colors), [colors])
+  const { fontFamily, fontScope } = useReaderFont()
+  const s = useMemo(() => makeStyles(colors, fontFamily, fontScope), [colors, fontFamily, fontScope])
 
   const db = useSQLiteContext()
+  const userDb = useUserDb()
   const navigation = useNavigation<BottomTabNavigationProp<RootTabParamList>>()
   const isNT = NT_BOOKS.has(selected.book)
 
+  const [source, setSource]       = useState<GreekSource>('sblgnt')
+  const [favSource, setFavSource] = useState<GreekSource | null>(null)
+
+  useEffect(() => {
+    userDb.getFirstAsync<{ value: string }>(
+      "SELECT value FROM settings WHERE key = 'greek_source_fav'"
+    ).then(row => {
+      const val = row?.value as GreekSource | undefined
+      if (val && GREEK_SOURCES.some(s => s.key === val)) {
+        setFavSource(val)
+        setSource(val)
+      }
+    }).catch(() => {})
+  }, [userDb])
   const [words, setWords]           = useState<(GreekWord | HebrewWord)[]>([])
   const [loading, setLoading]       = useState(false)
   const [activeKey, setActiveKey]   = useState<ActiveKey | null>(null)
@@ -360,12 +386,13 @@ export default function WordStudyPanel({ selected }: Props) {
     setActiveKey(null)
     setDef(null)
     setLexicon(null)
+    setConcordanceResults([])
     setLoading(true)
     const fetch = isNT
-      ? getGreekWords(db, selected.book, selected.chapter, selected.verse)
+      ? getGreekWords(db, selected.book, selected.chapter, selected.verse, source)
       : getHebrewWords(db, selected.book, selected.chapter, selected.verse)
     fetch.then(w => { setWords(w); setLoading(false) }).catch(() => setLoading(false))
-  }, [selected.book, selected.chapter, selected.verse])
+  }, [selected.book, selected.chapter, selected.verse, source])
 
   useEffect(() => {
     if (!clickedRef) { setVersePreview(null); return }
@@ -388,7 +415,7 @@ export default function WordStudyPanel({ selected }: Props) {
     setConcordanceOpen(true)
     if (concordanceResults.length > 0) return
     setConcordanceLoading(true)
-    getStrongsConcordance(db, isNT ? 'greek' : 'hebrew', activeKey!.strongs)
+    getStrongsConcordance(db, isNT ? 'greek' : 'hebrew', activeKey!.strongs, source)
       .then(rows => { setConcordanceResults(rows); setConcordanceLoading(false) })
       .catch(() => setConcordanceLoading(false))
   }
@@ -502,9 +529,66 @@ export default function WordStudyPanel({ selected }: Props) {
 
   return (
     <ScrollView ref={scrollViewRef} contentContainerStyle={s.container} keyboardShouldPersistTaps="handled">
-      <Text style={s.langLabel}>{isNT ? 'Greek New Testament' : 'Hebrew Old Testament'}</Text>
+      <View style={s.langRow}>
+        <Text style={s.langLabel}>{isNT ? 'Interlinear · Greek NT' : 'Interlinear · Hebrew OT'}</Text>
+        {!isNT && (
+          <View style={s.textBadge}>
+            <Text style={s.textBadgeLabel}>{HEBREW_TEXT_LABEL}</Text>
+          </View>
+        )}
+      </View>
 
-      {/* Word pills */}
+      {/* Source cards — always visible for NT */}
+      {isNT && (
+        <View style={s.sourcePicker}>
+          {GREEK_SOURCES.map(opt => {
+            const active = opt.key === source
+            const isFav  = opt.key === favSource
+            return (
+              <View key={opt.key} style={s.sourceChipWrapper}>
+                <TouchableOpacity
+                  style={[s.sourceChip, active && s.sourceChipActive]}
+                  onPress={() => setSource(opt.key)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={[s.sourceChipLabel, active && s.sourceChipLabelActive]}>
+                    {opt.label}
+                  </Text>
+                  <Text style={[s.sourceChipDesc, active && s.sourceChipDescActive]}>
+                    {opt.desc}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={s.sourceStarBtn}
+                  hitSlop={{ top: 6, right: 6, bottom: 6, left: 6 }}
+                  onPress={() => {
+                    const next = isFav ? null : opt.key
+                    setFavSource(next)
+                    if (next) {
+                      userDb.runAsync(
+                        "INSERT OR REPLACE INTO settings (key, value) VALUES ('greek_source_fav', ?)",
+                        [next]
+                      ).catch(() => {})
+                    } else {
+                      userDb.runAsync(
+                        "DELETE FROM settings WHERE key = 'greek_source_fav'"
+                      ).catch(() => {})
+                    }
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons
+                    name={isFav ? 'star' : 'star-outline'}
+                    size={14}
+                    color={isFav ? colors.accent : colors.textMuted}
+                  />
+                </TouchableOpacity>
+              </View>
+            )
+          })}
+        </View>
+      )}
+
       <View style={[s.pillsRow, !isNT && s.pillsRowRTL]}>
         {words.map((w, i) => {
           const text = isNT ? (w as GreekWord).greek : (w as HebrewWord).hebrew
@@ -522,6 +606,11 @@ export default function WordStudyPanel({ selected }: Props) {
               <Text style={[s.pillTranslit, active && s.pillTranslitActive]}>
                 {w.translit}
               </Text>
+              {!!w.gloss && (
+                <Text style={[s.pillGloss, active && s.pillGlossActive]}>
+                  {w.gloss}
+                </Text>
+              )}
             </TouchableOpacity>
           )
         })}
@@ -600,7 +689,16 @@ export default function WordStudyPanel({ selected }: Props) {
                       </View>
                     )}
                     {activeTag && TAG_DEFINITIONS[activeTag] && (
-                      <Text style={s.morphChipDef}>{TAG_DEFINITIONS[activeTag]}</Text>
+                      <View style={s.morphDefCard}>
+                        <Text style={s.morphDefTag}>{activeTag}</Text>
+                        <Text style={s.morphDefText}>{TAG_DEFINITIONS[activeTag]}</Text>
+                        {(isNT ? GREEK_TAG_EXAMPLES : HEBREW_TAG_EXAMPLES)[activeTag] && (
+                          <View style={s.morphDefExampleRow}>
+                            <Text style={s.morphDefExampleLabel}>Example  </Text>
+                            <Text style={s.morphDefExample}>{(isNT ? GREEK_TAG_EXAMPLES : HEBREW_TAG_EXAMPLES)[activeTag]}</Text>
+                          </View>
+                        )}
+                      </View>
                     )}
                   </View>
                 )}
@@ -736,7 +834,15 @@ export default function WordStudyPanel({ selected }: Props) {
 
 // ── Styles ────────────────────────────────────────────────
 
-const makeStyles = (c: ThemeColors) => StyleSheet.create({
+const _styleCache = new WeakMap<object, Map<string, any>>()
+
+const makeStyles = (c: ThemeColors, fontFamily?: string, fontScope: FontScopeKey = 'verses') => {
+  let m = _styleCache.get(c)
+  if (!m) _styleCache.set(c, m = new Map())
+  const k = `${fontFamily ?? ''}|${fontScope}`
+  if (m.has(k)) return m.get(k)!
+  const allFont = fontScope === 'all' ? fontFamily : undefined
+  const s = StyleSheet.create({
   container: { padding: 14, paddingBottom: 40, gap: 14 },
 
   center: {
@@ -746,9 +852,63 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   emptyTitle: { fontSize: 17, fontWeight: '600', color: c.textSecondary, textAlign: 'center' },
   emptyText:  { fontSize: 14, color: c.textMuted, textAlign: 'center', lineHeight: 22 },
 
+  langRow: {
+    flexDirection: 'row', alignItems: 'center', gap: 8,
+  },
   langLabel: {
     fontSize: 11, fontWeight: '700', color: c.textMuted,
     textTransform: 'uppercase', letterSpacing: 0.6,
+  },
+  textBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
+    backgroundColor: c.accentDim,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: c.accent,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+  },
+  textBadgeLabel: {
+    fontSize: 10, fontWeight: '800', color: c.accent,
+    letterSpacing: 0.4,
+  },
+
+  sourcePicker: {
+    flexDirection: 'row',
+    gap: 8,
+    flexWrap: 'wrap',
+  },
+  sourceChipWrapper: {
+    flex: 1,
+    minWidth: 90,
+    position: 'relative',
+  },
+  sourceChip: {
+    flex: 1,
+    backgroundColor: c.bgCard,
+    borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: c.border,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    gap: 2,
+  },
+  sourceChipActive: {
+    backgroundColor: c.accentDim,
+    borderColor: c.accent,
+  },
+  sourceChipLabel: {
+    fontSize: 12, fontWeight: '800', color: c.textSecondary, letterSpacing: 0.4,
+  },
+  sourceChipLabelActive: { color: c.accent },
+  sourceChipDesc: {
+    fontSize: 10, color: c.textMuted, lineHeight: 14,
+  },
+  sourceChipDescActive: { color: c.accent },
+  sourceStarBtn: {
+    position: 'absolute', top: 6, right: 6,
   },
 
   pillsRow:    { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
@@ -768,8 +928,10 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   pillText:          { fontSize: 18, color: c.textPrimary, fontWeight: '500' },
   pillTextActive:    { color: c.accent },
   pillTextHebrew:    { fontSize: 20 },
-  pillTranslit:      { fontSize: 11, color: c.textMuted },
+  pillTranslit:      { fontSize: 10, color: c.textMuted, fontStyle: 'italic' },
   pillTranslitActive:{ color: c.accent },
+  pillGloss:         { fontSize: 11, color: c.textSecondary, fontWeight: '500' },
+  pillGlossActive:   { color: c.accent },
 
   defCard: {
     backgroundColor: c.bgCard,
@@ -797,7 +959,7 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   },
   defLemma:    { fontSize: 22, fontWeight: '700', color: c.textPrimary },
   defTranslit: { fontSize: 13, color: c.textMuted, fontStyle: 'italic' },
-  defBody:     { fontSize: 14, lineHeight: 22, color: c.textPrimary },
+  defBody:     { fontSize: 14, lineHeight: 22, color: c.textPrimary, fontFamily: allFont },
   defEmpty:    { fontSize: 14, color: c.textMuted, fontStyle: 'italic' },
 
   morphRow: {
@@ -818,10 +980,32 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   morphChipActive:     { borderColor: c.accent, backgroundColor: c.accentDim },
   morphChipText:       { fontSize: 12, color: c.textSecondary },
   morphChipTextActive: { color: c.accent, fontWeight: '600' },
-  morphChipDef: {
-    fontSize: 12, color: c.textSecondary, lineHeight: 18,
+  morphDefCard: {
+    backgroundColor: c.bgSecondary,
+    borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: c.border,
+    padding: 12,
+    gap: 6,
+    marginTop: 2,
+  },
+  morphDefTag: {
+    fontSize: 13, fontWeight: '700', color: c.accent, textTransform: 'uppercase', letterSpacing: 0.5,
+  },
+  morphDefText: {
+    fontSize: 13, color: c.textPrimary, lineHeight: 20, fontFamily: allFont,
+  },
+  morphDefExampleRow: {
+    flexDirection: 'row', flexWrap: 'wrap', alignItems: 'flex-start',
     borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: c.border,
-    paddingTop: 5,
+    paddingTop: 6, marginTop: 2,
+  },
+  morphDefExampleLabel: {
+    fontSize: 11, fontWeight: '700', color: c.textMuted,
+    textTransform: 'uppercase', letterSpacing: 0.4,
+  },
+  morphDefExample: {
+    fontSize: 12, color: c.textSecondary, lineHeight: 18, fontStyle: 'italic', flex: 1,
   },
 
   glossRow: {
@@ -869,10 +1053,10 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     fontSize: 11, color: c.textMuted,
   },
   lexiconOutlineItem: {
-    fontSize: 13, lineHeight: 20, color: c.textSecondary,
+    fontSize: 13, lineHeight: 20, color: c.textSecondary, fontFamily: allFont,
   },
   lexiconBody: {
-    fontSize: 13, lineHeight: 21, color: c.textSecondary,
+    fontSize: 13, lineHeight: 21, color: c.textSecondary, fontFamily: allFont,
   },
   verseHighlight: {
     color: c.accent, fontWeight: '700',
@@ -935,13 +1119,16 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     fontSize: 13, fontWeight: '700', color: c.accent,
   },
   versePreviewText: {
-    fontSize: 13, lineHeight: 20, color: c.textMuted, fontStyle: 'italic',
+    fontSize: 13, lineHeight: 20, color: c.textMuted, fontStyle: 'italic', fontFamily: allFont,
   },
   versePreviewGoBtn: { alignSelf: 'flex-end' },
   versePreviewGo: {
     fontSize: 13, fontWeight: '600', color: c.accent,
   },
-})
+  })
+  m.set(k, s)
+  return s
+}
 
 // ── Concordance modal styles ───────────────────────────────
 

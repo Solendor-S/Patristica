@@ -17,6 +17,8 @@ import { useNavDepth, NAV_DEPTH_OPTIONS } from '../context/NavDepthContext'
 import type { NavDepthKey } from '../context/NavDepthContext'
 import { useStartupMode, STARTUP_MODE_OPTIONS } from '../context/StartupModeContext'
 import type { StartupModeKey } from '../context/StartupModeContext'
+import { useReaderFont, FONT_FAMILY_OPTIONS, FONT_SCOPE_OPTIONS, FAMILY_MAP } from '../context/FontFamilyContext'
+import type { FontFamilyKey, FontScopeKey } from '../context/FontFamilyContext'
 
 // ── Appearance section ────────────────────────────────────
 
@@ -70,12 +72,12 @@ function AppearanceSection() {
 
 // ── Reading section ───────────────────────────────────────
 
-type ExpandedRow = 'lineSpacing' | 'translation' | 'navDepth' | 'startupMode' | null
+type ExpandedRow = 'lineSpacing' | 'translation' | 'navDepth' | 'startupMode' | 'fontFamily' | 'fontScope' | null
 type PickerOption = { key: string; label: string; description: string }
 
 function PickerRow({
   icon, rowLabel, valueLabel, expanded, onToggle,
-  options, selectedKey, onSelect, s, colors,
+  options, selectedKey, onSelect, s, colors, getOptionFontFamily,
 }: {
   icon: React.ComponentProps<typeof Ionicons>['name']
   rowLabel: string
@@ -87,6 +89,7 @@ function PickerRow({
   onSelect: (key: string) => void
   s: ReturnType<typeof makeStyles>
   colors: ThemeColors
+  getOptionFontFamily?: (key: string) => string | undefined
 }) {
   return (
     <>
@@ -108,6 +111,7 @@ function PickerRow({
         <View style={s.pickerContainer}>
           {options.map((opt, i) => {
             const selected = selectedKey === opt.key
+            const optFont = getOptionFontFamily?.(opt.key)
             return (
               <React.Fragment key={opt.key}>
                 {i > 0 && <View style={s.pickerSeparator} />}
@@ -117,10 +121,10 @@ function PickerRow({
                   onPress={() => onSelect(opt.key)}
                 >
                   <View style={s.pickerBody}>
-                    <Text style={[s.pickerLabel, selected && s.pickerLabelSelected]}>
+                    <Text style={[s.pickerLabel, selected && s.pickerLabelSelected, optFont ? { fontFamily: optFont } : undefined]}>
                       {opt.label}
                     </Text>
-                    <Text style={s.pickerDesc}>{opt.description}</Text>
+                    <Text style={[s.pickerDesc, optFont ? { fontFamily: optFont } : undefined]}>{opt.description}</Text>
                   </View>
                   {selected
                     ? <Ionicons name="checkmark-circle" size={20} color={colors.accent} />
@@ -144,6 +148,7 @@ function ReadingSection() {
   const { setFontSize } = useFontSize()
   const { navDepth, setNavDepth } = useNavDepth()
   const { startupMode, setStartupMode } = useStartupMode()
+  const { familyKey, fontScope, setFontFamily, setFontScope } = useReaderFont()
   const [expanded, setExpanded] = useState<ExpandedRow>(null)
 
   const toggle = (row: ExpandedRow) =>
@@ -172,6 +177,37 @@ function ReadingSection() {
           options={LINE_SPACING_OPTIONS}
           selectedKey={spacingKey}
           onSelect={key => { setSpacing(key as LineSpacingKey); setExpanded(null) }}
+          s={s}
+          colors={colors}
+        />
+
+        <View style={s.separator} />
+
+        <PickerRow
+          icon="options-outline"
+          rowLabel="Font"
+          valueLabel={FONT_FAMILY_OPTIONS.find(o => o.key === familyKey)!.label}
+          expanded={expanded === 'fontFamily'}
+          onToggle={() => toggle('fontFamily')}
+          options={FONT_FAMILY_OPTIONS}
+          selectedKey={familyKey}
+          onSelect={key => { setFontFamily(key as FontFamilyKey); setExpanded(null) }}
+          getOptionFontFamily={key => FAMILY_MAP[key as FontFamilyKey]}
+          s={s}
+          colors={colors}
+        />
+
+        <View style={s.separator} />
+
+        <PickerRow
+          icon="albums-outline"
+          rowLabel="Font applies to"
+          valueLabel={FONT_SCOPE_OPTIONS.find(o => o.key === fontScope)!.label}
+          expanded={expanded === 'fontScope'}
+          onToggle={() => toggle('fontScope')}
+          options={FONT_SCOPE_OPTIONS}
+          selectedKey={fontScope}
+          onSelect={key => { setFontScope(key as FontScopeKey); setExpanded(null) }}
           s={s}
           colors={colors}
         />
@@ -235,6 +271,7 @@ function DataSection() {
   const { setSpacing } = useLineSpacing()
   const { setTranslation } = useTranslation()
   const { setFontSize } = useFontSize()
+  const { setFontFamily, setFontScope } = useReaderFont()
 
   const handleReset = () => {
     Alert.alert(
@@ -250,6 +287,8 @@ function DataSection() {
             setSpacing('normal')
             setTranslation('KJV')
             setFontSize(FONT_SIZE_DEFAULT)
+            setFontFamily('system')
+            setFontScope('verses')
           },
         },
       ],
