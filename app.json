@@ -3,7 +3,7 @@
     "name": "Patristica",
     "slug": "BibleAndroidApp",
     "version": "1.0.2",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,

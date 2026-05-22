@@ -15,33 +15,41 @@ function bookAlt(book: string): string | null {
   return null
 }
 
-// ── Greek text traditions ─────────────────────────────────
+// OT word-per-row tables; NT Greek tables live near the word-study functions below
+const OT_WORD_TABLE: Record<string, { table: string; col: string }> = {
+  lxx:   { table: 'lxx_words',    col: 'greek'  },
+  tahot: { table: 'hebrew_words', col: 'hebrew' },
+  dss:   { table: 'dss_words',    col: 'hebrew' },
+}
 
-async function getChapterGreek(
+async function getChapterWords(
   db: SQLiteDatabase,
   book: string,
   chapter: number,
   table: string,
+  col: string,
 ): Promise<BibleVerse[]> {
   return db.getAllAsync<BibleVerse>(
-    `SELECT book, chapter, verse, GROUP_CONCAT(greek, ' ') AS text
-     FROM (SELECT book, chapter, verse, position, greek FROM ${table}
+    // Inner ORDER BY preserves word order for GROUP_CONCAT (SQLite scan-order guarantee)
+    `SELECT book, chapter, verse, GROUP_CONCAT(${col}, ' ') AS text
+     FROM (SELECT book, chapter, verse, position, ${col} FROM ${table}
            WHERE book = ? AND chapter = ? ORDER BY verse, position)
      GROUP BY verse ORDER BY verse`,
     [book, chapter],
   )
 }
 
-async function getVerseGreek(
+async function getVerseWords(
   db: SQLiteDatabase,
   book: string,
   chapter: number,
   verse: number,
   table: string,
+  col: string,
 ): Promise<BibleVerse | null> {
   const row = await db.getFirstAsync<{ text: string }>(
-    `SELECT GROUP_CONCAT(greek, ' ') AS text
-     FROM (SELECT greek FROM ${table} WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position)`,
+    `SELECT GROUP_CONCAT(${col}, ' ') AS text
+     FROM (SELECT ${col} FROM ${table} WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position)`,
     [book, chapter, verse],
   )
   if (!row?.text) return null
@@ -67,8 +75,10 @@ export async function getChapter(
   chapter: number,
   translation = 'KJV'
 ): Promise<BibleVerse[]> {
-  const greekTable = GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]
-  if (greekTable) return getChapterGreek(db, book, chapter, greekTable)
+  const greekNTTable = GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]
+  if (greekNTTable) return getChapterWords(db, book, chapter, greekNTTable, 'greek')
+  const otEntry = OT_WORD_TABLE[translation.toLowerCase()]
+  if (otEntry) return getChapterWords(db, book, chapter, otEntry.table, otEntry.col)
   if (translation === 'KJV') {
     return db.getAllAsync<BibleVerse>(
       'SELECT book, chapter, verse, text FROM bible_verses WHERE book = ? AND chapter = ? ORDER BY verse',
@@ -91,8 +101,10 @@ export async function getVerse(
   verse: number,
   translation = 'KJV'
 ): Promise<BibleVerse | null> {
-  const greekTable = GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]
-  if (greekTable) return getVerseGreek(db, book, chapter, verse, greekTable)
+  const greekNTTable = GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]
+  if (greekNTTable) return getVerseWords(db, book, chapter, verse, greekNTTable, 'greek')
+  const otEntry = OT_WORD_TABLE[translation.toLowerCase()]
+  if (otEntry) return getVerseWords(db, book, chapter, verse, otEntry.table, otEntry.col)
   if (translation === 'KJV') {
     return db.getFirstAsync<BibleVerse>(
       'SELECT book, chapter, verse, text FROM bible_verses WHERE book = ? AND chapter = ? AND verse = ?',
@@ -106,6 +118,78 @@ export async function getVerse(
       : 'SELECT book, chapter, verse, text FROM bible_translations WHERE translation = ? AND book = ? AND chapter = ? AND verse = ?',
     alt ? [translation, book, alt, chapter, verse] : [translation, book, chapter, verse]
   )
+}
+
+// ── Original-language search ──────────────────────────────
+
+// Greek: NFD + strip combining diacritical marks (U+0300-U+036F)
+// Hebrew: strip vowel points / cantillation (U+0591-U+05C7)
+export function normalizeForSearch(s: string): string {
+  return s.normalize('NFD').replace(/[̀-֑ͯ-ׇ]/g, '').toLowerCase()
+}
+
+export function detectQueryScript(query: string): 'greek' | 'hebrew' | 'latin' {
+  if (/[Ͱ-Ͽἀ-῿]/.test(query)) return 'greek'
+  if (/[א-ת]/.test(query)) return 'hebrew'
+  return 'latin'
+}
+
+const NT_GREEK_SOURCES  = [{ table: 'greek_words',  col: 'greek',  normCol: 'greek_norm'  }]
+const LXX_SOURCES       = [{ table: 'lxx_words',    col: 'greek',  normCol: 'greek_norm'  }]
+const HEBREW_SOURCES    = [{ table: 'hebrew_words', col: 'hebrew', normCol: 'hebrew_norm' }]
+const ALL_GREEK_SOURCES = [...NT_GREEK_SOURCES, ...LXX_SOURCES]
+
+function resolveGreekSources(translation?: string) {
+  if (translation === 'LXX') return LXX_SOURCES
+  if (translation && GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]) return NT_GREEK_SOURCES
+  return ALL_GREEK_SOURCES
+}
+
+export async function searchOriginalLanguage(
+  db: SQLiteDatabase,
+  query: string,
+  script: 'greek' | 'hebrew',
+  books: string[] = [],
+  translation?: string,
+): Promise<SearchResult[]> {
+  const normWords = query.trim().split(/\s+/).filter(Boolean).map(normalizeForSearch).filter(Boolean)
+  if (normWords.length === 0) return []
+
+  const sources = script === 'greek' ? resolveGreekSources(translation) : HEBREW_SOURCES
+  const whereClause = normWords.map(() => `norm_text LIKE ?`).join(' AND ')
+  const likeArgs = normWords.map(w => `%${w}%`)
+
+  const results: SearchResult[] = []
+  const seen = new Set<string>()
+
+  for (const { table, col, normCol } of sources) {
+    const bookClause = books.length > 0
+      ? `WHERE book IN (${books.map(() => '?').join(',')})`
+      : ''
+
+    const rows = await db.getAllAsync<SearchResult>(
+      `WITH grouped AS (
+         SELECT book, chapter, verse,
+                GROUP_CONCAT(${col}, ' ')     AS text,
+                GROUP_CONCAT(${normCol}, ' ') AS norm_text
+         FROM (SELECT book, chapter, verse, position, ${col}, ${normCol}
+               FROM ${table} ${bookClause}
+               ORDER BY book, chapter, verse, position)
+         GROUP BY book, chapter, verse
+       )
+       SELECT book, chapter, verse, text FROM grouped
+       WHERE ${whereClause}
+       LIMIT 200`,
+      [...books, ...likeArgs],
+    )
+
+    for (const row of rows) {
+      const key = `${row.book}|${row.chapter}|${row.verse}`
+      if (!seen.has(key)) { seen.add(key); results.push(row) }
+    }
+  }
+
+  return results.slice(0, 200)
 }
 
 // ── Search ────────────────────────────────────────────────
@@ -669,6 +753,12 @@ export interface LexiconEntry {
 const STRONGS_LEXICON_RE: Record<'greek' | 'hebrew', RegExp> = {
   greek:  /^G0*(\d+)/,
   hebrew: /^H0*(\d+)/,
+}
+
+const STRONGS_NORMALIZE_RE = /^([GH])0*(\d+)/
+export function normalizeStrongsNumber(s: string): string {
+  const m = s.match(STRONGS_NORMALIZE_RE)
+  return m ? m[1] + m[2] : s
 }
 
 async function queryLexicon(

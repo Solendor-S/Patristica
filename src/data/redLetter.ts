@@ -216,7 +216,7 @@ export function isRedLetter(book: string, chapter: number, verse: number): boole
   return RED_LETTER_VERSES.has(`${book}|${chapter}|${verse}`)
 }
 
-export interface Segment { t: string; red: boolean }
+export interface Segment { t: string; red: boolean; italic?: boolean }
 
 // Narrator speech-attribution verbs in KJV ("And Jesus said unto them,")
 const ATTRIB_VERB_RE = /\b(said|saith|answered|spake|cried)\b/i

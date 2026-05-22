@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useCallback, useRef, useMemo, memo } from 'react'
+import React, { useEffect, useLayoutEffect, useState, useCallback, useRef, useMemo, memo } from 'react'
+import * as Clipboard from 'expo-clipboard'
 import {
   View, Text, FlatList, TouchableOpacity, Share, Modal, ScrollView,
   StyleSheet, ActivityIndicator, StatusBar, Animated, TextInput,
-  KeyboardAvoidingView, Platform, Alert,
+  KeyboardAvoidingView, Platform, Alert, PanResponder,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { useUserDb } from '../db/UserDbProvider'
@@ -10,14 +11,17 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { RouteProp } from '@react-navigation/native'
 import { Ionicons } from '@expo/vector-icons'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import {
   getChapter, getApocryphaChapter, isBookmarked, addBookmark, removeBookmark, recordHistory,
   getChapterHighlights, setHighlight, removeHighlight,
-  getNote, saveNote, deleteNote, getConcordance, getChapterFootnotes,
+  getNote, saveNote, deleteNote, getConcordance, getChapterFootnotes, getStrongsEntry,
 } from '../db/queries'
-import type { ConcordanceResult } from '../db/queries'
+import type { ConcordanceResult, StrongsEntry } from '../db/queries'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
-import { useTranslation, TRANSLATIONS, GREEK_TRANSLATIONS } from '../context/TranslationContext'
+import { useTranslation, TRANSLATIONS, GREEK_TRANSLATIONS, OT_ORIGINAL_TRANSLATIONS, OT_ONLY_TRANSLATIONS, OT_TRANSLATIONS, ANNOTATED_TRANSLATIONS } from '../context/TranslationContext'
+import { useWordFocus } from '../context/WordFocusContext'
+import { useParallelTranslation } from '../context/ParallelTranslationContext'
 import type { Translation } from '../context/TranslationContext'
 import { useOnboarding } from '../context/OnboardingContext'
 import { useRedLetter } from '../context/RedLetterContext'
@@ -39,7 +43,7 @@ type Props = {
 
 import { HIGHLIGHT_COLORS, type ColorKey, getHighlightBg } from '../theme/highlightColors'
 
-type TaggedWord = { w: string; red: boolean }
+type TaggedWord = { w: string; red: boolean; italic?: boolean }
 
 const SUPERSCRIPT: Record<string, string> = {
   a:'ᵃ', b:'ᵇ', c:'ᶜ', d:'ᵈ', e:'ᵉ', f:'ᶠ', g:'ᵍ', h:'ʰ', i:'ⁱ', j:'ʲ',
@@ -81,8 +85,45 @@ function buildFnByWord(text: string, footnotes: Footnote[]): Map<number, Footnot
   return map
 }
 
+// ── KJV+ parser ──────────────────────────────────────────
+
+type KJVToken = { word: string; strongs?: string }
+
+function parseKJVPlus(text: string): KJVToken[] {
+  const tokens: KJVToken[] = []
+  const parts = text.split(' ')
+  let pending: string | null = null
+  for (const p of parts) {
+    if (p && /^[GH]\d+$/.test(p)) {
+      if (pending !== null) { tokens.push({ word: pending, strongs: p }); pending = null }
+    } else {
+      if (pending !== null) tokens.push({ word: pending })
+      pending = p || null
+    }
+  }
+  if (pending !== null) tokens.push({ word: pending })
+  return tokens
+}
+
+function applyItalics(seg: Segment): Segment[] {
+  if (!seg.t.includes('{')) return [seg]
+  const result: Segment[] = []
+  const re = /\{([^}]+)\}/g
+  let last = 0
+  let m: RegExpExecArray | null
+  while ((m = re.exec(seg.t)) !== null) {
+    if (m.index > last) result.push({ t: seg.t.slice(last, m.index), red: seg.red })
+    result.push({ t: m[1], red: seg.red, italic: true })
+    last = m.index + m[0].length
+  }
+  if (last < seg.t.length) result.push({ t: seg.t.slice(last), red: seg.red })
+  return result
+}
+
+// ── VerseRow ──────────────────────────────────────────────
+
 const VerseRow = memo(function VerseRow({
-  verse, text, isSelected, hlColor, onPress, onWordPress, onFnPress, redLetterOn, book, chapter, footnotes, compareText, compareLabel,
+  verse, text, isSelected, hlColor, onPress, onWordPress, onFnPress, redLetterOn, book, chapter, footnotes, compareText, compareLabel, isAnnotated, onStrongsPress,
 }: {
   verse: number
   text: string
@@ -97,19 +138,62 @@ const VerseRow = memo(function VerseRow({
   footnotes?: Footnote[]
   compareText?: string
   compareLabel?: string
+  isAnnotated?: boolean
+  onStrongsPress?: (verse: number, strongs: string) => void
 }) {
   const { colors } = useTheme()
   const { lineHeight } = useLineSpacing()
   const { fontSize } = useFontSize()
   const { fontFamily, fontScope } = useReaderFont()
   const styles = useMemo(() => makeStyles(colors, lineHeight, fontSize, fontFamily, fontScope), [colors, lineHeight, fontSize, fontFamily, fontScope])
+
+  if (isAnnotated) {
+    const tokens = parseKJVPlus(text)
+    const annotatedText = (
+      <Text style={[styles.verseText, isSelected && styles.verseTextSelected]}>
+        {tokens.map((tok, i) => (
+          <React.Fragment key={i}>
+            <Text>{tok.word}</Text>
+            {tok.strongs
+              ? <Text style={[styles.strongsNum, isSelected && styles.strongsNumSelected]} onPress={() => onStrongsPress?.(verse, tok.strongs!)}> {tok.strongs}</Text>
+              : null}
+            <Text> </Text>
+          </React.Fragment>
+        ))}
+      </Text>
+    )
+    return (
+      <TouchableOpacity
+        style={[styles.verseRow, isSelected && styles.verseRowSelected, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : undefined]}
+        activeOpacity={0.7}
+        onPress={() => onPress(verse)}
+      >
+        <Text style={styles.verseNum}>{verse}</Text>
+        <View style={styles.verseBody}>
+          {compareText ? (
+            <View style={styles.verseBodyRow}>
+              <View style={styles.comparePrimary}>{annotatedText}</View>
+              <View style={styles.compareDivider} />
+              <View style={styles.compareSecondary}>
+                <Text style={styles.compareLabel}>{compareLabel}</Text>
+                <Text style={styles.compareText}>{compareText}</Text>
+              </View>
+            </View>
+          ) : annotatedText}
+        </View>
+      </TouchableOpacity>
+    )
+  }
+
+  const hasItalics = text.includes('{')
   const isRL = redLetterOn && isRedLetter(book, chapter, verse)
-  const segments: Segment[] = isRL ? splitRedLetterVerse(text) : [{ t: text, red: false }]
+  const baseSegments = isRL ? splitRedLetterVerse(text) : [{ t: text, red: false }]
+  const segments: Segment[] = hasItalics ? baseSegments.flatMap(applyItalics) : baseSegments
   const fnByWord = footnotes?.length ? buildFnByWord(text, footnotes) : null
 
   if (isSelected) {
     const tagged: TaggedWord[] = segments.flatMap(seg =>
-      seg.t.trim().split(/\s+/).filter(Boolean).map(w => ({ w, red: seg.red }))
+      seg.t.trim().split(/\s+/).filter(Boolean).map(w => ({ w, red: seg.red, italic: seg.italic }))
     )
     const elems: React.ReactNode[] = []
     tagged.forEach((tw, i) => {
@@ -117,7 +201,7 @@ const VerseRow = memo(function VerseRow({
       const hasSpace = i < tagged.length - 1
       elems.push(
         <Text key={`w${i}`} onPress={() => onWordPress(tw.w)} suppressHighlighting
-          style={tw.red ? styles.redLetterSelected : undefined}>
+          style={[tw.red ? styles.redLetterSelected : undefined, tw.italic ? styles.italicText : undefined]}>
           {tw.w}
         </Text>
       )
@@ -169,12 +253,12 @@ const VerseRow = memo(function VerseRow({
           {compareText ? (
             <View style={styles.verseBodyRow}>
               <View style={styles.comparePrimary}>
-                {segments.length === 1 && !segments[0].red ? (
+                {segments.length === 1 && !segments[0].red && !segments[0].italic ? (
                   <Text style={styles.verseText}>{text}</Text>
                 ) : (
                   <Text style={styles.verseText}>
                     {segments.map((seg, i) => (
-                      <Text key={i} style={seg.red ? styles.redLetterText : undefined}>{seg.t}</Text>
+                      <Text key={i} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined]}>{seg.t}</Text>
                     ))}
                   </Text>
                 )}
@@ -185,12 +269,12 @@ const VerseRow = memo(function VerseRow({
                 <Text style={styles.compareText}>{compareText}</Text>
               </View>
             </View>
-          ) : segments.length === 1 && !segments[0].red ? (
+          ) : segments.length === 1 && !segments[0].red && !segments[0].italic ? (
             <Text style={styles.verseText}>{text}</Text>
           ) : (
             <Text style={styles.verseText}>
               {segments.map((seg, i) => (
-                <Text key={i} style={seg.red ? styles.redLetterText : undefined}>{seg.t}</Text>
+                <Text key={i} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined]}>{seg.t}</Text>
               ))}
             </Text>
           )}
@@ -210,7 +294,7 @@ const VerseRow = memo(function VerseRow({
         return
       }
       wordIdx++
-      elems.push(<Text key={key} style={seg.red ? styles.redLetterText : undefined}>{token}</Text>)
+      elems.push(<Text key={key} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined]}>{token}</Text>)
       const fn = fnByWord.get(wordIdx)
       if (fn) elems.push(
         <Text key={`fn-${key}`} onPress={() => onFnPress(fn)} suppressHighlighting style={styles.fnMarker}>
@@ -246,19 +330,85 @@ const VerseRow = memo(function VerseRow({
   )
 })
 
+// ── Verse slider ──────────────────────────────────────────
+
+const THUMB_SIZE = 24
+
+function VerseSlider({ min, max, value, onChange, label, colors }: {
+  min: number; max: number; value: number; onChange: (v: number) => void
+  label: string; colors: ThemeColors
+}) {
+  const [trackW, setTrackW] = useState(1)
+  const range = Math.max(1, max - min)
+  const pct = max <= min ? 0 : (value - min) / range
+  const thumbLeft = pct * Math.max(0, trackW - THUMB_SIZE)
+
+  const trackWRef   = useRef(1)
+  const minRef      = useRef(min)
+  const rangeRef    = useRef(range)
+  const valueRef    = useRef(value)
+  const onChangeRef = useRef(onChange)
+  const startMoveX  = useRef(0)
+  const startTrackX = useRef(0)
+  useLayoutEffect(() => {
+    minRef.current = min
+    rangeRef.current = range
+    valueRef.current = value
+    onChangeRef.current = onChange
+  }, [min, range, value, onChange])
+
+  const pr = useMemo(() => PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderGrant: (_, gs) => {
+      // Anchor from the thumb's current position so there's no snap on touch
+      const currentPct = rangeRef.current <= 0 ? 0
+        : (valueRef.current - minRef.current) / rangeRef.current
+      startTrackX.current = currentPct * trackWRef.current
+      startMoveX.current  = gs.moveX
+    },
+    onPanResponderMove: (_, gs) => {
+      const x = Math.max(0, Math.min(trackWRef.current, startTrackX.current + (gs.moveX - startMoveX.current)))
+      onChangeRef.current(Math.round(minRef.current + (x / trackWRef.current) * rangeRef.current))
+    },
+  }), [])
+
+  return (
+    <View style={{ paddingHorizontal: 20, paddingBottom: 10 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 }}>
+        <Text style={{ fontSize: 12, fontWeight: '600', color: colors.textMuted, textTransform: 'uppercase', letterSpacing: 0.6 }}>{label}</Text>
+        <Text style={{ fontSize: 16, fontWeight: '700', color: colors.textPrimary }}>{value}</Text>
+      </View>
+      <View
+        style={{ height: 36, justifyContent: 'center' }}
+        onLayout={e => { const w = Math.max(1, e.nativeEvent.layout.width); setTrackW(w); trackWRef.current = w }}
+        {...pr.panHandlers}
+      >
+        <View style={{ height: 4, borderRadius: 2, backgroundColor: colors.bgTertiary }}>
+          <View style={{ width: `${pct * 100}%`, height: '100%', borderRadius: 2, backgroundColor: colors.accent }} />
+        </View>
+        <View style={{
+          position: 'absolute', left: thumbLeft,
+          width: THUMB_SIZE, height: THUMB_SIZE, borderRadius: THUMB_SIZE / 2,
+          backgroundColor: colors.accent, top: (36 - THUMB_SIZE) / 2,
+          elevation: 3, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 3, shadowOffset: { width: 0, height: 1 },
+        }} />
+      </View>
+    </View>
+  )
+}
+
+const stripMarkers = (t: string) => t.replace(/[{}]/g, '')
+
 // ── Share range modal ─────────────────────────────────────
 
 function ShareModal({
-  visible, onClose, book, chapter, verses, anchorVerse,
+  visible, onClose, book, chapter, verses, anchorVerse, translation,
 }: {
-  visible: boolean
-  onClose: () => void
-  book: string
-  chapter: number
-  verses: BibleVerse[]
-  anchorVerse: number
+  visible: boolean; onClose: () => void; book: string; chapter: number
+  verses: BibleVerse[]; anchorVerse: number; translation: string
 }) {
   const { colors } = useTheme()
+  const { bottom } = useSafeAreaInsets()
   const modal = useMemo(() => makeModal(colors), [colors])
   const [fromVerse, setFromVerse] = useState(anchorVerse)
   const [toVerse, setToVerse]     = useState(anchorVerse)
@@ -268,58 +418,37 @@ function ShareModal({
   }, [visible, anchorVerse])
 
   const maxVerse = verses.length > 0 ? verses[verses.length - 1].verse : 1
-  const adjustFrom = (d: number) => setFromVerse(v => Math.max(1, Math.min(toVerse, v + d)))
-  const adjustTo   = (d: number) => setToVerse(v => Math.max(fromVerse, Math.min(maxVerse, v + d)))
+
+  const setFrom = useCallback((v: number) => setFromVerse(cur => Math.max(1, Math.min(toVerse, v))), [toVerse])
+  const setTo   = useCallback((v: number) => setToVerse(cur => Math.max(fromVerse, Math.min(maxVerse, v))), [fromVerse, maxVerse])
 
   const rangeVerses = verses.filter(v => v.verse >= fromVerse && v.verse <= toVerse)
+  const refLabel = fromVerse === toVerse
+    ? `${book} ${chapter}:${fromVerse}`
+    : `${book} ${chapter}:${fromVerse}–${toVerse}`
 
-  const buildShareText = () => {
-    const ref = fromVerse === toVerse
-      ? `${book} ${chapter}:${fromVerse}`
-      : `${book} ${chapter}:${fromVerse}–${toVerse}`
-    const body = rangeVerses
-      .map(v => (fromVerse === toVerse ? v.text : `[${v.verse}] ${v.text}`))
-      .join(' ')
-    return `${ref} — ${body}`
+  const body = useMemo(
+    () => rangeVerses
+      .map(v => fromVerse === toVerse ? stripMarkers(v.text) : `[${v.verse}] ${stripMarkers(v.text)}`)
+      .join(' '),
+    [rangeVerses, fromVerse, toVerse],
+  )
+
+  const doShare = async () => { onClose(); await Share.share({ message: `${refLabel} — ${body}` }) }
+  const doCopy  = async () => {
+    await Clipboard.setStringAsync(`${refLabel} ${translation} — ${body}`)
+    onClose()
   }
-
-  const doShare = async () => { onClose(); await Share.share({ message: buildShareText() }) }
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <View style={modal.overlay}>
-        <View style={modal.sheet}>
-          <Text style={modal.title}>Share Verse Range</Text>
-          <View style={modal.row}>
-            <Text style={modal.rowLabel}>From</Text>
-            <View style={modal.stepper}>
-              <TouchableOpacity onPress={() => adjustFrom(-1)} style={modal.stepBtn} activeOpacity={0.7}>
-                <Ionicons name="remove" size={18} color={colors.textSecondary} />
-              </TouchableOpacity>
-              <Text style={modal.stepValue}>{fromVerse}</Text>
-              <TouchableOpacity onPress={() => adjustFrom(1)} style={modal.stepBtn} activeOpacity={0.7}>
-                <Ionicons name="add" size={18} color={colors.textSecondary} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={modal.row}>
-            <Text style={modal.rowLabel}>To</Text>
-            <View style={modal.stepper}>
-              <TouchableOpacity onPress={() => adjustTo(-1)} style={modal.stepBtn} activeOpacity={0.7}>
-                <Ionicons name="remove" size={18} color={colors.textSecondary} />
-              </TouchableOpacity>
-              <Text style={modal.stepValue}>{toVerse}</Text>
-              <TouchableOpacity onPress={() => adjustTo(1)} style={modal.stepBtn} activeOpacity={0.7}>
-                <Ionicons name="add" size={18} color={colors.textSecondary} />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <ScrollView style={modal.preview} contentContainerStyle={{ padding: 12 }}>
-            <Text style={modal.previewRef}>
-              {fromVerse === toVerse
-                ? `${book} ${chapter}:${fromVerse}`
-                : `${book} ${chapter}:${fromVerse}–${toVerse}`}
-            </Text>
+        <View style={[modal.shareSheet, { paddingBottom: Math.max(24, 12 + bottom) }]}>
+          <Text style={modal.title}>Copy / Share Verses</Text>
+          <VerseSlider min={1} max={maxVerse} value={fromVerse} onChange={setFrom} label="From" colors={colors} />
+          <VerseSlider min={1} max={maxVerse} value={toVerse}   onChange={setTo}   label="To"   colors={colors} />
+          <ScrollView style={modal.sharePreview} contentContainerStyle={{ padding: 12 }}>
+            <Text style={modal.previewRef}>{refLabel}</Text>
             {rangeVerses.map(v => (
               <Text key={v.verse} style={modal.previewText}>
                 {fromVerse !== toVerse && <Text style={modal.previewNum}>[{v.verse}] </Text>}
@@ -327,12 +456,16 @@ function ShareModal({
               </Text>
             ))}
           </ScrollView>
-          <View style={modal.btnRow}>
+          <View style={modal.shareBtnRow}>
             <TouchableOpacity style={modal.cancelBtn} onPress={onClose} activeOpacity={0.7}>
               <Text style={modal.cancelLabel}>Cancel</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={modal.copyBtn} onPress={doCopy} activeOpacity={0.7}>
+              <Ionicons name="copy-outline" size={15} color={colors.accent} />
+              <Text style={modal.copyLabel}>Copy</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={modal.shareBtn} onPress={doShare} activeOpacity={0.7}>
-              <Ionicons name="share-outline" size={16} color={colors.bgPrimary} />
+              <Ionicons name="share-outline" size={15} color={colors.bgPrimary} />
               <Text style={modal.shareLabel}>Share</Text>
             </TouchableOpacity>
           </View>
@@ -404,10 +537,63 @@ function ConcordanceModal({
   )
 }
 
+// ── Strongs modal ─────────────────────────────────────────
+
+function StrongsModal({
+  visible, entry, loading, onClose, onGoToWords,
+}: {
+  visible: boolean
+  entry: StrongsEntry | null
+  loading: boolean
+  onClose: () => void
+  onGoToWords: () => void
+}) {
+  const { colors } = useTheme()
+  const conc = useMemo(() => makeConc(colors), [colors])
+  return (
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+      <View style={conc.overlay}>
+        <View style={conc.sheet}>
+          <View style={conc.header}>
+            {entry
+              ? <View>
+                  <Text style={conc.word}>{entry.lemma}  {entry.number}</Text>
+                  <Text style={conc.count}>{entry.translit} · {entry.pronunciation}</Text>
+                </View>
+              : <Text style={conc.word}>{loading ? 'Loading…' : 'Not found'}</Text>
+            }
+            <TouchableOpacity onPress={onClose} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+              <Ionicons name="close" size={22} color={colors.textMuted} />
+            </TouchableOpacity>
+          </View>
+          {loading
+            ? <ActivityIndicator color={colors.accent} style={{ marginVertical: 32 }} />
+            : entry
+              ? <ScrollView contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 16 }}>
+                  <Text style={conc.text}>{entry.definition}</Text>
+                  {!!entry.kjv_usage && (
+                    <Text style={[conc.count, { marginTop: 12 }]}>KJV: {entry.kjv_usage}</Text>
+                  )}
+                </ScrollView>
+              : null
+          }
+          {!loading && entry && (
+            <TouchableOpacity style={conc.goToWordsBtn} onPress={onGoToWords} activeOpacity={0.7}>
+              <Ionicons name="language-outline" size={15} color={colors.bgPrimary} />
+              <Text style={conc.goToWordsBtnLabel}>Open in Word Study</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
+    </Modal>
+  )
+}
+
 // ── Reader screen ─────────────────────────────────────────
 
 export default function ReaderScreen({ navigation, route }: Props) {
   const { colors } = useTheme()
+  const { bottom: bottomInset } = useSafeAreaInsets()
   const { lineHeight } = useLineSpacing()
   const { fontSize, setFontSize } = useFontSize()
   const { fontFamily, fontScope } = useReaderFont()
@@ -456,14 +642,32 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
   const [footnotesByVerse, setFootnotesByVerse] = useState<Map<number, Footnote[]>>(new Map())
   const [activeFn, setActiveFn] = useState<Footnote | null>(null)
-  const [compareTrans, setCompareTrans] = useState<Translation | null>(null)
-  const [parallelOn, setParallelOn] = useState(false)
+  const { compareTrans, setCompareTrans, parallelOn, setParallelOn } = useParallelTranslation()
   const [compareMap, setCompareMap] = useState<Map<number, string>>(new Map())
 
   const [concordanceWord, setConcordanceWord]       = useState('')
   const [concordanceResults, setConcordanceResults] = useState<ConcordanceResult[]>([])
   const [concordanceLoading, setConcordanceLoading] = useState(false)
   const [concordanceOpen, setConcordanceOpen]       = useState(false)
+
+  const [strongsOpen, setStrongsOpen]       = useState(false)
+  const [strongsEntry, setStrongsEntry]     = useState<StrongsEntry | null>(null)
+  const [strongsLoading, setStrongsLoading] = useState(false)
+  const currentStrongsRef = useRef<string>('')
+  const currentStrongsVerseRef = useRef<number>(0)
+  const { setWordFocus } = useWordFocus()
+
+  const openStrongs = useCallback((verse: number, strongs: string) => {
+    currentStrongsRef.current = strongs
+    currentStrongsVerseRef.current = verse
+    setStrongsEntry(null)
+    setStrongsOpen(true)
+    setStrongsLoading(true)
+    const type = strongs.startsWith('G') ? 'greek' : 'hebrew'
+    getStrongsEntry(db, type, strongs)
+      .then(entry => { setStrongsEntry(entry); setStrongsLoading(false) })
+      .catch(() => setStrongsLoading(false))
+  }, [db])
 
   const openConcordance = useCallback((rawWord: string) => {
     const word = rawWord.replace(/^[^a-zA-Z']+|[^a-zA-Z']+$/g, '')
@@ -656,7 +860,9 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
   const bookIndex    = useMemo(() => isApocrypha ? -1 : BOOKS.findIndex(b => b.name === book), [book, isApocrypha])
   const isNT         = useMemo(() => !isApocrypha && BOOK_MAP[book]?.testament === 'NT', [book, isApocrypha])
-  const isGreekTrans = useMemo(() => GREEK_TRANSLATIONS.has(translation as any), [translation])
+  const isGreekTrans    = useMemo(() => GREEK_TRANSLATIONS.has(translation as any), [translation])
+  const isOTTrans       = useMemo(() => OT_TRANSLATIONS.has(translation as any), [translation])
+  const isAnnotatedTrans = useMemo(() => ANNOTATED_TRANSLATIONS.has(translation as any), [translation])
 
   const goChapter = useCallback((delta: number) => {
     if (isApocrypha) {
@@ -694,8 +900,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
       footnotes={footnotesByVerse.get(item.verse)}
       compareText={parallelOn && compareTrans ? compareMap.get(item.verse) : undefined}
       compareLabel={parallelOn && compareTrans ? compareTrans : undefined}
+      isAnnotated={isAnnotatedTrans}
+      onStrongsPress={openStrongs}
     />
-  ), [selectedVerse, highlights, selectVerse, openConcordance, redLetterOn, book, chapter, footnotesByVerse, compareTrans, parallelOn, compareMap])
+  ), [selectedVerse, highlights, selectVerse, openConcordance, redLetterOn, book, chapter, footnotesByVerse, compareTrans, parallelOn, compareMap, isAnnotatedTrans, openStrongs])
   const currentSwatch = currentHighlightColor
     ? HIGHLIGHT_COLORS.find(c => c.key === currentHighlightColor)?.swatch
     : undefined
@@ -750,8 +958,9 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
       {/* Translation picker modal */}
       <Modal visible={translationPickerOpen} transparent animationType="fade" onRequestClose={() => setTranslationPickerOpen(false)}>
-        <TouchableOpacity style={modal.overlay} activeOpacity={1} onPress={() => setTranslationPickerOpen(false)}>
-          <View style={modal.sheet}>
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity style={modal.overlay} activeOpacity={1} onPress={() => setTranslationPickerOpen(false)} />
+          <View style={[modal.sheet, { paddingBottom: Math.max(32, 16 + bottomInset) }]}>
             <View style={modal.tabs}>
               <TouchableOpacity
                 style={[modal.tab, transPickerTab === 'primary' && modal.tabActive]}
@@ -773,7 +982,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
               {transPickerTab === 'primary' ? (
                 <>
                   <Text style={modal.sectionTitle}>English</Text>
-                  {TRANSLATIONS.filter(t => !t.greekOnly).map(t =>
+                  {TRANSLATIONS.filter(t => !t.greekOnly && !t.otOriginal && !t.otOnly).map(t =>
                     renderTransRow(t, translation === t.key, () => {
                       setTranslation(t.key)
                       if (compareTrans === t.key) setCompareTrans(null)
@@ -783,6 +992,24 @@ export default function ReaderScreen({ navigation, route }: Props) {
                   <View style={modal.sectionDivider} />
                   <Text style={modal.sectionTitle}>Greek New Testament</Text>
                   {TRANSLATIONS.filter(t => t.greekOnly).map(t =>
+                    renderTransRow(t, translation === t.key, () => {
+                      setTranslation(t.key)
+                      if (compareTrans === t.key) setCompareTrans(null)
+                      setTranslationPickerOpen(false)
+                    })
+                  )}
+                  <View style={modal.sectionDivider} />
+                  <Text style={modal.sectionTitle}>Old Testament Originals</Text>
+                  {TRANSLATIONS.filter(t => t.otOriginal).map(t =>
+                    renderTransRow(t, translation === t.key, () => {
+                      setTranslation(t.key)
+                      if (compareTrans === t.key) setCompareTrans(null)
+                      setTranslationPickerOpen(false)
+                    })
+                  )}
+                  <View style={modal.sectionDivider} />
+                  <Text style={modal.sectionTitle}>English Old Testament</Text>
+                  {TRANSLATIONS.filter(t => t.otOnly).map(t =>
                     renderTransRow(t, translation === t.key, () => {
                       setTranslation(t.key)
                       if (compareTrans === t.key) setCompareTrans(null)
@@ -820,7 +1047,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
                   </TouchableOpacity>
                   <View style={modal.sectionDivider} />
                   <Text style={modal.sectionTitle}>English</Text>
-                  {TRANSLATIONS.filter(t => !t.greekOnly && t.key !== translation).map(t =>
+                  {TRANSLATIONS.filter(t => !t.greekOnly && !t.otOriginal && !t.otOnly && t.key !== translation).map(t =>
                     renderTransRow(t, compareTrans === t.key, () => {
                       setCompareTrans(t.key); setParallelOn(true); setTranslationPickerOpen(false)
                     })
@@ -832,11 +1059,25 @@ export default function ReaderScreen({ navigation, route }: Props) {
                       setCompareTrans(t.key); setParallelOn(true); setTranslationPickerOpen(false)
                     })
                   )}
+                  <View style={modal.sectionDivider} />
+                  <Text style={modal.sectionTitle}>Old Testament Originals</Text>
+                  {TRANSLATIONS.filter(t => t.otOriginal && t.key !== translation).map(t =>
+                    renderTransRow(t, compareTrans === t.key, () => {
+                      setCompareTrans(t.key); setParallelOn(true); setTranslationPickerOpen(false)
+                    })
+                  )}
+                  <View style={modal.sectionDivider} />
+                  <Text style={modal.sectionTitle}>English Old Testament</Text>
+                  {TRANSLATIONS.filter(t => t.otOnly && t.key !== translation).map(t =>
+                    renderTransRow(t, compareTrans === t.key, () => {
+                      setCompareTrans(t.key); setParallelOn(true); setTranslationPickerOpen(false)
+                    })
+                  )}
                 </>
               )}
             </ScrollView>
           </View>
-        </TouchableOpacity>
+        </View>
       </Modal>
 
       {/* Verses */}
@@ -852,6 +1093,11 @@ export default function ReaderScreen({ navigation, route }: Props) {
         <View style={styles.center}>
           <Text style={styles.errorText}>{translation} is a Greek New Testament only.</Text>
           <Text style={styles.errorSubText}>Switch to a different translation to read the Old Testament.</Text>
+        </View>
+      ) : isOTTrans && isNT ? (
+        <View style={styles.center}>
+          <Text style={styles.errorText}>{translation} is an Old Testament only translation.</Text>
+          <Text style={styles.errorSubText}>Switch to a different translation to read the New Testament.</Text>
         </View>
       ) : verses.length === 0 ? (
         <View style={styles.center}>
@@ -878,6 +1124,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
             }, 100)
           }}
           renderItem={renderVerseRow}
+          extraData={renderVerseRow}
         />
       )}
 
@@ -926,7 +1173,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
           <TouchableOpacity style={styles.actionBtn} onPress={() => setShareModalOpen(true)} activeOpacity={0.7}>
             <Ionicons name="share-outline" size={22} color={colors.textSecondary} />
-            <Text style={styles.actionLabel}>Share</Text>
+            <Text style={styles.actionLabel}>Copy / Share</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.actionBtn} onPress={() => setNotesOpen(true)} activeOpacity={0.7}>
@@ -1017,6 +1264,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
           chapter={chapter}
           verses={verses}
           anchorVerse={selectedVerse}
+          translation={translation}
         />
       )}
 
@@ -1027,6 +1275,21 @@ export default function ReaderScreen({ navigation, route }: Props) {
         loading={concordanceLoading}
         onClose={() => setConcordanceOpen(false)}
         onNavigate={(b, ch, v) => navigation.setParams({ book: b, chapter: ch, verse: v, apocrypha: false })}
+      />
+
+      <StrongsModal
+        visible={strongsOpen}
+        entry={strongsEntry}
+        loading={strongsLoading}
+        onClose={() => setStrongsOpen(false)}
+        onGoToWords={() => {
+          setStrongsOpen(false)
+          const v = currentStrongsVerseRef.current
+          setSelectedVerse(v)
+          setSelected({ book, chapter, verse: v })
+          setWordFocus(currentStrongsRef.current)
+          navigation.getParent()?.navigate('Study' as never)
+        }}
       />
 
       {/* Notes modal */}
@@ -1162,6 +1425,7 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
   verseTextSelected: { color: c.textAccent },
   redLetterText: { color: '#D03030' },
   redLetterSelected: { color: '#FF6B6B' },
+  italicText: { fontStyle: 'italic' },
   fnMarker: { color: c.accent, fontSize: 14, fontWeight: '700' },
   fnMarkerSelected: { color: '#7ab8e8' },
   fnPopup: {
@@ -1242,6 +1506,8 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
     paddingHorizontal: 16, paddingVertical: 8,
   },
   studyBtnLabel: { fontSize: 14, fontWeight: '700', color: c.bgPrimary },
+  strongsNum:         { fontSize: 10, color: c.accent, fontWeight: '700' },
+  strongsNumSelected: { color: '#7ab8e8' },
   })
   m.set(k, s)
   return s
@@ -1277,11 +1543,29 @@ const makeModal = (c: ThemeColors) => StyleSheet.create({
   },
   cancelLabel: { fontSize: 15, fontWeight: '600', color: c.textSecondary },
   shareBtn: {
-    flex: 2, paddingVertical: 14, borderRadius: 12,
+    flex: 1, paddingVertical: 14, borderRadius: 12,
     backgroundColor: c.accent, alignItems: 'center',
-    flexDirection: 'row', justifyContent: 'center', gap: 8,
+    flexDirection: 'row', justifyContent: 'center', gap: 6,
   },
-  shareLabel: { fontSize: 15, fontWeight: '700', color: c.bgPrimary },
+  shareLabel: { fontSize: 14, fontWeight: '700', color: c.bgPrimary },
+  copyBtn: {
+    flex: 1, paddingVertical: 14, borderRadius: 12,
+    backgroundColor: c.bgTertiary, alignItems: 'center',
+    flexDirection: 'row', justifyContent: 'center', gap: 6,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: c.accent,
+  },
+  copyLabel: { fontSize: 14, fontWeight: '700', color: c.accent },
+  shareSheet: {
+    backgroundColor: c.bgSecondary,
+    borderTopLeftRadius: 20, borderTopRightRadius: 20,
+    paddingTop: 20, height: '62%',
+  },
+  sharePreview: {
+    flex: 1, marginHorizontal: 20, marginBottom: 16,
+    backgroundColor: c.bgCard, borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: c.border,
+  },
+  shareBtnRow: { flexDirection: 'row', gap: 10, paddingHorizontal: 20 },
 
   tabs: {
     flexDirection: 'row',
@@ -1355,6 +1639,13 @@ const makeConc = (c: ThemeColors) => StyleSheet.create({
   ref:   { fontSize: 13, fontWeight: '700', color: c.accent, marginBottom: 3 },
   text:  { fontSize: 14, lineHeight: 20, color: c.textSecondary },
   separator: { height: StyleSheet.hairlineWidth, backgroundColor: c.border, marginLeft: 20 },
+  goToWordsBtn: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6,
+    marginHorizontal: 16, marginBottom: 20, marginTop: 4,
+    paddingVertical: 12, borderRadius: 12,
+    backgroundColor: c.accent,
+  },
+  goToWordsBtnLabel: { fontSize: 14, fontWeight: '700', color: c.bgPrimary },
 })
 
 const makeNoteModal = (c: ThemeColors) => StyleSheet.create({

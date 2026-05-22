@@ -9,7 +9,7 @@ import { useUserDb } from '../db/UserDbProvider'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
-import { searchVerses, searchVersesFuzzy, getSearchHistory, addSearchHistory, deleteSearchHistory } from '../db/queries'
+import { searchVerses, searchVersesFuzzy, searchOriginalLanguage, detectQueryScript, normalizeForSearch, getSearchHistory, addSearchHistory, deleteSearchHistory } from '../db/queries'
 import { useTranslation, TRANSLATIONS } from '../context/TranslationContext'
 import { BOOKS } from '../data/books'
 import { matchBookRefs, type BookRef } from '../lib/parsePassage'
@@ -64,6 +64,7 @@ export default function SearchScreen() {
   const [correctedTerms, setCorrectedTerms] = useState<string[]>([])
   const [pickerOpen, setPickerOpen] = useState(false)
   const [bookPickerOpen, setBookPickerOpen] = useState(false)
+  const [searchScript, setSearchScript] = useState<'latin' | 'greek' | 'hebrew'>('latin')
 
   // Committed filter state
   const [testament, setTestament]         = useState<Testament>('all')
@@ -94,13 +95,19 @@ export default function SearchScreen() {
   const bookRefs = useMemo(() => matchBookRefs(queryTrimmed), [queryTrimmed])
 
   const highlightRegex = useMemo(() => {
+    if (searchScript !== 'latin') return null
     const terms = isFuzzy && correctedTerms.length > 0
       ? correctedTerms
       : queryTrimmed.split(/\s+/).filter(Boolean)
     if (terms.length === 0) return null
     const escaped = terms.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')
     return new RegExp(`(${escaped})`, 'gi')
-  }, [queryTrimmed, isFuzzy, correctedTerms])
+  }, [queryTrimmed, isFuzzy, correctedTerms, searchScript])
+
+  const normSearchTerms = useMemo(() => {
+    if (searchScript === 'latin') return []
+    return queryTrimmed.split(/\s+/).filter(Boolean).map(normalizeForSearch).filter(Boolean)
+  }, [queryTrimmed, searchScript])
 
   const doSearch = useCallback(async (
     q: string,
@@ -118,6 +125,14 @@ export default function SearchScreen() {
     addSearchHistory(userDb, trimmed).catch(() => {})
     setHistory(prev => [trimmed, ...prev.filter(h => h !== trimmed)].slice(0, 20))
     const books = booksForSearch(test, selBooks)
+    const script = detectQueryScript(trimmed)
+    if (script !== 'latin') {
+      setSearchScript(script)
+      setResults(await searchOriginalLanguage(db, trimmed, script, books, trans))
+      setLoading(false)
+      return
+    }
+    setSearchScript('latin')
     const rows = await searchVerses(db, trimmed, trans, books)
     const qWords = trimmed.toLowerCase().split(/\s+/).filter(Boolean)
     const hasTypo = qWords.some(w => w.length >= 4 && !rows.some(r => r.text.toLowerCase().includes(w)))
@@ -224,29 +239,32 @@ export default function SearchScreen() {
 
       {/* Translation picker modal */}
       <Modal visible={pickerOpen} transparent animationType="fade" onRequestClose={() => setPickerOpen(false)}>
-        <TouchableOpacity style={modal.overlay} activeOpacity={1} onPress={() => setPickerOpen(false)}>
+        <View style={{ flex: 1 }}>
+          <TouchableOpacity style={modal.overlay} activeOpacity={1} onPress={() => setPickerOpen(false)} />
           <View style={modal.sheet}>
             <Text style={modal.title}>Bible Translation</Text>
-            {TRANSLATIONS.map(t => (
-              <TouchableOpacity
-                key={t.key}
-                style={modal.row}
-                activeOpacity={0.7}
-                onPress={() => {
-                  setTranslation(t.key)
-                  setPickerOpen(false)
-                  if (searched && queryTrimmed) doSearch(query, t.key)
-                }}
-              >
-                <View style={modal.info}>
-                  <Text style={[modal.key, translation === t.key && modal.keyActive]}>{t.label}</Text>
-                  <Text style={modal.full}>{t.full}</Text>
-                </View>
-                {translation === t.key && <Ionicons name="checkmark" size={18} color={colors.accent} />}
-              </TouchableOpacity>
-            ))}
+            <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40, gap: 4 }}>
+              {TRANSLATIONS.map(t => (
+                <TouchableOpacity
+                  key={t.key}
+                  style={modal.row}
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    setTranslation(t.key)
+                    setPickerOpen(false)
+                    if (searched && queryTrimmed) doSearch(query, t.key)
+                  }}
+                >
+                  <View style={modal.info}>
+                    <Text style={[modal.key, translation === t.key && modal.keyActive]}>{t.label}</Text>
+                    <Text style={modal.full}>{t.full}</Text>
+                  </View>
+                  {translation === t.key && <Ionicons name="checkmark" size={18} color={colors.accent} />}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
           </View>
-        </TouchableOpacity>
+        </View>
       </Modal>
 
       {/* Book / testament filter modal */}
@@ -421,17 +439,25 @@ export default function SearchScreen() {
             </View>
           ) : null}
           renderItem={({ item }) => {
-            const parts = highlightRegex
-              ? item.text.split(highlightRegex).map((p, i) => ({ text: p, match: i % 2 === 1 }))
-              : [{ text: item.text, match: false }]
+            let content: React.ReactNode
+            if (searchScript !== 'latin') {
+              content = item.text.split(/(\s+)/).map((token, i) => {
+                const norm = normalizeForSearch(token)
+                const isMatch = normSearchTerms.some(t => norm.includes(t))
+                return isMatch ? <Text key={i} style={styles.matchText}>{token}</Text> : token
+              })
+            } else {
+              const parts = highlightRegex
+                ? item.text.split(highlightRegex).map((p, i) => ({ text: p, match: i % 2 === 1 }))
+                : [{ text: item.text, match: false }]
+              content = parts.map((p, i) =>
+                p.match ? <Text key={i} style={styles.matchText}>{p.text}</Text> : p.text
+              )
+            }
             return (
               <TouchableOpacity style={styles.resultRow} activeOpacity={0.7} onPress={() => navigateToVerse(item)}>
                 <Text style={styles.ref}>{item.book} {item.chapter}:{item.verse}</Text>
-                <Text style={styles.verseText}>
-                  {parts.map((p, i) =>
-                    p.match ? <Text key={i} style={styles.matchText}>{p.text}</Text> : p.text
-                  )}
-                </Text>
+                <Text style={styles.verseText}>{content}</Text>
               </TouchableOpacity>
             )
           }}
@@ -587,7 +613,7 @@ const makeModal = (c: ThemeColors) => StyleSheet.create({
   sheet: {
     backgroundColor: c.bgSecondary,
     borderTopLeftRadius: 20, borderTopRightRadius: 20,
-    paddingTop: 20, paddingHorizontal: 20, paddingBottom: 40, gap: 4,
+    paddingTop: 20, maxHeight: '80%',
   },
   title: { fontSize: 17, fontWeight: '700', color: c.textPrimary, textAlign: 'center', marginBottom: 8 },
   row: {

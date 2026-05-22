@@ -19,6 +19,9 @@ import { SelectedVerseProvider } from './src/context/SelectedVerseContext'
 import { TranslationProvider } from './src/context/TranslationContext'
 import { OnboardingProvider, useOnboarding } from './src/context/OnboardingContext'
 import { RedLetterProvider } from './src/context/RedLetterContext'
+import { WordFocusProvider } from './src/context/WordFocusContext'
+import { TabletLayoutProvider } from './src/context/TabletLayoutContext'
+import { ParallelTranslationProvider } from './src/context/ParallelTranslationContext'
 import TutorialModal from './src/components/TutorialModal'
 import { Colors } from './src/theme/colors'
 
@@ -65,11 +68,17 @@ export default function App() {
           <SelectedVerseProvider>
           <TranslationProvider>
           <RedLetterProvider>
+          <WordFocusProvider>
+          <TabletLayoutProvider>
+          <ParallelTranslationProvider>
           <OnboardingProvider>
             <DatabaseProvider>
               <AppShell />
             </DatabaseProvider>
           </OnboardingProvider>
+          </ParallelTranslationProvider>
+          </TabletLayoutProvider>
+          </WordFocusProvider>
           </RedLetterProvider>
           </TranslationProvider>
           </SelectedVerseProvider>

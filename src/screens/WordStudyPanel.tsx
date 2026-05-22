@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import {
   ActivityIndicator, FlatList, Modal, ScrollView, StyleSheet,
   Text, TouchableOpacity, View,
@@ -10,13 +10,14 @@ import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import {
   getGreekWords, getHebrewWords, getStrongsEntry,
-  getBdbEntry, getThayersEntry, getVerse, getStrongsConcordance,
+  getBdbEntry, getThayersEntry, getVerse, getStrongsConcordance, normalizeStrongsNumber,
 } from '../db/queries'
 import type { GreekWord, HebrewWord, StrongsEntry, LexiconEntry, StrongsConcordanceResult, GreekSource } from '../db/queries'
 import { decodeMorphology, TAG_DEFINITIONS, GREEK_TAG_EXAMPLES, HEBREW_TAG_EXAMPLES } from '../utils/morphology'
 import type { SelectedVerse, RootTabParamList } from '../types'
 import { BOOKS } from '../data/books'
 import { useTheme } from '../context/ThemeContext'
+import { useWordFocus } from '../context/WordFocusContext'
 import { useReaderFont } from '../context/FontFamilyContext'
 import type { FontScopeKey } from '../context/FontFamilyContext'
 import type { ThemeColors } from '../theme/themes'
@@ -350,6 +351,8 @@ export default function WordStudyPanel({ selected }: Props) {
   const navigation = useNavigation<BottomTabNavigationProp<RootTabParamList>>()
   const isNT = NT_BOOKS.has(selected.book)
 
+  const { wordFocus, setWordFocus } = useWordFocus()
+
   const [source, setSource]       = useState<GreekSource>('sblgnt')
   const [favSource, setFavSource] = useState<GreekSource | null>(null)
 
@@ -376,9 +379,11 @@ export default function WordStudyPanel({ selected }: Props) {
   const [concordanceOpen, setConcordanceOpen]       = useState(false)
   const [concordanceResults, setConcordanceResults] = useState<StrongsConcordanceResult[]>([])
   const [concordanceLoading, setConcordanceLoading] = useState(false)
-  const verseCache      = useRef<Map<string, string>>(new Map())
-  const scrollViewRef   = useRef<ScrollView>(null)
-  const firstMentionRef = useRef<View>(null)
+  const verseCache        = useRef<Map<string, string>>(new Map())
+  const scrollViewRef     = useRef<ScrollView>(null)
+  const firstMentionRef   = useRef<View>(null)
+  const handleWordPressRef = useRef(handleWordPress)
+  useLayoutEffect(() => { handleWordPressRef.current = handleWordPress })
 
   useEffect(() => {
     if (!selected.verse) return
@@ -393,6 +398,13 @@ export default function WordStudyPanel({ selected }: Props) {
       : getHebrewWords(db, selected.book, selected.chapter, selected.verse)
     fetch.then(w => { setWords(w); setLoading(false) }).catch(() => setLoading(false))
   }, [selected.book, selected.chapter, selected.verse, source])
+
+  useEffect(() => {
+    if (!wordFocus || loading || !words.length) return
+    const match = words.find(w => normalizeStrongsNumber(w.strongs) === wordFocus)
+    if (match) handleWordPressRef.current(match.strongs, match.position)
+    setWordFocus(null)
+  }, [wordFocus, words, loading, setWordFocus])
 
   useEffect(() => {
     if (!clickedRef) { setVersePreview(null); return }

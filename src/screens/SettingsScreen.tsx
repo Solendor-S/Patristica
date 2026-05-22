@@ -19,6 +19,7 @@ import { useStartupMode, STARTUP_MODE_OPTIONS } from '../context/StartupModeCont
 import type { StartupModeKey } from '../context/StartupModeContext'
 import { useReaderFont, FONT_FAMILY_OPTIONS, FONT_SCOPE_OPTIONS, FAMILY_MAP } from '../context/FontFamilyContext'
 import type { FontFamilyKey, FontScopeKey } from '../context/FontFamilyContext'
+import { useTabletLayout } from '../context/TabletLayoutContext'
 
 // ── Appearance section ────────────────────────────────────
 
@@ -72,7 +73,7 @@ function AppearanceSection() {
 
 // ── Reading section ───────────────────────────────────────
 
-type ExpandedRow = 'lineSpacing' | 'translation' | 'navDepth' | 'startupMode' | 'fontFamily' | 'fontScope' | null
+type ExpandedRow = 'lineSpacing' | 'translation' | 'navDepth' | 'startupMode' | 'fontFamily' | 'fontScope' | 'tabletLayout' | null
 type PickerOption = { key: string; label: string; description: string }
 
 function PickerRow({
@@ -149,6 +150,7 @@ function ReadingSection() {
   const { navDepth, setNavDepth } = useNavDepth()
   const { startupMode, setStartupMode } = useStartupMode()
   const { familyKey, fontScope, setFontFamily, setFontScope } = useReaderFont()
+  const { tabletLayout, setTabletLayout } = useTabletLayout()
   const [expanded, setExpanded] = useState<ExpandedRow>(null)
 
   const toggle = (row: ExpandedRow) =>
@@ -253,6 +255,24 @@ function ReadingSection() {
           options={STARTUP_MODE_OPTIONS}
           selectedKey={startupMode}
           onSelect={key => { setStartupMode(key as StartupModeKey); setExpanded(null) }}
+          s={s}
+          colors={colors}
+        />
+
+        <View style={s.separator} />
+
+        <PickerRow
+          icon="tablet-landscape-outline"
+          rowLabel="Tablet layout"
+          valueLabel={tabletLayout ? 'On' : 'Off'}
+          expanded={expanded === 'tabletLayout'}
+          onToggle={() => toggle('tabletLayout')}
+          options={[
+            { key: 'false', label: 'Off', description: 'Standard single-column layout' },
+            { key: 'true',  label: 'On',  description: 'Split-pane in landscape — reader left, study right' },
+          ]}
+          selectedKey={String(tabletLayout)}
+          onSelect={key => { setTabletLayout(key === 'true'); setExpanded(null) }}
           s={s}
           colors={colors}
         />

@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
+import { useWordFocus } from '../context/WordFocusContext'
 import { getCommentary, getCrossRefs, getJosephusForVerse, getVariantsForVerse, getVerseText, getMaxVerse } from '../db/queries'
 import type { JosephusEntry } from '../db/queries'
 import type { TextualVariant } from '../types'
@@ -387,6 +388,11 @@ export default function StudyScreen() {
   const navigation = useNavigation<NavProp>()
 
   const [activeTab, setActiveTab] = useState<StudyTab>('fathers')
+  const { wordFocus } = useWordFocus()
+
+  useEffect(() => {
+    if (wordFocus && activeTab !== 'words') setActiveTab('words')
+  }, [wordFocus, activeTab])
   const [entries, setEntries] = useState<CommentaryEntry[]>([])
   const [crossRefs, setCrossRefs] = useState<CrossRef[]>([])
   const [histMode, setHistMode] = useState<HistMode>('verse')
@@ -441,11 +447,16 @@ export default function StudyScreen() {
     : null
 
   const goToVerse = useCallback((ref: CrossRef) => {
-    navigation.navigate('Bible' as any, {
-      screen: 'Reader',
-      params: { book: ref.ref_book, chapter: ref.ref_chapter, verse: ref.ref_verse },
-    })
-  }, [navigation])
+    setSelected({ book: ref.ref_book, chapter: ref.ref_chapter, verse: ref.ref_verse })
+    try {
+      // In split-pane mode this screen runs in an independent NavigationContainer
+      // and can't reach the Bible tab — setSelected above handles the Reader update.
+      navigation.navigate('Bible' as any, {
+        screen: 'Reader',
+        params: { book: ref.ref_book, chapter: ref.ref_chapter, verse: ref.ref_verse },
+      })
+    } catch {}
+  }, [navigation, setSelected])
 
   const loading = activeTab === 'fathers' ? loadingFathers : activeTab === 'crossrefs' ? loadingRefs : false
   const count   = activeTab === 'fathers' ? entries.length : crossRefs.length

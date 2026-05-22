@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import {
-  View, Text, TouchableOpacity, ScrollView, StyleSheet, ActivityIndicator,
+  View, Text, TouchableOpacity, ScrollView, StyleSheet, ActivityIndicator, Linking,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { useTheme } from '../context/ThemeContext'
@@ -57,6 +57,11 @@ function SourceSection({ name, children }: { name: string; children: React.React
       {overflows && (
         <TouchableOpacity style={s.showMoreBtn} onPress={() => setExpanded(e => !e)} activeOpacity={0.7}>
           <Text style={s.showMoreLabel}>{expanded ? 'Show less ↑' : 'Show more ↓'}</Text>
+        </TouchableOpacity>
+      )}
+      {name === 'bibleref' && (
+        <TouchableOpacity onPress={() => Linking.openURL('https://www.gotquestions.org')} activeOpacity={0.7}>
+          <Text style={s.attributionText}>© Got Questions Ministries · gotquestions.org</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -320,6 +325,7 @@ const makeStyles = (c: ThemeColors, fontFamily?: string, fontScope: FontScopeKey
   },
   showMoreBtn:   { alignSelf: 'flex-start', marginTop: 4 },
   showMoreLabel: { color: c.accent, fontSize: 13 },
+  attributionText: { fontSize: 11, color: c.textMuted, marginTop: 8, textDecorationLine: 'underline' },
 
   bodyText: {
     color: c.textSecondary,
