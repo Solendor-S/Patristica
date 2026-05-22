@@ -25,7 +25,7 @@ import { useParallelTranslation } from '../context/ParallelTranslationContext'
 import type { Translation } from '../context/TranslationContext'
 import { useOnboarding } from '../context/OnboardingContext'
 import { useRedLetter } from '../context/RedLetterContext'
-import { isRedLetter, splitRedLetterVerse } from '../data/redLetter'
+import { isRedLetter, splitRedLetterVerse, splitByWMarkers } from '../data/redLetter'
 import type { Segment } from '../data/redLetter'
 import { useTheme } from '../context/ThemeContext'
 import { useLineSpacing } from '../context/LineSpacingContext'
@@ -147,8 +147,10 @@ const VerseRow = memo(function VerseRow({
   const { fontFamily, fontScope } = useReaderFont()
   const styles = useMemo(() => makeStyles(colors, lineHeight, fontSize, fontFamily, fontScope), [colors, lineHeight, fontSize, fontFamily, fontScope])
 
+  const cleanText = stripUsfm(text)
+
   if (isAnnotated) {
-    const tokens = parseKJVPlus(text)
+    const tokens = parseKJVPlus(cleanText)
     const annotatedText = (
       <Text style={[styles.verseText, isSelected && styles.verseTextSelected]}>
         {tokens.map((tok, i) => (
@@ -176,7 +178,7 @@ const VerseRow = memo(function VerseRow({
               <View style={styles.compareDivider} />
               <View style={styles.compareSecondary}>
                 <Text style={styles.compareLabel}>{compareLabel}</Text>
-                <Text style={styles.compareText}>{compareText}</Text>
+                <Text style={styles.compareText}>{stripUsfm(compareText)}</Text>
               </View>
             </View>
           ) : annotatedText}
@@ -185,11 +187,18 @@ const VerseRow = memo(function VerseRow({
     )
   }
 
-  const hasItalics = text.includes('{')
+  const hasItalics = cleanText.includes('{')
   const isRL = redLetterOn && isRedLetter(book, chapter, verse)
-  const baseSegments = isRL ? splitRedLetterVerse(text) : [{ t: text, red: false }]
+
+  // Try marker-based coloring first (\+w markers); fall back to heuristic if none
+  const markerSegs = redLetterOn ? splitByWMarkers(text) : null
+  const baseSegments = markerSegs
+    ? markerSegs.map(s => ({ ...s, t: stripUsfm(s.t) }))
+    : isRL
+    ? splitRedLetterVerse(cleanText)
+    : [{ t: cleanText, red: false }]
   const segments: Segment[] = hasItalics ? baseSegments.flatMap(applyItalics) : baseSegments
-  const fnByWord = footnotes?.length ? buildFnByWord(text, footnotes) : null
+  const fnByWord = footnotes?.length ? buildFnByWord(cleanText, footnotes) : null
 
   if (isSelected) {
     const tagged: TaggedWord[] = segments.flatMap(seg =>
@@ -229,7 +238,7 @@ const VerseRow = memo(function VerseRow({
               <View style={styles.compareDivider} />
               <View style={styles.compareSecondary}>
                 <Text style={styles.compareLabel}>{compareLabel}</Text>
-                <Text style={styles.compareText}>{compareText}</Text>
+                <Text style={styles.compareText}>{stripUsfm(compareText)}</Text>
               </View>
             </View>
           ) : (
@@ -266,7 +275,7 @@ const VerseRow = memo(function VerseRow({
               <View style={styles.compareDivider} />
               <View style={styles.compareSecondary}>
                 <Text style={styles.compareLabel}>{compareLabel}</Text>
-                <Text style={styles.compareText}>{compareText}</Text>
+                <Text style={styles.compareText}>{stripUsfm(compareText)}</Text>
               </View>
             </View>
           ) : segments.length === 1 && !segments[0].red && !segments[0].italic ? (
@@ -398,6 +407,14 @@ function VerseSlider({ min, max, value, onChange, label, colors }: {
 }
 
 const stripMarkers = (t: string) => t.replace(/[{}]/g, '')
+const stripUsfm = (t: string) =>
+  t
+    .replace(/\\\+?add\*/g, '}')         // \+add* → close italic brace
+    .replace(/\\\+?add\s*/g, '{')        // \+add  → open italic brace
+    .replace(/\\\+?w\*/g, '')            // \+w*   → remove
+    .replace(/\\\+?w\s*/g, '')           // \+w    → remove
+    .replace(/\\\+?[a-z]{1,5}\*/g, '')  // any other closing USFM markers
+    .replace(/\\\+?[a-z]{1,5}\s+/g, '') // any other opening USFM markers
 
 // ── Share range modal ─────────────────────────────────────
 

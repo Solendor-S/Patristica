@@ -22,7 +22,7 @@ const RANGES: R[] = [
   ['Matthew', 12, 3, 8], ['Matthew', 12, 11, 12], ['Matthew', 12, 25, 37],
   ['Matthew', 12, 39, 45], ['Matthew', 12, 48, 50],
   ['Matthew', 13, 3, 9], ['Matthew', 13, 11, 23], ['Matthew', 13, 24, 30],
-  ['Matthew', 13, 31, 33], ['Matthew', 13, 37, 43], ['Matthew', 13, 44, 50],
+  ['Matthew', 13, 31, 33], ['Matthew', 13, 37, 43], ['Matthew', 13, 44, 50], ['Matthew', 13, 51, 51],
   ['Matthew', 13, 52, 52], ['Matthew', 13, 57, 57],
   ['Matthew', 14, 16, 16], ['Matthew', 14, 18, 18], ['Matthew', 14, 27, 27],
   ['Matthew', 14, 29, 29], ['Matthew', 14, 31, 31],
@@ -219,10 +219,10 @@ export function isRedLetter(book: string, chapter: number, verse: number): boole
 export interface Segment { t: string; red: boolean; italic?: boolean }
 
 // Narrator speech-attribution verbs in KJV ("And Jesus said unto them,")
-const ATTRIB_VERB_RE = /\b(said|saith|answered|spake|cried)\b/i
+const ATTRIB_VERB_RE = /\b(answered|spake|cried|saying)\b/i
 
 // Explicit "Jesus [verb]" attribution — up to 5 words between "Jesus" and the verb
-const JESUS_ATTRIB_RE = /\bJesus(?:\s+\w+){0,5}?\s+(said|saith|answered|spake|cried)\b/i
+const JESUS_ATTRIB_RE = /\bJesus(?:\s+\w+){0,9}?\s+(said|saith|answered|spake|cried)\b/i
 
 function trySplit(text: string, matchEnd: number): Segment[] | null {
   const commaIdx = text.indexOf(',', matchEnd)
@@ -241,6 +241,31 @@ function trySplit(text: string, matchEnd: number): Segment[] | null {
  * Priority 2: first generic speech verb within 120 chars.
  * Fallback: whole verse is speech.
  */
+/**
+ * Parses \+w...\+w* markers as red segments. Returns null if no markers found.
+ * Punctuation/whitespace between red segments is colored red if short enough.
+ */
+export function splitByWMarkers(text: string): Segment[] | null {
+  if (!text.includes('\\+w')) return null
+  const re = /\\\+w\s*([\s\S]*?)\\\+w\*/g
+  const segs: Segment[] = []
+  let last = 0, hasRed = false
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) {
+      const gap = text.slice(last, m.index)
+      const isPunct = hasRed && /^[\s ;:,.!\-—–?'"'"«»]+$/.test(gap)
+      segs.push({ t: gap, red: isPunct })
+    }
+    segs.push({ t: m[1], red: true })
+    hasRed = true
+    last = m.index + m[0].length
+  }
+  if (!hasRed) return null
+  if (last < text.length) segs.push({ t: text.slice(last), red: false })
+  return segs
+}
+
 export function splitRedLetterVerse(text: string): Segment[] {
   const jm = JESUS_ATTRIB_RE.exec(text)
   if (jm) {
@@ -250,8 +275,13 @@ export function splitRedLetterVerse(text: string): Segment[] {
 
   const m = ATTRIB_VERB_RE.exec(text)
   if (m && m.index <= 120) {
-    const result = trySplit(text, m.index + m[0].length)
-    if (result) return result
+    // Skip if preceded by a relative clause ("which saith", "that said") —
+    // those attribute the prophecy/text, not the current speaker
+    const pre = text.slice(Math.max(0, m.index - 10), m.index).toLowerCase()
+    if (!pre.includes('which') && !pre.includes('that ')) {
+      const result = trySplit(text, m.index + m[0].length)
+      if (result) return result
+    }
   }
 
   return [{ t: text, red: true }]
