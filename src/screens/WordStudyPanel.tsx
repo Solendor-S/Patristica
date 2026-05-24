@@ -330,6 +330,15 @@ function StrongsConcordanceModal({
   )
 }
 
+// Strong's numbers that are alternate forms of a root lemma.
+// Some sources (e.g. KJV+ interlinear) use the inflected-form number while
+// greek_words tables use the canonical lemma number — resolve before matching.
+const STRONGS_REDIRECTS: Record<string, string> = {
+  G2258: 'G1510', // ἦν (imperfect "was/were") → εἰμί
+  G5607: 'G1510', // ὤν  (participle "being")  → εἰμί
+  G5600: 'G1510', // ὦ   (subjunctive)          → εἰμί
+}
+
 // ── Types ─────────────────────────────────────────────────
 
 interface ActiveKey { strongs: string; position: number }
@@ -401,7 +410,11 @@ export default function WordStudyPanel({ selected }: Props) {
 
   useEffect(() => {
     if (!wordFocus || loading || !words.length) return
-    const match = words.find(w => normalizeStrongsNumber(w.strongs) === wordFocus)
+    const canonical = STRONGS_REDIRECTS[wordFocus] ?? wordFocus
+    const match = words.find(w => {
+      const n = normalizeStrongsNumber(w.strongs)
+      return n === wordFocus || n === canonical
+    })
     if (match) handleWordPressRef.current(match.strongs, match.position)
     setWordFocus(null)
   }, [wordFocus, words, loading, setWordFocus])

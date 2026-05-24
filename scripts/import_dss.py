@@ -1,184 +1,157 @@
 """
-Import Dead Sea Scrolls (DSS) data from STEPBible TAHOT into bible.db.
+Import Dead Sea Scrolls (biblical) Hebrew into dss_words table.
 
-Sources:
-  TAHOT.txt — from https://github.com/tyndale-house/STEPBible-Data
-  Format: tab-separated with columns including a Source field that marks DSS words.
+Source: github.com/ETCBC/dss (CC BY-NC 4.0)
+        Martin G. Abegg's transcription, provided to ETCBC free of charge.
+Format: Text-Fabric .tf feature files
+
+Requirements:
+    pip install text-fabric
+
+The script uses Text-Fabric to fetch the ETCBC/dss dataset automatically on first run
+(downloads ~100 MB to ~/text-fabric-data/). Subsequent runs use the cached copy.
 
 Usage:
-  python scripts/import_dss.py --db assets/db/bible.db --src path/to/TAHOT.txt
+    python scripts/import_dss.py --db assets/db/bible.db
 
-The script:
-  1. Parses TAHOT.txt and extracts words with source tag containing 'DSS'
-  2. Inserts word-per-row into dss_words table
-  3. Concatenates gloss per verse → inserts into bible_translations as 'E_DSS'
+The dataset downloads automatically. To use a local clone of ETCBC/dss instead,
+pass --offline pointing to its tf/ directory.
 """
 
 import argparse
 import sqlite3
 import sys
-import urllib.request
-from pathlib import Path
 
-TAHOT_URL = 'https://raw.githubusercontent.com/tyndale-house/STEPBible-Data/master/TAHOT%20OT%20Hebrew%20(Tyndale%20House%20STEPBible%20-%20CC%20BY%204.0).txt'
+try:
+    from tf.fabric import Fabric
+except ImportError:
+    print("ERROR: text-fabric not installed. Run: pip install text-fabric", file=sys.stderr)
+    sys.exit(1)
 
-# Map TAHOT book abbreviations → app canonical book names
+TF_CACHE = r'~/text-fabric-data/github/ETCBC/dss/tf/2.0'
+
+# ETCBC book abbreviations → app canonical names
+# Only books with real canonical chapter/verse refs in the DSS corpus are included.
 BOOK_MAP = {
-    'Gen': 'Genesis', 'Exo': 'Exodus', 'Lev': 'Leviticus', 'Num': 'Numbers',
-    'Deu': 'Deuteronomy', 'Jos': 'Joshua', 'Jdg': 'Judges', 'Rut': 'Ruth',
-    '1Sa': '1 Samuel', '2Sa': '2 Samuel', '1Ki': '1 Kings', '2Ki': '2 Kings',
-    '1Ch': '1 Chronicles', '2Ch': '2 Chronicles', 'Ezr': 'Ezra', 'Neh': 'Nehemiah',
-    'Est': 'Esther', 'Job': 'Job', 'Psa': 'Psalms', 'Pro': 'Proverbs',
-    'Ecc': 'Ecclesiastes', 'Sol': 'Song of Solomon', 'Isa': 'Isaiah',
-    'Jer': 'Jeremiah', 'Lam': 'Lamentations', 'Eze': 'Ezekiel', 'Dan': 'Daniel',
-    'Hos': 'Hosea', 'Joe': 'Joel', 'Amo': 'Amos', 'Oba': 'Obadiah', 'Jon': 'Jonah',
-    'Mic': 'Micah', 'Nah': 'Nahum', 'Hab': 'Habakkuk', 'Zep': 'Zephaniah',
-    'Hag': 'Haggai', 'Zec': 'Zechariah', 'Mal': 'Malachi',
+    'Gen':   'Genesis',       'Ex':    'Exodus',        'Lev':  'Leviticus',
+    'Num':   'Numbers',       'Deut':  'Deuteronomy',   'Josh': 'Joshua',
+    'Judg':  'Judges',        'Ruth':  'Ruth',           '1Sam': '1 Samuel',
+    '2Sam':  '2 Samuel',      '1Kgs':  '1 Kings',        '2Kgs': '2 Kings',
+    '1Chr':  '1 Chronicles',  '2Chr':  '2 Chronicles',   'Ezra': 'Ezra',
+    'Neh':   'Nehemiah',      'Est':   'Esther',         'Job':  'Job',
+    'Ps':    'Psalms',        'Prov':  'Proverbs',       'Eccl': 'Ecclesiastes',
+    'Song':  'Song of Solomon', 'Is':  'Isaiah',         'Jer':  'Jeremiah',
+    'Lam':   'Lamentations',  'Ezek':  'Ezekiel',        'Dan':  'Daniel',
+    'Hos':   'Hosea',         'Joel':  'Joel',            'Amos': 'Amos',
+    'Obad':  'Obadiah',       'Jonah': 'Jonah',          'Mic':  'Micah',
+    'Nah':   'Nahum',         'Hab':   'Habakkuk',        'Zeph': 'Zephaniah',
+    'Hag':   'Haggai',        'Zech':  'Zechariah',      'Mal':  'Malachi',
 }
 
 
-def download_tahot(dest: Path) -> None:
-    print(f'Downloading TAHOT from STEPBible GitHub…')
-    urllib.request.urlretrieve(TAHOT_URL, dest)
-    print(f'Saved to {dest}')
+def build_morph(F, w) -> str | None:
+    parts = []
+    for feat in ('sp', 'vs', 'vt', 'gn', 'nu', 'ps', 'st'):
+        attr = getattr(F, feat, None)
+        if attr:
+            v = attr.v(w)
+            if v and v not in ('NA', 'unknown', 'absent', 'n/a'):
+                parts.append(f'{feat}:{v}')
+    return ' '.join(parts) if parts else None
 
 
-def parse_tahot(src: Path):
-    """
-    Yield dicts for every word in TAHOT that has a DSS source tag.
+def main():
+    parser = argparse.ArgumentParser(description='Import ETCBC/dss into dss_words')
+    parser.add_argument('--db', required=True, help='Path to bible.db')
+    parser.add_argument('--offline', help='Path to local dss tf/2.0 directory (skips download)')
+    args = parser.parse_args()
 
-    TAHOT column layout (tab-separated, # comment lines skipped):
-      0  Ref         e.g. Gen.1.1
-      1  Hebrew      pointed Hebrew word
-      2  Transliteration
-      3  StrongNumber
-      4  Morphology
-      5  Gloss       English gloss
-      6  GlossFixed
-      7  Source      e.g. LXX, DSS, SP, BHS …
-      (column count may vary — check header line)
-    """
-    headers = None
-    with open(src, encoding='utf-8') as fh:
-        for line in fh:
-            line = line.rstrip('\n')
-            if line.startswith('#') or not line.strip():
-                continue
-            parts = line.split('\t')
-            if headers is None:
-                headers = [h.strip().lower() for h in parts]
-                continue
+    tf_location = args.offline if args.offline else TF_CACHE
+    print(f'Loading ETCBC/dss from {tf_location} (may download on first run)...')
 
-            row = dict(zip(headers, parts))
+    import os
+    tf_abs = os.path.expanduser(tf_location)
+    TF = Fabric(locations=tf_abs, silent=True)
+    api = TF.load('otype book chapter verse full lex sp vs vt gn nu ps st', silent=True)
+    if not api:
+        print('ERROR: Failed to load Text-Fabric features.', file=sys.stderr)
+        sys.exit(1)
 
-            # Only keep words that have DSS evidence
-            source = row.get('source', '')
-            if 'DSS' not in source.upper():
-                continue
+    F = api.F
+    print('Dataset loaded.')
 
-            ref = row.get('ref', '')
-            ref_parts = ref.split('.')
-            if len(ref_parts) != 3:
-                continue
-
-            book_abbr, chapter_str, verse_str = ref_parts
-            book = BOOK_MAP.get(book_abbr)
-            if not book:
-                continue
-
-            yield {
-                'book':    book,
-                'chapter': int(chapter_str),
-                'verse':   int(verse_str),
-                'hebrew':  row.get('hebrew', ''),
-                'translit': row.get('transliteration', ''),
-                'strongs': row.get('strongnumber', ''),
-                'gloss':   row.get('gloss', ''),
-                'morph':   row.get('morphology', ''),
-            }
-
-
-def import_dss(db_path: str, src_path: Path) -> None:
-    con = sqlite3.connect(db_path)
+    con = sqlite3.connect(args.db)
     cur = con.cursor()
-
     cur.execute('''
         CREATE TABLE IF NOT EXISTS dss_words (
-            book     TEXT    NOT NULL,
-            chapter  INTEGER NOT NULL,
-            verse    INTEGER NOT NULL,
-            position INTEGER NOT NULL,
-            hebrew   TEXT    NOT NULL,
-            translit TEXT,
-            strongs  TEXT,
-            gloss    TEXT,
-            morph    TEXT,
+            book TEXT NOT NULL, chapter INTEGER NOT NULL, verse INTEGER NOT NULL,
+            position INTEGER NOT NULL, hebrew TEXT NOT NULL,
+            translit TEXT, strongs TEXT, gloss TEXT, morph TEXT,
             PRIMARY KEY (book, chapter, verse, position)
         )
     ''')
+    cur.execute('DELETE FROM dss_words')
 
-    cur.execute("DELETE FROM dss_words")
-    cur.execute("DELETE FROM bible_translations WHERE translation = 'E_DSS'")
+    # Collect words grouped by (canon_book, chapter_int, verse_int) to assign positions
+    verse_words: dict[tuple, list] = {}
+    skipped_books: set[str] = set()
 
-    # Track position within each verse and accumulate glosses
-    verse_words: dict = {}  # (book, chapter, verse) → [(position, row)]
+    for w in F.otype.s('word'):
+        etcbc_book = F.book.v(w)
+        if not etcbc_book:
+            continue
 
-    for row in parse_tahot(src_path):
-        key = (row['book'], row['chapter'], row['verse'])
-        if key not in verse_words:
-            verse_words[key] = []
-        pos = len(verse_words[key])
-        verse_words[key].append((pos, row))
+        canon = BOOK_MAP.get(etcbc_book)
+        if not canon:
+            skipped_books.add(etcbc_book)
+            continue
 
-    dss_rows = []
-    edss_rows = []
+        ch_raw = F.chapter.v(w)
+        vs_raw = F.verse.v(w)
+        try:
+            ch = int(ch_raw)
+            vs = int(vs_raw)
+        except (TypeError, ValueError):
+            continue  # scroll fragment refs like 'f38'
 
-    for (book, chapter, verse), words in sorted(verse_words.items()):
-        glosses = []
-        for pos, row in words:
-            dss_rows.append((
-                book, chapter, verse, pos,
-                row['hebrew'], row['translit'], row['strongs'], row['gloss'], row['morph'],
-            ))
-            if row['gloss']:
-                glosses.append(row['gloss'])
-        if glosses:
-            edss_rows.append(('E_DSS', book, chapter, verse, ' '.join(glosses)))
+        hebrew = (F.full.v(w) or '').strip()
+        if not hebrew:
+            continue
+
+        lex = F.lex.v(w) or None
+        morph = build_morph(F, w)
+
+        key = (canon, ch, vs)
+        verse_words.setdefault(key, []).append((hebrew, lex, morph))
+
+    # Insert with sequential positions
+    rows = []
+    for (book, ch, vs), words in verse_words.items():
+        for pos, (hebrew, lex, morph) in enumerate(words, 1):
+            rows.append((book, ch, vs, pos, hebrew, None, lex, None, morph))
 
     cur.executemany(
-        'INSERT OR REPLACE INTO dss_words (book, chapter, verse, position, hebrew, translit, strongs, gloss, morph) VALUES (?,?,?,?,?,?,?,?,?)',
-        dss_rows,
-    )
-    cur.executemany(
-        'INSERT OR REPLACE INTO bible_translations (translation, book, chapter, verse, text) VALUES (?,?,?,?,?)',
-        edss_rows,
+        'INSERT OR REPLACE INTO dss_words '
+        '(book, chapter, verse, position, hebrew, translit, strongs, gloss, morph) '
+        'VALUES (?,?,?,?,?,?,?,?,?)',
+        rows
     )
 
     con.commit()
     con.close()
 
-    print(f'Inserted {len(dss_rows)} DSS words across {len(verse_words)} verses.')
-    print(f'Generated {len(edss_rows)} E_DSS gloss verses.')
+    # Report per book
+    book_counts: dict[str, int] = {}
+    for book, _, __, _pos, *__ in rows:
+        book_counts[book] = book_counts.get(book, 0) + 1
+    for book in sorted(book_counts):
+        print(f'  {book}: {book_counts[book]} words')
 
+    non_canonical = {b for b in skipped_books if not any(c.isdigit() for c in b[:2])}
+    if non_canonical:
+        print(f'\nSkipped non-canonical books: {", ".join(sorted(non_canonical))}')
 
-def main():
-    parser = argparse.ArgumentParser(description='Import DSS data from STEPBible TAHOT into bible.db')
-    parser.add_argument('--db',  required=True, help='Path to bible.db')
-    parser.add_argument('--src', help='Path to local TAHOT.txt (downloads if omitted)')
-    args = parser.parse_args()
-
-    if args.src:
-        src = Path(args.src)
-    else:
-        src = Path('temp/TAHOT.txt')
-        src.parent.mkdir(parents=True, exist_ok=True)
-        download_tahot(src)
-
-    if not src.exists():
-        print(f'Error: {src} not found', file=sys.stderr)
-        sys.exit(1)
-
-    import_dss(args.db, src)
+    print(f'\nDone. {len(rows)} total words imported into dss_words.')
 
 
 if __name__ == '__main__':

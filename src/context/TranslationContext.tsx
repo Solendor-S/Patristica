@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useUserDb } from '../db/UserDbProvider'
 
-export type Translation = 'KJV' | 'ASV' | 'WEB' | 'SBLGNT' | 'TAGNT' | 'TR' | 'KJV+' | 'I_KJV+' | 'TAHOT' | 'LXX' | 'E_LXX'
+export type Translation = 'KJV' | 'ASV' | 'WEB' | 'SBLGNT' | 'TAGNT' | 'TR' | 'KJV+' | 'I_KJV+' | 'TAHOT' | 'WLC' | 'DSS' | 'LXX' | 'E_LXX'
 
 export const TRANSLATIONS: { key: Translation; label: string; full: string; greekOnly?: boolean; otOriginal?: boolean; otOnly?: boolean }[] = [
   { key: 'KJV',    label: 'KJV',    full: 'King James Version' },
@@ -13,15 +13,14 @@ export const TRANSLATIONS: { key: Translation; label: string; full: string; gree
   { key: 'TAGNT',  label: 'TAGNT',  full: 'Translators Amalgamated GNT (NA28)',   greekOnly: true },
   { key: 'TR',     label: 'TR',     full: 'Textus Receptus (Scrivener 1894)',      greekOnly: true },
   { key: 'TAHOT',  label: 'TAHOT',  full: 'Translators Amalgamated Hebrew OT',    otOriginal: true },
+  { key: 'WLC',    label: 'WLC',    full: 'Westminster Leningrad Codex',           otOriginal: true },
+  { key: 'DSS',    label: 'DSS',    full: 'Dead Sea Scrolls (Hebrew)',             otOriginal: true },
   { key: 'LXX',    label: 'LXX',    full: 'Septuagint (Greek)',                   otOriginal: true },
   { key: 'E_LXX',  label: 'E_LXX',  full: "Brenton's Septuagint (English)",       otOnly: true },
-  // DSS deferred — data not freely available; infrastructure (dss_words table, HebrewSource type) preserved
-  // { key: 'DSS',   label: 'DSS',   full: 'Dead Sea Scrolls (Hebrew)',   otOriginal: true },
-  // { key: 'E_DSS', label: 'E_DSS', full: 'Dead Sea Scrolls (English gloss)', otOnly: true },
 ]
 
 export const GREEK_TRANSLATIONS      = new Set<Translation>(['SBLGNT', 'TAGNT', 'TR'])
-export const OT_ORIGINAL_TRANSLATIONS = new Set<Translation>(['TAHOT', 'LXX'])
+export const OT_ORIGINAL_TRANSLATIONS = new Set<Translation>(['TAHOT', 'WLC', 'DSS', 'LXX'])
 export const OT_ONLY_TRANSLATIONS     = new Set<Translation>(['E_LXX'])
 export const OT_TRANSLATIONS          = new Set<Translation>([...OT_ORIGINAL_TRANSLATIONS, ...OT_ONLY_TRANSLATIONS])
 export const ANNOTATED_TRANSLATIONS   = new Set<Translation>(['KJV+', 'I_KJV+'])

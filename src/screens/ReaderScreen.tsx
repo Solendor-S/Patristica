@@ -1,9 +1,9 @@
-import React, { useEffect, useLayoutEffect, useState, useCallback, useRef, useMemo, memo } from 'react'
+﻿import React, { useEffect, useLayoutEffect, useState, useCallback, useRef, useMemo, memo } from 'react'
 import * as Clipboard from 'expo-clipboard'
 import {
   View, Text, FlatList, TouchableOpacity, Share, Modal, ScrollView,
   StyleSheet, ActivityIndicator, StatusBar, Animated, TextInput,
-  KeyboardAvoidingView, Platform, Alert, PanResponder,
+  KeyboardAvoidingView, Platform, Alert,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { useUserDb } from '../db/UserDbProvider'
@@ -25,7 +25,7 @@ import { useParallelTranslation } from '../context/ParallelTranslationContext'
 import type { Translation } from '../context/TranslationContext'
 import { useOnboarding } from '../context/OnboardingContext'
 import { useRedLetter } from '../context/RedLetterContext'
-import { isRedLetter, splitRedLetterVerse, splitByWMarkers } from '../data/redLetter'
+import { isRedLetter, splitRedLetterVerse, splitByWMarkers, stripUsfm } from '../data/redLetter'
 import type { Segment } from '../data/redLetter'
 import { useTheme } from '../context/ThemeContext'
 import { useLineSpacing } from '../context/LineSpacingContext'
@@ -87,21 +87,24 @@ function buildFnByWord(text: string, footnotes: Footnote[]): Map<number, Footnot
 
 // ── KJV+ parser ──────────────────────────────────────────
 
-type KJVToken = { word: string; strongs?: string }
+type KJVToken = { word: string; strongs?: string; italic?: boolean }
 
 function parseKJVPlus(text: string): KJVToken[] {
   const tokens: KJVToken[] = []
   const parts = text.split(' ')
   let pending: string | null = null
+  let pendingItalic = false
   for (const p of parts) {
     if (p && /^[GH]\d+$/.test(p)) {
-      if (pending !== null) { tokens.push({ word: pending, strongs: p }); pending = null }
+      if (pending !== null) { tokens.push({ word: pending, strongs: p, italic: pendingItalic || undefined }); pending = null; pendingItalic = false }
     } else {
-      if (pending !== null) tokens.push({ word: pending })
-      pending = p || null
+      if (pending !== null) tokens.push({ word: pending, italic: pendingItalic || undefined })
+      const italic = p.includes('{')
+      pending = italic ? p.replace(/[{}]/g, '') : (p || null)
+      pendingItalic = italic
     }
   }
-  if (pending !== null) tokens.push({ word: pending })
+  if (pending !== null) tokens.push({ word: pending, italic: pendingItalic || undefined })
   return tokens
 }
 
@@ -120,10 +123,69 @@ function applyItalics(seg: Segment): Segment[] {
   return result
 }
 
+type DssSeg = { t: string; lacuna: boolean; uncertain: boolean; supralinear: boolean }
+
+function parseDssMarkers(text: string): DssSeg[] {
+  const segs: DssSeg[] = []
+  let cur = ''
+  let lacuna = false, uncertain = false, supralinear = false
+
+  const flush = (l: boolean, u: boolean, s: boolean) => {
+    if (cur) segs.push({ t: cur, lacuna, uncertain, supralinear })
+    cur = ''; lacuna = l; uncertain = u; supralinear = s
+  }
+
+  let i = 0
+  while (i < text.length) {
+    const ch = text[i]
+    const next = text[i + 1]
+
+    if (ch === '#' || ch === '?') { i++; continue }           // strip noise chars
+
+    if (ch === '(' && next === '^') {                          // (^ opens supralinear+uncertain
+      flush(lacuna, true, true)
+      i += 2
+      if (text[i] === ' ') i++                                 // skip notation space
+    } else if (ch === '^' && next === ')') {                   // ^) closes supralinear+uncertain
+      if (cur.endsWith(' ')) cur = cur.slice(0, -1)            // trim trailing notation space
+      flush(lacuna, false, false)
+      i += 2
+    } else if (ch === '[') { flush(true,  uncertain, supralinear); i++ }
+      else if (ch === ']') { flush(false, uncertain, supralinear); i++ }
+      else if (ch === '(') { flush(lacuna, true,  supralinear); i++ }  // bare ( = uncertain
+      else if (ch === ')') { flush(lacuna, false, supralinear); i++ }  // bare ) = close uncertain
+      else { cur += ch; i++ }
+  }
+  if (cur) segs.push({ t: cur, lacuna, uncertain, supralinear })
+  return segs.filter(s => s.t)
+}
+
+function renderKJVPlusTokens(
+  tokens: KJVToken[],
+  containerStyle: any,
+  strongsStyle: any,
+  italicStyle: any,
+  onStrongsPress: (s: string) => void,
+): React.ReactElement {
+  return (
+    <Text style={containerStyle}>
+      {tokens.map((tok, i) => (
+        <React.Fragment key={i}>
+          <Text style={tok.italic ? italicStyle : undefined}>{tok.word}</Text>
+          {tok.strongs
+            ? <Text style={strongsStyle} onPress={() => onStrongsPress(tok.strongs!)}> {tok.strongs}</Text>
+            : null}
+          <Text> </Text>
+        </React.Fragment>
+      ))}
+    </Text>
+  )
+}
+
 // ── VerseRow ──────────────────────────────────────────────
 
 const VerseRow = memo(function VerseRow({
-  verse, text, isSelected, hlColor, onPress, onWordPress, onFnPress, redLetterOn, book, chapter, footnotes, compareText, compareLabel, isAnnotated, onStrongsPress,
+  verse, text, isSelected, hlColor, onPress, onWordPress, onFnPress, redLetterOn, book, chapter, footnotes, compareText, compareLabel, isAnnotated, compareIsAnnotated, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter,
 }: {
   verse: number
   text: string
@@ -139,7 +201,12 @@ const VerseRow = memo(function VerseRow({
   compareText?: string
   compareLabel?: string
   isAnnotated?: boolean
+  compareIsAnnotated?: boolean
   onStrongsPress?: (verse: number, strongs: string) => void
+  isDss?: boolean
+  dssAllReadings?: boolean
+  isHebrew?: boolean
+  useHeuristicRedLetter?: boolean
 }) {
   const { colors } = useTheme()
   const { lineHeight } = useLineSpacing()
@@ -148,21 +215,56 @@ const VerseRow = memo(function VerseRow({
   const styles = useMemo(() => makeStyles(colors, lineHeight, fontSize, fontFamily, fontScope), [colors, lineHeight, fontSize, fontFamily, fontScope])
 
   const cleanText = stripUsfm(text)
+  const cleanCompareText = compareText ? stripUsfm(compareText) : null
+  const hebrewTextStyle = isHebrew ? styles.hebrewText : undefined
+
+  const compareEl = cleanCompareText ? (
+    compareIsAnnotated
+      ? renderKJVPlusTokens(parseKJVPlus(cleanCompareText), styles.compareText, styles.strongsNum, styles.italicText, s => onStrongsPress?.(verse, s))
+      : <Text style={styles.compareText}>{cleanCompareText}</Text>
+  ) : null
+
+  if (isDss) {
+    const allReadings = text.split(/\s*׃\s*/).map(s => s.trim()).filter(Boolean)
+    const readings = dssAllReadings ? allReadings : allReadings.slice(0, 1)
+    return (
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => onPress(verse)}
+        style={[styles.verseRow, isSelected && styles.verseRowSelected, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : undefined]}
+      >
+        <Text style={styles.verseNum}>{verse}</Text>
+        <View style={styles.verseBody}>
+          {readings.map((reading, i) => (
+            <React.Fragment key={i}>
+              {i > 0 && <View style={styles.dssReadingDivider} />}
+              <Text style={[styles.verseText, styles.hebrewText, isSelected && styles.verseTextSelected]}>
+                {parseDssMarkers(reading).map((seg, j) => {
+                  if (seg.lacuna)
+                    return <Text key={j} style={styles.dssLacunaText}>{seg.t}</Text>
+                  if (seg.supralinear && seg.uncertain)
+                    return <Text key={j} style={styles.dssUncertainSupraText}>{seg.t}</Text>
+                  if (seg.supralinear)
+                    return <Text key={j} style={styles.dssSupralinearText}>{seg.t}</Text>
+                  if (seg.uncertain)
+                    return <Text key={j} style={styles.dssUncertainText}>{seg.t}</Text>
+                  return <Text key={j}>{seg.t}</Text>
+                })}
+              </Text>
+            </React.Fragment>
+          ))}
+        </View>
+      </TouchableOpacity>
+    )
+  }
 
   if (isAnnotated) {
-    const tokens = parseKJVPlus(cleanText)
-    const annotatedText = (
-      <Text style={[styles.verseText, isSelected && styles.verseTextSelected]}>
-        {tokens.map((tok, i) => (
-          <React.Fragment key={i}>
-            <Text>{tok.word}</Text>
-            {tok.strongs
-              ? <Text style={[styles.strongsNum, isSelected && styles.strongsNumSelected]} onPress={() => onStrongsPress?.(verse, tok.strongs!)}> {tok.strongs}</Text>
-              : null}
-            <Text> </Text>
-          </React.Fragment>
-        ))}
-      </Text>
+    const annotatedText = renderKJVPlusTokens(
+      parseKJVPlus(cleanText),
+      [styles.verseText, isSelected && styles.verseTextSelected],
+      [styles.strongsNum, isSelected && styles.strongsNumSelected],
+      styles.italicText,
+      s => onStrongsPress?.(verse, s),
     )
     return (
       <TouchableOpacity
@@ -178,7 +280,7 @@ const VerseRow = memo(function VerseRow({
               <View style={styles.compareDivider} />
               <View style={styles.compareSecondary}>
                 <Text style={styles.compareLabel}>{compareLabel}</Text>
-                <Text style={styles.compareText}>{stripUsfm(compareText)}</Text>
+                {compareEl}
               </View>
             </View>
           ) : annotatedText}
@@ -190,13 +292,12 @@ const VerseRow = memo(function VerseRow({
   const hasItalics = cleanText.includes('{')
   const isRL = redLetterOn && isRedLetter(book, chapter, verse)
 
-  // Try marker-based coloring first (\+w markers); fall back to heuristic if none
+  // Marker-based coloring (\+w) takes priority over the heuristic — markers are
+  // authoritative; the heuristic is a fallback for translations without markers.
+  // splitByWMarkers strips USFM tags internally so segments are already clean.
   const markerSegs = redLetterOn ? splitByWMarkers(text) : null
   const baseSegments = markerSegs
-    ? markerSegs.map(s => ({ ...s, t: stripUsfm(s.t) }))
-    : isRL
-    ? splitRedLetterVerse(cleanText)
-    : [{ t: cleanText, red: false }]
+    ?? (isRL && useHeuristicRedLetter ? splitRedLetterVerse(cleanText) : [{ t: cleanText, red: false }])
   const segments: Segment[] = hasItalics ? baseSegments.flatMap(applyItalics) : baseSegments
   const fnByWord = footnotes?.length ? buildFnByWord(cleanText, footnotes) : null
 
@@ -210,18 +311,21 @@ const VerseRow = memo(function VerseRow({
       const hasSpace = i < tagged.length - 1
       elems.push(
         <Text key={`w${i}`} onPress={() => onWordPress(tw.w)} suppressHighlighting
-          style={[tw.red ? styles.redLetterSelected : undefined, tw.italic ? styles.italicText : undefined]}>
-          {tw.w}
+          style={[styles.verseText, hebrewTextStyle, styles.verseTextSelected, tw.red ? styles.redLetterSelected : undefined, tw.italic ? styles.italicText : undefined]}>
+          {tw.w}{hasSpace ? ' ' : ''}
         </Text>
       )
       const fn = fnByWord?.get(wordIdx)
       if (fn) elems.push(
         <Text key={`fn${i}`} onPress={() => onFnPress(fn)} suppressHighlighting style={[styles.fnMarker, styles.fnMarkerSelected]}>
-          {toSuperscript(fn.marker)}
+          {toSuperscript(fn.marker)}{' '}
         </Text>
       )
-      if (hasSpace) elems.push(<Text key={`sp${i}`}>{' '}</Text>)
     })
+    // Use View+flexWrap instead of Text parent so each word is a bounded flex item.
+    // Text onPress inside a Text parent uses line-metric hit areas on Android, causing
+    // taps below the last line to fire the last word's handler instead of deselecting.
+    const wordWrapStyle = [styles.verseWordWrap, isHebrew && { direction: 'rtl' as const }]
     return (
       <TouchableOpacity
         activeOpacity={0.7}
@@ -233,16 +337,16 @@ const VerseRow = memo(function VerseRow({
           {compareText ? (
             <View style={styles.verseBodyRow}>
               <View style={styles.comparePrimary}>
-                <Text style={[styles.verseText, styles.verseTextSelected]}>{elems}</Text>
+                <View style={wordWrapStyle}>{elems}</View>
               </View>
               <View style={styles.compareDivider} />
               <View style={styles.compareSecondary}>
                 <Text style={styles.compareLabel}>{compareLabel}</Text>
-                <Text style={styles.compareText}>{stripUsfm(compareText)}</Text>
+                {compareEl}
               </View>
             </View>
           ) : (
-            <Text style={[styles.verseText, styles.verseTextSelected]}>{elems}</Text>
+            <View style={wordWrapStyle}>{elems}</View>
           )}
         </View>
       </TouchableOpacity>
@@ -263,9 +367,9 @@ const VerseRow = memo(function VerseRow({
             <View style={styles.verseBodyRow}>
               <View style={styles.comparePrimary}>
                 {segments.length === 1 && !segments[0].red && !segments[0].italic ? (
-                  <Text style={styles.verseText}>{text}</Text>
+                  <Text style={[styles.verseText, hebrewTextStyle]}>{text}</Text>
                 ) : (
-                  <Text style={styles.verseText}>
+                  <Text style={[styles.verseText, hebrewTextStyle]}>
                     {segments.map((seg, i) => (
                       <Text key={i} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined]}>{seg.t}</Text>
                     ))}
@@ -275,13 +379,13 @@ const VerseRow = memo(function VerseRow({
               <View style={styles.compareDivider} />
               <View style={styles.compareSecondary}>
                 <Text style={styles.compareLabel}>{compareLabel}</Text>
-                <Text style={styles.compareText}>{stripUsfm(compareText)}</Text>
+                {compareEl}
               </View>
             </View>
           ) : segments.length === 1 && !segments[0].red && !segments[0].italic ? (
-            <Text style={styles.verseText}>{text}</Text>
+            <Text style={[styles.verseText, hebrewTextStyle]}>{text}</Text>
           ) : (
-            <Text style={styles.verseText}>
+            <Text style={[styles.verseText, hebrewTextStyle]}>
               {segments.map((seg, i) => (
                 <Text key={i} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined]}>{seg.t}</Text>
               ))}
@@ -323,98 +427,53 @@ const VerseRow = memo(function VerseRow({
         {compareText ? (
           <View style={styles.verseBodyRow}>
             <View style={styles.comparePrimary}>
-              <Text style={styles.verseText}>{elems}</Text>
+              <Text style={[styles.verseText, hebrewTextStyle]}>{elems}</Text>
             </View>
             <View style={styles.compareDivider} />
             <View style={styles.compareSecondary}>
               <Text style={styles.compareLabel}>{compareLabel}</Text>
-              <Text style={styles.compareText}>{compareText}</Text>
+              {compareEl}
             </View>
           </View>
         ) : (
-          <Text style={styles.verseText}>{elems}</Text>
+          <Text style={[styles.verseText, hebrewTextStyle]}>{elems}</Text>
         )}
       </View>
     </TouchableOpacity>
   )
 })
 
-// ── Verse slider ──────────────────────────────────────────
+// ── Verse stepper ─────────────────────────────────────────
 
-const THUMB_SIZE = 24
-
-function VerseSlider({ min, max, value, onChange, label, colors }: {
-  min: number; max: number; value: number; onChange: (v: number) => void
-  label: string; colors: ThemeColors
+function VerseStepper({ value, min, max, onChange, label, colors }: {
+  value: number; min: number; max: number
+  onChange: (v: number) => void; label: string; colors: ThemeColors
 }) {
-  const [trackW, setTrackW] = useState(1)
-  const range = Math.max(1, max - min)
-  const pct = max <= min ? 0 : (value - min) / range
-  const thumbLeft = pct * Math.max(0, trackW - THUMB_SIZE)
-
-  const trackWRef   = useRef(1)
-  const minRef      = useRef(min)
-  const rangeRef    = useRef(range)
-  const valueRef    = useRef(value)
-  const onChangeRef = useRef(onChange)
-  const startMoveX  = useRef(0)
-  const startTrackX = useRef(0)
-  useLayoutEffect(() => {
-    minRef.current = min
-    rangeRef.current = range
-    valueRef.current = value
-    onChangeRef.current = onChange
-  }, [min, range, value, onChange])
-
-  const pr = useMemo(() => PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderGrant: (_, gs) => {
-      // Anchor from the thumb's current position so there's no snap on touch
-      const currentPct = rangeRef.current <= 0 ? 0
-        : (valueRef.current - minRef.current) / rangeRef.current
-      startTrackX.current = currentPct * trackWRef.current
-      startMoveX.current  = gs.moveX
-    },
-    onPanResponderMove: (_, gs) => {
-      const x = Math.max(0, Math.min(trackWRef.current, startTrackX.current + (gs.moveX - startMoveX.current)))
-      onChangeRef.current(Math.round(minRef.current + (x / trackWRef.current) * rangeRef.current))
-    },
-  }), [])
-
   return (
-    <View style={{ paddingHorizontal: 20, paddingBottom: 10 }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 }}>
-        <Text style={{ fontSize: 12, fontWeight: '600', color: colors.textMuted, textTransform: 'uppercase', letterSpacing: 0.6 }}>{label}</Text>
-        <Text style={{ fontSize: 16, fontWeight: '700', color: colors.textPrimary }}>{value}</Text>
-      </View>
-      <View
-        style={{ height: 36, justifyContent: 'center' }}
-        onLayout={e => { const w = Math.max(1, e.nativeEvent.layout.width); setTrackW(w); trackWRef.current = w }}
-        {...pr.panHandlers}
+    <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 8, gap: 12 }}>
+      <Text style={{ fontSize: 12, fontWeight: '600', color: colors.textMuted, textTransform: 'uppercase', letterSpacing: 0.6, flex: 1 }}>{label}</Text>
+      <TouchableOpacity
+        onPress={() => onChange(Math.max(min, value - 1))}
+        activeOpacity={0.7}
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: colors.bgTertiary, alignItems: 'center', justifyContent: 'center' }}
       >
-        <View style={{ height: 4, borderRadius: 2, backgroundColor: colors.bgTertiary }}>
-          <View style={{ width: `${pct * 100}%`, height: '100%', borderRadius: 2, backgroundColor: colors.accent }} />
-        </View>
-        <View style={{
-          position: 'absolute', left: thumbLeft,
-          width: THUMB_SIZE, height: THUMB_SIZE, borderRadius: THUMB_SIZE / 2,
-          backgroundColor: colors.accent, top: (36 - THUMB_SIZE) / 2,
-          elevation: 3, shadowColor: '#000', shadowOpacity: 0.2, shadowRadius: 3, shadowOffset: { width: 0, height: 1 },
-        }} />
-      </View>
+        <Text style={{ fontSize: 20, lineHeight: 24, color: value <= min ? colors.textMuted : colors.textPrimary, fontWeight: '300' }}>−</Text>
+      </TouchableOpacity>
+      <Text style={{ fontSize: 18, fontWeight: '700', color: colors.textPrimary, minWidth: 28, textAlign: 'center' }}>{value}</Text>
+      <TouchableOpacity
+        onPress={() => onChange(Math.min(max, value + 1))}
+        activeOpacity={0.7}
+        hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+        style={{ width: 32, height: 32, borderRadius: 8, backgroundColor: colors.bgTertiary, alignItems: 'center', justifyContent: 'center' }}
+      >
+        <Text style={{ fontSize: 20, lineHeight: 24, color: value >= max ? colors.textMuted : colors.textPrimary, fontWeight: '300' }}>+</Text>
+      </TouchableOpacity>
     </View>
   )
 }
 
 const stripMarkers = (t: string) => t.replace(/[{}]/g, '')
-const stripUsfm = (t: string) =>
-  t
-    .replace(/\\\+?add\*/g, '}')         // \+add* → close italic brace
-    .replace(/\\\+?add\s*/g, '{')        // \+add  → open italic brace
-    .replace(/\\\+?w\*/g, '')            // \+w*   → remove
-    .replace(/\\\+?w\s*/g, '')           // \+w    → remove
-    .replace(/\\\+?[a-z]{1,5}\*/g, '')  // any other closing USFM markers
-    .replace(/\\\+?[a-z]{1,5}\s+/g, '') // any other opening USFM markers
 
 // ── Share range modal ─────────────────────────────────────
 
@@ -436,8 +495,8 @@ function ShareModal({
 
   const maxVerse = verses.length > 0 ? verses[verses.length - 1].verse : 1
 
-  const setFrom = useCallback((v: number) => setFromVerse(cur => Math.max(1, Math.min(toVerse, v))), [toVerse])
-  const setTo   = useCallback((v: number) => setToVerse(cur => Math.max(fromVerse, Math.min(maxVerse, v))), [fromVerse, maxVerse])
+  const setFrom = useCallback((v: number) => { setFromVerse(v); if (v > toVerse) setToVerse(v) }, [toVerse])
+  const setTo   = useCallback((v: number) => { setToVerse(v);   if (v < fromVerse) setFromVerse(v) }, [fromVerse])
 
   const rangeVerses = verses.filter(v => v.verse >= fromVerse && v.verse <= toVerse)
   const refLabel = fromVerse === toVerse
@@ -446,7 +505,7 @@ function ShareModal({
 
   const body = useMemo(
     () => rangeVerses
-      .map(v => fromVerse === toVerse ? stripMarkers(v.text) : `[${v.verse}] ${stripMarkers(v.text)}`)
+      .map(v => { const t = stripMarkers(stripUsfm(v.text)).replace(/¶\s*/g, ''); return fromVerse === toVerse ? t : `[${v.verse}] ${t}` })
       .join(' '),
     [rangeVerses, fromVerse, toVerse],
   )
@@ -462,14 +521,14 @@ function ShareModal({
       <View style={modal.overlay}>
         <View style={[modal.shareSheet, { paddingBottom: Math.max(24, 12 + bottom) }]}>
           <Text style={modal.title}>Copy / Share Verses</Text>
-          <VerseSlider min={1} max={maxVerse} value={fromVerse} onChange={setFrom} label="From" colors={colors} />
-          <VerseSlider min={1} max={maxVerse} value={toVerse}   onChange={setTo}   label="To"   colors={colors} />
+          <VerseStepper min={1} max={maxVerse} value={fromVerse} onChange={setFrom} label="From" colors={colors} />
+          <VerseStepper min={1} max={maxVerse} value={toVerse}   onChange={setTo}   label="To"   colors={colors} />
           <ScrollView style={modal.sharePreview} contentContainerStyle={{ padding: 12 }}>
             <Text style={modal.previewRef}>{refLabel}</Text>
             {rangeVerses.map(v => (
               <Text key={v.verse} style={modal.previewText}>
                 {fromVerse !== toVerse && <Text style={modal.previewNum}>[{v.verse}] </Text>}
-                {v.text}{' '}
+                {stripMarkers(stripUsfm(v.text)).replace(/¶\s*/g, '')}{' '}
               </Text>
             ))}
           </ScrollView>
@@ -566,11 +625,12 @@ function StrongsModal({
   onGoToWords: () => void
 }) {
   const { colors } = useTheme()
+  const { bottom } = useSafeAreaInsets()
   const conc = useMemo(() => makeConc(colors), [colors])
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <View style={conc.overlay}>
-        <View style={conc.sheet}>
+        <View style={[conc.sheet, { paddingBottom: Math.max(24, 12 + bottom) }]}>
           <View style={conc.header}>
             {entry
               ? <View>
@@ -600,6 +660,52 @@ function StrongsModal({
               <Text style={conc.goToWordsBtnLabel}>Open in Word Study</Text>
             </TouchableOpacity>
           )}
+        </View>
+      </View>
+    </Modal>
+  )
+}
+
+// ── DSS Key modal ─────────────────────────────────────────
+
+const DSS_KEY_ENTRIES: Array<{ label: string; desc: string; color?: string; small?: boolean }> = [
+  { label: 'Normal text',              desc: 'Clearly preserved consonants' },
+  { label: 'Reconstructed',           desc: 'Lacuna — letters restored by scholars from context', color: '#808080', small: true },
+  { label: 'Uncertain',               desc: 'Letter is readable but not fully certain in the manuscript', color: '#5B9BD5' },
+  { label: 'Supralinear',             desc: 'Added above the main line — scribal correction or insertion (shown smaller)', small: true },
+  { label: 'Uncertain + supralinear', desc: 'Both unclear and written above the line (shown smaller, in blue)', color: '#5B9BD5', small: true },
+]
+
+function DssKeyModal({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+  const { colors } = useTheme()
+  const { bottom } = useSafeAreaInsets()
+  const conc = useMemo(() => makeConc(colors), [colors])
+  return (
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+      <View style={conc.overlay}>
+        <View style={[conc.sheet, { paddingBottom: Math.max(24, 12 + bottom) }]}>
+          <View style={conc.header}>
+            <Text style={conc.word}>DSS Text Key</Text>
+            <TouchableOpacity onPress={onClose} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+              <Ionicons name="close" size={22} color={colors.textMuted} />
+            </TouchableOpacity>
+          </View>
+          <View style={{ paddingHorizontal: 20, paddingTop: 8, gap: 16 }}>
+            {DSS_KEY_ENTRIES.map(entry => (
+              <View key={entry.label} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12 }}>
+                <View style={{ width: 12, height: 12, borderRadius: 6, marginTop: 4, backgroundColor: entry.color ?? colors.textPrimary, opacity: entry.color ? 1 : 0.9 }} />
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: entry.small ? 11 : 14, fontWeight: '700', color: entry.color ?? colors.textPrimary }}>
+                    {entry.label}
+                  </Text>
+                  <Text style={{ fontSize: 13, color: colors.textMuted, marginTop: 2 }}>{entry.desc}</Text>
+                </View>
+              </View>
+            ))}
+            <Text style={{ fontSize: 12, color: colors.textMuted, fontStyle: 'italic', marginTop: 4 }}>
+              Multiple readings per verse reflect different scroll manuscripts attesting the same passage.
+            </Text>
+          </View>
         </View>
       </View>
     </Modal>
@@ -666,6 +772,9 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [concordanceResults, setConcordanceResults] = useState<ConcordanceResult[]>([])
   const [concordanceLoading, setConcordanceLoading] = useState(false)
   const [concordanceOpen, setConcordanceOpen]       = useState(false)
+
+  const [dssAllReadings, setDssAllReadings] = useState(true)
+  const [dssKeyOpen, setDssKeyOpen] = useState(false)
 
   const [strongsOpen, setStrongsOpen]       = useState(false)
   const [strongsEntry, setStrongsEntry]     = useState<StrongsEntry | null>(null)
@@ -807,6 +916,27 @@ export default function ReaderScreen({ navigation, route }: Props) {
   }, [showColorPicker])
 
   useEffect(() => {
+    let cancelled = false
+    userDb.getFirstAsync<{ value: string }>(
+      "SELECT value FROM settings WHERE key = 'dss_all_readings'"
+    ).then(row => {
+      if (!cancelled && row) setDssAllReadings(row.value !== '0')
+    }).catch(() => {})
+    return () => { cancelled = true }
+  }, [userDb])
+
+  const toggleDssAllReadings = useCallback(() => {
+    setDssAllReadings(prev => {
+      const next = !prev
+      userDb.runAsync(
+        "INSERT OR REPLACE INTO settings (key, value) VALUES ('dss_all_readings', ?)",
+        [next ? '1' : '0']
+      ).catch(() => {})
+      return next
+    })
+  }, [userDb])
+
+  useEffect(() => {
     mountedRef.current = true
     return () => { mountedRef.current = false }
   }, [])
@@ -880,6 +1010,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const isGreekTrans    = useMemo(() => GREEK_TRANSLATIONS.has(translation as any), [translation])
   const isOTTrans       = useMemo(() => OT_TRANSLATIONS.has(translation as any), [translation])
   const isAnnotatedTrans = useMemo(() => ANNOTATED_TRANSLATIONS.has(translation as any), [translation])
+  const isDss           = translation === 'DSS'
+  const isHebrew        = translation === 'DSS' || translation === 'WLC' || translation === 'TAHOT'
 
   const goChapter = useCallback((delta: number) => {
     if (isApocrypha) {
@@ -918,9 +1050,18 @@ export default function ReaderScreen({ navigation, route }: Props) {
       compareText={parallelOn && compareTrans ? compareMap.get(item.verse) : undefined}
       compareLabel={parallelOn && compareTrans ? compareTrans : undefined}
       isAnnotated={isAnnotatedTrans}
+      compareIsAnnotated={parallelOn && compareTrans ? ANNOTATED_TRANSLATIONS.has(compareTrans as Translation) : false}
       onStrongsPress={openStrongs}
+      isDss={isDss}
+      dssAllReadings={dssAllReadings}
+      isHebrew={isHebrew}
+      useHeuristicRedLetter={translation !== 'KJV' && translation !== 'WEB'}
     />
-  ), [selectedVerse, highlights, selectVerse, openConcordance, redLetterOn, book, chapter, footnotesByVerse, compareTrans, parallelOn, compareMap, isAnnotatedTrans, openStrongs])
+  ), [selectedVerse, highlights, selectVerse, openConcordance, redLetterOn, book, chapter, footnotesByVerse, compareTrans, parallelOn, compareMap, isAnnotatedTrans, openStrongs, isDss, dssAllReadings, isHebrew, translation])
+  const flatListExtraData = useMemo(
+    () => ({ selectedVerse, highlights, dssAllReadings, redLetterOn }),
+    [selectedVerse, highlights, dssAllReadings, redLetterOn]
+  )
   const currentSwatch = currentHighlightColor
     ? HIGHLIGHT_COLORS.find(c => c.key === currentHighlightColor)?.swatch
     : undefined
@@ -962,6 +1103,15 @@ export default function ReaderScreen({ navigation, route }: Props) {
               {parallelOn && compareTrans ? `${translation} ∥ ${compareTrans}` : translation}
             </Text>
             <Ionicons name="chevron-down" size={11} color={colors.textMuted} />
+          </TouchableOpacity>
+        )}
+        {isDss && (
+          <TouchableOpacity
+            style={styles.dssKeyBtn}
+            onPress={() => setDssKeyOpen(true)}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.dssKeyLabel}>Key</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity
@@ -1043,6 +1193,17 @@ export default function ReaderScreen({ navigation, route }: Props) {
                       <View style={[modal.rlThumb, redLetterOn && modal.rlThumbOn]} />
                     </View>
                   </TouchableOpacity>
+                  {isDss && (
+                    <TouchableOpacity style={modal.rlRow} onPress={toggleDssAllReadings} activeOpacity={0.7}>
+                      <View style={modal.translationInfo}>
+                        <Text style={modal.translationKey}>DSS: All Readings</Text>
+                        <Text style={modal.translationFull}>Show all manuscript attestations per verse</Text>
+                      </View>
+                      <View style={[modal.rlToggle, dssAllReadings && modal.rlToggleOn]}>
+                        <View style={[modal.rlThumb, dssAllReadings && modal.rlThumbOn]} />
+                      </View>
+                    </TouchableOpacity>
+                  )}
                 </>
               ) : (
                 <>
@@ -1141,7 +1302,11 @@ export default function ReaderScreen({ navigation, route }: Props) {
             }, 100)
           }}
           renderItem={renderVerseRow}
-          extraData={renderVerseRow}
+          extraData={flatListExtraData}
+          windowSize={5}
+          maxToRenderPerBatch={8}
+          initialNumToRender={20}
+          removeClippedSubviews={!isDss}
         />
       )}
 
@@ -1285,6 +1450,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
         />
       )}
 
+      <DssKeyModal visible={dssKeyOpen} onClose={() => setDssKeyOpen(false)} />
+
       <ConcordanceModal
         visible={concordanceOpen}
         word={concordanceWord}
@@ -1426,6 +1593,7 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
   },
   verseBody: { flex: 1 },
   verseText: { fontSize: verseFontSize, lineHeight: verseLineHeight, color: c.textPrimary, fontFamily },
+  verseWordWrap: { flexDirection: 'row' as const, flexWrap: 'wrap' as const, flex: 1, alignContent: 'flex-start' },
   verseBodyRow:      { flexDirection: 'row', alignItems: 'flex-start' },
   comparePrimary:    { flex: 1 },
   compareDivider:    { width: StyleSheet.hairlineWidth, backgroundColor: c.border, alignSelf: 'stretch', marginHorizontal: 8 },
@@ -1525,6 +1693,25 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
   studyBtnLabel: { fontSize: 14, fontWeight: '700', color: c.bgPrimary },
   strongsNum:         { fontSize: 10, color: c.accent, fontWeight: '700' },
   strongsNumSelected: { color: '#7ab8e8' },
+  dssReadingDivider: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: c.border,
+    marginVertical: 6,
+  },
+  hebrewText: {
+    textAlign: 'right' as const,
+    writingDirection: 'rtl' as const,
+  },
+  dssLacunaText:        { color: c.textMuted, fontSize: verseFontSize * 0.85 },
+  dssUncertainText:     { color: '#5B9BD5' },
+  dssSupralinearText:   { fontSize: verseFontSize * 0.85 },
+  dssUncertainSupraText:{ color: '#5B9BD5', fontSize: verseFontSize * 0.85 },
+  dssKeyBtn: {
+    paddingHorizontal: 10, paddingVertical: 6,
+    borderRadius: 8, marginLeft: 8,
+    borderWidth: 1.5, borderColor: '#D4A843',
+  },
+  dssKeyLabel: { fontSize: 12, fontWeight: '700', color: '#D4A843', letterSpacing: 0.5 },
   })
   m.set(k, s)
   return s

@@ -19,6 +19,13 @@ expo-env.d.ts
 # Metro
 .metro-health-check*
 
+# project-specific — not needed for the build
+temp/
+bible-app-data/
+scripts/
+docs/
+.claude/
+
 # debug
 npm-debug.*
 yarn-debug.*

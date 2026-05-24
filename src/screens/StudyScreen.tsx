@@ -13,6 +13,7 @@ import { getCommentary, getCrossRefs, getJosephusForVerse, getVariantsForVerse, 
 import type { JosephusEntry } from '../db/queries'
 import type { TextualVariant } from '../types'
 import { getFatherInfo } from '../data/fatherDates'
+import { stripUsfm } from '../data/redLetter'
 import { getHistoricalForVerse, HISTORICAL_SOURCES, CATEGORY_LABEL } from '../data/historicalData'
 import type { HistoricalSource } from '../data/historicalData'
 import CouncilsPanel from './CouncilsPanel'
@@ -77,7 +78,7 @@ function CrossRefCard({ item, onPress }: { item: CrossRef; onPress: () => void }
       <Text style={styles.crossRefLabel}>
         {item.ref_book} {item.ref_chapter}:{item.ref_verse}
       </Text>
-      {!!item.text && <Text style={styles.crossRefText}>{item.text}</Text>}
+      {!!item.text && <Text style={styles.crossRefText}>{stripUsfm(item.text).replace(/¶\s*/g, '').replace(/[{}]/g, '')}</Text>}
       <View style={styles.crossRefArrow}>
         <Ionicons name="arrow-forward" size={13} color={colors.accent} />
         <Text style={styles.crossRefGo}>Go to verse</Text>
@@ -407,7 +408,7 @@ export default function StudyScreen() {
       getVerseText(db, selected.book, selected.chapter, selected.verse),
       getMaxVerse(db, selected.book, selected.chapter),
     ]).then(([text, max]) => {
-      setVerseText(text)
+      setVerseText(text ? stripUsfm(text).replace(/¶\s*/g, '') : text)
       setMaxVerse(max ?? 1)
     }).catch(() => {})
   }, [selected?.book, selected?.chapter, selected?.verse])

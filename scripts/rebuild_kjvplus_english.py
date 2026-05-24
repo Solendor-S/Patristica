@@ -40,6 +40,14 @@ def _norm(w: str) -> str:
     return re.sub(r"[^a-z']", '', w.lower())
 
 
+def strip_usfm(text: str) -> str:
+    """Remove \\+w / \\+w* USFM inline markers so alignment sees clean words."""
+    text = re.sub(r'\\\+?w\*', '', text)
+    text = re.sub(r'\\\+?w\s*', '', text)
+    text = re.sub(r'\{([^}]*)\}', r'\1', text)   # {added} → added
+    return re.sub(r'\s+', ' ', text).strip()
+
+
 def align(kjv_text: str, interlinear_text: str) -> str:
     """
     Place Strong's numbers from the interlinear into KJV English word order.
@@ -47,9 +55,10 @@ def align(kjv_text: str, interlinear_text: str) -> str:
     """
     pairs = parse_interlinear(interlinear_text)
     if not pairs:
-        return kjv_text
+        return strip_usfm(kjv_text)
 
-    kjv_words = kjv_text.split()
+    clean_text = strip_usfm(kjv_text)
+    kjv_words = clean_text.split()
     kjv_norm  = [_norm(w) for w in kjv_words]
     n_kjv     = len(kjv_words)
 

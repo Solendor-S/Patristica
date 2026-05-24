@@ -19,6 +19,7 @@ function bookAlt(book: string): string | null {
 const OT_WORD_TABLE: Record<string, { table: string; col: string }> = {
   lxx:   { table: 'lxx_words',    col: 'greek'  },
   tahot: { table: 'hebrew_words', col: 'hebrew' },
+  wlc:   { table: 'wlc_words',    col: 'hebrew' },
   dss:   { table: 'dss_words',    col: 'hebrew' },
 }
 

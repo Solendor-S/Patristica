@@ -1,4 +1,4 @@
-// Verse ranges where Jesus speaks directly.
+﻿// Verse ranges where Jesus speaks directly.
 // Format: [book, chapter, verseStart, verseEnd]
 // Based on the KJV red-letter tradition.
 
@@ -218,10 +218,20 @@ export function isRedLetter(book: string, chapter: number, verse: number): boole
 
 export interface Segment { t: string; red: boolean; italic?: boolean }
 
+export function stripUsfm(t: string): string {
+  return t
+    .replace(/\\\+?add\*/g, '}')
+    .replace(/\\\+?add\s*/g, '{')
+    .replace(/\\\+?w\*/g, '')
+    .replace(/\\\+?w\s*/g, '')
+    .replace(/\\\+?[a-z]{1,5}\*/g, '')
+    .replace(/\\\+?[a-z]{1,5}\s+/g, '')
+}
+
 // Narrator speech-attribution verbs in KJV ("And Jesus said unto them,")
 const ATTRIB_VERB_RE = /\b(answered|spake|cried|saying)\b/i
 
-// Explicit "Jesus [verb]" attribution — up to 5 words between "Jesus" and the verb
+// Explicit "Jesus [verb]" attribution — up to 9 words between "Jesus" and the verb
 const JESUS_ATTRIB_RE = /\bJesus(?:\s+\w+){0,9}?\s+(said|saith|answered|spake|cried)\b/i
 
 function trySplit(text: string, matchEnd: number): Segment[] | null {
@@ -235,37 +245,56 @@ function trySplit(text: string, matchEnd: number): Segment[] | null {
   ]
 }
 
+const wordCount = (s: string) => s.trim().split(/\s+/).filter(Boolean).length
+
+// WEB uses \+w on most words in speech verses (Strong's concordance tagging).
+// Gaps > this threshold are untranslated loanwords/compounds, not narrator text.
+const W_DENSITY_THRESHOLD = 0.7
+
+/**
+ * Parses \+w...\+w* markers into red/black segments, stripping USFM tags from
+ * each segment. Returns null if no markers found.
+ * Dense tagging (>W_DENSITY_THRESHOLD words tagged) means the entire verse is
+ * speech — untagged gaps are just words missing Strong's tags, not narrator text.
+ */
+export function splitByWMarkers(text: string): Segment[] | null {
+  if (!text.includes('\\+w')) return null
+  const stripped = stripUsfm(text)
+  const re = /\\\+w\s*([\s\S]*?)\\\+w\*/g
+  const segs: Segment[] = []
+  let last = 0, taggedWords = 0, gapWords = 0
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) {
+      const gap = text.slice(last, m.index)
+      const isPunct = taggedWords > 0 && /^[\s ;:,.!\-—–?'"'"«»]+$/.test(gap)
+      segs.push({ t: stripUsfm(gap), red: isPunct })
+      if (!isPunct) gapWords += wordCount(gap)
+    }
+    segs.push({ t: stripUsfm(m[1]), red: true })
+    taggedWords += wordCount(m[1])
+    last = m.index + m[0].length
+  }
+  if (taggedWords === 0) return null
+  if (last < text.length) {
+    const tail = text.slice(last)
+    const isPunct = /^[\s ;:,.!\-—–?'"'"«»]+$/.test(tail) // taggedWords > 0 guaranteed above
+    segs.push({ t: stripUsfm(tail), red: isPunct })
+    if (!isPunct) gapWords += wordCount(tail)
+  }
+  const startsWithNarrator = segs.length > 0 && !segs[0].red && wordCount(segs[0].t) >= 2
+  if (!startsWithNarrator && taggedWords / (taggedWords + gapWords) > W_DENSITY_THRESHOLD) {
+    return [{ t: stripped, red: true }]
+  }
+  return segs
+}
+
 /**
  * Splits a red-letter verse into narrator (black) and speech (red) segments.
  * Priority 1: explicit "Jesus [verb]" attribution.
  * Priority 2: first generic speech verb within 120 chars.
  * Fallback: whole verse is speech.
  */
-/**
- * Parses \+w...\+w* markers as red segments. Returns null if no markers found.
- * Punctuation/whitespace between red segments is colored red if short enough.
- */
-export function splitByWMarkers(text: string): Segment[] | null {
-  if (!text.includes('\\+w')) return null
-  const re = /\\\+w\s*([\s\S]*?)\\\+w\*/g
-  const segs: Segment[] = []
-  let last = 0, hasRed = false
-  let m: RegExpExecArray | null
-  while ((m = re.exec(text)) !== null) {
-    if (m.index > last) {
-      const gap = text.slice(last, m.index)
-      const isPunct = hasRed && /^[\s ;:,.!\-—–?'"'"«»]+$/.test(gap)
-      segs.push({ t: gap, red: isPunct })
-    }
-    segs.push({ t: m[1], red: true })
-    hasRed = true
-    last = m.index + m[0].length
-  }
-  if (!hasRed) return null
-  if (last < text.length) segs.push({ t: text.slice(last), red: false })
-  return segs
-}
-
 export function splitRedLetterVerse(text: string): Segment[] {
   const jm = JESUS_ATTRIB_RE.exec(text)
   if (jm) {
