@@ -8,7 +8,7 @@ import type { ThemeColors } from '../theme/themes'
 
 type Severity = 'Major' | 'Significant' | 'Regional'
 
-interface Heresy {
+export interface Heresy {
   yearNum: number
   year: string
   name: string
@@ -24,7 +24,7 @@ const BADGE_COLOR: Record<Severity, { bg: string; text: string }> = {
   Regional:    { bg: 'rgba(107,101,96,0.25)', text: '#b0a898' },
 }
 
-const HERESIES: Heresy[] = [
+export const HERESIES: Heresy[] = [
   {
     yearNum: 50,
     year: 'c. 50–100',

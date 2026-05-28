@@ -70,6 +70,87 @@ export async function getApocryphaChapter(
   )
 }
 
+export async function getEarlyTextFootnotes(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+): Promise<Map<number, string>> {
+  const rows = await db.getAllAsync<{ marker: number; note: string }>(
+    'SELECT marker, note FROM early_text_footnotes WHERE book = ? AND chapter = ? ORDER BY marker',
+    [book, chapter]
+  )
+  return new Map(rows.map(r => [r.marker, r.note]))
+}
+
+// Books whose chapters contain numbered sections (1. 2. 3. …) that should
+// each become a separate verse rather than one monolithic block.
+const NUMBERED_SECTION_BOOKS = new Set([
+  'Against Heresies Book 1',
+  'Against Heresies Book 2',
+  'Against Heresies Book 3',
+  'Against Heresies Book 4',
+  'Against Heresies Book 5',
+])
+
+/**
+ * Split a chapter text that uses inline numbered sections (1. 2. 3. …)
+ * into individual BibleVerse rows, one per section.
+ * The leading "N. " prefix is stripped from each verse's text since the
+ * verse number indicator already shows it.
+ */
+function splitNumberedSections(text: string, book: string, chapter: number): BibleVerse[] {
+  const paragraphs = text.split(/\n{2,}/).map(p => p.trim()).filter(Boolean)
+
+  const groups: { verse: number; paras: string[] }[] = []
+  const preamble: string[] = []
+
+  for (const para of paragraphs) {
+    // Match 1–2 digit section number at start: "1. " or "12. "
+    const m = para.match(/^(\d{1,2})\.\s+/)
+    if (m) {
+      groups.push({ verse: parseInt(m[1], 10), paras: [para.slice(m[0].length)] })
+    } else if (groups.length === 0) {
+      preamble.push(para)
+    } else {
+      groups[groups.length - 1].paras.push(para)
+    }
+  }
+
+  // No numbered sections found — return the raw single verse unchanged
+  if (groups.length === 0) {
+    return [{ book, chapter, verse: 1, text } as BibleVerse]
+  }
+
+  // Prepend any pre-section preamble text to the first section
+  if (preamble.length > 0) {
+    groups[0].paras = [...preamble, ...groups[0].paras]
+  }
+
+  return groups.map(g => ({
+    book, chapter, verse: g.verse,
+    text: g.paras.join('\n\n'),
+  } as BibleVerse))
+}
+
+export async function getEarlyTextChapter(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+): Promise<BibleVerse[]> {
+  const rows = await db.getAllAsync<BibleVerse>(
+    'SELECT book, chapter, verse, text FROM early_texts WHERE book = ? AND chapter = ? ORDER BY verse',
+    [book, chapter]
+  )
+
+  // For books with inline numbered sections, split the single-verse blob
+  // into one verse per section so each renders as its own row in the reader.
+  if (NUMBERED_SECTION_BOOKS.has(book) && rows.length === 1) {
+    return splitNumberedSections(rows[0].text, book, chapter)
+  }
+
+  return rows
+}
+
 export async function getChapter(
   db: SQLiteDatabase,
   book: string,
@@ -458,6 +539,33 @@ export async function getCommentary(
      FROM commentary
      WHERE book = ? AND chapter = ? AND verse = ?`,
     [book, chapter, verse]
+  )
+}
+
+export interface CommentaryEntryWithRef {
+  id: number
+  father_name: string
+  father_era: string
+  excerpt: string
+  full_text: string
+  source: string
+  source_url: string
+  book: string
+  chapter: number
+  verse: number
+}
+
+export async function getAllCommentaryByFather(
+  db: SQLiteDatabase,
+  fatherName: string
+): Promise<CommentaryEntryWithRef[]> {
+  return db.getAllAsync<CommentaryEntryWithRef>(
+    `SELECT id, father_name, father_era, excerpt, full_text, source, source_url,
+            book, chapter, verse
+     FROM commentary
+     WHERE father_name LIKE ?
+     ORDER BY book, chapter, verse`,
+    [`${fatherName}%`]
   )
 }
 
@@ -1079,4 +1187,51 @@ export async function getBiblehubPassage(
   if (!row?.passages) return null
   const passages: BiblehubPassage[] = JSON.parse(row.passages)
   return passages.find(p => p.verse_start <= verse && verse <= p.verse_end) ?? null
+}
+
+// ── Early text cross-references ───────────────────────────────────────────────
+
+export type EarlyRefType = 'quote' | 'allusion'
+
+export interface EarlyTextRef {
+  ref_book: string
+  ref_chapter: number
+  ref_verse: number
+  ref_type: EarlyRefType
+}
+
+export async function getEarlyTextRefs(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+): Promise<EarlyTextRef[]> {
+  return db.getAllAsync<EarlyTextRef>(
+    `SELECT ref_book, ref_chapter, ref_verse, ref_type
+     FROM early_text_refs
+     WHERE book=? AND chapter=?
+     ORDER BY ref_book, ref_chapter, ref_verse`,
+    [book, chapter]
+  )
+}
+
+export interface EarlyTextCitation {
+  book: string
+  chapter: number
+  verse: number
+  ref_type: EarlyRefType
+}
+
+export async function getBibleVerseCitedByEarlyTexts(
+  db: SQLiteDatabase,
+  refBook: string,
+  refChapter: number,
+  refVerse: number,
+): Promise<EarlyTextCitation[]> {
+  return db.getAllAsync<EarlyTextCitation>(
+    `SELECT book, chapter, verse, ref_type
+     FROM early_text_refs
+     WHERE ref_book=? AND ref_chapter=? AND ref_verse=?
+     ORDER BY book, chapter`,
+    [refBook, refChapter, refVerse]
+  )
 }

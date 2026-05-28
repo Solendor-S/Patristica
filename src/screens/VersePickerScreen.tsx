@@ -9,6 +9,8 @@ import { useSQLiteContext } from 'expo-sqlite'
 import { useTheme } from '../context/ThemeContext'
 import type { ThemeColors } from '../theme/themes'
 import type { BibleStackParamList } from '../types'
+import { StackActions } from '@react-navigation/native'
+import { pendingNav } from '../navigation/pendingNav'
 
 type Props = {
   navigation: NativeStackNavigationProp<BibleStackParamList, 'VersePicker'>
@@ -62,7 +64,10 @@ export default function VersePickerScreen({ navigation, route }: Props) {
                   <TouchableOpacity
                     style={s.cell}
                     activeOpacity={0.7}
-                    onPress={() => navigation.navigate('Reader', { book, chapter, verse: item, apocrypha })}
+                    onPress={() => {
+                      pendingNav.current = { book, chapter, verse: item, apocrypha, earlyText: false }
+                      navigation.dispatch(StackActions.popToTop())
+                    }}
                   >
                     <Text style={s.cellText}>{item}</Text>
                   </TouchableOpacity>

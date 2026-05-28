@@ -5,7 +5,9 @@ import {
 } from 'react-native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { RouteProp } from '@react-navigation/native'
-import { BOOK_MAP, APOCRYPHA_BOOKS } from '../data/books'
+import { BOOK_MAP, APOCRYPHA_BOOK_MAP, EARLY_TEXT_MAP } from '../data/books'
+import { StackActions } from '@react-navigation/native'
+import { pendingNav } from '../navigation/pendingNav'
 import { useTheme } from '../context/ThemeContext'
 import { useNavDepth } from '../context/NavDepthContext'
 import type { ThemeColors } from '../theme/themes'
@@ -23,15 +25,25 @@ export default function ChapterPickerScreen({ navigation, route }: Props) {
   const s = useMemo(() => makeStyles(colors), [colors])
   const { navDepth } = useNavDepth()
 
-  const { book, apocrypha } = route.params
-  const chapterCount = apocrypha
-    ? (APOCRYPHA_BOOKS.find(b => b.name === book)?.chapters ?? 1)
-    : (BOOK_MAP[book]?.chapters ?? 1)
+  const { book, apocrypha, earlyText } = route.params
+  const chapterCount = earlyText  ? (EARLY_TEXT_MAP[book]?.chapters    ?? 1)
+                     : apocrypha  ? (APOCRYPHA_BOOK_MAP[book]?.chapters ?? 1)
+                     :              (BOOK_MAP[book]?.chapters            ?? 1)
   const chapters = Array.from({ length: chapterCount }, (_, i) => i + 1)
   const remainder = chapters.length % COLS
   const data: (number | null)[] = remainder === 0
     ? chapters
     : [...chapters, ...Array<null>(COLS - remainder).fill(null)]
+
+  const goToChapter = (ch: number) => {
+    // Preface (ch === 0) has no verses — always navigate directly to Reader
+    if (navDepth === 'verse' && ch !== 0) {
+      navigation.navigate('VersePicker', { book, chapter: ch, apocrypha })
+    } else {
+      pendingNav.current = { book, chapter: ch, apocrypha, earlyText }
+      navigation.dispatch(StackActions.popToTop())
+    }
+  }
 
   return (
     <View style={s.container}>
@@ -47,6 +59,11 @@ export default function ChapterPickerScreen({ navigation, route }: Props) {
         keyExtractor={(item, i) => item?.toString() ?? `spacer-${i}`}
         numColumns={COLS}
         contentContainerStyle={s.grid}
+        ListHeaderComponent={!apocrypha ? (
+          <TouchableOpacity style={s.prefaceRow} activeOpacity={0.7} onPress={() => goToChapter(0)}>
+            <Text style={s.prefaceText}>Preface</Text>
+          </TouchableOpacity>
+        ) : null}
         renderItem={({ item }) =>
           item === null
             ? <View style={[s.cell, s.cellSpacer]} />
@@ -54,11 +71,7 @@ export default function ChapterPickerScreen({ navigation, route }: Props) {
               <TouchableOpacity
                 style={s.cell}
                 activeOpacity={0.7}
-                onPress={() =>
-                  navDepth === 'verse'
-                    ? navigation.navigate('VersePicker', { book, chapter: item, apocrypha })
-                    : navigation.navigate('Reader', { book, chapter: item, apocrypha })
-                }
+                onPress={() => goToChapter(item)}
               >
                 <Text style={s.cellText}>{item}</Text>
               </TouchableOpacity>
@@ -88,6 +101,23 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   title: { fontSize: 17, fontWeight: '700', color: c.textPrimary },
 
   grid: { padding: 12 },
+
+  prefaceRow: {
+    marginBottom: 8,
+    backgroundColor: c.bgTertiary,
+    borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: c.accent,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  prefaceText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: c.accent,
+    letterSpacing: 0.3,
+  },
+
   cell: {
     flex: 1,
     margin: 5,

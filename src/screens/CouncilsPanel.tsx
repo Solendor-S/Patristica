@@ -8,7 +8,7 @@ import type { ThemeColors } from '../theme/themes'
 
 type CouncilType = 'Ecumenical' | 'Regional' | 'Local' | 'Disputed'
 
-interface Council {
+export interface Council {
   yearNum: number
   year: string
   name: string
@@ -25,7 +25,7 @@ const BADGE_COLOR: Record<CouncilType, { bg: string; text: string }> = {
   Disputed:   { bg: 'rgba(180,130,80,0.18)', text: '#b48250' },
 }
 
-const COUNCILS: Council[] = [
+export const COUNCILS: Council[] = [
   {
     yearNum: 49, year: 'c. 49', name: 'Council of Jerusalem', location: 'Jerusalem',
     type: 'Local',
@@ -151,7 +151,41 @@ const COUNCILS: Council[] = [
   },
 ]
 
-function CouncilCard({ council }: { council: Council }) {
+// Ordered longest-first so "Niceno-Constantinopolitan Creed" beats "Nicene Creed"
+const CREED_LINK_PATTERNS = [
+  'Niceno-Constantinopolitan Creed',
+  'Chalcedonian Definition',
+  "Apostles' Creed",
+  'Athanasian Creed',
+  'Nicene Creed',
+]
+const _creedRe = new RegExp(
+  `(${CREED_LINK_PATTERNS.map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`,
+  'g'
+)
+
+function renderDecree(
+  text: string,
+  decreeStyle: any,
+  accentColor: string,
+  onCreedPress?: (name: string) => void,
+): React.ReactElement {
+  if (!onCreedPress) return <Text style={decreeStyle}>{text}</Text>
+  const parts = text.split(_creedRe)
+  if (parts.length === 1) return <Text style={decreeStyle}>{text}</Text>
+  return (
+    <Text style={decreeStyle}>
+      {parts.map((part, i) =>
+        CREED_LINK_PATTERNS.includes(part)
+          ? <Text key={i} style={{ color: accentColor, textDecorationLine: 'underline' }}
+              onPress={() => onCreedPress(part)} suppressHighlighting>{part}</Text>
+          : <Text key={i}>{part}</Text>
+      )}
+    </Text>
+  )
+}
+
+function CouncilCard({ council, onCreedPress }: { council: Council; onCreedPress?: (name: string) => void }) {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
   const badge = BADGE_COLOR[council.type]
@@ -173,12 +207,12 @@ function CouncilCard({ council }: { council: Council }) {
           <Text style={s.infoText}>{council.notes}</Text>
         </View>
       )}
-      <Text style={s.decree}>{council.decree}</Text>
+      {renderDecree(council.decree, s.decree, colors.accent, onCreedPress)}
     </View>
   )
 }
 
-export default function CouncilsPanel() {
+export default function CouncilsPanel({ onCreedPress }: { onCreedPress?: (name: string) => void }) {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
   const [query, setQuery] = useState('')
@@ -222,7 +256,7 @@ export default function CouncilsPanel() {
         style={{ flex: 1 }}
         contentContainerStyle={s.list}
         keyboardShouldPersistTaps="handled"
-        renderItem={({ item }) => <CouncilCard council={item} />}
+        renderItem={({ item }) => <CouncilCard council={item} onCreedPress={onCreedPress} />}
         ListEmptyComponent={
           <View style={s.empty}>
             <Text style={s.emptyText}>No councils match "{query}"</Text>

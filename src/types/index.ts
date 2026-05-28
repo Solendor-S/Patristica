@@ -22,7 +22,7 @@ export interface Footnote {
 export interface Book {
   name: string
   chapters: number
-  testament: 'OT' | 'NT' | 'APOC'
+  testament: 'OT' | 'NT' | 'APOC' | 'EARLY'
   group?: string
 }
 
@@ -97,8 +97,8 @@ export type RootTabParamList = {
 }
 
 export type BibleStackParamList = {
-  Reader: { book?: string; chapter?: number; verse?: number; apocrypha?: boolean; _ts?: number }
-  BookPicker: undefined
-  ChapterPicker: { book: string; apocrypha?: boolean }
+  Reader: { book?: string; chapter?: number; verse?: number; apocrypha?: boolean; earlyText?: boolean; _ts?: number }
+  BookPicker: { initialTab?: 'OT' | 'NT' | 'APOC' | 'EARLY' }
+  ChapterPicker: { book: string; apocrypha?: boolean; earlyText?: boolean }
   VersePicker: { book: string; chapter: number; apocrypha?: boolean }
 }

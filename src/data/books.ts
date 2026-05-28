@@ -101,3 +101,36 @@ export const APOCRYPHA_BOOKS: Book[] = [
 ]
 
 export const APOCRYPHA_BOOK_NAMES = new Set(APOCRYPHA_BOOKS.map(b => b.name))
+export const APOCRYPHA_BOOK_MAP   = Object.fromEntries(APOCRYPHA_BOOKS.map(b => [b.name, b]))
+
+export const EARLY_TEXTS: Array<{ name: string; chapters: number; testament: 'EARLY'; group: string; date: string }> = [
+  { name: 'Didache',   chapters: 16, testament: 'EARLY', group: 'Early Church Writings', date: 'c. 50–120 AD' },
+  { name: '1 Clement', chapters: 59, testament: 'EARLY', group: 'Apostolic Fathers',     date: 'c. 96 AD' },
+  { name: '2 Clement', chapters: 20, testament: 'EARLY', group: 'Spurious',              date: 'c. 130–160 AD' },
+  // Ignatius Letters (c. 107 AD)
+  { name: 'Ignatius to the Ephesians',      chapters: 21, testament: 'EARLY', group: 'Ignatius Letters', date: 'c. 107 AD' },
+  { name: 'Ignatius to the Magnesians',     chapters: 15, testament: 'EARLY', group: 'Ignatius Letters', date: 'c. 107 AD' },
+  { name: 'Ignatius to the Trallians',      chapters: 13, testament: 'EARLY', group: 'Ignatius Letters', date: 'c. 107 AD' },
+  { name: 'Ignatius to the Romans',         chapters: 10, testament: 'EARLY', group: 'Ignatius Letters', date: 'c. 107 AD' },
+  { name: 'Ignatius to the Philadelphians', chapters: 11, testament: 'EARLY', group: 'Ignatius Letters', date: 'c. 107 AD' },
+  { name: 'Ignatius to the Smyrnaeans',     chapters: 13, testament: 'EARLY', group: 'Ignatius Letters', date: 'c. 107 AD' },
+  { name: 'Ignatius to Polycarp',           chapters:  8, testament: 'EARLY', group: 'Ignatius Letters', date: 'c. 107 AD' },
+  // Apostolic Fathers
+  { name: 'Epistle to Diognetus',  chapters: 12, testament: 'EARLY', group: 'Apostolic Fathers', date: 'c. 130–200 AD' },
+  { name: 'Epistle of Barnabas',   chapters: 21, testament: 'EARLY', group: 'Apostolic Fathers', date: 'c. 70–132 AD' },
+  { name: 'Epistle of Polycarp',   chapters: 14, testament: 'EARLY', group: 'Apostolic Fathers', date: 'c. 110–140 AD' },
+  { name: 'Martyrdom of Polycarp', chapters: 22, testament: 'EARLY', group: 'Apostolic Fathers', date: 'c. 155 AD' },
+  // Apologists
+  { name: 'Justin Martyr — First Apology',        chapters:  68, testament: 'EARLY', group: 'Apologists', date: 'c. 155 AD' },
+  { name: 'Justin Martyr — Dialogue with Trypho', chapters: 142, testament: 'EARLY', group: 'Apologists', date: 'c. 155–160 AD' },
+  { name: 'Tertullian — Apologeticus',            chapters:  50, testament: 'EARLY', group: 'Apologists', date: 'c. 197 AD' },
+  // Irenaeus — Against Heresies
+  { name: 'Against Heresies Book 1', chapters: 31, testament: 'EARLY', group: 'Irenaeus', date: 'c. 180 AD' },
+  { name: 'Against Heresies Book 2', chapters: 35, testament: 'EARLY', group: 'Irenaeus', date: 'c. 180 AD' },
+  { name: 'Against Heresies Book 3', chapters: 25, testament: 'EARLY', group: 'Irenaeus', date: 'c. 180 AD' },
+  { name: 'Against Heresies Book 4', chapters: 41, testament: 'EARLY', group: 'Irenaeus', date: 'c. 180 AD' },
+  { name: 'Against Heresies Book 5', chapters: 36, testament: 'EARLY', group: 'Irenaeus', date: 'c. 180 AD' },
+]
+
+export const EARLY_TEXT_NAMES = new Set(EARLY_TEXTS.map(b => b.name))
+export const EARLY_TEXT_MAP   = Object.fromEntries(EARLY_TEXTS.map(b => [b.name, b]))

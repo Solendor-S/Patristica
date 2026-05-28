@@ -23,7 +23,17 @@ type NavProp = BottomTabNavigationProp<RootTabParamList, 'Library'>
 type LibraryTab = 'bookmarks' | 'highlights' | 'notes' | 'history'
 
 import { HIGHLIGHT_COLORS, getHighlightBg, getSwatchColor } from '../theme/highlightColors'
+import { EARLY_TEXT_MAP, APOCRYPHA_BOOK_MAP } from '../data/books'
 import { formatDate, formatRelative } from '../utils/formatDate'
+
+function navigateToReader(
+  navigation: NavProp,
+  book: string, chapter: number, verse?: number,
+) {
+  const earlyText = !!EARLY_TEXT_MAP[book]
+  const apocrypha = !earlyText && !!APOCRYPHA_BOOK_MAP[book]
+  navigation.navigate('Bible' as any, { screen: 'Reader', params: { book, chapter, verse, earlyText, apocrypha } })
+}
 
 // ── Sub-tab: Bookmarks ────────────────────────────────────
 
@@ -49,9 +59,7 @@ function BookmarksTab() {
     ])
   }
 
-  const handleNavigate = (b: Bookmark) => {
-    navigation.navigate('Bible' as any, { screen: 'Reader', params: { book: b.book, chapter: b.chapter, verse: b.verse } })
-  }
+  const handleNavigate = (b: Bookmark) => navigateToReader(navigation, b.book, b.chapter, b.verse)
 
   return (
     <FlatList
@@ -105,9 +113,7 @@ function HighlightsTab() {
     ])
   }
 
-  const handleNavigate = (h: Highlight) => {
-    navigation.navigate('Bible' as any, { screen: 'Reader', params: { book: h.book, chapter: h.chapter, verse: h.verse } })
-  }
+  const handleNavigate = (h: Highlight) => navigateToReader(navigation, h.book, h.chapter, h.verse)
 
   return (
     <FlatList
@@ -169,9 +175,7 @@ function NotesTab() {
     ])
   }
 
-  const handleNavigate = (n: NoteWithVerse) => {
-    navigation.navigate('Bible' as any, { screen: 'Reader', params: { book: n.book, chapter: n.chapter, verse: n.verse } })
-  }
+  const handleNavigate = (n: NoteWithVerse) => navigateToReader(navigation, n.book, n.chapter, n.verse)
 
   return (
     <FlatList
@@ -234,9 +238,7 @@ function HistoryTab() {
 
   useFocusEffect(useCallback(() => { getHistory(db).then(setEntries) }, [db]))
 
-  const handleNavigate = (e: HistoryEntry) => {
-    navigation.navigate('Bible' as any, { screen: 'Reader', params: { book: e.book, chapter: e.chapter } })
-  }
+  const handleNavigate = (e: HistoryEntry) => navigateToReader(navigation, e.book, e.chapter)
 
   const handleClear = () => {
     Alert.alert('Clear history', 'Remove all reading history?', [

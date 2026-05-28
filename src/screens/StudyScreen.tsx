@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import {
   View, Text, FlatList, TouchableOpacity, ScrollView,
-  StyleSheet, ActivityIndicator, StatusBar, LayoutAnimation,
+  StyleSheet, ActivityIndicator, StatusBar, LayoutAnimation, Linking, TextInput,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { Ionicons } from '@expo/vector-icons'
@@ -9,30 +9,39 @@ import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
 import { useWordFocus } from '../context/WordFocusContext'
-import { getCommentary, getCrossRefs, getJosephusForVerse, getVariantsForVerse, getVerseText, getMaxVerse } from '../db/queries'
-import type { JosephusEntry } from '../db/queries'
+import { getCommentary, getCrossRefs, getJosephusForVerse, getVariantsForVerse, getVerseText, getMaxVerse, getAllCommentaryByFather, getBibleVerseCitedByEarlyTexts, getEarlyTextRefs } from '../db/queries'
+import type { JosephusEntry, CommentaryEntryWithRef, EarlyTextCitation, EarlyTextRef } from '../db/queries'
 import type { TextualVariant } from '../types'
-import { getFatherInfo } from '../data/fatherDates'
+import { getFatherInfo, FATHER_DATES } from '../data/fatherDates'
+import { EARLY_TEXT_MAP } from '../data/books'
+import { getSourceUrl, getEarlyTextBook } from '../data/sourceLinks'
 import { stripUsfm } from '../data/redLetter'
 import { getHistoricalForVerse, HISTORICAL_SOURCES, CATEGORY_LABEL } from '../data/historicalData'
 import type { HistoricalSource } from '../data/historicalData'
 import CouncilsPanel from './CouncilsPanel'
 import HeresiesPanel from './HeresiesPanel'
+import CreedPanel from './CreedPanel'
+import PersecutionPanel from './PersecutionPanel'
+import CanonPanel from './CanonPanel'
+import TimelinePanel from './TimelinePanel'
 import WordStudyPanel from './WordStudyPanel'
 import OverviewPanel from './OverviewPanel'
+import MapPanel from './MapPanel'
 import { useTheme } from '../context/ThemeContext'
 import type { ThemeColors } from '../theme/themes'
 import type { CommentaryEntry, CrossRef, Note, RootTabParamList } from '../types'
 
-type StudyTab = 'fathers' | 'crossrefs' | 'historical' | 'councils' | 'heresies' | 'words' | 'overview'
+export type StudyTab = 'fathers' | 'crossrefs' | 'historical' | 'councils' | 'heresies' | 'creeds' | 'persecution' | 'canon' | 'timeline' | 'words' | 'overview' | 'map'
 type HistMode = 'verse' | 'browse'
+type FatherMode = 'verse' | 'browse'
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Study'>
 
 // ── Entry card ────────────────────────────────────────────
 
-function EntryCard({ entry }: { entry: CommentaryEntry }) {
+function EntryCard({ entry, book, verseRef }: { entry: CommentaryEntry; book: string; verseRef?: string }) {
   const { colors } = useTheme()
   const styles = useMemo(() => makeStyles(colors), [colors])
+  const navigation = useNavigation<NavProp>()
   const [expanded, setExpanded] = useState(false)
 
   const toggle = () => {
@@ -45,6 +54,25 @@ function EntryCard({ entry }: { entry: CommentaryEntry }) {
   const info = useMemo(() => getFatherInfo(entry.father_name), [entry.father_name])
   const dateLabel = info?.dates ?? entry.father_era
 
+  // Check if the source is an early text we have in-app
+  const earlyTextNav = useMemo(
+    () => getEarlyTextBook(entry.father_name, entry.source),
+    [entry.father_name, entry.source],
+  )
+
+  const sourceUrl = useMemo(
+    () => earlyTextNav ? null : getSourceUrl(entry.father_name, book, entry.source_url, entry.excerpt),
+    [earlyTextNav, entry.father_name, book, entry.source_url, entry.excerpt],
+  )
+
+  const handleReadInApp = useCallback(() => {
+    if (!earlyTextNav) return
+    navigation.navigate('Bible' as any, {
+      screen: 'Reader',
+      params: { book: earlyTextNav.book, chapter: earlyTextNav.chapter, earlyText: true, apocrypha: false },
+    })
+  }, [earlyTextNav, navigation])
+
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
@@ -52,8 +80,30 @@ function EntryCard({ entry }: { entry: CommentaryEntry }) {
           <Text style={styles.fatherName}>{entry.father_name}</Text>
           {!!dateLabel && <Text style={styles.fatherEra}>{dateLabel}</Text>}
         </View>
+        {earlyTextNav ? (
+          <TouchableOpacity
+            style={styles.readFullBtn}
+            onPress={handleReadInApp}
+            activeOpacity={0.7}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 4 }}
+          >
+            <Text style={styles.readFullLabel}>Read in app</Text>
+            <Ionicons name="book-outline" size={12} color={colors.accent} />
+          </TouchableOpacity>
+        ) : !!sourceUrl && (
+          <TouchableOpacity
+            style={styles.readFullBtn}
+            onPress={() => Linking.openURL(sourceUrl)}
+            activeOpacity={0.7}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 4 }}
+          >
+            <Text style={styles.readFullLabel}>Read full text</Text>
+            <Ionicons name="open-outline" size={12} color={colors.accent} />
+          </TouchableOpacity>
+        )}
       </View>
 
+      {!!verseRef && <Text style={styles.browseVerseRef}>{verseRef}</Text>}
       <Text style={styles.cardText}>{body}</Text>
 
       {!!entry.source && <Text style={styles.source}>{entry.source}</Text>}
@@ -384,11 +434,13 @@ function HistoricalPanel({
 export default function StudyScreen() {
   const { colors } = useTheme()
   const styles = useMemo(() => makeStyles(colors), [colors])
+  const hist   = useMemo(() => makeHist(colors), [colors])
   const db = useSQLiteContext()
   const { selected, setSelected } = useSelectedVerse()
   const navigation = useNavigation<NavProp>()
 
   const [activeTab, setActiveTab] = useState<StudyTab>('fathers')
+  const [creedJumpTo, setCreedJumpTo] = useState<string | undefined>()
   const { wordFocus } = useWordFocus()
 
   useEffect(() => {
@@ -396,7 +448,15 @@ export default function StudyScreen() {
   }, [wordFocus, activeTab])
   const [entries, setEntries] = useState<CommentaryEntry[]>([])
   const [crossRefs, setCrossRefs] = useState<CrossRef[]>([])
+  const [earlyCitations, setEarlyCitations] = useState<EarlyTextCitation[]>([])
+  const [earlyTextRefs, setEarlyTextRefs] = useState<EarlyTextRef[]>([])
+  const [crossRefPanel, setCrossRefPanel] = useState<'bible' | 'early'>('bible')
   const [histMode, setHistMode] = useState<HistMode>('verse')
+  const [fatherMode, setFatherMode] = useState<FatherMode>('verse')
+  const [browseFather, setBrowseFather] = useState<string | null>(null)
+  const [browseEntries, setBrowseEntries] = useState<CommentaryEntryWithRef[]>([])
+  const [loadingBrowse, setLoadingBrowse] = useState(false)
+  const [fatherQuery, setFatherQuery] = useState('')
   const [loadingFathers, setLoadingFathers] = useState(false)
   const [loadingRefs, setLoadingRefs] = useState(false)
   const [verseText, setVerseText] = useState<string | null>(null)
@@ -421,7 +481,10 @@ export default function StudyScreen() {
   }, [selected, maxVerse, setSelected])
 
   useEffect(() => {
-    if (!selected) { setEntries([]); setCrossRefs([]); return }
+    if (!selected) {
+      setEntries([]); setCrossRefs([]); setEarlyCitations([]); setEarlyTextRefs([])
+      return
+    }
 
     setLoadingFathers(true)
     getCommentary(db, selected.book, selected.chapter, selected.verse)
@@ -436,9 +499,27 @@ export default function StudyScreen() {
       })
       .catch(() => setLoadingFathers(false))
 
+    const isEarlyBook = !!EARLY_TEXT_MAP[selected.book]
     setLoadingRefs(true)
-    getCrossRefs(db, selected.book, selected.chapter, selected.verse)
-      .then(rows => { setCrossRefs(rows); setLoadingRefs(false) })
+    Promise.all([
+      getCrossRefs(db, selected.book, selected.chapter, selected.verse),
+      isEarlyBook
+        ? getEarlyTextRefs(db, selected.book, selected.chapter)
+        : getBibleVerseCitedByEarlyTexts(db, selected.book, selected.chapter, selected.verse),
+    ])
+      .then(([refs, earlyData]) => {
+        setCrossRefs(refs)
+        const byType = (a: { ref_type: string }, b: { ref_type: string }) =>
+          (a.ref_type === 'quote' ? 0 : 1) - (b.ref_type === 'quote' ? 0 : 1)
+        if (isEarlyBook) {
+          setEarlyTextRefs([...(earlyData as EarlyTextRef[])].sort(byType))
+          setEarlyCitations([])
+        } else {
+          setEarlyCitations([...(earlyData as EarlyTextCitation[])].sort(byType))
+          setEarlyTextRefs([])
+        }
+        setLoadingRefs(false)
+      })
       .catch(() => setLoadingRefs(false))
 
   }, [selected?.book, selected?.chapter, selected?.verse])
@@ -520,6 +601,11 @@ export default function StudyScreen() {
             { key: 'historical', label: 'Historical' },
             { key: 'councils',   label: 'Councils' },
             { key: 'heresies',   label: 'Heresies' },
+            { key: 'creeds',       label: 'Creeds' },
+            { key: 'persecution',  label: 'Persecution' },
+            { key: 'canon',        label: 'Canon' },
+            { key: 'timeline',     label: 'Timeline' },
+            { key: 'map',          label: 'Map' },
           ] as Array<{ key: StudyTab; label: string; badge?: number }>).map(tab => {
             const active = activeTab === tab.key
             return (
@@ -548,30 +634,171 @@ export default function StudyScreen() {
         )}
 
         {/* Fathers list */}
-        {!loading && activeTab === 'fathers' && (
-          !selected ? (
-            <View style={styles.center}>
-              <Ionicons name="book-outline" size={52} color={colors.border} />
-              <Text style={styles.emptyTitle}>No verse selected</Text>
-              <Text style={styles.emptyText}>Tap a verse in the Bible tab to see Church Fathers commentary</Text>
-            </View>
-          ) : entries.length === 0 ? (
-            <View style={styles.center}>
-              <Ionicons name="chatbubble-ellipses-outline" size={52} color={colors.border} />
-              <Text style={styles.emptyTitle}>No commentary found</Text>
-              <Text style={styles.emptyText}>No patristic commentary recorded for {verseRef}</Text>
-            </View>
-          ) : (
-            <FlatList
-              data={entries}
-              keyExtractor={e => e.id.toString()}
-              contentContainerStyle={styles.list}
-              renderItem={({ item }) => <EntryCard entry={item} />}
-            />
-          )
-        )}
+        {!loading && activeTab === 'fathers' && (() => {
+          // ── Browse mode: father list ──
+          if (fatherMode === 'browse' && !browseFather) {
+            const q = fatherQuery.trim().toLowerCase()
+            const fatherList = Object.entries(FATHER_DATES)
+              .filter(([, info]) => info.sort >= 30 && info.sort <= 800)
+              // deduplicate by sort+first-word key
+              .filter(([name], _, arr) => {
+                const key = `${FATHER_DATES[name].sort}-${name.split(' ')[0]}`
+                return arr.findIndex(([n]) => `${FATHER_DATES[n].sort}-${n.split(' ')[0]}` === key) === arr.findIndex(([n]) => n === name)
+              })
+              .filter(([name, info]) => !q ||
+                name.toLowerCase().includes(q) ||
+                (info.role?.toLowerCase().includes(q) ?? false) ||
+                (info.location?.toLowerCase().includes(q) ?? false) ||
+                (info.tradition?.toLowerCase().includes(q) ?? false)
+              )
+              .sort(([, a], [, b]) => a.sort - b.sort)
+            return (
+              <View style={{ flex: 1 }}>
+                <View style={styles.modeToggle}>
+                  <TouchableOpacity style={[styles.modeBtn]} onPress={() => setFatherMode('verse')} activeOpacity={0.7}>
+                    <Text style={[styles.modeBtnText]}>This Verse</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={[styles.modeBtn, styles.modeBtnActive]} onPress={() => setFatherMode('browse')} activeOpacity={0.7}>
+                    <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>Browse Fathers</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.fatherSearchRow}>
+                  <Ionicons name="search" size={15} color={colors.textMuted} style={{ marginRight: 6 }} />
+                  <TextInput
+                    style={styles.fatherSearchInput}
+                    placeholder="Search fathers…"
+                    placeholderTextColor={colors.textMuted}
+                    value={fatherQuery}
+                    onChangeText={setFatherQuery}
+                    returnKeyType="search"
+                    autoCorrect={false}
+                  />
+                  {!!fatherQuery && (
+                    <TouchableOpacity onPress={() => setFatherQuery('')} hitSlop={8}>
+                      <Ionicons name="close-circle" size={15} color={colors.textMuted} />
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <FlatList
+                  data={fatherList}
+                  keyExtractor={([name]) => name}
+                  ListEmptyComponent={
+                    <View style={styles.center}>
+                      <Text style={styles.emptyText}>No fathers match "{fatherQuery}"</Text>
+                    </View>
+                  }
+                  contentContainerStyle={styles.list}
+                  renderItem={({ item: [name, info] }) => (
+                    <TouchableOpacity
+                      style={styles.fatherBrowseRow}
+                      activeOpacity={0.7}
+                      onPress={() => {
+                        setBrowseFather(name)
+                        setLoadingBrowse(true)
+                        getAllCommentaryByFather(db, name)
+                          .then(rows => { setBrowseEntries(rows); setLoadingBrowse(false) })
+                          .catch(() => setLoadingBrowse(false))
+                      }}
+                    >
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.fatherBrowseName}>{name}</Text>
+                        {!!info.role && <Text style={styles.fatherBrowseRole}>{info.role}</Text>}
+                        {!!info.location && <Text style={styles.fatherBrowseMeta}>{info.location} · {info.dates}</Text>}
+                        {!info.location && <Text style={styles.fatherBrowseMeta}>{info.dates}</Text>}
+                      </View>
+                      {!!info.tradition && (
+                        <View style={styles.traditionBadge}>
+                          <Text style={styles.traditionText}>{info.tradition}</Text>
+                        </View>
+                      )}
+                      <Ionicons name="chevron-forward" size={14} color={colors.textMuted} />
+                    </TouchableOpacity>
+                  )}
+                />
+              </View>
+            )
+          }
 
-        {/* Cross-refs list */}
+          // ── Browse mode: father detail ──
+          if (fatherMode === 'browse' && browseFather) {
+            const info = FATHER_DATES[browseFather]
+            return (
+              <View style={{ flex: 1 }}>
+                <View style={styles.browseHeader}>
+                  <TouchableOpacity onPress={() => { setBrowseFather(null); setBrowseEntries([]) }} hitSlop={8} activeOpacity={0.7}>
+                    <Ionicons name="arrow-back" size={18} color={colors.accent} />
+                  </TouchableOpacity>
+                  <View style={{ flex: 1, marginLeft: 10 }}>
+                    <Text style={styles.browseHeaderName}>{browseFather}</Text>
+                    {!!info?.role && <Text style={styles.browseHeaderRole}>{info.role}{info.location ? ` · ${info.location}` : ''}</Text>}
+                  </View>
+                </View>
+                {!!info?.keyWorks && (
+                  <View style={styles.browseKeyWorks}>
+                    <Text style={styles.browseKeyWorksLabel}>Key works</Text>
+                    <Text style={styles.browseKeyWorksText}>{info.keyWorks}</Text>
+                  </View>
+                )}
+                {loadingBrowse ? (
+                  <View style={styles.center}><ActivityIndicator color={colors.accent} /></View>
+                ) : browseEntries.length === 0 ? (
+                  <View style={styles.center}>
+                    <Text style={styles.emptyText}>No commentary entries found for {browseFather}</Text>
+                  </View>
+                ) : (
+                  <FlatList
+                    data={browseEntries}
+                    keyExtractor={e => e.id.toString()}
+                    contentContainerStyle={styles.list}
+                    renderItem={({ item }) => (
+                      <EntryCard
+                        entry={item}
+                        book={item.book}
+                        verseRef={`${item.book} ${item.chapter}:${item.verse}`}
+                      />
+                    )}
+                  />
+                )}
+              </View>
+            )
+          }
+
+          // ── Verse mode (existing) ──
+          return (
+            <View style={{ flex: 1 }}>
+              <View style={styles.modeToggle}>
+                <TouchableOpacity style={[styles.modeBtn, styles.modeBtnActive]} onPress={() => setFatherMode('verse')} activeOpacity={0.7}>
+                  <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>This Verse</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={[styles.modeBtn]} onPress={() => setFatherMode('browse')} activeOpacity={0.7}>
+                  <Text style={[styles.modeBtnText]}>Browse Fathers</Text>
+                </TouchableOpacity>
+              </View>
+              {!selected ? (
+                <View style={styles.center}>
+                  <Ionicons name="book-outline" size={52} color={colors.border} />
+                  <Text style={styles.emptyTitle}>No verse selected</Text>
+                  <Text style={styles.emptyText}>Tap a verse in the Bible tab to see Church Fathers commentary</Text>
+                </View>
+              ) : entries.length === 0 ? (
+                <View style={styles.center}>
+                  <Ionicons name="chatbubble-ellipses-outline" size={52} color={colors.border} />
+                  <Text style={styles.emptyTitle}>No commentary found</Text>
+                  <Text style={styles.emptyText}>No patristic commentary recorded for {verseRef}</Text>
+                </View>
+              ) : (
+                <FlatList
+                  data={entries}
+                  keyExtractor={e => e.id.toString()}
+                  contentContainerStyle={styles.list}
+                  renderItem={({ item }) => <EntryCard entry={item} book={selected.book} />}
+                />
+              )}
+            </View>
+          )
+        })()}
+
+        {/* Cross-refs: segmented panel */}
         {!loading && activeTab === 'crossrefs' && (
           !selected ? (
             <View style={styles.center}>
@@ -579,22 +806,122 @@ export default function StudyScreen() {
               <Text style={styles.emptyTitle}>No verse selected</Text>
               <Text style={styles.emptyText}>Tap a verse in the Bible tab to see cross-references</Text>
             </View>
-          ) : crossRefs.length === 0 ? (
-            <View style={styles.center}>
-              <Ionicons name="git-branch-outline" size={52} color={colors.border} />
-              <Text style={styles.emptyTitle}>No cross-references</Text>
-              <Text style={styles.emptyText}>No cross-references recorded for {verseRef}</Text>
-            </View>
-          ) : (
-            <FlatList
-              data={crossRefs}
-              keyExtractor={r => `${r.ref_book}-${r.ref_chapter}-${r.ref_verse}`}
-              contentContainerStyle={styles.list}
-              renderItem={({ item }) => (
-                <CrossRefCard item={item} onPress={() => goToVerse(item)} />
-              )}
-            />
-          )
+          ) : (() => {
+            const isEarlyBook = !!EARLY_TEXT_MAP[selected.book]
+            const earlyCount  = isEarlyBook ? earlyTextRefs.length : earlyCitations.length
+            const earlyLabel  = isEarlyBook ? 'Scripture Refs' : 'Early Church'
+            return (
+              <View style={{ flex: 1 }}>
+                {/* Segmented toggle */}
+                <View style={hist.toggle}>
+                  <TouchableOpacity
+                    style={[hist.toggleBtn, crossRefPanel === 'bible' && hist.toggleBtnActive]}
+                    onPress={() => setCrossRefPanel('bible')} activeOpacity={0.7}
+                  >
+                    <Text style={[hist.toggleLabel, crossRefPanel === 'bible' && hist.toggleLabelActive]}>
+                      Cross-Refs{crossRefs.length > 0 ? ` (${crossRefs.length})` : ''}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[hist.toggleBtn, crossRefPanel === 'early' && hist.toggleBtnActive]}
+                    onPress={() => setCrossRefPanel('early')} activeOpacity={0.7}
+                  >
+                    <Text style={[hist.toggleLabel, crossRefPanel === 'early' && hist.toggleLabelActive]}>
+                      {earlyLabel}{earlyCount > 0 ? ` (${earlyCount})` : ''}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                {/* Panel: Bible cross-refs */}
+                {crossRefPanel === 'bible' && (
+                  crossRefs.length === 0 ? (
+                    <View style={styles.center}>
+                      <Ionicons name="git-branch-outline" size={52} color={colors.border} />
+                      <Text style={styles.emptyTitle}>No cross-references</Text>
+                      <Text style={styles.emptyText}>No cross-references recorded for {verseRef}</Text>
+                    </View>
+                  ) : (
+                    <FlatList
+                      data={crossRefs}
+                      keyExtractor={r => `${r.ref_book}-${r.ref_chapter}-${r.ref_verse}`}
+                      contentContainerStyle={styles.list}
+                      renderItem={({ item }) => (
+                        <CrossRefCard item={item} onPress={() => goToVerse(item)} />
+                      )}
+                    />
+                  )
+                )}
+
+                {/* Panel: Early text refs or citations */}
+                {crossRefPanel === 'early' && (
+                  earlyCount === 0 ? (
+                    <View style={styles.center}>
+                      <Ionicons name="time-outline" size={52} color={colors.border} />
+                      <Text style={styles.emptyTitle}>
+                        {isEarlyBook ? 'No scripture references' : 'Not cited in early texts'}
+                      </Text>
+                      <Text style={styles.emptyText}>
+                        {isEarlyBook
+                          ? 'No mapped scripture references for this chapter'
+                          : 'This verse is not cited in Didache, 1 Clement, or 2 Clement'}
+                      </Text>
+                    </View>
+                  ) : isEarlyBook ? (
+                    <FlatList
+                      data={earlyTextRefs}
+                      keyExtractor={(r, i) => `${r.ref_book}-${r.ref_chapter}-${r.ref_verse}-${i}`}
+                      contentContainerStyle={styles.list}
+                      renderItem={({ item: r }) => (
+                        <TouchableOpacity
+                          style={styles.earlyCitationRow}
+                          onPress={() => goToVerse({ ref_book: r.ref_book, ref_chapter: r.ref_chapter, ref_verse: r.ref_verse } as CrossRef)}
+                          activeOpacity={0.7}
+                        >
+                          <View style={styles.earlyCitationMain}>
+                            <Text style={styles.earlyCitationBook}>{r.ref_book}</Text>
+                            <Text style={styles.earlyCitationRef}> {r.ref_chapter}:{r.ref_verse}</Text>
+                          </View>
+                          <View style={[styles.earlyCitationBadge, r.ref_type === 'quote' && styles.earlyCitationBadgeQuote]}>
+                            <Text style={styles.earlyCitationBadgeText}>{r.ref_type}</Text>
+                          </View>
+                          <Ionicons name="chevron-forward" size={14} color={colors.textMuted} />
+                        </TouchableOpacity>
+                      )}
+                    />
+                  ) : (
+                    <FlatList
+                      data={earlyCitations}
+                      keyExtractor={(c, i) => `${c.book}-${c.chapter}-${i}`}
+                      contentContainerStyle={styles.list}
+                      renderItem={({ item: c }) => (
+                        <TouchableOpacity
+                          style={styles.earlyCitationRow}
+                          onPress={() => {
+                            try {
+                              navigation.navigate('Bible' as any, {
+                                screen: 'Reader',
+                                params: { book: c.book, chapter: c.chapter, verse: c.verse, earlyText: true },
+                              })
+                            } catch {}
+                          }}
+                          activeOpacity={0.7}
+                        >
+                          <View style={styles.earlyCitationMain}>
+                            <Text style={styles.earlyCitationBook}>{c.book}</Text>
+                            <Text style={styles.earlyCitationRef}> ch. {c.chapter}</Text>
+                          </View>
+                          <View style={[styles.earlyCitationBadge, c.ref_type === 'quote' && styles.earlyCitationBadgeQuote]}>
+                            <Text style={styles.earlyCitationBadgeText}>{c.ref_type}</Text>
+                          </View>
+                          <Ionicons name="chevron-forward" size={14} color={colors.textMuted} />
+                        </TouchableOpacity>
+                      )}
+                    />
+                  )
+                )}
+              </View>
+            )
+          })()
         )}
 
         {/* Words / Strong's */}
@@ -623,10 +950,31 @@ export default function StudyScreen() {
         {activeTab === 'overview' && <OverviewPanel selected={selected} />}
 
         {/* Councils */}
-        {activeTab === 'councils' && <CouncilsPanel />}
+        {activeTab === 'councils' && (
+          <CouncilsPanel
+            onCreedPress={name => { setCreedJumpTo(name); setActiveTab('creeds') }}
+          />
+        )}
 
         {/* Heresies */}
         {activeTab === 'heresies' && <HeresiesPanel />}
+
+        {/* Creeds */}
+        {activeTab === 'creeds' && <CreedPanel jumpTo={creedJumpTo} />}
+
+        {/* Persecution */}
+        {activeTab === 'persecution' && <PersecutionPanel />}
+
+        {/* Canon */}
+        {activeTab === 'canon' && <CanonPanel />}
+
+        {/* Timeline */}
+        {activeTab === 'timeline' && (
+          <TimelinePanel onNavigate={tab => setActiveTab(tab)} />
+        )}
+
+        {/* Map */}
+        {activeTab === 'map' && <MapPanel selected={selected} />}
       </View>
     </View>
   )
@@ -708,9 +1056,17 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     flexDirection: 'row', justifyContent: 'space-between',
     alignItems: 'flex-start', marginBottom: 10,
   },
-  fatherInfo: { flex: 1 },
+  fatherInfo: { flex: 1, marginRight: 8 },
   fatherName: { fontSize: 15, fontWeight: '700', color: c.textAccent },
   fatherEra:  { fontSize: 12, color: c.textMuted, marginTop: 2 },
+
+  readFullBtn: {
+    flexDirection: 'row', alignItems: 'center', gap: 4,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: c.accent,
+    borderRadius: 6, paddingHorizontal: 8, paddingVertical: 4,
+    flexShrink: 0,
+  },
+  readFullLabel: { fontSize: 11, fontWeight: '600', color: c.accent },
 
   cardText: { fontSize: 15, lineHeight: 24, color: c.textPrimary },
   source:   { fontSize: 12, color: c.textMuted, marginTop: 8, fontStyle: 'italic' },
@@ -729,8 +1085,83 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   },
   crossRefGo: { fontSize: 12, color: c.accent, fontWeight: '600' },
 
+  earlyCitationRow: {
+    flexDirection: 'row', alignItems: 'center',
+    paddingVertical: 7, gap: 8,
+    borderTopWidth: 1, borderTopColor: c.border,
+  },
+  earlyCitationMain: { flex: 1, flexDirection: 'row', alignItems: 'baseline' },
+  earlyCitationBook: { fontSize: 14, fontWeight: '600', color: c.textPrimary },
+  earlyCitationRef:  { fontSize: 13, color: c.textSecondary },
+  earlyCitationBadge: {
+    paddingHorizontal: 6, paddingVertical: 2,
+    borderRadius: 8, backgroundColor: c.bgCard,
+  },
+  earlyCitationBadgeQuote: { backgroundColor: c.accent + '28' },
+  earlyCitationBadgeText: { fontSize: 10, fontWeight: '700', color: c.textMuted },
+
   emptyTitle: { fontSize: 17, fontWeight: '600', color: c.textSecondary, textAlign: 'center' },
   emptyText:  { fontSize: 14, color: c.textMuted, textAlign: 'center', lineHeight: 22 },
+
+  // Father browse mode
+  modeToggle: {
+    flexDirection: 'row', gap: 6,
+    paddingHorizontal: 12, paddingTop: 10, paddingBottom: 6,
+  },
+  modeBtn: {
+    paddingHorizontal: 12, paddingVertical: 5,
+    borderRadius: 14, borderWidth: 1.5, borderColor: c.border,
+  },
+  modeBtnActive: { backgroundColor: c.accent, borderColor: c.accent },
+  modeBtnText: { fontSize: 13, fontWeight: '600', color: c.textMuted },
+  modeBtnTextActive: { color: '#fff' },
+
+  fatherSearchRow: {
+    flexDirection: 'row', alignItems: 'center',
+    marginHorizontal: 12, marginBottom: 6,
+    backgroundColor: c.bgCard,
+    borderRadius: 10, borderWidth: StyleSheet.hairlineWidth, borderColor: c.border,
+    paddingHorizontal: 10, height: 36,
+  },
+  fatherSearchInput: { flex: 1, fontSize: 14, color: c.textPrimary },
+
+  fatherBrowseRow: {
+    flexDirection: 'row', alignItems: 'center',
+    backgroundColor: c.bgCard, borderRadius: 12, padding: 14,
+    marginBottom: 8,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: c.border, gap: 8,
+  },
+  fatherBrowseName: { fontSize: 15, fontWeight: '700', color: c.textAccent },
+  fatherBrowseRole: { fontSize: 13, color: c.textSecondary, marginTop: 1 },
+  fatherBrowseMeta: { fontSize: 12, color: c.textMuted, marginTop: 1 },
+  traditionBadge: {
+    backgroundColor: c.bgTertiary, borderRadius: 6,
+    paddingHorizontal: 7, paddingVertical: 3,
+  },
+  traditionText: { fontSize: 11, fontWeight: '600', color: c.textMuted },
+
+  browseHeader: {
+    flexDirection: 'row', alignItems: 'flex-start',
+    paddingHorizontal: 14, paddingVertical: 12,
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
+  },
+  browseHeaderName: { fontSize: 16, fontWeight: '700', color: c.textAccent },
+  browseHeaderRole: { fontSize: 13, color: c.textSecondary, marginTop: 2 },
+
+  browseKeyWorks: {
+    marginHorizontal: 14, marginTop: 8, marginBottom: 2,
+    backgroundColor: c.bgTertiary, borderRadius: 8, padding: 10, gap: 2,
+  },
+  browseKeyWorksLabel: {
+    fontSize: 10, fontWeight: '700', color: c.textMuted,
+    textTransform: 'uppercase', letterSpacing: 0.5,
+  },
+  browseKeyWorksText: { fontSize: 13, lineHeight: 19, color: c.textSecondary },
+
+  browseVerseRef: {
+    fontSize: 11, fontWeight: '700', color: c.accent,
+    marginBottom: 2,
+  },
 })
 
 const makeHist = (c: ThemeColors) => StyleSheet.create({

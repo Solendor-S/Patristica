@@ -14,6 +14,7 @@ import {
 } from '../db/queries'
 import type { GreekWord, HebrewWord, StrongsEntry, LexiconEntry, StrongsConcordanceResult, GreekSource } from '../db/queries'
 import { decodeMorphology, TAG_DEFINITIONS, GREEK_TAG_EXAMPLES, HEBREW_TAG_EXAMPLES } from '../utils/morphology'
+import { stripUsfm } from '../data/redLetter'
 import type { SelectedVerse, RootTabParamList } from '../types'
 import { BOOKS } from '../data/books'
 import { useTheme } from '../context/ThemeContext'
@@ -168,7 +169,7 @@ interface ConcordanceModalProps {
   onNavigate: (book: string, chapter: number, verse: number) => void
 }
 
-function StrongsConcordanceModal({
+export function StrongsConcordanceModal({
   visible, lemma, translit, lang, results, loading, onClose, onNavigate,
 }: ConcordanceModalProps) {
   const { colors } = useTheme()
@@ -317,7 +318,7 @@ function StrongsConcordanceModal({
                   >
                     <Text style={sc.ref}>{r.book} {r.chapter}:{r.verse}</Text>
                     {!!r.word && <Text style={sc.word}>{r.word}  {r.translit}</Text>}
-                    <Text style={sc.text} numberOfLines={3}>{r.text}</Text>
+                    <Text style={sc.text} numberOfLines={3}>{stripUsfm(r.text)}</Text>
                   </TouchableOpacity>
                 )
               }}

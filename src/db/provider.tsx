@@ -6,7 +6,7 @@ import { File, Directory, Paths } from 'expo-file-system'
 import { Colors } from '../theme/colors'
 
 // Bump this number whenever the bundled bible.db gains new tables/data
-const DB_SCHEMA_VERSION = 22
+const DB_SCHEMA_VERSION = 37
 
 async function checkAndResetIfNeeded(): Promise<void> {
   const versionFile = new File(Paths.document, 'db_schema_version.txt')
@@ -91,6 +91,41 @@ async function initDb(db: SQLiteDatabase) {
       PRIMARY KEY (book, chapter, verse, position)
     )
   `)
+
+  await db.execAsync(`
+    CREATE TABLE IF NOT EXISTS early_texts (
+      book    TEXT    NOT NULL,
+      chapter INTEGER NOT NULL,
+      verse   INTEGER NOT NULL,
+      text    TEXT    NOT NULL,
+      PRIMARY KEY (book, chapter, verse)
+    )
+  `)
+
+  await db.execAsync(`
+    CREATE TABLE IF NOT EXISTS early_text_footnotes (
+      book    TEXT    NOT NULL,
+      chapter INTEGER NOT NULL,
+      marker  INTEGER NOT NULL,
+      note    TEXT    NOT NULL,
+      PRIMARY KEY (book, chapter, marker)
+    )
+  `)
+
+  await db.execAsync(`
+    CREATE TABLE IF NOT EXISTS early_text_refs (
+      id          INTEGER PRIMARY KEY,
+      book        TEXT    NOT NULL,
+      chapter     INTEGER NOT NULL,
+      verse       INTEGER NOT NULL,
+      ref_book    TEXT    NOT NULL,
+      ref_chapter INTEGER NOT NULL,
+      ref_verse   INTEGER NOT NULL,
+      ref_type    TEXT    NOT NULL
+    )
+  `)
+  await db.execAsync('CREATE INDEX IF NOT EXISTS idx_etr_source ON early_text_refs(book, chapter, verse)')
+  await db.execAsync('CREATE INDEX IF NOT EXISTS idx_etr_target ON early_text_refs(ref_book, ref_chapter, ref_verse)')
 
   // User tables (bookmarks, notes, highlights, history, search_history, settings)
   // are now in user.db (UserDbProvider) — bible.db is read-only Bible content only.

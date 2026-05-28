@@ -1,11 +1,14 @@
 import React, { useState, useMemo } from 'react'
 import {
-  View, Text, FlatList, TouchableOpacity,
+  View, Text, FlatList, TouchableOpacity, ScrollView,
   StyleSheet, TextInput, StatusBar, SectionList,
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { BOOKS, APOCRYPHA_BOOKS, APOCRYPHA_BOOK_NAMES } from '../data/books'
+import type { RouteProp } from '@react-navigation/native'
+import { BOOKS, APOCRYPHA_BOOKS, APOCRYPHA_BOOK_NAMES, EARLY_TEXTS, EARLY_TEXT_NAMES } from '../data/books'
+import { StackActions } from '@react-navigation/native'
+import { pendingNav } from '../navigation/pendingNav'
 import { useTheme } from '../context/ThemeContext'
 import { useNavDepth } from '../context/NavDepthContext'
 import type { ThemeColors } from '../theme/themes'
@@ -13,40 +16,90 @@ import type { BibleStackParamList } from '../types'
 
 type Props = {
   navigation: NativeStackNavigationProp<BibleStackParamList, 'BookPicker'>
+  route: RouteProp<BibleStackParamList, 'BookPicker'>
 }
 
-type Tab = 'OT' | 'NT' | 'APOC'
+type Tab = 'OT' | 'NT' | 'APOC' | 'EARLY'
 
 const OT_BOOKS = BOOKS.filter(b => b.testament === 'OT')
 const NT_BOOKS = BOOKS.filter(b => b.testament === 'NT')
 
 const TABS: { key: Tab; label: string; count: number }[] = [
-  { key: 'OT',   label: 'Old Testament', count: OT_BOOKS.length },
-  { key: 'NT',   label: 'New Testament', count: NT_BOOKS.length },
-  { key: 'APOC', label: 'Apocrypha',     count: APOCRYPHA_BOOKS.length },
+  { key: 'OT',    label: 'Old Testament', count: OT_BOOKS.length },
+  { key: 'NT',    label: 'New Testament', count: NT_BOOKS.length },
+  { key: 'APOC',  label: 'Apocrypha',     count: APOCRYPHA_BOOKS.length },
+  { key: 'EARLY', label: 'Early Texts',   count: EARLY_TEXTS.length },
 ]
 
-type BookEntry = typeof APOCRYPHA_BOOKS[number]
+type BookEntry = typeof APOCRYPHA_BOOKS[number] | typeof EARLY_TEXTS[number]
 type BookPair  = [BookEntry, BookEntry | null]
 
-const APOC_SECTIONS = [
+function buildSectionPairs<T extends { group?: string }>(
+  arr: T[],
+  defs: { title: string; subtitle: string }[]
+): { title: string; subtitle: string; data: [T, T | null][] }[] {
+  return defs.map(s => {
+    const books = arr.filter(b => b.group === s.title)
+    const pairs: [T, T | null][] = []
+    for (let i = 0; i < books.length; i += 2)
+      pairs.push([books[i], books[i + 1] ?? null])
+    return { ...s, data: pairs }
+  })
+}
+
+const APOC_SECTIONS = buildSectionPairs(APOCRYPHA_BOOKS, [
   { title: 'Deuterocanon',    subtitle: 'Catholic & Orthodox churches' },
   { title: 'Broader Canon',   subtitle: 'Some Orthodox traditions' },
   { title: 'Ethiopian Canon', subtitle: 'Ethiopian Orthodox church' },
-].map(s => {
-  const books = APOCRYPHA_BOOKS.filter(b => b.group === s.title)
-  const pairs: BookPair[] = []
-  for (let i = 0; i < books.length; i += 2)
-    pairs.push([books[i], books[i + 1] ?? null])
-  return { ...s, data: pairs }
-})
+])
 
-export default function BookPickerScreen({ navigation }: Props) {
+const EARLY_SECTIONS = buildSectionPairs(EARLY_TEXTS, [
+  { title: 'Early Church Writings', subtitle: 'Pre-canon Christian texts' },
+  { title: 'Ignatius Letters',      subtitle: 'Letters of Ignatius of Antioch (c. 107 AD)' },
+  { title: 'Apostolic Fathers',     subtitle: 'Sub-apostolic writings (c. 70–160 AD)' },
+  { title: 'Apologists',            subtitle: 'Second-century defences of the faith (c. 155–197 AD)' },
+  { title: 'Irenaeus',              subtitle: 'Against Heresies Books 1–5 (c. 180 AD)' },
+  { title: 'Spurious',              subtitle: 'Disputed or pseudonymous authorship' },
+])
+
+if (__DEV__) {
+  const _knownSections = new Set(EARLY_SECTIONS.map(sec => sec.title))
+  for (const e of EARLY_TEXTS) {
+    if (!_knownSections.has(e.group)) {
+      console.warn(
+        `[BookPickerScreen] EARLY_TEXTS entry "${e.name}" has group "${e.group}" ` +
+        `with no matching section — it will not appear in the EARLY tab`
+      )
+    }
+  }
+}
+
+function BookCard({
+  entry, cardStyle, badge, onPress, s,
+}: {
+  entry: BookEntry | null
+  cardStyle: object | object[]
+  badge?: string
+  onPress: (name: string) => void
+  s: ReturnType<typeof makeStyles>
+}) {
+  if (!entry) return <View style={[s.card, { opacity: 0 }]} />
+  return (
+    <TouchableOpacity style={cardStyle} activeOpacity={0.7} onPress={() => onPress(entry.name)}>
+      <Text style={s.bookName} numberOfLines={2}>{entry.name}</Text>
+      <Text style={s.chapterCount}>{entry.chapters} ch</Text>
+      {'date' in entry && !!entry.date && <Text style={s.earlyDate}>{entry.date}</Text>}
+      {!!badge && <Text style={s.mutedBadge}>{badge}</Text>}
+    </TouchableOpacity>
+  )
+}
+
+export default function BookPickerScreen({ navigation, route }: Props) {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
 
   const [query, setQuery] = useState('')
-  const [tab, setTab]     = useState<Tab>('OT')
+  const [tab, setTab]     = useState<Tab>(route.params?.initialTab ?? 'OT')
   const { navDepth } = useNavDepth()
 
   const isSearching = query.trim().length > 0
@@ -56,17 +109,23 @@ export default function BookPickerScreen({ navigation }: Props) {
     const q = query.toLowerCase()
     const canonical = BOOKS.filter(b => b.name.toLowerCase().includes(q))
     const apocrypha = APOCRYPHA_BOOKS.filter(b => b.name.toLowerCase().includes(q))
-    return [...canonical, ...apocrypha]
+    const early     = EARLY_TEXTS.filter(b => b.name.toLowerCase().includes(q))
+    return [...canonical, ...apocrypha, ...early]
   }, [query])
 
-  const isApocBook = (name: string) => APOCRYPHA_BOOK_NAMES.has(name)
+  const isApocBook  = (name: string) => APOCRYPHA_BOOK_NAMES.has(name)
 
   const navigateToBook = (name: string) => {
     const apocrypha = isApocBook(name)
+    const earlyText = EARLY_TEXT_NAMES.has(name)
     if (navDepth === 'book') {
-      navigation.navigate('Reader', { book: name, chapter: 1, apocrypha })
+      // Write selection to the pending-nav inbox, then pop back to Reader.
+      // Reader's focus listener will consume this and call setParams() itself,
+      // ensuring the reading-history logic fires correctly.
+      pendingNav.current = { book: name, chapter: 1, apocrypha, earlyText }
+      navigation.dispatch(StackActions.popToTop())
     } else {
-      navigation.navigate('ChapterPicker', { book: name, apocrypha })
+      navigation.navigate('ChapterPicker', { book: name, apocrypha, earlyText })
     }
   }
 
@@ -92,17 +151,23 @@ export default function BookPickerScreen({ navigation }: Props) {
 
       {!isSearching && (
         <View style={s.tabBar}>
-          {TABS.map(t => (
-            <TouchableOpacity
-              key={t.key}
-              style={[s.tab, tab === t.key && s.tabActive]}
-              onPress={() => setTab(t.key)}
-              activeOpacity={0.7}
-            >
-              <Text style={[s.tabLabel, tab === t.key && s.tabLabelActive]}>{t.label}</Text>
-              <Text style={[s.tabCount, tab === t.key && s.tabCountActive]}>{t.count} books</Text>
-            </TouchableOpacity>
-          ))}
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={s.tabBarContent}
+          >
+            {TABS.map(t => (
+              <TouchableOpacity
+                key={t.key}
+                style={[s.tab, tab === t.key && s.tabActive]}
+                onPress={() => setTab(t.key)}
+                activeOpacity={0.7}
+              >
+                <Text style={[s.tabLabel, tab === t.key && s.tabLabelActive]}>{t.label}</Text>
+                <Text style={[s.tabCount, tab === t.key && s.tabCountActive]}>{t.count} texts</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
         </View>
       )}
 
@@ -119,23 +184,19 @@ export default function BookPickerScreen({ navigation }: Props) {
           numColumns={3}
           columnWrapperStyle={s.row}
           contentContainerStyle={s.grid}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={[s.card, item.testament === 'APOC' && s.cardApoc]}
-              activeOpacity={0.7}
-              onPress={() => navigateToBook(item.name)}
-            >
-              <Text style={s.bookName} numberOfLines={2}>{item.name}</Text>
-              <Text style={s.chapterCount}>{item.chapters} ch</Text>
-              {item.testament === 'APOC' && (
-                <Text style={s.apocBadge}>Apocrypha</Text>
-              )}
-            </TouchableOpacity>
-          )}
+          renderItem={({ item }) => {
+            const cardStyle = item.testament === 'APOC'  ? [s.card, s.cardApoc]
+                            : item.testament === 'EARLY' ? [s.card, s.cardEarly]
+                            : s.card
+            const badge = item.testament === 'APOC'  ? 'Apocrypha'
+                        : item.testament === 'EARLY' ? 'Early Text'
+                        : undefined
+            return <BookCard entry={item} cardStyle={cardStyle} badge={badge} onPress={navigateToBook} s={s} />
+          }}
         />
       )}
 
-      {!isSearching && tab !== 'APOC' && (
+      {!isSearching && (tab === 'OT' || tab === 'NT') && (
         <FlatList
           key={tab}
           data={tabBooks}
@@ -153,6 +214,40 @@ export default function BookPickerScreen({ navigation }: Props) {
               <Text style={s.chapterCount}>{item.chapters} ch</Text>
             </TouchableOpacity>
           )}
+        />
+      )}
+
+      {!isSearching && tab === 'EARLY' && (
+        <SectionList
+          sections={EARLY_SECTIONS}
+          keyExtractor={([a]) => a.name}
+          contentContainerStyle={s.grid}
+          stickySectionHeadersEnabled={false}
+          ListHeaderComponent={
+            <View style={s.disclaimer}>
+              <Ionicons name="information-circle-outline" size={16} color={colors.textMuted} />
+              <Text style={s.disclaimerText}>
+                Early Christian writings outside the biblical canon. Included for historical and devotional study.
+              </Text>
+            </View>
+          }
+          renderSectionHeader={({ section }) => (
+            <View style={s.sectionHeader}>
+              <Text style={s.sectionTitle}>{section.title}</Text>
+              <Text style={s.sectionSubtitle}>{section.subtitle}</Text>
+            </View>
+          )}
+          renderItem={({ item: [a, b], section }) => {
+            const spurious = section.title === 'Spurious'
+            const cardStyle = [s.card, spurious ? s.cardSpurious : s.cardEarly]
+            const badge = spurious ? 'Spurious' : undefined
+            return (
+              <View style={s.row}>
+                <BookCard entry={a} cardStyle={cardStyle} badge={badge} onPress={navigateToBook} s={s} />
+                <BookCard entry={b} cardStyle={cardStyle} badge={badge} onPress={navigateToBook} s={s} />
+              </View>
+            )
+          }}
         />
       )}
 
@@ -178,18 +273,8 @@ export default function BookPickerScreen({ navigation }: Props) {
           )}
           renderItem={({ item: [a, b] }) => (
             <View style={s.row}>
-              <TouchableOpacity style={s.card} activeOpacity={0.7} onPress={() => navigateToBook(a.name)}>
-                <Text style={s.bookName} numberOfLines={2}>{a.name}</Text>
-                <Text style={s.chapterCount}>{a.chapters} ch</Text>
-              </TouchableOpacity>
-              {b ? (
-                <TouchableOpacity style={s.card} activeOpacity={0.7} onPress={() => navigateToBook(b.name)}>
-                  <Text style={s.bookName} numberOfLines={2}>{b.name}</Text>
-                  <Text style={s.chapterCount}>{b.chapters} ch</Text>
-                </TouchableOpacity>
-              ) : (
-                <View style={[s.card, { opacity: 0 }]} />
-              )}
+              <BookCard entry={a} cardStyle={s.card} onPress={navigateToBook} s={s} />
+              <BookCard entry={b} cardStyle={s.card} onPress={navigateToBook} s={s} />
             </View>
           )}
         />
@@ -230,7 +315,6 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   },
 
   tabBar: {
-    flexDirection: 'row',
     marginHorizontal: 12,
     marginTop: 10,
     backgroundColor: c.bgTertiary,
@@ -239,9 +323,16 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: c.border,
   },
+  tabBarContent: {
+    flexDirection: 'row',
+  },
   tab: {
-    flex: 1, alignItems: 'center', paddingVertical: 8,
-    borderRadius: 8, gap: 1,
+    minWidth: 110,
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    gap: 1,
   },
   tabActive: { backgroundColor: c.bgCard },
   tabLabel: { fontSize: 11, fontWeight: '700', color: c.textMuted },
@@ -269,16 +360,29 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     borderColor: c.textMuted,
     opacity: 0.85,
   },
+  cardEarly: {
+    borderColor: c.accent,
+    opacity: 0.9,
+  },
+  cardSpurious: {
+    borderColor: c.textMuted,
+    opacity: 0.75,
+  },
 
   bookName: { fontSize: 13, fontWeight: '600', color: c.textPrimary },
   chapterCount: { fontSize: 10, color: c.textMuted },
-  apocBadge: {
+  mutedBadge: {
     fontSize: 10,
     fontWeight: '700',
     color: c.textMuted,
     textTransform: 'uppercase',
     letterSpacing: 0.4,
     marginTop: 2,
+  },
+  earlyDate: {
+    fontSize: 10,
+    color: c.textMuted,
+    marginTop: 1,
   },
 
   disclaimer: {
