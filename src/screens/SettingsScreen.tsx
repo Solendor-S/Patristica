@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import {
   View, Text, ScrollView, TouchableOpacity,
-  StyleSheet, StatusBar, Alert,
+  StyleSheet, StatusBar, Alert, Linking, Switch, Modal,
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import Constants from 'expo-constants'
@@ -20,6 +20,41 @@ import type { StartupModeKey } from '../context/StartupModeContext'
 import { useReaderFont, FONT_FAMILY_OPTIONS, FONT_SCOPE_OPTIONS, FAMILY_MAP } from '../context/FontFamilyContext'
 import type { FontFamilyKey, FontScopeKey } from '../context/FontFamilyContext'
 import { useTabletLayout } from '../context/TabletLayoutContext'
+import { useStrongsInSearch } from '../context/StrongsInSearchContext'
+import { useFocusMode } from '../context/FocusModeContext'
+import { useSpaceSaver } from '../context/SpaceSaverContext'
+import { useSearchOrder } from '../context/SearchOrderContext'
+import type { SearchMode } from '../context/SearchOrderContext'
+
+// ── Shared components ─────────────────────────────────────
+
+function SwitchRow({ icon, label, description, value, onToggle, colors, s }: {
+  icon: React.ComponentProps<typeof Ionicons>['name']
+  label: string
+  description: string
+  value: boolean
+  onToggle: () => void
+  colors: ThemeColors
+  s: ReturnType<typeof makeStyles>
+}) {
+  return (
+    <View style={s.row}>
+      <View style={s.iconWrap}>
+        <Ionicons name={icon} size={18} color={colors.accent} />
+      </View>
+      <View style={{ flex: 1 }}>
+        <Text style={s.rowLabel}>{label}</Text>
+        <Text style={[s.themeDesc, { marginTop: 1 }]}>{description}</Text>
+      </View>
+      <Switch
+        value={value}
+        onValueChange={onToggle}
+        trackColor={{ false: colors.border, true: colors.accent }}
+        thumbColor={colors.bgPrimary}
+      />
+    </View>
+  )
+}
 
 // ── Appearance section ────────────────────────────────────
 
@@ -73,7 +108,7 @@ function AppearanceSection() {
 
 // ── Reading section ───────────────────────────────────────
 
-type ExpandedRow = 'lineSpacing' | 'translation' | 'navDepth' | 'startupMode' | 'fontFamily' | 'fontScope' | 'tabletLayout' | null
+type ExpandedRow = 'lineSpacing' | 'translation' | 'navDepth' | 'startupMode' | 'fontFamily' | 'fontScope' | 'tabletLayout' | 'searchMode' | null
 type PickerOption = { key: string; label: string; description: string }
 
 function PickerRow({
@@ -144,6 +179,8 @@ function PickerRow({
 function ReadingSection() {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
+  const { focusMode, toggleFocusMode } = useFocusMode()
+  const { spaceSaverOn, toggleSpaceSaver } = useSpaceSaver()
   const { spacingKey, setSpacing } = useLineSpacing()
   const { translation, setTranslation } = useTranslation()
   const { setFontSize } = useFontSize()
@@ -160,6 +197,30 @@ function ReadingSection() {
     <View style={s.section}>
       <Text style={s.sectionTitle}>Reading</Text>
       <View style={s.card}>
+
+        <SwitchRow
+          icon="eye-outline"
+          label="Focus Mode"
+          description="Bold the first half of each word to guide the eye"
+          value={focusMode}
+          onToggle={toggleFocusMode}
+          colors={colors}
+          s={s}
+        />
+
+        <View style={s.separator} />
+
+        <SwitchRow
+          icon="expand-outline"
+          label="Space Saver"
+          description="Hide navigation bars when scrolling down, reveal on scroll up"
+          value={spaceSaverOn}
+          onToggle={toggleSpaceSaver}
+          colors={colors}
+          s={s}
+        />
+
+        <View style={s.separator} />
 
         <TouchableOpacity style={s.row} activeOpacity={0.6} onPress={() => setFontSize(FONT_SIZE_DEFAULT)}>
           <View style={s.iconWrap}>
@@ -282,6 +343,80 @@ function ReadingSection() {
   )
 }
 
+// ── Search section ────────────────────────────────────────
+
+const SEARCH_MODE_OPTIONS: PickerOption[] = [
+  {
+    key: 'default',
+    label: 'Default',
+    description: 'Fuzzy matching with typo correction and relevance ranking',
+  },
+  {
+    key: 'exact_words',
+    label: 'Exact Words',
+    description: "Match whole words only — 'am' won't return 'firmament'",
+  },
+  {
+    key: 'exact_phrase',
+    label: 'Exact Phrase',
+    description: "Match consecutive words in order — 'in the beginning' finds that exact phrase",
+  },
+]
+
+function SearchSection() {
+  const { colors } = useTheme()
+  const s = useMemo(() => makeStyles(colors), [colors])
+  const { strongsInSearch, toggleStrongsInSearch } = useStrongsInSearch()
+  const { biblicalOrder, toggleBiblicalOrder, searchMode, setSearchMode } = useSearchOrder()
+  const [expanded, setExpanded] = useState<'searchMode' | null>(null)
+
+  const searchModeLabel = SEARCH_MODE_OPTIONS.find(o => o.key === searchMode)?.label ?? 'Default'
+
+  return (
+    <View style={s.section}>
+      <Text style={s.sectionTitle}>Search</Text>
+      <View style={s.card}>
+        <SwitchRow
+          icon="pricetag-outline"
+          label="Strong's in Search"
+          description="Tap H/G tags in KJV+ results to view definitions"
+          value={strongsInSearch}
+          onToggle={toggleStrongsInSearch}
+          colors={colors}
+          s={s}
+        />
+
+        <View style={s.separator} />
+
+        <SwitchRow
+          icon="list-outline"
+          label="Biblical Book Order"
+          description="Sort results Genesis → Revelation instead of by relevance"
+          value={biblicalOrder}
+          onToggle={toggleBiblicalOrder}
+          colors={colors}
+          s={s}
+        />
+
+        <View style={s.separator} />
+
+        <PickerRow
+          icon="search-outline"
+          rowLabel="Search Mode"
+          valueLabel={searchModeLabel}
+          expanded={expanded === 'searchMode'}
+          onToggle={() => setExpanded(prev => prev === 'searchMode' ? null : 'searchMode')}
+          options={SEARCH_MODE_OPTIONS}
+          selectedKey={searchMode}
+          onSelect={key => { setSearchMode(key as SearchMode); setExpanded(null) }}
+          s={s}
+          colors={colors}
+        />
+      </View>
+    </View>
+  )
+}
+
 // ── Data section ─────────────────────────────────────────
 
 function DataSection() {
@@ -336,6 +471,7 @@ function AboutSection() {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
   const version = Constants.expoConfig?.version ?? '—'
+  const [creditsVisible, setCreditsVisible] = useState(false)
 
   return (
     <View style={s.section}>
@@ -350,8 +486,118 @@ function AboutSection() {
             <Text style={s.navValue}>{version}</Text>
           </View>
         </View>
+
+        <View style={s.separator} />
+
+        <TouchableOpacity
+          style={s.row}
+          activeOpacity={0.6}
+          onPress={() => Linking.openURL('mailto:sargonshlimon1234@gmail.com')}
+        >
+          <View style={s.iconWrap}>
+            <Ionicons name="mail-outline" size={18} color={colors.accent} />
+          </View>
+          <Text style={s.rowLabel}>Email</Text>
+          <View style={s.navRight}>
+            <Text style={s.navValue}>sargonshlimon1234@gmail.com</Text>
+          </View>
+        </TouchableOpacity>
+
+        <View style={s.separator} />
+
+        <TouchableOpacity
+          style={s.row}
+          activeOpacity={0.6}
+          onPress={() => Linking.openURL('https://github.com/Solendor-S')}
+        >
+          <View style={s.iconWrap}>
+            <Ionicons name="logo-github" size={18} color={colors.accent} />
+          </View>
+          <Text style={s.rowLabel}>GitHub</Text>
+          <View style={s.navRight}>
+            <Text style={s.navValue}>Solendor-S</Text>
+          </View>
+        </TouchableOpacity>
+
+        <View style={s.separator} />
+
+        <TouchableOpacity
+          style={s.row}
+          activeOpacity={0.6}
+          onPress={() => setCreditsVisible(true)}
+        >
+          <View style={s.iconWrap}>
+            <Ionicons name="ribbon-outline" size={18} color={colors.accent} />
+          </View>
+          <Text style={s.rowLabel}>Credits</Text>
+          <View style={s.navRight}>
+            <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
+          </View>
+        </TouchableOpacity>
       </View>
+
+      <CreditsModal visible={creditsVisible} onClose={() => setCreditsVisible(false)} />
     </View>
+  )
+}
+
+// ── Credits modal ─────────────────────────────────────────
+
+const CREDITS: { title: string; body: string; url?: string }[] = [
+  {
+    title: 'Hebrew Old Testament',
+    body: 'TAHOT (Translators Amalgamated Hebrew Old Testament) and the Westminster Leningrad Codex (WLC), via the STEPBible Tyndale datasets (CC BY 4.0).',
+    url: 'https://github.com/STEPBible/STEPBible-Data',
+  },
+  {
+    title: 'Greek New Testament',
+    body: 'SBL Greek New Testament (SBLGNT), Translators Amalgamated GNT (TAGNT), and the Textus Receptus (Scrivener 1894).',
+  },
+  {
+    title: 'Greek Old Testament (LXX)',
+    body: 'Septuagint text based on Rahlfs with CCAT morphology, and the Apostolic Bible (Poole), both tagged and provided by STEPBible (CC BY 4.0). Thanks to David Instone-Brewer for sharing the dataset.',
+    url: 'https://stepbible.org',
+  },
+  {
+    title: "Lexicons & Strong's",
+    body: "Thayer's Greek Lexicon and the Brown-Driver-Briggs Hebrew Lexicon (public domain), with Strong's Concordance numbering.",
+  },
+]
+
+function CreditsModal({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+  const { colors } = useTheme()
+  const s = useMemo(() => makeStyles(colors), [colors])
+
+  return (
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+      <View style={s.creditsOverlay}>
+        <View style={s.creditsSheet}>
+          <View style={s.creditsHeader}>
+            <Text style={s.creditsTitle}>Credits & Attribution</Text>
+            <TouchableOpacity onPress={onClose} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+              <Ionicons name="close" size={22} color={colors.textMuted} />
+            </TouchableOpacity>
+          </View>
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.creditsScroll}>
+            {CREDITS.map((c, i) => (
+              <React.Fragment key={c.title}>
+                {i > 0 && <View style={s.separator} />}
+                <TouchableOpacity
+                  style={s.creditRow}
+                  activeOpacity={c.url ? 0.6 : 1}
+                  disabled={!c.url}
+                  onPress={() => c.url && Linking.openURL(c.url)}
+                >
+                  <Text style={s.creditTitle}>{c.title}</Text>
+                  <Text style={s.creditBody}>{c.body}</Text>
+                  {!!c.url && <Text style={s.creditLink}>{c.url}</Text>}
+                </TouchableOpacity>
+              </React.Fragment>
+            ))}
+          </ScrollView>
+        </View>
+      </View>
+    </Modal>
   )
 }
 
@@ -370,6 +616,7 @@ export default function SettingsScreen() {
       <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
         <AppearanceSection />
         <ReadingSection />
+        <SearchSection />
         <DataSection />
         <AboutSection />
       </ScrollView>
@@ -481,4 +728,25 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     backgroundColor: c.border,
     marginLeft: 58,
   },
+
+  // Credits modal
+  creditsOverlay: {
+    flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'flex-end',
+  },
+  creditsSheet: {
+    backgroundColor: c.bgSecondary,
+    borderTopLeftRadius: 20, borderTopRightRadius: 20,
+    paddingTop: 20, maxHeight: '75%',
+  },
+  creditsHeader: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingHorizontal: 20, paddingBottom: 14,
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
+  },
+  creditsTitle: { fontSize: 17, fontWeight: '700', color: c.textPrimary },
+  creditsScroll: { paddingVertical: 8 },
+  creditRow:   { paddingHorizontal: 20, paddingVertical: 14, gap: 4 },
+  creditTitle: { fontSize: 14, fontWeight: '600', color: c.textPrimary },
+  creditBody:  { fontSize: 13, lineHeight: 19, color: c.textMuted },
+  creditLink:  { fontSize: 12, color: c.accent, marginTop: 2 },
 })

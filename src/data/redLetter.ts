@@ -282,8 +282,10 @@ export function splitByWMarkers(text: string): Segment[] | null {
     segs.push({ t: stripUsfm(tail), red: isPunct })
     if (!isPunct) gapWords += wordCount(tail)
   }
-  const startsWithNarrator = segs.length > 0 && !segs[0].red && wordCount(segs[0].t) >= 2
-  if (!startsWithNarrator && taggedWords / (taggedWords + gapWords) > W_DENSITY_THRESHOLD) {
+  const isNarratorSeg = (s: Segment) => !s.red && wordCount(s.t) >= 2
+  const startsWithNarrator = segs.length > 0 && isNarratorSeg(segs[0])
+  const endsWithNarrator   = segs.length > 0 && isNarratorSeg(segs[segs.length - 1])
+  if (!startsWithNarrator && !endsWithNarrator && taggedWords / (taggedWords + gapWords) > W_DENSITY_THRESHOLD) {
     return [{ t: stripped, red: true }]
   }
   return segs

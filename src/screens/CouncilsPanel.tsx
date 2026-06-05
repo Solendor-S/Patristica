@@ -81,7 +81,7 @@ export const COUNCILS: Council[] = [
   {
     yearNum: 381, year: '381', name: 'First Council of Constantinople', location: 'Constantinople',
     type: 'Ecumenical',
-    decree: 'Condemned Macedonianism; affirmed full divinity of the Holy Spirit; expanded the Nicene Creed to its present form.',
+    decree: 'Condemned Macedonianism; affirmed full divinity of the Holy Spirit; expanded the original Nicene Creed into the Niceno-Constantinopolitan Creed.',
     notes: '2nd Ecumenical Council. Convened by Emperor Theodosius I.',
   },
   {
@@ -103,7 +103,7 @@ export const COUNCILS: Council[] = [
   {
     yearNum: 451, year: '451', name: 'Council of Chalcedon', location: 'Chalcedon, Bithynia',
     type: 'Ecumenical',
-    decree: 'Defined Christ as one person in two natures, divine and human, without confusion or separation; condemned Eutychianism.',
+    decree: 'Produced the Chalcedonian Definition: Christ as one person in two natures, divine and human, without confusion or separation; condemned Eutychianism.',
     notes: '4th Ecumenical Council. ~520 bishops. The Oriental Orthodox churches rejected this definition.',
   },
   {
@@ -120,7 +120,7 @@ export const COUNCILS: Council[] = [
   {
     yearNum: 589, year: '589', name: 'Third Council of Toledo', location: 'Toledo, Spain',
     type: 'Regional',
-    decree: 'Visigothic king Reccared converted from Arianism to Catholicism; the Filioque ("and the Son") first added to the Creed in the West.',
+    decree: 'Visigothic king Reccared converted from Arianism to Catholicism; the Filioque ("and the Son") first added to the Niceno-Constantinopolitan Creed in the West.',
   },
   {
     yearNum: 680, year: '680–681', name: 'Third Council of Constantinople', location: 'Constantinople',
@@ -147,7 +147,7 @@ export const COUNCILS: Council[] = [
   {
     yearNum: 879, year: '879–880', name: 'Council of Constantinople (Photian)', location: 'Constantinople',
     type: 'Disputed',
-    decree: 'Restored Photius as patriarch; condemned any addition to the Nicene Creed (targeting the Filioque). Recognized as the 8th Ecumenical Council by Eastern Orthodoxy.',
+    decree: 'Restored Photius as patriarch; condemned any addition to the Niceno-Constantinopolitan Creed (targeting the Filioque). Recognized as the 8th Ecumenical Council by Eastern Orthodoxy.',
   },
 ]
 

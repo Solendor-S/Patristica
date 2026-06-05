@@ -27,6 +27,8 @@ import { useParallelTranslation } from '../context/ParallelTranslationContext'
 import type { Translation } from '../context/TranslationContext'
 import { useOnboarding } from '../context/OnboardingContext'
 import { useRedLetter } from '../context/RedLetterContext'
+import { useFocusMode } from '../context/FocusModeContext'
+import { useSpaceSaver } from '../context/SpaceSaverContext'
 import { isRedLetter, splitRedLetterVerse, splitByWMarkers, stripUsfm } from '../data/redLetter'
 import type { Segment } from '../data/redLetter'
 import { useTheme } from '../context/ThemeContext'
@@ -61,6 +63,28 @@ function toSuperscript(s: string): string {
   return s.split('').map(c => SUPERSCRIPT[c] ?? c).join('')
 }
 
+const BOOK_ABBREVS: Record<string, string> = {
+  // OT
+  'Genesis': 'Gen', 'Exodus': 'Exod', 'Leviticus': 'Lev', 'Numbers': 'Num',
+  'Deuteronomy': 'Deut', 'Joshua': 'Josh', 'Judges': 'Judg',
+  '1 Samuel': '1 Sam', '2 Samuel': '2 Sam', '1 Kings': '1 Kgs', '2 Kings': '2 Kgs',
+  '1 Chronicles': '1 Chr', '2 Chronicles': '2 Chr', 'Nehemiah': 'Neh',
+  'Psalms': 'Ps', 'Proverbs': 'Prov', 'Ecclesiastes': 'Eccl', 'Song of Solomon': 'Song',
+  'Isaiah': 'Isa', 'Jeremiah': 'Jer', 'Lamentations': 'Lam', 'Ezekiel': 'Ezek',
+  'Daniel': 'Dan', 'Hosea': 'Hos', 'Obadiah': 'Obad', 'Habakkuk': 'Hab',
+  'Zephaniah': 'Zeph', 'Haggai': 'Hag', 'Zechariah': 'Zech', 'Malachi': 'Mal',
+  // NT
+  'Matthew': 'Matt', 'Mark': 'Mark', 'Luke': 'Luke', 'John': 'John', 'Acts': 'Acts',
+  'Romans': 'Rom', '1 Corinthians': '1 Cor', '2 Corinthians': '2 Cor',
+  'Galatians': 'Gal', 'Ephesians': 'Eph', 'Philippians': 'Phil', 'Colossians': 'Col',
+  '1 Thessalonians': '1 Thess', '2 Thessalonians': '2 Thess',
+  '1 Timothy': '1 Tim', '2 Timothy': '2 Tim', 'Titus': 'Tit', 'Philemon': 'Phlm',
+  'Hebrews': 'Heb', 'James': 'Jas', '1 Peter': '1 Pet', '2 Peter': '2 Pet',
+  '1 John': '1 Jn', '2 John': '2 Jn', '3 John': '3 Jn', 'Jude': 'Jude',
+  'Revelation': 'Rev',
+}
+const abbrevBook = (b: string) => BOOK_ABBREVS[b] ?? b
+
 function buildFnByWord(text: string, footnotes: Footnote[]): Map<number, Footnote> {
   const rawWords = text.split(/\s+/).filter(w => w)
   const normWords = rawWords.map(w => w.toLowerCase().replace(/[^a-z'-]/g, ''))
@@ -93,24 +117,80 @@ function buildFnByWord(text: string, footnotes: Footnote[]): Map<number, Footnot
 
 // ── KJV+ parser ──────────────────────────────────────────
 
-type KJVToken = { word: string; strongs?: string; italic?: boolean }
+type KJVToken = { word: string; strongs?: string[]; italic?: boolean }
 
-function parseKJVPlus(text: string): KJVToken[] {
+// lazyPush=true (KJV+ English order): accumulate ALL consecutive strongs for
+// the pending word and flush only when the next word arrives.
+// lazyPush=false (I_KJV+ interlinear): push immediately on first strongs;
+// subsequent strongs with no preceding word defer to the next word.
+function dedupeStrongs(arr: string[]): string[] {
+  return [...new Set(arr)]
+}
+
+function parseKJVPlus(text: string, lazyPush = false): KJVToken[] {
   const tokens: KJVToken[] = []
   const parts = text.split(' ')
   let pending: string | null = null
   let pendingItalic = false
+  let pendingStrongs: string[] = [] // lazyPush: all strongs for pending word
+  let deferred: string[] = []       // !lazyPush: strongs with no preceding word
+
   for (const p of parts) {
     if (p && /^[GH]\d+$/.test(p)) {
-      if (pending !== null) { tokens.push({ word: pending, strongs: p, italic: pendingItalic || undefined }); pending = null; pendingItalic = false }
+      if (lazyPush) {
+        if (pending !== null) {
+          pendingStrongs.push(p)
+        } else if (tokens.length > 0) {
+          // Trailing strongs before any new word — attach to last token
+          tokens[tokens.length - 1].strongs = [...(tokens[tokens.length - 1].strongs ?? []), p]
+        }
+      } else {
+        if (pending !== null) {
+          tokens.push({ word: pending, strongs: [...deferred, p], italic: pendingItalic || undefined })
+          pending = null; pendingItalic = false; deferred = []
+        } else {
+          deferred.push(p)
+        }
+      }
     } else {
-      if (pending !== null) tokens.push({ word: pending, italic: pendingItalic || undefined })
+      if (lazyPush) {
+        if (pending !== null) {
+          tokens.push({ word: pending, strongs: pendingStrongs.length > 0 ? dedupeStrongs(pendingStrongs) : undefined, italic: pendingItalic || undefined })
+          pendingStrongs = []
+        }
+      } else {
+        if (pending !== null) {
+          if (deferred.length > 0) {
+            tokens.push({ word: pending, strongs: dedupeStrongs(deferred), italic: pendingItalic || undefined })
+            deferred = []
+          } else {
+            tokens.push({ word: pending, italic: pendingItalic || undefined })
+          }
+        }
+      }
       const italic = p.includes('{')
       pending = italic ? p.replace(/[{}]/g, '') : (p || null)
       pendingItalic = italic
     }
   }
-  if (pending !== null) tokens.push({ word: pending, italic: pendingItalic || undefined })
+
+  // Flush remaining pending word
+  if (lazyPush) {
+    if (pending !== null) {
+      tokens.push({ word: pending, strongs: pendingStrongs.length > 0 ? dedupeStrongs(pendingStrongs) : undefined, italic: pendingItalic || undefined })
+    } else if (pendingStrongs.length > 0 && tokens.length > 0) {
+      const last = tokens[tokens.length - 1]
+      last.strongs = dedupeStrongs([...(last.strongs ?? []), ...pendingStrongs])
+    }
+  } else {
+    if (pending !== null) {
+      tokens.push({ word: pending, strongs: deferred.length > 0 ? dedupeStrongs(deferred) : undefined, italic: pendingItalic || undefined })
+    } else if (deferred.length > 0 && tokens.length > 0) {
+      // Trailing Strongs with no following word (e.g. Heb 7:3 "continually G1519 G1336")
+      const last = tokens[tokens.length - 1]
+      last.strongs = dedupeStrongs([...(last.strongs ?? []), ...deferred])
+    }
+  }
   return tokens
 }
 
@@ -178,9 +258,9 @@ function renderKJVPlusTokens(
       {tokens.map((tok, i) => (
         <React.Fragment key={i}>
           <Text style={tok.italic ? italicStyle : undefined}>{tok.word}</Text>
-          {tok.strongs
-            ? <Text style={strongsStyle} onPress={() => onStrongsPress(tok.strongs!)}> {tok.strongs}</Text>
-            : null}
+          {tok.strongs?.map((s, si) => (
+            <Text key={si} style={strongsStyle} onPress={() => onStrongsPress(s)}> {s}</Text>
+          ))}
           <Text> </Text>
         </React.Fragment>
       ))}
@@ -197,11 +277,12 @@ const INLINE_BOOK_RE = /^([1-3]?\s*[A-Z][a-z]+(?:\s+[A-Za-z]+)?)\s+(\d+):(\d+)/
 // ── VerseRow ──────────────────────────────────────────────
 
 const VerseRow = memo(function VerseRow({
-  verse, text, isSelected, hlColor, onPress, onWordPress, onFnPress, redLetterOn, book, chapter, footnotes, compareText, compareLabel, isAnnotated, compareIsAnnotated, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter, isEarlyText, onEarlyFnPress, onInlineRefPress,
+  verse, text, isSelected, isMirrorSelected, hlColor, onPress, onWordPress, onFnPress, redLetterOn, book, chapter, footnotes, compareText, compareLabel, isAnnotated, lazyAnnotation, compareIsAnnotated, lazyCompareAnnotation, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter, isEarlyText, onEarlyFnPress, onInlineRefPress, focusMode,
 }: {
   verse: number
   text: string
   isSelected: boolean
+  isMirrorSelected?: boolean
   hlColor: string | undefined
   onPress: (v: number) => void
   onWordPress: (word: string) => void
@@ -213,7 +294,9 @@ const VerseRow = memo(function VerseRow({
   compareText?: string
   compareLabel?: string
   isAnnotated?: boolean
+  lazyAnnotation?: boolean
   compareIsAnnotated?: boolean
+  lazyCompareAnnotation?: boolean
   onStrongsPress?: (verse: number, strongs: string) => void
   isDss?: boolean
   dssAllReadings?: boolean
@@ -222,6 +305,7 @@ const VerseRow = memo(function VerseRow({
   isEarlyText?: boolean
   onEarlyFnPress?: (marker: number) => void
   onInlineRefPress?: (book: string, chapter: number, verse: number) => void
+  focusMode?: boolean
 }) {
   const { colors } = useTheme()
   const { lineHeight } = useLineSpacing()
@@ -229,13 +313,37 @@ const VerseRow = memo(function VerseRow({
   const { fontFamily, fontScope } = useReaderFont()
   const styles = useMemo(() => makeStyles(colors, lineHeight, fontSize, fontFamily, fontScope), [colors, lineHeight, fontSize, fontFamily, fontScope])
 
-  const cleanText = stripUsfm(text)
-  const cleanCompareText = compareText ? stripUsfm(compareText) : null
+  const cleanText = useMemo(() => stripUsfm(text), [text])
+  const cleanCompareText = useMemo(() => compareText ? stripUsfm(compareText) : null, [compareText])
   const hebrewTextStyle = isHebrew ? styles.hebrewText : undefined
 
+  const kjvPlusTokens = useMemo(
+    () => isAnnotated ? parseKJVPlus(cleanText, lazyAnnotation) : null,
+    [isAnnotated, lazyAnnotation, cleanText],
+  )
+  const compareKjvTokens = useMemo(
+    () => compareIsAnnotated && cleanCompareText ? parseKJVPlus(cleanCompareText, lazyCompareAnnotation) : null,
+    [compareIsAnnotated, lazyCompareAnnotation, cleanCompareText],
+  )
+
+  // segments and fnByWord are only used in the non-annotated, non-DSS, non-earlyText paths
+  const segments = useMemo<Segment[]>(() => {
+    if (isAnnotated || isDss || isEarlyText) return []
+    const markerSegs = redLetterOn ? splitByWMarkers(text) : null
+    const isRL = redLetterOn && isRedLetter(book, chapter, verse)
+    const base = markerSegs
+      ?? (isRL && useHeuristicRedLetter ? splitRedLetterVerse(cleanText) : [{ t: cleanText, red: false }])
+    return cleanText.includes('{') ? base.flatMap(applyItalics) : base
+  }, [isAnnotated, isDss, isEarlyText, text, cleanText, redLetterOn, book, chapter, verse, useHeuristicRedLetter])
+
+  const fnByWord = useMemo(
+    () => (!isAnnotated && !isDss && !isEarlyText && footnotes?.length) ? buildFnByWord(cleanText, footnotes) : null,
+    [isAnnotated, isDss, isEarlyText, cleanText, footnotes],
+  )
+
   const compareEl = cleanCompareText ? (
-    compareIsAnnotated
-      ? renderKJVPlusTokens(parseKJVPlus(cleanCompareText), styles.compareText, styles.strongsNum, styles.italicText, s => onStrongsPress?.(verse, s))
+    compareKjvTokens
+      ? renderKJVPlusTokens(compareKjvTokens, styles.compareText, styles.strongsNum, styles.italicText, s => onStrongsPress?.(verse, s))
       : <Text style={styles.compareText}>{cleanCompareText}</Text>
   ) : null
 
@@ -246,7 +354,7 @@ const VerseRow = memo(function VerseRow({
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => onPress(verse)}
-        style={[styles.verseRow, isSelected && styles.verseRowSelected, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : undefined]}
+        style={[styles.verseRow, isSelected && styles.verseRowSelected, isMirrorSelected && styles.verseRowMirror, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : undefined]}
       >
         <Text style={styles.verseNum}>{verse}</Text>
         <View style={styles.verseBody}>
@@ -283,7 +391,7 @@ const VerseRow = memo(function VerseRow({
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => onPress(verse)}
-        style={[styles.verseRow, isSelected && styles.verseRowSelected, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : null]}
+        style={[styles.verseRow, isSelected && styles.verseRowSelected, isMirrorSelected && styles.verseRowMirror, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : null]}
       >
         <Text style={styles.verseNum}>{verse}</Text>
         <View style={styles.verseBody}>
@@ -318,7 +426,7 @@ const VerseRow = memo(function VerseRow({
 
   if (isAnnotated) {
     const annotatedText = renderKJVPlusTokens(
-      parseKJVPlus(cleanText),
+      kjvPlusTokens!,
       [styles.verseText, isSelected && styles.verseTextSelected],
       [styles.strongsNum, isSelected && styles.strongsNumSelected],
       styles.italicText,
@@ -326,7 +434,7 @@ const VerseRow = memo(function VerseRow({
     )
     return (
       <TouchableOpacity
-        style={[styles.verseRow, isSelected && styles.verseRowSelected, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : undefined]}
+        style={[styles.verseRow, isSelected && styles.verseRowSelected, isMirrorSelected && styles.verseRowMirror, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : undefined]}
         activeOpacity={0.7}
         onPress={() => onPress(verse)}
       >
@@ -346,18 +454,6 @@ const VerseRow = memo(function VerseRow({
       </TouchableOpacity>
     )
   }
-
-  const hasItalics = cleanText.includes('{')
-  const isRL = redLetterOn && isRedLetter(book, chapter, verse)
-
-  // Marker-based coloring (\+w) takes priority over the heuristic — markers are
-  // authoritative; the heuristic is a fallback for translations without markers.
-  // splitByWMarkers strips USFM tags internally so segments are already clean.
-  const markerSegs = redLetterOn ? splitByWMarkers(text) : null
-  const baseSegments = markerSegs
-    ?? (isRL && useHeuristicRedLetter ? splitRedLetterVerse(cleanText) : [{ t: cleanText, red: false }])
-  const segments: Segment[] = hasItalics ? baseSegments.flatMap(applyItalics) : baseSegments
-  const fnByWord = footnotes?.length ? buildFnByWord(cleanText, footnotes) : null
 
   if (isSelected) {
     const tagged: TaggedWord[] = segments.flatMap(seg =>
@@ -412,20 +508,23 @@ const VerseRow = memo(function VerseRow({
   }
 
   // Non-selected: fast path if no footnotes
+  const useFocus = focusMode && !isHebrew && !isAnnotated
   if (!fnByWord) {
     return (
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => onPress(verse)}
-        style={[styles.verseRow, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : null]}
+        style={[styles.verseRow, isSelected && styles.verseRowSelected, isMirrorSelected && styles.verseRowMirror, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : null]}
       >
         <Text style={styles.verseNum}>{verse}</Text>
         <View style={styles.verseBody}>
           {compareText ? (
             <View style={styles.verseBodyRow}>
               <View style={styles.comparePrimary}>
-                {segments.length === 1 && !segments[0].red && !segments[0].italic ? (
-                  <Text style={[styles.verseText, hebrewTextStyle]}>{text}</Text>
+                {useFocus ? (
+                  <Text style={styles.verseText}>{renderFocusSegments(segments, styles)}</Text>
+                ) : segments.length === 1 && !segments[0].red && !segments[0].italic ? (
+                  <Text style={[styles.verseText, hebrewTextStyle]}>{segments[0].t}</Text>
                 ) : (
                   <Text style={[styles.verseText, hebrewTextStyle]}>
                     {segments.map((seg, i) => (
@@ -440,8 +539,10 @@ const VerseRow = memo(function VerseRow({
                 {compareEl}
               </View>
             </View>
+          ) : useFocus ? (
+            <Text style={styles.verseText}>{renderFocusSegments(segments, styles)}</Text>
           ) : segments.length === 1 && !segments[0].red && !segments[0].italic ? (
-            <Text style={[styles.verseText, hebrewTextStyle]}>{text}</Text>
+            <Text style={[styles.verseText, hebrewTextStyle]}>{segments[0].t}</Text>
           ) : (
             <Text style={[styles.verseText, hebrewTextStyle]}>
               {segments.map((seg, i) => (
@@ -465,7 +566,17 @@ const VerseRow = memo(function VerseRow({
         return
       }
       wordIdx++
-      elems.push(<Text key={key} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined]}>{token}</Text>)
+      const segStyle = [seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined]
+      if (useFocus) {
+        const [bold, rest] = focusSplit(token)
+        elems.push(
+          rest
+            ? <Text key={key}><Text style={[...segStyle, styles.focusBold]}>{bold}</Text><Text style={segStyle}>{rest}</Text></Text>
+            : <Text key={key} style={segStyle}>{bold}</Text>
+        )
+      } else {
+        elems.push(<Text key={key} style={segStyle}>{token}</Text>)
+      }
       const fn = fnByWord.get(wordIdx)
       if (fn) elems.push(
         <Text key={`fn-${key}`} onPress={() => onFnPress(fn)} suppressHighlighting style={styles.fnMarker}>
@@ -478,7 +589,7 @@ const VerseRow = memo(function VerseRow({
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() => onPress(verse)}
-      style={[styles.verseRow, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : null]}
+      style={[styles.verseRow, isSelected && styles.verseRowSelected, isMirrorSelected && styles.verseRowMirror, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : null]}
     >
       <Text style={styles.verseNum}>{verse}</Text>
       <View style={styles.verseBody}>
@@ -532,6 +643,37 @@ function VerseStepper({ value, min, max, onChange, label, colors }: {
 }
 
 const stripMarkers = (t: string) => t.replace(/[{}]/g, '')
+
+const ALPHA_RE = /[a-zA-Z]/
+
+// Bionic Reading-style: bold the first ~60% of each word's letters
+function focusSplit(word: string): [string, string] {
+  let letterCount = 0
+  for (let i = 0; i < word.length; i++)
+    if (ALPHA_RE.test(word[i])) letterCount++
+  if (letterCount < 3) return [word, '']
+  const boldCount = Math.ceil(letterCount * 0.6)
+  let seen = 0
+  for (let i = 0; i < word.length; i++) {
+    if (ALPHA_RE.test(word[i])) seen++
+    if (seen === boldCount) return [word.slice(0, i + 1), word.slice(i + 1)]
+  }
+  return [word, '']
+}
+
+function renderFocusSegments(segments: Segment[], styles: ReturnType<typeof makeStyles>): React.ReactNode[] {
+  return segments.flatMap((seg, si) => {
+    const segStyle = seg.red ? styles.redLetterText : seg.italic ? styles.italicText : undefined
+    return seg.t.split(/(\s+)/).map((token, ti) => {
+      const key = `f${si}-${ti}`
+      if (/^\s+$/.test(token) || !token) return <React.Fragment key={key}>{token}</React.Fragment>
+      const [bold, rest] = focusSplit(token)
+      return rest
+        ? <Text key={key}><Text style={[segStyle, styles.focusBold]}>{bold}</Text><Text style={segStyle}>{rest}</Text></Text>
+        : <Text key={key} style={segStyle}>{bold}</Text>
+    })
+  })
+}
 
 // ── Share range modal ─────────────────────────────────────
 
@@ -787,23 +929,8 @@ function DssKeyModal({ visible, onClose }: { visible: boolean; onClose: () => vo
 
 // ── Early text scripture refs section ────────────────────────────────────────
 
-const EARLY_REF_BOOK_ABBREV: Record<string, string> = {
-  'Matthew': 'Matt', 'Mark': 'Mark', 'Luke': 'Luke', 'John': 'John',
-  'Acts': 'Acts', 'Romans': 'Rom', '1 Corinthians': '1 Cor',
-  '2 Corinthians': '2 Cor', 'Galatians': 'Gal', 'Ephesians': 'Eph',
-  'Philippians': 'Phil', 'Colossians': 'Col', '1 Thessalonians': '1 Thess',
-  '2 Thessalonians': '2 Thess', '1 Timothy': '1 Tim', '2 Timothy': '2 Tim',
-  'Titus': 'Tit', 'Philemon': 'Phlm', 'Hebrews': 'Heb', 'James': 'Jas',
-  '1 Peter': '1 Pet', '2 Peter': '2 Pet', '1 John': '1 Jn', '2 John': '2 Jn',
-  '3 John': '3 Jn', 'Jude': 'Jude', 'Revelation': 'Rev',
-  'Genesis': 'Gen', 'Exodus': 'Ex', 'Leviticus': 'Lev', 'Numbers': 'Num',
-  'Deuteronomy': 'Deut', 'Psalms': 'Ps', 'Proverbs': 'Prov', 'Isaiah': 'Isa',
-  'Jeremiah': 'Jer', 'Ezekiel': 'Ezek', 'Daniel': 'Dan', 'Malachi': 'Mal',
-}
-
 function shortEarlyRef(r: EarlyTextRef) {
-  const short = EARLY_REF_BOOK_ABBREV[r.ref_book] ?? r.ref_book
-  return `${short} ${r.ref_chapter}:${r.ref_verse}`
+  return `${abbrevBook(r.ref_book)} ${r.ref_chapter}:${r.ref_verse}`
 }
 
 const RefChips = memo(function RefChips({
@@ -856,10 +983,10 @@ const EarlyRefsSection = memo(function EarlyRefsSection({
         </View>
       )}
       {allusions.length > 0 && (
-        <Text style={{ fontSize: 11, color: colors.textMuted, marginBottom: 2 }}>Allusions</Text>
-      )}
-      {allusions.length > 0 && (
-        <RefChips list={allusions} accent={colors.textSecondary} onPress={onPress} />
+        <View>
+          <Text style={{ fontSize: 11, color: colors.textMuted, marginBottom: 2 }}>Allusions</Text>
+          <RefChips list={allusions} accent={colors.textSecondary} onPress={onPress} />
+        </View>
       )}
     </View>
   )
@@ -899,15 +1026,25 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const { translation, setTranslation } = useTranslation()
   const { showFab, openTutorial } = useOnboarding()
   const { redLetterOn, toggleRedLetter } = useRedLetter()
+  const { focusMode } = useFocusMode()
+  const { spaceSaverOn, chromeHidden, setChromeHidden } = useSpaceSaver()
+  const footerSlideAnim = useRef(new Animated.Value(0)).current
+  const [footerHeight, setFooterHeight] = useState(60)
+  const lastScrollY = useRef(0)
+  const chromeHiddenRef = useRef(chromeHidden)
+  const spaceSaverOnRef = useRef(spaceSaverOn)
+  chromeHiddenRef.current = chromeHidden
+  spaceSaverOnRef.current = spaceSaverOn
   const [verses, setVerses] = useState<BibleVerse[]>([])
   const [prefaceData, setPrefaceData] = useState<BookPreface | null>(null)
   const [loading, setLoading] = useState(true)
+  const [listKey, setListKey] = useState('verses')
   const [loadError, setLoadError] = useState<string | null>(null)
   const [selectedVerse, setSelectedVerse] = useState<number | null>(null)
   const [bookmarked, setBookmarked] = useState(false)
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [translationPickerOpen, setTranslationPickerOpen] = useState(false)
-  const [transPickerTab, setTransPickerTab] = useState<'primary' | 'parallel'>('primary')
+  const [transPickerTab, setTransPickerTab] = useState<'primary' | 'parallel' | 'split'>('primary')
   const [notesOpen, setNotesOpen] = useState(false)
   const [noteText, setNoteText] = useState('')
   const [noteSaved, setNoteSaved] = useState('')
@@ -923,6 +1060,19 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [earlyRefs, setEarlyRefs] = useState<EarlyTextRef[]>([])
   const { compareTrans, setCompareTrans, parallelOn, setParallelOn } = useParallelTranslation()
   const [compareMap, setCompareMap] = useState<Map<number, string>>(new Map())
+
+  // Split passage state
+  const [splitOn, setSplitOn]                 = useState(false)
+  const [splitBook, setSplitBook]             = useState('Psalms')
+  const [splitChapter, setSplitChapter]       = useState(1)
+  const [splitVerses, setSplitVerses]         = useState<BibleVerse[]>([])
+  const [splitTranslation, setSplitTranslation] = useState<Translation>('KJV')
+  const [activeSplitPane, setActiveSplitPane] = useState<'left' | 'right'>('left')
+  const splitOnRef         = useRef(false)
+  const activeSplitPaneRef = useRef<'left' | 'right'>('left')
+  const splitFlatListRef   = useRef<FlatList>(null)
+  splitOnRef.current = splitOn
+  activeSplitPaneRef.current = activeSplitPane
 
   const [concordanceWord, setConcordanceWord]       = useState('')
   const [concordanceResults, setConcordanceResults] = useState<ConcordanceResult[]>([])
@@ -951,13 +1101,18 @@ export default function ReaderScreen({ navigation, route }: Props) {
       const pending = pendingNav.current
       if (!pending) return
       pendingNav.current = null
-      navigation.setParams({
-        book:      pending.book,
-        chapter:   pending.chapter,
-        verse:     pending.verse,
-        apocrypha: pending.apocrypha,
-        earlyText: pending.earlyText,
-      })
+      if (splitOnRef.current && activeSplitPaneRef.current === 'right') {
+        setSplitBook(pending.book)
+        setSplitChapter(pending.chapter)
+      } else {
+        navigation.setParams({
+          book:      pending.book,
+          chapter:   pending.chapter,
+          verse:     pending.verse,
+          apocrypha: pending.apocrypha,
+          earlyText: pending.earlyText,
+        })
+      }
     })
     return unsub
   }, [navigation])
@@ -1019,9 +1174,16 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const isEarlyText = route.params?.earlyText ?? false
   const listRef = useRef<FlatList>(null)
   const pendingScrollIdxRef = useRef<number | null>(null)
+  const topVisibleVerseRef = useRef<number | null>(null)
+  const prevBookChapterRef = useRef<{ book: string; chapter: number } | null>(null)
   const mountedRef = useRef(true)
   const selectedVerseRef = useRef<number | null>(null)
   selectedVerseRef.current = selectedVerse
+
+  const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 1 }).current
+  const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: Array<{ item: BibleVerse }> }) => {
+    if (viewableItems.length > 0) topVisibleVerseRef.current = viewableItems[0].item.verse
+  }).current
 
   const totalBarHeight = useMemo(
     () => Animated.add(
@@ -1032,20 +1194,26 @@ export default function ReaderScreen({ navigation, route }: Props) {
   )
 
   useEffect(() => {
-    setLoading(true)
+    const prev = prevBookChapterRef.current
+    const isTranslationOnly = prev !== null && prev.book === book && prev.chapter === chapter
+    prevBookChapterRef.current = { book, chapter }
+
     setSelectedVerse(null)
     setShowColorPicker(false)
-    pendingScrollIdxRef.current = null   // clear stale scroll target before new chapter loads
+    pendingScrollIdxRef.current = null
     Animated.spring(actionBarAnim, { toValue: 0, useNativeDriver: false, bounciness: 0 }).start()
     Animated.spring(colorPickerAnim, { toValue: 0, useNativeDriver: false, bounciness: 0 }).start()
     setLoadError(null)
     setActiveFn(null)
-    setFootnotesByVerse(new Map())
-    setEarlyRefs([])
 
-    // Chapter 0 = preface — serve from hardcoded data, no DB query needed
+    if (!isTranslationOnly) {
+      setLoading(true)
+      setFootnotesByVerse(new Map())
+      setEarlyRefs([])
+    }
+
+    // Chapter 0 = preface
     if (chapter === 0) {
-      // Canonical books get structured preface data; early texts use plain string paragraphs
       setPrefaceData(!isEarlyText && !isApocrypha ? (getRawBookPreface(book) ?? null) : null)
       setVerses([])
       setHighlights({})
@@ -1055,8 +1223,31 @@ export default function ReaderScreen({ navigation, route }: Props) {
       setLoading(false)
       return
     }
-    // Not a preface chapter — clear any leftover preface data
     setPrefaceData(null)
+
+    if (isTranslationOnly) {
+      // Only the translation changed — fetch new verse text and swap in place.
+      // FlatList stays mounted. We resolve the restore index while rows are in scope,
+      // then defer the scroll 100ms so native layout finishes before scrollToIndex fires.
+      const topVerse = topVisibleVerseRef.current
+      const fetchFn = isEarlyText ? getEarlyTextChapter(db, book, chapter)
+        : isApocrypha         ? getApocryphaChapter(db, book, chapter)
+        :                       getChapter(db, book, chapter, translation)
+      fetchFn
+        .then(rows => {
+          if (topVerse !== null) {
+            const idx = rows.findIndex(v => v.verse === topVerse)
+            if (idx > 0) pendingScrollIdxRef.current = idx
+          }
+          // Changing the key forces FlatList to remount with fresh measurements.
+          // This avoids stale item heights from the previous translation causing
+          // scrollToIndex to land in the wrong place.
+          setListKey(`verses-${translation}`)
+          setVerses(rows)
+        })
+        .catch((e: any) => setLoadError(String(e?.message ?? e)))
+      return
+    }
 
     const shouldFetchFootnotes = !isApocrypha && !isEarlyText && translation === 'KJV'
     const highlightsWithTimeout = new Promise<Awaited<ReturnType<typeof getChapterHighlights>>>(resolve => {
@@ -1146,6 +1337,32 @@ export default function ReaderScreen({ navigation, route }: Props) {
     }).catch(() => setCompareMap(prev => prev.size > 0 ? new Map() : prev))
   }, [compareTrans, book, chapter])
 
+  // Load persisted split state
+  useEffect(() => {
+    let cancelled = false
+    Promise.all([
+      userDb.getFirstAsync<{ value: string }>("SELECT value FROM settings WHERE key = 'split_on'"),
+      userDb.getFirstAsync<{ value: string }>("SELECT value FROM settings WHERE key = 'split_book'"),
+      userDb.getFirstAsync<{ value: string }>("SELECT value FROM settings WHERE key = 'split_chapter'"),
+      userDb.getFirstAsync<{ value: string }>("SELECT value FROM settings WHERE key = 'split_translation'"),
+    ]).then(([onRow, bookRow, chRow, transRow]) => {
+      if (cancelled) return
+      if (onRow?.value === '1') { setSplitOn(true); splitOnRef.current = true }
+      if (bookRow?.value) setSplitBook(bookRow.value)
+      if (chRow?.value) setSplitChapter(parseInt(chRow.value, 10) || 1)
+      if (transRow?.value) setSplitTranslation(transRow.value as Translation)
+    }).catch(() => {})
+    return () => { cancelled = true }
+  }, [userDb])
+
+  // Fetch right pane verses when split is on
+  useEffect(() => {
+    if (!splitOn) { setSplitVerses(prev => prev.length > 0 ? [] : prev); return }
+    getChapter(db, splitBook, splitChapter, splitTranslation)
+      .then(setSplitVerses)
+      .catch(() => setSplitVerses([]))
+  }, [splitOn, splitBook, splitChapter, splitTranslation, db])
+
   useEffect(() => {
     if (route.params?.verse && verses.length > 0) {
       const v = route.params.verse
@@ -1210,13 +1427,20 @@ export default function ReaderScreen({ navigation, route }: Props) {
   }, [])
   useEffect(() => () => { if (noteSaveTimer.current) clearTimeout(noteSaveTimer.current) }, [])
 
-  const selectVerse = useCallback((verse: number) => {
-    const next = selectedVerseRef.current === verse ? null : verse
+  const selectVerseInPane = useCallback((pane: 'left' | 'right', verse: number) => {
+    const wasThisPaneActive = !splitOnRef.current || activeSplitPaneRef.current === pane
+    if (splitOnRef.current) { setActiveSplitPane(pane); activeSplitPaneRef.current = pane }
+    const next = (wasThisPaneActive && selectedVerseRef.current === verse) ? null : verse
+    const targetBook    = pane === 'right' ? splitBook    : book
+    const targetChapter = pane === 'right' ? splitChapter : chapter
     setSelectedVerse(next)
-    setSelected(next !== null ? { book, chapter, verse: next } : null)
+    setSelected(next !== null ? { book: targetBook, chapter: targetChapter, verse: next } : null)
     setShowColorPicker(false)
     setActiveFn(null)
-  }, [book, chapter, setSelected])
+  }, [book, chapter, splitBook, splitChapter, setSelected])
+
+  const selectVerse      = useCallback((v: number) => selectVerseInPane('left',  v), [selectVerseInPane])
+  const selectSplitVerse = useCallback((v: number) => selectVerseInPane('right', v), [selectVerseInPane])
 
   const toggleBookmark = async () => {
     if (selectedVerse === null) return
@@ -1317,6 +1541,44 @@ export default function ReaderScreen({ navigation, route }: Props) {
   )
   const canGoPrev = chapter > (isApocrypha ? 1 : 0) || (!isOutsideCanon && bookIndex > 0)
   const canGoNext = chapter < totalChaptersForBook || (!isOutsideCanon && bookIndex < BOOKS.length - 1)
+
+  const splitBookIndex     = useMemo(() => BOOKS.findIndex(b => b.name === splitBook), [splitBook])
+  const splitTotalChapters = useMemo(() => BOOK_MAP[splitBook]?.chapters ?? 1, [splitBook])
+  const canSplitGoPrev = splitChapter > 1 || splitBookIndex > 0
+  const canSplitGoNext = splitChapter < splitTotalChapters || splitBookIndex < BOOKS.length - 1
+
+  const saveSplitSetting = useCallback((key: string, value: string) => {
+    userDb.runAsync(
+      "INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)", [key, value]
+    ).catch(() => {})
+  }, [userDb])
+
+  const goSplitChapter = useCallback((delta: number) => {
+    if (delta > 0 && splitChapter >= splitTotalChapters) {
+      const next = BOOKS[splitBookIndex + 1]
+      if (next) {
+        setSplitBook(next.name); setSplitChapter(1)
+        saveSplitSetting('split_book', next.name); saveSplitSetting('split_chapter', '1')
+      }
+    } else if (delta < 0 && splitChapter <= 1) {
+      const prev = BOOKS[splitBookIndex - 1]
+      if (prev) {
+        setSplitBook(prev.name); setSplitChapter(prev.chapters)
+        saveSplitSetting('split_book', prev.name); saveSplitSetting('split_chapter', String(prev.chapters))
+      }
+    } else {
+      const next = splitChapter + delta
+      setSplitChapter(next)
+      saveSplitSetting('split_chapter', String(next))
+    }
+  }, [splitBook, splitChapter, splitBookIndex, splitTotalChapters, saveSplitSetting])
+
+  const toggleSplit = useCallback(() => {
+    const next = !splitOn
+    setSplitOn(next); splitOnRef.current = next
+    if (next) { setParallelOn(false); setActiveSplitPane('left'); activeSplitPaneRef.current = 'left' }
+    saveSplitSetting('split_on', next ? '1' : '0')
+  }, [splitOn, setParallelOn, saveSplitSetting])
   const currentHighlightColor = selectedVerse !== null ? highlights[selectedVerse] : undefined
 
   const openEarlyFn = useCallback((marker: number) => {
@@ -1362,11 +1624,40 @@ export default function ReaderScreen({ navigation, route }: Props) {
     } as any)
   }, [navigation])
 
+  // Space saver — animate footer on chromeHidden change; reveal on chapter nav
+  useEffect(() => {
+    Animated.timing(footerSlideAnim, {
+      toValue: chromeHidden ? 1 : 0,
+      duration: 180,
+      useNativeDriver: true,
+    }).start()
+  }, [chromeHidden, footerSlideAnim])
+  useEffect(() => {
+    if (chromeHiddenRef.current) setChromeHidden(false)
+  }, [book, chapter])
+
+  const handleScroll = useCallback((event: { nativeEvent: { contentOffset: { y: number } } }) => {
+    if (!spaceSaverOnRef.current) return
+    const y = event.nativeEvent.contentOffset.y
+    const diff = y - lastScrollY.current
+    lastScrollY.current = y
+    if (y < 80) {
+      if (chromeHiddenRef.current) setChromeHidden(false)
+      return
+    }
+    if (diff > 10 && !chromeHiddenRef.current) {
+      setChromeHidden(true)
+    } else if (diff < -10 && chromeHiddenRef.current) {
+      setChromeHidden(false)
+    }
+  }, [setChromeHidden])
+
   const renderVerseRow = useCallback(({ item }: { item: BibleVerse }) => (
     <VerseRow
       verse={item.verse}
       text={item.text}
-      isSelected={selectedVerse === item.verse}
+      isSelected={(!splitOn || activeSplitPane === 'left') && selectedVerse === item.verse}
+      isMirrorSelected={splitOn && activeSplitPane === 'right' && selectedVerse === item.verse}
       hlColor={highlights[item.verse]}
       onPress={selectVerse}
       onWordPress={openConcordance}
@@ -1378,7 +1669,9 @@ export default function ReaderScreen({ navigation, route }: Props) {
       compareText={parallelOn && compareTrans ? compareMap.get(item.verse) : undefined}
       compareLabel={undefined}
       isAnnotated={isAnnotatedTrans}
+      lazyAnnotation={translation === 'KJV+'}
       compareIsAnnotated={parallelOn && compareTrans ? ANNOTATED_TRANSLATIONS.has(compareTrans as Translation) : false}
+      lazyCompareAnnotation={compareTrans === 'KJV+'}
       onStrongsPress={openStrongs}
       isDss={isDss}
       dssAllReadings={dssAllReadings}
@@ -1387,11 +1680,44 @@ export default function ReaderScreen({ navigation, route }: Props) {
       isEarlyText={isEarlyText}
       onEarlyFnPress={openEarlyFn}
       onInlineRefPress={onEarlyRefPress}
+      focusMode={focusMode}
     />
-  ), [selectedVerse, highlights, selectVerse, openConcordance, redLetterOn, book, chapter, footnotesByVerse, compareTrans, parallelOn, compareMap, isAnnotatedTrans, openStrongs, isDss, dssAllReadings, isHebrew, translation, isEarlyText, openEarlyFn, onEarlyRefPress])
+  ), [selectedVerse, highlights, selectVerse, splitOn, activeSplitPane, openConcordance, redLetterOn, book, chapter, footnotesByVerse, compareTrans, parallelOn, compareMap, isAnnotatedTrans, openStrongs, isDss, dssAllReadings, isHebrew, translation, isEarlyText, openEarlyFn, onEarlyRefPress, focusMode])
+  const renderSplitVerseRow = useCallback(({ item }: { item: BibleVerse }) => (
+    <VerseRow
+      verse={item.verse}
+      text={item.text}
+      isSelected={activeSplitPane === 'right' && selectedVerse === item.verse}
+      isMirrorSelected={activeSplitPane === 'left' && selectedVerse === item.verse}
+      hlColor={undefined}
+      onPress={selectSplitVerse}
+      onWordPress={openConcordance}
+      onFnPress={setActiveFn}
+      redLetterOn={redLetterOn}
+      book={splitBook}
+      chapter={splitChapter}
+      footnotes={undefined}
+      compareText={undefined}
+      compareLabel={undefined}
+      isAnnotated={ANNOTATED_TRANSLATIONS.has(splitTranslation as Translation)}
+      lazyAnnotation={splitTranslation === 'KJV+'}
+      compareIsAnnotated={false}
+      lazyCompareAnnotation={false}
+      onStrongsPress={openStrongs}
+      isDss={splitTranslation === 'DSS'}
+      dssAllReadings={dssAllReadings}
+      isHebrew={splitTranslation === 'DSS' || splitTranslation === 'WLC' || splitTranslation === 'TAHOT'}
+      useHeuristicRedLetter={false}
+      isEarlyText={false}
+      onEarlyFnPress={openEarlyFn}
+      onInlineRefPress={onEarlyRefPress}
+      focusMode={focusMode}
+    />
+  ), [activeSplitPane, selectedVerse, selectSplitVerse, splitBook, splitChapter, openConcordance, openStrongs, splitTranslation, dssAllReadings, redLetterOn, openEarlyFn, onEarlyRefPress, focusMode])
+
   const flatListExtraData = useMemo(
-    () => ({ selectedVerse, highlights, dssAllReadings, redLetterOn }),
-    [selectedVerse, highlights, dssAllReadings, redLetterOn]
+    () => ({ selectedVerse, highlights, dssAllReadings, redLetterOn, focusMode, activeSplitPane }),
+    [selectedVerse, highlights, dssAllReadings, redLetterOn, focusMode, activeSplitPane]
   )
   const currentSwatch = currentHighlightColor
     ? HIGHLIGHT_COLORS.find(c => c.key === currentHighlightColor)?.swatch
@@ -1414,9 +1740,12 @@ export default function ReaderScreen({ navigation, route }: Props) {
       <View style={styles.header}>
         <TouchableOpacity
           style={styles.headerTitle}
-          onPress={() => navigation.navigate('BookPicker', {
-            initialTab: isEarlyText ? 'EARLY' : isApocrypha ? 'APOC' : (BOOK_MAP[book]?.testament ?? 'OT') as 'OT' | 'NT',
-          })}
+          onPress={() => {
+            if (splitOn) { setActiveSplitPane('left'); activeSplitPaneRef.current = 'left' }
+            navigation.navigate('BookPicker', {
+              initialTab: isEarlyText ? 'EARLY' : isApocrypha ? 'APOC' : (BOOK_MAP[book]?.testament ?? 'OT') as 'OT' | 'NT',
+            })
+          }}
           activeOpacity={0.7}
         >
           <Text style={styles.bookName}>{book}</Text>
@@ -1429,13 +1758,25 @@ export default function ReaderScreen({ navigation, route }: Props) {
         ) : (
           <TouchableOpacity
             style={styles.translationBtn}
-            onPress={() => { setTransPickerTab('primary'); setTranslationPickerOpen(true) }}
+            onPress={() => { setTransPickerTab(splitOn ? 'split' : 'primary'); setTranslationPickerOpen(true) }}
             activeOpacity={0.7}
           >
-            <Text style={styles.translationLabel}>
-              {parallelOn && compareTrans ? `${translation} ∥ ${compareTrans}` : translation}
+            <Text style={styles.translationLabel} numberOfLines={1}>
+              {splitOn
+                ? `${abbrevBook(book)} ${chapter} ∥ ${abbrevBook(splitBook)} ${splitChapter}`
+                : parallelOn && compareTrans ? `${translation} ∥ ${compareTrans}` : translation}
             </Text>
             <Ionicons name="chevron-down" size={11} color={colors.textMuted} />
+          </TouchableOpacity>
+        )}
+        {!isOutsideCanon && (
+          <TouchableOpacity
+            style={[styles.splitBtn, splitOn && styles.splitBtnActive]}
+            onPress={toggleSplit}
+            activeOpacity={0.7}
+            hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}
+          >
+            <Ionicons name="albums-outline" size={17} color={splitOn ? colors.accent : colors.textMuted} />
           </TouchableOpacity>
         )}
         {isDss && (
@@ -1496,6 +1837,13 @@ export default function ReaderScreen({ navigation, route }: Props) {
                 activeOpacity={0.7}
               >
                 <Text style={[modal.tabLabel, transPickerTab === 'parallel' && modal.tabLabelActive]}>Parallel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[modal.tab, transPickerTab === 'split' && modal.tabActive]}
+                onPress={() => setTransPickerTab('split')}
+                activeOpacity={0.7}
+              >
+                <Text style={[modal.tabLabel, transPickerTab === 'split' && modal.tabLabelActive]}>Split</Text>
               </TouchableOpacity>
             </View>
 
@@ -1559,12 +1907,86 @@ export default function ReaderScreen({ navigation, route }: Props) {
                     </TouchableOpacity>
                   )}
                 </>
+              ) : transPickerTab === 'split' ? (
+                <>
+                  <TouchableOpacity
+                    style={modal.rlRow}
+                    activeOpacity={0.7}
+                    onPress={() => {
+                      const next = !splitOn
+                      setSplitOn(next); splitOnRef.current = next
+                      if (next) { setParallelOn(false); setActiveSplitPane('left'); activeSplitPaneRef.current = 'left' }
+                      saveSplitSetting('split_on', next ? '1' : '0')
+                    }}
+                  >
+                    <View style={modal.translationInfo}>
+                      <Text style={modal.translationKey}>Show Split View</Text>
+                      <Text style={modal.translationFull}>
+                        {splitOn ? `${splitBook} ${splitChapter}` : 'View two passages side by side'}
+                      </Text>
+                    </View>
+                    <View style={[modal.rlToggle, splitOn && { backgroundColor: colors.accent, borderColor: colors.accent }]}>
+                      <View style={[modal.rlThumb, splitOn && modal.rlThumbOn]} />
+                    </View>
+                  </TouchableOpacity>
+                  <View style={modal.sectionDivider} />
+                  <Text style={modal.sectionTitle}>Right Pane Translation</Text>
+                  {TRANSLATIONS.filter(t => !t.greekOnly && !t.otOriginal && !t.otOnly).map(t =>
+                    renderTransRow(t, splitTranslation === t.key, () => {
+                      setSplitTranslation(t.key as Translation)
+                      saveSplitSetting('split_translation', t.key)
+                      setSplitOn(true); splitOnRef.current = true
+                      setParallelOn(false); setActiveSplitPane('left'); activeSplitPaneRef.current = 'left'
+                      saveSplitSetting('split_on', '1')
+                      setTranslationPickerOpen(false)
+                    })
+                  )}
+                  <View style={modal.sectionDivider} />
+                  <Text style={modal.sectionTitle}>Greek New Testament</Text>
+                  {TRANSLATIONS.filter(t => t.greekOnly).map(t =>
+                    renderTransRow(t, splitTranslation === t.key, () => {
+                      setSplitTranslation(t.key as Translation)
+                      saveSplitSetting('split_translation', t.key)
+                      setSplitOn(true); splitOnRef.current = true
+                      setParallelOn(false); setActiveSplitPane('left'); activeSplitPaneRef.current = 'left'
+                      saveSplitSetting('split_on', '1')
+                      setTranslationPickerOpen(false)
+                    })
+                  )}
+                  <View style={modal.sectionDivider} />
+                  <Text style={modal.sectionTitle}>Old Testament Originals</Text>
+                  {TRANSLATIONS.filter(t => t.otOriginal).map(t =>
+                    renderTransRow(t, splitTranslation === t.key, () => {
+                      setSplitTranslation(t.key as Translation)
+                      saveSplitSetting('split_translation', t.key)
+                      setSplitOn(true); splitOnRef.current = true
+                      setParallelOn(false); setActiveSplitPane('left'); activeSplitPaneRef.current = 'left'
+                      saveSplitSetting('split_on', '1')
+                      setTranslationPickerOpen(false)
+                    })
+                  )}
+                  <View style={modal.sectionDivider} />
+                  <Text style={modal.sectionTitle}>English Old Testament</Text>
+                  {TRANSLATIONS.filter(t => t.otOnly).map(t =>
+                    renderTransRow(t, splitTranslation === t.key, () => {
+                      setSplitTranslation(t.key as Translation)
+                      saveSplitSetting('split_translation', t.key)
+                      setSplitOn(true); splitOnRef.current = true
+                      setParallelOn(false); setActiveSplitPane('left'); activeSplitPaneRef.current = 'left'
+                      saveSplitSetting('split_on', '1')
+                      setTranslationPickerOpen(false)
+                    })
+                  )}
+                </>
               ) : (
                 <>
                   <TouchableOpacity
                     style={modal.rlRow}
                     activeOpacity={0.7}
-                    onPress={() => setParallelOn(v => !v)}
+                    onPress={() => {
+                      setParallelOn(v => !v)
+                      if (!parallelOn) { setSplitOn(false); splitOnRef.current = false; saveSplitSetting('split_on', '0') }
+                    }}
                     disabled={!compareTrans}
                   >
                     <View style={modal.translationInfo}>
@@ -1581,28 +2003,28 @@ export default function ReaderScreen({ navigation, route }: Props) {
                   <Text style={modal.sectionTitle}>English</Text>
                   {TRANSLATIONS.filter(t => !t.greekOnly && !t.otOriginal && !t.otOnly && t.key !== translation).map(t =>
                     renderTransRow(t, compareTrans === t.key, () => {
-                      setCompareTrans(t.key); setParallelOn(true); setTranslationPickerOpen(false)
+                      setCompareTrans(t.key); setParallelOn(true); setSplitOn(false); splitOnRef.current = false; saveSplitSetting('split_on', '0'); setTranslationPickerOpen(false)
                     })
                   )}
                   <View style={modal.sectionDivider} />
                   <Text style={modal.sectionTitle}>Greek New Testament</Text>
                   {TRANSLATIONS.filter(t => t.greekOnly && t.key !== translation).map(t =>
                     renderTransRow(t, compareTrans === t.key, () => {
-                      setCompareTrans(t.key); setParallelOn(true); setTranslationPickerOpen(false)
+                      setCompareTrans(t.key); setParallelOn(true); setSplitOn(false); splitOnRef.current = false; saveSplitSetting('split_on', '0'); setTranslationPickerOpen(false)
                     })
                   )}
                   <View style={modal.sectionDivider} />
                   <Text style={modal.sectionTitle}>Old Testament Originals</Text>
                   {TRANSLATIONS.filter(t => t.otOriginal && t.key !== translation).map(t =>
                     renderTransRow(t, compareTrans === t.key, () => {
-                      setCompareTrans(t.key); setParallelOn(true); setTranslationPickerOpen(false)
+                      setCompareTrans(t.key); setParallelOn(true); setSplitOn(false); splitOnRef.current = false; saveSplitSetting('split_on', '0'); setTranslationPickerOpen(false)
                     })
                   )}
                   <View style={modal.sectionDivider} />
                   <Text style={modal.sectionTitle}>English Old Testament</Text>
                   {TRANSLATIONS.filter(t => t.otOnly && t.key !== translation).map(t =>
                     renderTransRow(t, compareTrans === t.key, () => {
-                      setCompareTrans(t.key); setParallelOn(true); setTranslationPickerOpen(false)
+                      setCompareTrans(t.key); setParallelOn(true); setSplitOn(false); splitOnRef.current = false; saveSplitSetting('split_on', '0'); setTranslationPickerOpen(false)
                     })
                   )}
                 </>
@@ -1652,12 +2074,93 @@ export default function ReaderScreen({ navigation, route }: Props) {
         <View style={styles.center}>
           <Text style={styles.errorText}>No verses found for {book} {chapter}</Text>
         </View>
+      ) : splitOn ? (
+        <View style={styles.splitContainer}>
+          {/* Left pane */}
+          <View style={styles.splitPane}>
+            <FlatList
+              key={listKey}
+              ref={listRef}
+              data={verses}
+              keyExtractor={v => `${v.verse}`}
+              contentContainerStyle={styles.splitList}
+              onScroll={handleScroll}
+              scrollEventThrottle={80}
+              onContentSizeChange={() => {
+                const idx = pendingScrollIdxRef.current
+                if (idx !== null) {
+                  pendingScrollIdxRef.current = null
+                  listRef.current?.scrollToIndex({ index: idx, animated: true, viewPosition: 0.2 })
+                }
+              }}
+              onScrollToIndexFailed={({ averageItemLength, index }) => {
+                listRef.current?.scrollToOffset({ offset: averageItemLength * index, animated: false })
+              }}
+              renderItem={renderVerseRow}
+              extraData={flatListExtraData}
+              windowSize={isAnnotatedTrans ? 3 : 5}
+              maxToRenderPerBatch={isAnnotatedTrans ? 4 : 8}
+              initialNumToRender={isAnnotatedTrans ? 8 : 15}
+              removeClippedSubviews={!isDss}
+            />
+          </View>
+          {/* Divider */}
+          <View style={styles.splitDivider} />
+          {/* Right pane */}
+          <View style={[styles.splitPane, activeSplitPane === 'right' && styles.splitPaneActive]}>
+            {/* Right pane mini-header */}
+            <View style={styles.splitPaneHeader}>
+              <TouchableOpacity
+                style={styles.splitPaneBookBtn}
+                onPress={() => {
+                  setActiveSplitPane('right'); activeSplitPaneRef.current = 'right'
+                  navigation.navigate('BookPicker', {
+                    initialTab: (BOOK_MAP[splitBook]?.testament ?? 'OT') as 'OT' | 'NT',
+                  })
+                }}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.splitPaneBookLabel} numberOfLines={1}>{splitBook}</Text>
+                <Ionicons name="chevron-down" size={10} color={colors.textMuted} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.splitTransBtn}
+                onPress={() => { setTransPickerTab('split'); setTranslationPickerOpen(true) }}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.splitTransLabel}>{splitTranslation}</Text>
+                <Ionicons name="chevron-down" size={9} color={colors.textMuted} />
+              </TouchableOpacity>
+            </View>
+            {splitVerses.length > 0 ? (
+              <FlatList
+                ref={splitFlatListRef}
+                data={splitVerses}
+                keyExtractor={v => `sp_${v.verse}`}
+                contentContainerStyle={styles.splitList}
+                renderItem={renderSplitVerseRow}
+                extraData={flatListExtraData}
+                windowSize={3}
+                maxToRenderPerBatch={4}
+                initialNumToRender={15}
+                removeClippedSubviews
+              />
+            ) : (
+              <View style={styles.center}>
+                <ActivityIndicator color={colors.accent} />
+              </View>
+            )}
+          </View>
+        </View>
       ) : (
         <FlatList
+          key={listKey}
           ref={listRef}
           data={verses}
           keyExtractor={v => `${v.verse}`}
           contentContainerStyle={styles.list}
+          onScroll={handleScroll}
+          scrollEventThrottle={80}
           onContentSizeChange={() => {
             const idx = pendingScrollIdxRef.current
             if (idx !== null) {
@@ -1674,9 +2177,11 @@ export default function ReaderScreen({ navigation, route }: Props) {
           }}
           renderItem={renderVerseRow}
           extraData={flatListExtraData}
-          windowSize={5}
-          maxToRenderPerBatch={8}
-          initialNumToRender={20}
+          onViewableItemsChanged={onViewableItemsChanged}
+          viewabilityConfig={viewabilityConfig}
+          windowSize={isAnnotatedTrans ? 3 : 5}
+          maxToRenderPerBatch={isAnnotatedTrans ? 4 : 8}
+          initialNumToRender={isAnnotatedTrans ? 10 : 20}
           removeClippedSubviews={!isDss}
           ListFooterComponent={isEarlyText && earlyRefs.length > 0 ? (
             <EarlyRefsSection
@@ -1779,36 +2284,91 @@ export default function ReaderScreen({ navigation, route }: Props) {
       </Animated.View>
 
       {/* Footer */}
+      <Animated.View style={{ transform: [{ translateY: footerSlideAnim.interpolate({ inputRange: [0, 1], outputRange: [0, footerHeight] }) }] }}
+        onLayout={e => setFooterHeight(e.nativeEvent.layout.height)}
+      >
       <View style={styles.footer}>
-        <TouchableOpacity
-          style={[styles.footerBtn, !canGoPrev && styles.footerBtnDisabled]}
-          onPress={() => canGoPrev && goChapter(-1)}
-          activeOpacity={0.7}
-        >
-          <Ionicons name="chevron-back" size={20} color={canGoPrev ? colors.textSecondary : colors.textMuted} />
-          <Text style={[styles.footerLabel, !canGoPrev && styles.footerLabelDisabled]}>Prev</Text>
-        </TouchableOpacity>
+        {splitOn ? (
+          <>
+            {/* Left pane prev/next */}
+            <TouchableOpacity
+              style={[styles.splitFooterBtn, !canGoPrev && styles.footerBtnDisabled]}
+              onPress={() => canGoPrev && goChapter(-1)}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="chevron-back" size={18} color={canGoPrev ? colors.textSecondary : colors.textMuted} />
+              <Text style={[styles.splitFooterLabel, !canGoPrev && styles.footerLabelDisabled]} numberOfLines={1}>
+                {abbrevBook(book)} {chapter}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.splitFooterBtn, !canGoNext && styles.footerBtnDisabled]}
+              onPress={() => canGoNext && goChapter(1)}
+              activeOpacity={0.7}
+            >
+              <Text style={[styles.splitFooterLabel, !canGoNext && styles.footerLabelDisabled]} numberOfLines={1}>
+                {abbrevBook(book)} {chapter}
+              </Text>
+              <Ionicons name="chevron-forward" size={18} color={canGoNext ? colors.textSecondary : colors.textMuted} />
+            </TouchableOpacity>
+            {/* Divider */}
+            <View style={styles.splitFooterDivider} />
+            {/* Right pane prev/next */}
+            <TouchableOpacity
+              style={[styles.splitFooterBtn, !canSplitGoPrev && styles.footerBtnDisabled]}
+              onPress={() => canSplitGoPrev && goSplitChapter(-1)}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="chevron-back" size={18} color={canSplitGoPrev ? colors.accent : colors.textMuted} />
+              <Text style={[styles.splitFooterLabel, { color: colors.accent }, !canSplitGoPrev && styles.footerLabelDisabled]} numberOfLines={1}>
+                {abbrevBook(splitBook)} {splitChapter}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.splitFooterBtn, !canSplitGoNext && styles.footerBtnDisabled]}
+              onPress={() => canSplitGoNext && goSplitChapter(1)}
+              activeOpacity={0.7}
+            >
+              <Text style={[styles.splitFooterLabel, { color: colors.accent }, !canSplitGoNext && styles.footerLabelDisabled]} numberOfLines={1}>
+                {abbrevBook(splitBook)} {splitChapter}
+              </Text>
+              <Ionicons name="chevron-forward" size={18} color={canSplitGoNext ? colors.accent : colors.textMuted} />
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity
+              style={[styles.footerBtn, !canGoPrev && styles.footerBtnDisabled]}
+              onPress={() => canGoPrev && goChapter(-1)}
+              activeOpacity={0.7}
+            >
+              <Ionicons name="chevron-back" size={20} color={canGoPrev ? colors.textSecondary : colors.textMuted} />
+              <Text style={[styles.footerLabel, !canGoPrev && styles.footerLabelDisabled]}>Prev</Text>
+            </TouchableOpacity>
 
-        {selectedVerse !== null && (
-          <TouchableOpacity
-            style={styles.studyBtn}
-            onPress={() => navigation.getParent()?.navigate('Study' as never)}
-            activeOpacity={0.8}
-          >
-            <Ionicons name="school-outline" size={15} color={colors.bgPrimary} />
-            <Text style={styles.studyBtnLabel}>Study</Text>
-          </TouchableOpacity>
+            {selectedVerse !== null && (
+              <TouchableOpacity
+                style={styles.studyBtn}
+                onPress={() => navigation.getParent()?.navigate('Study' as never)}
+                activeOpacity={0.8}
+              >
+                <Ionicons name="school-outline" size={15} color={colors.bgPrimary} />
+                <Text style={styles.studyBtnLabel}>Study</Text>
+              </TouchableOpacity>
+            )}
+
+            <TouchableOpacity
+              style={[styles.footerBtn, !canGoNext && styles.footerBtnDisabled]}
+              onPress={() => canGoNext && goChapter(1)}
+              activeOpacity={0.7}
+            >
+              <Text style={[styles.footerLabel, !canGoNext && styles.footerLabelDisabled]}>Next</Text>
+              <Ionicons name="chevron-forward" size={20} color={canGoNext ? colors.textSecondary : colors.textMuted} />
+            </TouchableOpacity>
+          </>
         )}
-
-        <TouchableOpacity
-          style={[styles.footerBtn, !canGoNext && styles.footerBtnDisabled]}
-          onPress={() => canGoNext && goChapter(1)}
-          activeOpacity={0.7}
-        >
-          <Text style={[styles.footerLabel, !canGoNext && styles.footerLabelDisabled]}>Next</Text>
-          <Ionicons name="chevron-forward" size={20} color={canGoNext ? colors.textSecondary : colors.textMuted} />
-        </TouchableOpacity>
       </View>
+      </Animated.View>
 
       {showFab && selectedVerse === null && (
         <TouchableOpacity style={styles.tourFab} onPress={openTutorial} activeOpacity={0.85}>
@@ -1977,11 +2537,35 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
   apocBadgeText: { fontSize: 11, fontWeight: '700', color: c.textMuted, letterSpacing: 0.4 },
 
   list: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 80 },
+  splitList: { paddingHorizontal: 10, paddingTop: 8, paddingBottom: 80 },
+
+  splitBtn: { padding: 4, marginLeft: 4 },
+  splitBtnActive: {},
+
+  splitContainer: { flex: 1, flexDirection: 'row' },
+  splitDivider: { width: StyleSheet.hairlineWidth, backgroundColor: c.border },
+  splitPane: { flex: 1, flexDirection: 'column' },
+  splitPaneActive: { borderTopWidth: 2, borderTopColor: c.accent },
+  splitPaneHeader: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingHorizontal: 10, paddingVertical: 7,
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
+    backgroundColor: c.bgSecondary,
+  },
+  splitPaneBookBtn: { flexDirection: 'row', alignItems: 'center', gap: 3, flex: 1, minWidth: 0 },
+  splitPaneBookLabel: { fontSize: 12, fontWeight: '700', color: c.textPrimary, flexShrink: 1 },
+  splitTransBtn: { flexDirection: 'row', alignItems: 'center', gap: 2, marginLeft: 6 },
+  splitTransLabel: { fontSize: 11, fontWeight: '700', color: c.textMuted },
+
+  splitFooterBtn: { flexDirection: 'row', alignItems: 'center', gap: 3, paddingVertical: 4, flex: 1, justifyContent: 'center' },
+  splitFooterLabel: { fontSize: 12, fontWeight: '600', color: c.textSecondary, fontFamily: globalFont },
+  splitFooterDivider: { width: StyleSheet.hairlineWidth, backgroundColor: c.border, alignSelf: 'stretch', marginVertical: 2 },
   verseRow: {
     flexDirection: 'row', paddingVertical: 8,
     paddingHorizontal: 10, borderRadius: 6, marginVertical: 1,
   },
   verseRowSelected: { backgroundColor: c.accentDim },
+  verseRowMirror: { borderLeftWidth: 2, borderLeftColor: c.accent, paddingLeft: 8 },
   verseNum: {
     fontSize: 11, fontWeight: '700', color: c.textMuted,
     minWidth: 24, marginTop: 3, marginRight: 8,
@@ -1989,6 +2573,7 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
   verseBody: { flex: 1 },
   earlyTextParagraph: { marginTop: 10 },
   verseText: { fontSize: verseFontSize, lineHeight: verseLineHeight, color: c.textPrimary, fontFamily },
+  focusBold: { fontWeight: '800' as const },
   verseWordWrap: { flexDirection: 'row' as const, flexWrap: 'wrap' as const, flex: 1, alignContent: 'flex-start' },
   verseBodyRow:      { flexDirection: 'row', alignItems: 'flex-start' },
   comparePrimary:    { flex: 1 },

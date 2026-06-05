@@ -9,12 +9,22 @@ import { useUserDb } from '../db/UserDbProvider'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
-import { searchVerses, searchVersesFuzzy, searchOriginalLanguage, detectQueryScript, normalizeForSearch, getSearchHistory, addSearchHistory, deleteSearchHistory } from '../db/queries'
-import { useTranslation, TRANSLATIONS } from '../context/TranslationContext'
-import { BOOKS } from '../data/books'
+import { searchVerses, searchVersesFuzzy, searchOriginalLanguage, detectQueryScript, normalizeForSearch, getSearchHistory, addSearchHistory, deleteSearchHistory, getStrongsEntry } from '../db/queries'
+import type { StrongsEntry } from '../db/queries'
+import { useTranslation, TRANSLATIONS, ANNOTATED_TRANSLATIONS } from '../context/TranslationContext'
+import { useStrongsInSearch } from '../context/StrongsInSearchContext'
+import { useSearchOrder } from '../context/SearchOrderContext'
+import type { SearchMode } from '../context/SearchOrderContext'
+import { BOOKS, BOOK_ORDER } from '../data/books'
 import { matchBookRefs, type BookRef } from '../lib/parsePassage'
 import { useTheme } from '../context/ThemeContext'
+import { useSelectedVerse } from '../context/SelectedVerseContext'
+import { useWordFocus } from '../context/WordFocusContext'
+import { stripUsfm } from '../data/redLetter'
 import type { ThemeColors } from '../theme/themes'
+
+const STRONGS_RE = /([HG]\d+)/g
+const STRONGS_TOKEN_RE = /^[HG]\d+$/
 
 function formatRef(ref: BookRef): string {
   if (!ref.chapterSpecified) return ref.book
@@ -55,6 +65,10 @@ export default function SearchScreen() {
   const userDb = useUserDb()
   const navigation = useNavigation<NavProp>()
   const { translation, setTranslation } = useTranslation()
+  const { strongsInSearch } = useStrongsInSearch()
+  const { biblicalOrder, searchMode } = useSearchOrder()
+  const { setSelected } = useSelectedVerse()
+  const { setWordFocus } = useWordFocus()
 
   const [query, setQuery]             = useState('')
   const [results, setResults]         = useState<SearchResult[]>([])
@@ -75,6 +89,14 @@ export default function SearchScreen() {
   const [draftBooks, setDraftBooks]                 = useState<Set<string>>(new Set())
 
   const [history, setHistory] = useState<string[]>([])
+  const [strongsPopup, setStrongsPopup] = useState<{
+    num: string
+    entry: StrongsEntry | null
+    loading: boolean
+    book: string
+    chapter: number
+    verse: number
+  } | null>(null)
   const inputRef = useRef<TextInput>(null)
 
   useEffect(() => {
@@ -93,6 +115,17 @@ export default function SearchScreen() {
 
   const queryTrimmed = query.trim()
   const bookRefs = useMemo(() => matchBookRefs(queryTrimmed), [queryTrimmed])
+
+  const displayResults = useMemo(() => {
+    if (!biblicalOrder) return results
+    return [...results].sort((a, b) => {
+      const ai = BOOK_ORDER.get(a.book) ?? 999
+      const bi = BOOK_ORDER.get(b.book) ?? 999
+      if (ai !== bi) return ai - bi
+      if (a.chapter !== b.chapter) return a.chapter - b.chapter
+      return a.verse - b.verse
+    })
+  }, [results, biblicalOrder])
 
   const highlightRegex = useMemo(() => {
     if (searchScript !== 'latin') return null
@@ -135,6 +168,23 @@ export default function SearchScreen() {
     setSearchScript('latin')
     const rows = await searchVerses(db, trimmed, trans, books)
     const qWords = trimmed.toLowerCase().split(/\s+/).filter(Boolean)
+
+    if (searchMode === 'exact_words') {
+      setResults(rows.filter(r => {
+        const vWords = r.text.toLowerCase().match(/[a-z']+/g) ?? []
+        return qWords.every(w => vWords.includes(w))
+      }))
+      setLoading(false)
+      return
+    }
+
+    if (searchMode === 'exact_phrase') {
+      const phraseLower = trimmed.toLowerCase()
+      setResults(rows.filter(r => r.text.toLowerCase().includes(phraseLower)))
+      setLoading(false)
+      return
+    }
+
     const hasTypo = qWords.some(w => w.length >= 4 && !rows.some(r => r.text.toLowerCase().includes(w)))
     if (hasTypo || rows.length === 0) {
       // Correct each typo word individually via single-word fuzzy, then re-search
@@ -159,7 +209,7 @@ export default function SearchScreen() {
       setResults(rows)
     }
     setLoading(false)
-  }, [db, translation, testament, selectedBooks])
+  }, [db, translation, testament, selectedBooks, searchMode])
 
   const navigateToVerse = (result: SearchResult) => {
     navigation.navigate('Bible' as any, {
@@ -191,6 +241,22 @@ export default function SearchScreen() {
   function clearFilter() {
     setDraftTestament('all')
     setDraftBooks(new Set())
+  }
+
+  function openStrongs(num: string, book: string, chapter: number, verse: number) {
+    setStrongsPopup({ num, entry: null, loading: true, book, chapter, verse })
+    const lang: 'greek' | 'hebrew' = num.startsWith('H') ? 'hebrew' : 'greek'
+    getStrongsEntry(db, lang, num)
+      .then(entry => setStrongsPopup(prev => prev?.num === num ? { ...prev, entry, loading: false } : prev))
+      .catch(() => setStrongsPopup(prev => prev?.num === num ? { ...prev, loading: false } : prev))
+  }
+
+  function openInWordStudy() {
+    if (!strongsPopup) return
+    setSelected({ book: strongsPopup.book, chapter: strongsPopup.chapter, verse: strongsPopup.verse })
+    setWordFocus(strongsPopup.num)
+    setStrongsPopup(null)
+    navigation.navigate('Study' as any)
   }
 
   function toggleDraftBook(book: string) {
@@ -415,7 +481,7 @@ export default function SearchScreen() {
       {/* Results list */}
       {!loading && queryTrimmed !== '' && (
         <FlatList
-          data={results}
+          data={displayResults}
           keyExtractor={item => `${item.book}-${item.chapter}-${item.verse}`}
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={styles.list}
@@ -439,17 +505,29 @@ export default function SearchScreen() {
             </View>
           ) : null}
           renderItem={({ item }) => {
+            const displayText = stripUsfm(item.text).replace(/[{}]/g, '')
+            const showStrongs = strongsInSearch && ANNOTATED_TRANSLATIONS.has(translation)
             let content: React.ReactNode
             if (searchScript !== 'latin') {
-              content = item.text.split(/(\s+)/).map((token, i) => {
+              content = displayText.split(/(\s+)/).map((token, i) => {
                 const norm = normalizeForSearch(token)
                 const isMatch = normSearchTerms.some(t => norm.includes(t))
                 return isMatch ? <Text key={i} style={styles.matchText}>{token}</Text> : token
               })
+            } else if (showStrongs) {
+              content = displayText.split(STRONGS_RE).flatMap((seg, i) => {
+                if (STRONGS_TOKEN_RE.test(seg)) {
+                  return [<Text key={`s${i}`} style={styles.strongsTag} onPress={() => openStrongs(seg, item.book, item.chapter, item.verse)}>{seg}</Text>]
+                }
+                if (!highlightRegex) return [seg as React.ReactNode]
+                return seg.split(highlightRegex).map((p, j) =>
+                  j % 2 === 1 ? <Text key={`s${i}h${j}`} style={styles.matchText}>{p}</Text> : p as React.ReactNode
+                )
+              })
             } else {
               const parts = highlightRegex
-                ? item.text.split(highlightRegex).map((p, i) => ({ text: p, match: i % 2 === 1 }))
-                : [{ text: item.text, match: false }]
+                ? displayText.split(highlightRegex).map((p, i) => ({ text: p, match: i % 2 === 1 }))
+                : [{ text: displayText, match: false }]
               content = parts.map((p, i) =>
                 p.match ? <Text key={i} style={styles.matchText}>{p.text}</Text> : p.text
               )
@@ -470,6 +548,68 @@ export default function SearchScreen() {
           }
         />
       )}
+
+      {/* Strong's definition popup */}
+      <Modal
+        visible={!!strongsPopup}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setStrongsPopup(null)}
+      >
+        <View style={modal.overlay}>
+          <View style={modal.strongsSheet}>
+            <View style={modal.strongsHeader}>
+              <Text style={modal.title}>{strongsPopup?.num}</Text>
+              <TouchableOpacity
+                onPress={() => setStrongsPopup(null)}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <Ionicons name="close" size={22} color={colors.textMuted} />
+              </TouchableOpacity>
+            </View>
+
+            {strongsPopup?.loading ? (
+              <View style={modal.strongsCenter}>
+                <ActivityIndicator color={colors.accent} size="large" />
+              </View>
+            ) : strongsPopup?.entry ? (
+              <>
+                <ScrollView
+                  bounces={false}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={modal.strongsBody}
+                >
+                  <Text style={modal.strongsLemma}>{strongsPopup.entry.lemma}</Text>
+                  <Text style={modal.strongsTranslit}>
+                    {strongsPopup.entry.translit}
+                    {strongsPopup.entry.pronunciation ? ` · ${strongsPopup.entry.pronunciation}` : ''}
+                    {' · '}{strongsPopup.num.startsWith('H') ? 'Hebrew' : 'Greek'}
+                  </Text>
+                  {!!strongsPopup.entry.definition && (
+                    <Text style={modal.strongsDef}>{strongsPopup.entry.definition.trim()}</Text>
+                  )}
+                  {!!strongsPopup.entry.kjv_usage && (
+                    <View style={modal.kjvRow}>
+                      <Text style={modal.kjvLabel}>KJV uses  </Text>
+                      <Text style={modal.kjvText}>{strongsPopup.entry.kjv_usage}</Text>
+                    </View>
+                  )}
+                </ScrollView>
+                <View style={modal.strongsFooter}>
+                  <TouchableOpacity style={modal.wordStudyBtn} onPress={openInWordStudy} activeOpacity={0.7}>
+                    <Ionicons name="library-outline" size={16} color={colors.bgPrimary} />
+                    <Text style={modal.wordStudyBtnLabel}>Open in Word Study</Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            ) : (
+              <View style={modal.strongsCenter}>
+                <Text style={modal.strongsEmpty}>No definition found for {strongsPopup?.num}</Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </Modal>
     </View>
   )
 }
@@ -556,6 +696,12 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   verseText: { fontSize: 15, lineHeight: 23, color: c.textSecondary },
   matchText: { color: c.textPrimary, fontWeight: '700', backgroundColor: c.accentDim },
   emptyText: { color: c.textMuted, fontSize: 15 },
+  strongsTag: {
+    color: c.accent, fontWeight: '700', fontSize: 13,
+    backgroundColor: c.accentDim,
+    borderRadius: 4, overflow: 'hidden',
+    paddingHorizontal: 2,
+  },
 
   fuzzyBanner: {
     backgroundColor: c.bgCard,
@@ -697,4 +843,35 @@ const makeModal = (c: ThemeColors) => StyleSheet.create({
     alignItems: 'center',
   },
   applyBtnLabel: { fontSize: 15, fontWeight: '700', color: c.bgPrimary },
+
+  // Strong's definition popup
+  strongsSheet: {
+    backgroundColor: c.bgSecondary,
+    borderTopLeftRadius: 20, borderTopRightRadius: 20,
+    paddingTop: 20, maxHeight: '70%',
+  },
+  strongsHeader: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingHorizontal: 20, paddingBottom: 14,
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
+  },
+  strongsBody: { padding: 20, gap: 10, paddingBottom: 40 },
+  strongsCenter: { alignItems: 'center', paddingVertical: 40 },
+  strongsEmpty: { fontSize: 14, color: c.textMuted, fontStyle: 'italic' },
+  strongsLemma: { fontSize: 26, fontWeight: '700', color: c.textPrimary },
+  strongsTranslit: { fontSize: 13, color: c.textMuted, fontStyle: 'italic' },
+  strongsDef: { fontSize: 14, lineHeight: 22, color: c.textPrimary },
+  kjvRow: { flexDirection: 'row', flexWrap: 'wrap', paddingTop: 4, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: c.border },
+  kjvLabel: { fontSize: 12, fontWeight: '700', color: c.textMuted, textTransform: 'uppercase', letterSpacing: 0.4 },
+  kjvText: { fontSize: 13, color: c.textSecondary, flex: 1 },
+
+  strongsFooter: {
+    padding: 16, paddingBottom: 32,
+    borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: c.border,
+  },
+  wordStudyBtn: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8,
+    backgroundColor: c.accent, borderRadius: 12, paddingVertical: 13,
+  },
+  wordStudyBtnLabel: { fontSize: 15, fontWeight: '700', color: c.bgPrimary },
 })

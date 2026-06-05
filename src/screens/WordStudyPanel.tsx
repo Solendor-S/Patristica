@@ -3,16 +3,17 @@ import {
   ActivityIndicator, FlatList, Modal, ScrollView, StyleSheet,
   Text, TouchableOpacity, View,
 } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useSQLiteContext } from 'expo-sqlite'
 import { Ionicons } from '@expo/vector-icons'
 import { useUserDb } from '../db/UserDbProvider'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import {
-  getGreekWords, getHebrewWords, getStrongsEntry,
+  getGreekWords, getHebrewWords, getLxxWords, getStrongsEntry,
   getBdbEntry, getThayersEntry, getVerse, getStrongsConcordance, normalizeStrongsNumber,
 } from '../db/queries'
-import type { GreekWord, HebrewWord, StrongsEntry, LexiconEntry, StrongsConcordanceResult, GreekSource } from '../db/queries'
+import type { GreekWord, HebrewWord, StrongsEntry, LexiconEntry, StrongsConcordanceResult, GreekSource, HebrewSource, LxxSource } from '../db/queries'
 import { decodeMorphology, TAG_DEFINITIONS, GREEK_TAG_EXAMPLES, HEBREW_TAG_EXAMPLES } from '../utils/morphology'
 import { stripUsfm } from '../data/redLetter'
 import type { SelectedVerse, RootTabParamList } from '../types'
@@ -25,12 +26,22 @@ import type { ThemeColors } from '../theme/themes'
 import { TRANSLATIONS } from '../context/TranslationContext'
 
 const NT_BOOKS = new Set(BOOKS.filter(b => b.testament === 'NT').map(b => b.name))
-
-const HEBREW_TEXT_LABEL = 'TAHOT'
+const OT_BOOKS_LIST = BOOKS.filter(b => b.testament === 'OT').map(b => b.name)
+const NT_BOOKS_LIST = BOOKS.filter(b => b.testament === 'NT').map(b => b.name)
+type ConcTestament = 'all' | 'OT' | 'NT'
 
 const GREEK_SOURCES = TRANSLATIONS
-  .filter(t => t.greekOnly)
+  .filter(t => t.greekOnly && !t.key.endsWith('+'))
   .map(t => ({ key: t.key.toLowerCase() as GreekSource, label: t.label, desc: t.full }))
+
+type OtSource = HebrewSource | LxxSource
+
+const OT_SOURCES: { key: OtSource; label: string; desc: string }[] = [
+  { key: 'tahot', label: 'TAHOT',  desc: 'Translators Amalgamated Hebrew OT' },
+  { key: 'wlc',   label: 'WLC',    desc: 'Westminster Leningrad Codex' },
+  { key: 'lxx',   label: 'LXX',    desc: 'Septuagint (Rahlfs/CCAT via STEPBible)' },
+  { key: 'lxx_a', label: 'LXX-A',  desc: 'Apostolic Bible LXX (Poole)' },
+]
 
 // ── Helpers ───────────────────────────────────────────────
 
@@ -174,26 +185,34 @@ export function StrongsConcordanceModal({
 }: ConcordanceModalProps) {
   const { colors } = useTheme()
   const sc = useMemo(() => makeConcStyles(colors), [colors])
-  const [filterOpen, setFilterOpen]         = useState(false)
-  const [activeCategories, setActiveCategories] = useState<Set<string>>(new Set())
+  const insets = useSafeAreaInsets()
+  const [filterOpen, setFilterOpen] = useState(false)
   const [collapsedBooks, setCollapsedBooks] = useState<Set<string>>(new Set())
 
-  const cats = lang === 'greek' ? NT_CATS : OT_CATS
+  // Committed filter state
+  const [testament, setTestament]         = useState<ConcTestament>('all')
+  const [selectedBooks, setSelectedBooks] = useState<Set<string>>(new Set())
+  // Draft state (inside filter modal, committed on Apply)
+  const [draftTestament, setDraftTestament] = useState<ConcTestament>('all')
+  const [draftBooks, setDraftBooks]         = useState<Set<string>>(new Set())
 
   useEffect(() => {
     if (visible) {
       setFilterOpen(false)
-      setActiveCategories(new Set())
+      setTestament('all')
+      setSelectedBooks(new Set())
+      setDraftTestament('all')
+      setDraftBooks(new Set())
       setCollapsedBooks(new Set())
     }
   }, [visible])
 
-  const bookToCat = useMemo(() => buildBookToCat(lang === 'greek' ? NT_CATS : OT_CATS), [lang])
-
   const filteredResults = useMemo(() => {
-    if (activeCategories.size === 0) return results
-    return results.filter(r => activeCategories.has(bookToCat[r.book] ?? ''))
-  }, [results, activeCategories, bookToCat])
+    if (selectedBooks.size > 0) return results.filter(r => selectedBooks.has(r.book))
+    if (testament === 'NT') return results.filter(r => NT_BOOKS.has(r.book))
+    if (testament === 'OT') return results.filter(r => !NT_BOOKS.has(r.book))
+    return results
+  }, [results, testament, selectedBooks])
 
   const listData = useMemo(() => {
     type Item =
@@ -213,12 +232,37 @@ export function StrongsConcordanceModal({
     return items
   }, [filteredResults, collapsedBooks])
 
-  function toggleCategory(cat: string) {
-    setActiveCategories(prev => {
+  function openFilter() {
+    setDraftTestament(testament)
+    setDraftBooks(new Set(selectedBooks))
+    setFilterOpen(true)
+  }
+
+  function selectDraftTestament(t: ConcTestament) {
+    setDraftTestament(t)
+    setDraftBooks(new Set())
+  }
+
+  function toggleDraftBook(book: string) {
+    setDraftBooks(prev => {
       const next = new Set(prev)
-      if (next.has(cat)) next.delete(cat); else next.add(cat)
+      if (next.has(book)) next.delete(book); else next.add(book)
       return next
     })
+  }
+
+  function applyFilter() {
+    setTestament(draftTestament)
+    setSelectedBooks(draftBooks)
+    setFilterOpen(false)
+  }
+
+  function clearFilter() {
+    setDraftTestament('all')
+    setDraftBooks(new Set())
+    setTestament('all')
+    setSelectedBooks(new Set())
+    setFilterOpen(false)
   }
 
   function toggleBook(book: string) {
@@ -230,7 +274,10 @@ export function StrongsConcordanceModal({
   }
 
   const filteredCount = filteredResults.length
-  const catNames = Object.keys(cats)
+  const hasFilter = testament !== 'all' || selectedBooks.size > 0
+  const visibleBooks = draftTestament === 'OT' ? OT_BOOKS_LIST
+    : draftTestament === 'NT' ? NT_BOOKS_LIST
+    : null
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
@@ -242,46 +289,23 @@ export function StrongsConcordanceModal({
               <Text style={sc.lemma}>{lemma}</Text>
               <Text style={sc.meta}>
                 {translit} · {lang === 'greek' ? 'Greek' : 'Hebrew'} ·{' '}
-                {activeCategories.size > 0
-                  ? `${filteredCount} of ${results.length}`
-                  : filteredCount} occurrences
+                {hasFilter ? `${filteredCount} of ${results.length}` : filteredCount} occurrences
               </Text>
             </View>
             <View style={sc.headerBtns}>
               <TouchableOpacity
-                style={[sc.filterBtn, filterOpen && sc.filterBtnActive]}
-                onPress={() => setFilterOpen(f => !f)}
+                style={[sc.filterBtn, hasFilter && sc.filterBtnActive]}
+                onPress={openFilter}
                 activeOpacity={0.7}
               >
-                <Ionicons name="filter" size={13} color={filterOpen ? colors.bgPrimary : colors.accent} />
-                <Text style={[sc.filterBtnLabel, filterOpen && sc.filterBtnLabelActive]}>Filter</Text>
+                <Ionicons name="filter" size={13} color={hasFilter ? colors.bgPrimary : colors.accent} />
+                <Text style={[sc.filterBtnLabel, hasFilter && sc.filterBtnLabelActive]}>Filter</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={onClose} activeOpacity={0.7} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
                 <Ionicons name="close" size={22} color={colors.textMuted} />
               </TouchableOpacity>
             </View>
           </View>
-
-          {/* Category filter strip */}
-          {filterOpen && (
-            <View style={sc.filterPanel}>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={sc.catRow}>
-                {catNames.map(cat => {
-                  const active = activeCategories.has(cat)
-                  return (
-                    <TouchableOpacity
-                      key={cat}
-                      style={[sc.catChip, active && sc.catChipActive]}
-                      onPress={() => toggleCategory(cat)}
-                      activeOpacity={0.7}
-                    >
-                      <Text style={[sc.catChipLabel, active && sc.catChipLabelActive]}>{cat}</Text>
-                    </TouchableOpacity>
-                  )
-                })}
-              </ScrollView>
-            </View>
-          )}
 
           {/* Body */}
           {loading ? (
@@ -296,6 +320,7 @@ export function StrongsConcordanceModal({
             <FlatList
               data={listData}
               keyExtractor={item => item.type === 'header' ? `h-${item.book}` : `r-${item.r.book}-${item.r.chapter}-${item.r.verse}`}
+              contentContainerStyle={{ paddingBottom: insets.bottom + 8 }}
               renderItem={({ item }) => {
                 if (item.type === 'header') {
                   const collapsed = collapsedBooks.has(item.book)
@@ -327,6 +352,66 @@ export function StrongsConcordanceModal({
           )}
         </View>
       </View>
+
+      {/* Filter modal */}
+      <Modal visible={filterOpen} transparent animationType="slide" onRequestClose={() => setFilterOpen(false)}>
+        <View style={sc.overlay}>
+          <View style={sc.filterSheet}>
+            <View style={sc.filterHeader}>
+              <Text style={sc.filterTitle}>Filter by Scope</Text>
+              <TouchableOpacity onPress={() => setFilterOpen(false)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+                <Ionicons name="close" size={22} color={colors.textMuted} />
+              </TouchableOpacity>
+            </View>
+
+            <View style={sc.testamentRow}>
+              {(['all', 'OT', 'NT'] as ConcTestament[]).map(t => (
+                <TouchableOpacity
+                  key={t}
+                  style={[sc.testamentBtn, draftTestament === t && sc.testamentBtnActive]}
+                  onPress={() => selectDraftTestament(t)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={[sc.testamentLabel, draftTestament === t && sc.testamentLabelActive]}>
+                    {t === 'all' ? 'All' : t === 'OT' ? 'Old Testament' : 'New Testament'}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            {visibleBooks ? (
+              <ScrollView style={sc.bookScroll} contentContainerStyle={sc.bookChips} showsVerticalScrollIndicator={false}>
+                {visibleBooks.map(book => {
+                  const active = draftBooks.has(book)
+                  return (
+                    <TouchableOpacity
+                      key={book}
+                      style={[sc.bookChip, active && sc.bookChipActive]}
+                      onPress={() => toggleDraftBook(book)}
+                      activeOpacity={0.7}
+                    >
+                      <Text style={[sc.bookChipLabel, active && sc.bookChipLabelActive]}>{book}</Text>
+                    </TouchableOpacity>
+                  )
+                })}
+              </ScrollView>
+            ) : (
+              <View style={sc.allBooksNote}>
+                <Text style={sc.allBooksText}>Searching all 66 books</Text>
+              </View>
+            )}
+
+            <View style={sc.filterFooter}>
+              <TouchableOpacity style={sc.clearBtn} onPress={clearFilter} activeOpacity={0.7}>
+                <Text style={sc.clearBtnLabel}>Clear</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={sc.applyBtn} onPress={applyFilter} activeOpacity={0.7}>
+                <Text style={sc.applyBtnLabel}>Apply</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </Modal>
   )
 }
@@ -363,8 +448,10 @@ export default function WordStudyPanel({ selected }: Props) {
 
   const { wordFocus, setWordFocus } = useWordFocus()
 
-  const [source, setSource]       = useState<GreekSource>('sblgnt')
-  const [favSource, setFavSource] = useState<GreekSource | null>(null)
+  const [source, setSource]         = useState<GreekSource>('sblgnt')
+  const [favSource, setFavSource]   = useState<GreekSource | null>(null)
+  const [otSource, setOtSource]     = useState<OtSource>('tahot')
+  const [favOtSource, setFavOtSource] = useState<OtSource | null>(null)
 
   useEffect(() => {
     userDb.getFirstAsync<{ value: string }>(
@@ -374,6 +461,15 @@ export default function WordStudyPanel({ selected }: Props) {
       if (val && GREEK_SOURCES.some(s => s.key === val)) {
         setFavSource(val)
         setSource(val)
+      }
+    }).catch(() => {})
+    userDb.getFirstAsync<{ value: string }>(
+      "SELECT value FROM settings WHERE key = 'ot_source_fav'"
+    ).then(row => {
+      const val = row?.value as OtSource | undefined
+      if (val && OT_SOURCES.some(s => s.key === val)) {
+        setFavOtSource(val)
+        setOtSource(val)
       }
     }).catch(() => {})
   }, [userDb])
@@ -395,6 +491,8 @@ export default function WordStudyPanel({ selected }: Props) {
   const handleWordPressRef = useRef(handleWordPress)
   useLayoutEffect(() => { handleWordPressRef.current = handleWordPress })
 
+  const isLxx = !isNT && (otSource === 'lxx' || otSource === 'lxx_a')
+
   useEffect(() => {
     if (!selected.verse) return
     setWords([])
@@ -405,9 +503,11 @@ export default function WordStudyPanel({ selected }: Props) {
     setLoading(true)
     const fetch = isNT
       ? getGreekWords(db, selected.book, selected.chapter, selected.verse, source)
-      : getHebrewWords(db, selected.book, selected.chapter, selected.verse)
+      : isLxx
+        ? getLxxWords(db, selected.book, selected.chapter, selected.verse, otSource as LxxSource)
+        : getHebrewWords(db, selected.book, selected.chapter, selected.verse, otSource as HebrewSource)
     fetch.then(w => { setWords(w); setLoading(false) }).catch(() => setLoading(false))
-  }, [selected.book, selected.chapter, selected.verse, source])
+  }, [selected.book, selected.chapter, selected.verse, source, otSource])
 
   useEffect(() => {
     if (!wordFocus || loading || !words.length) return
@@ -441,7 +541,13 @@ export default function WordStudyPanel({ selected }: Props) {
     setConcordanceOpen(true)
     if (concordanceResults.length > 0) return
     setConcordanceLoading(true)
-    getStrongsConcordance(db, isNT ? 'greek' : 'hebrew', activeKey!.strongs, source)
+    getStrongsConcordance(
+      db,
+      isNT ? 'greek' : isLxx ? (otSource as LxxSource) : 'hebrew',
+      activeKey!.strongs,
+      source,
+      otSource as HebrewSource,
+    )
       .then(rows => { setConcordanceResults(rows); setConcordanceLoading(false) })
       .catch(() => setConcordanceLoading(false))
   }
@@ -457,10 +563,10 @@ export default function WordStudyPanel({ selected }: Props) {
     setConcordanceOpen(false)
     setConcordanceResults([])
     setDefLoading(true)
-    const lang = isNT ? 'greek' : 'hebrew'
+    const lang = (isNT || isLxx) ? 'greek' : 'hebrew'
     Promise.all([
       getStrongsEntry(db, lang, strongs),
-      isNT ? getThayersEntry(db, strongs) : getBdbEntry(db, strongs),
+      (isNT || isLxx) ? getThayersEntry(db, strongs) : getBdbEntry(db, strongs),
     ])
       .then(([entry, lex]) => {
         setDef(entry)
@@ -511,7 +617,7 @@ export default function WordStudyPanel({ selected }: Props) {
     ? words.find(w => w.strongs === activeKey.strongs && w.position === activeKey.position)
     : undefined
   const gloss = activeWord?.gloss
-  const morph = decodeMorphology(activeWord?.morph ?? '', isNT ? 'greek' : 'hebrew')
+  const morph = decodeMorphology(activeWord?.morph ?? '', (isNT || isLxx) ? 'greek' : 'hebrew')
 
   function jumpToFirstMention() {
     firstMentionRef.current?.measureLayout(
@@ -546,7 +652,7 @@ export default function WordStudyPanel({ selected }: Props) {
       <View style={s.center}>
         <Ionicons name="language-outline" size={52} color={colors.border} />
         <Text style={s.emptyTitle}>No words found</Text>
-        <Text style={s.emptyText}>No {isNT ? 'Greek' : 'Hebrew'} data for this verse</Text>
+        <Text style={s.emptyText}>No {isNT ? 'Greek' : isLxx ? 'LXX Greek' : 'Hebrew'} data for this verse</Text>
       </View>
     )
   }
@@ -556,17 +662,19 @@ export default function WordStudyPanel({ selected }: Props) {
   return (
     <ScrollView ref={scrollViewRef} contentContainerStyle={s.container} keyboardShouldPersistTaps="handled">
       <View style={s.langRow}>
-        <Text style={s.langLabel}>{isNT ? 'Interlinear · Greek NT' : 'Interlinear · Hebrew OT'}</Text>
+        <Text style={s.langLabel}>
+          {isNT ? 'Interlinear · Greek NT' : isLxx ? 'Interlinear · LXX' : 'Interlinear · Hebrew OT'}
+        </Text>
         {!isNT && (
           <View style={s.textBadge}>
-            <Text style={s.textBadgeLabel}>{HEBREW_TEXT_LABEL}</Text>
+            <Text style={s.textBadgeLabel}>{OT_SOURCES.find(o => o.key === otSource)?.label ?? otSource.toUpperCase()}</Text>
           </View>
         )}
       </View>
 
-      {/* Source cards — always visible for NT */}
-      {isNT && (
-        <View style={s.sourcePicker}>
+      {/* Source picker — NT uses Greek sources, OT uses Hebrew/LXX sources */}
+      {isNT ? (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.sourcePicker}>
           {GREEK_SOURCES.map(opt => {
             const active = opt.key === source
             const isFav  = opt.key === favSource
@@ -577,12 +685,8 @@ export default function WordStudyPanel({ selected }: Props) {
                   onPress={() => setSource(opt.key)}
                   activeOpacity={0.7}
                 >
-                  <Text style={[s.sourceChipLabel, active && s.sourceChipLabelActive]}>
-                    {opt.label}
-                  </Text>
-                  <Text style={[s.sourceChipDesc, active && s.sourceChipDescActive]}>
-                    {opt.desc}
-                  </Text>
+                  <Text style={[s.sourceChipLabel, active && s.sourceChipLabelActive]}>{opt.label}</Text>
+                  <Text style={[s.sourceChipDesc, active && s.sourceChipDescActive]}>{opt.desc}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={s.sourceStarBtn}
@@ -591,33 +695,59 @@ export default function WordStudyPanel({ selected }: Props) {
                     const next = isFav ? null : opt.key
                     setFavSource(next)
                     if (next) {
-                      userDb.runAsync(
-                        "INSERT OR REPLACE INTO settings (key, value) VALUES ('greek_source_fav', ?)",
-                        [next]
-                      ).catch(() => {})
+                      userDb.runAsync("INSERT OR REPLACE INTO settings (key, value) VALUES ('greek_source_fav', ?)", [next]).catch(() => {})
                     } else {
-                      userDb.runAsync(
-                        "DELETE FROM settings WHERE key = 'greek_source_fav'"
-                      ).catch(() => {})
+                      userDb.runAsync("DELETE FROM settings WHERE key = 'greek_source_fav'").catch(() => {})
                     }
                   }}
                   activeOpacity={0.7}
                 >
-                  <Ionicons
-                    name={isFav ? 'star' : 'star-outline'}
-                    size={14}
-                    color={isFav ? colors.accent : colors.textMuted}
-                  />
+                  <Ionicons name={isFav ? 'star' : 'star-outline'} size={14} color={isFav ? colors.accent : colors.textMuted} />
                 </TouchableOpacity>
               </View>
             )
           })}
-        </View>
+        </ScrollView>
+      ) : (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.sourcePicker}>
+          {OT_SOURCES.map(opt => {
+            const active = opt.key === otSource
+            const isFav  = opt.key === favOtSource
+            return (
+              <View key={opt.key} style={s.sourceChipWrapper}>
+                <TouchableOpacity
+                  style={[s.sourceChip, active && s.sourceChipActive]}
+                  onPress={() => setOtSource(opt.key)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={[s.sourceChipLabel, active && s.sourceChipLabelActive]}>{opt.label}</Text>
+                  <Text style={[s.sourceChipDesc, active && s.sourceChipDescActive]}>{opt.desc}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={s.sourceStarBtn}
+                  hitSlop={{ top: 6, right: 6, bottom: 6, left: 6 }}
+                  onPress={() => {
+                    const next = isFav ? null : opt.key
+                    setFavOtSource(next)
+                    if (next) {
+                      userDb.runAsync("INSERT OR REPLACE INTO settings (key, value) VALUES ('ot_source_fav', ?)", [next]).catch(() => {})
+                    } else {
+                      userDb.runAsync("DELETE FROM settings WHERE key = 'ot_source_fav'").catch(() => {})
+                    }
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name={isFav ? 'star' : 'star-outline'} size={14} color={isFav ? colors.accent : colors.textMuted} />
+                </TouchableOpacity>
+              </View>
+            )
+          })}
+        </ScrollView>
       )}
 
-      <View style={[s.pillsRow, !isNT && s.pillsRowRTL]}>
+      <View style={[s.pillsRow, !isNT && !isLxx && s.pillsRowRTL]}>
         {words.map((w, i) => {
-          const text = isNT ? (w as GreekWord).greek : (w as HebrewWord).hebrew
+          const text = (isNT || isLxx) ? (w as GreekWord).greek : (w as HebrewWord).hebrew
           const active = activeKey?.strongs === w.strongs && activeKey?.position === w.position
           return (
             <TouchableOpacity
@@ -626,7 +756,7 @@ export default function WordStudyPanel({ selected }: Props) {
               onPress={() => handleWordPress(w.strongs, w.position)}
               activeOpacity={0.7}
             >
-              <Text style={[s.pillText, active && s.pillTextActive, !isNT && s.pillTextHebrew]}>
+              <Text style={[s.pillText, active && s.pillTextActive, !isNT && !isLxx && s.pillTextHebrew]}>
                 {text}
               </Text>
               <Text style={[s.pillTranslit, active && s.pillTranslitActive]}>
@@ -904,11 +1034,9 @@ const makeStyles = (c: ThemeColors, fontFamily?: string, fontScope: FontScopeKey
   sourcePicker: {
     flexDirection: 'row',
     gap: 8,
-    flexWrap: 'wrap',
   },
   sourceChipWrapper: {
-    flex: 1,
-    minWidth: 90,
+    width: 148,
     position: 'relative',
   },
   sourceChip: {
@@ -1198,22 +1326,62 @@ const makeConcStyles = (c: ThemeColors) => StyleSheet.create({
   filterBtnLabel:       { fontSize: 12, fontWeight: '600', color: c.accent },
   filterBtnLabelActive: { color: c.bgPrimary },
 
-  // Filter panel
-  filterPanel: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: c.border,
-    paddingVertical: 10,
+  // Filter modal
+  filterSheet: {
+    backgroundColor: c.bgSecondary,
+    borderTopLeftRadius: 20, borderTopRightRadius: 20,
+    paddingTop: 20,
   },
-  catRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 20 },
-  catChip: {
-    paddingHorizontal: 14, paddingVertical: 6,
+  filterHeader: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingHorizontal: 20, paddingBottom: 14,
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
+  },
+  filterTitle: { fontSize: 17, fontWeight: '700', color: c.textPrimary },
+  testamentRow: {
+    flexDirection: 'row', gap: 8,
+    padding: 16,
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
+  },
+  testamentBtn: {
+    flex: 1, paddingVertical: 8,
     borderRadius: 20, borderWidth: 1,
-    borderColor: c.border,
-    backgroundColor: c.bgCard,
+    borderColor: c.border, backgroundColor: c.bgCard,
+    alignItems: 'center',
   },
-  catChipActive: { borderColor: c.accent, backgroundColor: c.accentDim },
-  catChipLabel:       { fontSize: 13, fontWeight: '500', color: c.textMuted },
-  catChipLabelActive: { color: c.accent, fontWeight: '600' },
+  testamentBtnActive: { borderColor: c.accent, backgroundColor: c.accentDim },
+  testamentLabel:       { fontSize: 12, fontWeight: '600', color: c.textMuted },
+  testamentLabelActive: { color: c.accent },
+  bookScroll: { maxHeight: 280 },
+  bookChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, padding: 16 },
+  bookChip: {
+    paddingHorizontal: 12, paddingVertical: 7,
+    borderRadius: 20, borderWidth: 1,
+    borderColor: c.border, backgroundColor: c.bgCard,
+  },
+  bookChipActive: { borderColor: c.accent, backgroundColor: c.accentDim },
+  bookChipLabel:       { fontSize: 13, color: c.textSecondary, fontWeight: '500' },
+  bookChipLabelActive: { color: c.accent, fontWeight: '700' },
+  allBooksNote: { alignItems: 'center', paddingVertical: 32 },
+  allBooksText: { fontSize: 14, color: c.textMuted, fontStyle: 'italic' },
+  filterFooter: {
+    flexDirection: 'row', gap: 12,
+    padding: 16, paddingBottom: 32,
+    borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: c.border,
+  },
+  clearBtn: {
+    flex: 1, paddingVertical: 12,
+    borderRadius: 12, borderWidth: 1,
+    borderColor: c.border, backgroundColor: c.bgCard,
+    alignItems: 'center',
+  },
+  clearBtnLabel: { fontSize: 15, fontWeight: '600', color: c.textSecondary },
+  applyBtn: {
+    flex: 2, paddingVertical: 12,
+    borderRadius: 12, backgroundColor: c.accent,
+    alignItems: 'center',
+  },
+  applyBtnLabel: { fontSize: 15, fontWeight: '700', color: c.bgPrimary },
 
   // List
   loadingRow: { alignItems: 'center', paddingVertical: 40 },

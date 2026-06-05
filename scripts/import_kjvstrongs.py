@@ -64,15 +64,20 @@ def build_verse_text(word_objs: list) -> str:
 
     NOTE: 'i' is the Strong's dictionary index, not word order — same word reuse shares
     the same 'i'. Array order is the correct KJV word order; do NOT sort by 'i'.
-    Entries with empty text (e.g. bare articles in the Greek) are skipped entirely.
+    Entries with empty text represent Greek/Hebrew words folded into the previous KJV
+    word's translation (e.g. G1336 diēnekes folded into "continually"). Their Strong's
+    number is appended after the previous word's tag rather than dropped.
     """
     parts = []
     for w in word_objs:
         text = w.get('text', '').strip()
+        strongs = normalize_strongs(w.get('number', ''))
         if not text:
+            # No KJV word — append Strong's to previous word's tag if present
+            if strongs and parts:
+                parts.append(strongs)
             continue
         parts.append(text)
-        strongs = normalize_strongs(w.get('number', ''))
         if strongs:
             parts.append(strongs)
     return ' '.join(parts)

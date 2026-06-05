@@ -19,9 +19,13 @@ import { SelectedVerseProvider } from './src/context/SelectedVerseContext'
 import { TranslationProvider } from './src/context/TranslationContext'
 import { OnboardingProvider, useOnboarding } from './src/context/OnboardingContext'
 import { RedLetterProvider } from './src/context/RedLetterContext'
+import { StrongsInSearchProvider } from './src/context/StrongsInSearchContext'
+import { FocusModeProvider } from './src/context/FocusModeContext'
 import { WordFocusProvider } from './src/context/WordFocusContext'
 import { TabletLayoutProvider } from './src/context/TabletLayoutContext'
 import { ParallelTranslationProvider } from './src/context/ParallelTranslationContext'
+import { SpaceSaverProvider } from './src/context/SpaceSaverContext'
+import { SearchOrderProvider } from './src/context/SearchOrderContext'
 import TutorialModal from './src/components/TutorialModal'
 import { Colors } from './src/theme/colors'
 
@@ -68,17 +72,25 @@ export default function App() {
           <SelectedVerseProvider>
           <TranslationProvider>
           <RedLetterProvider>
+          <StrongsInSearchProvider>
+          <FocusModeProvider>
           <WordFocusProvider>
           <TabletLayoutProvider>
           <ParallelTranslationProvider>
+          <SearchOrderProvider>
+          <SpaceSaverProvider>
           <OnboardingProvider>
             <DatabaseProvider>
               <AppShell />
             </DatabaseProvider>
           </OnboardingProvider>
+          </SpaceSaverProvider>
+          </SearchOrderProvider>
           </ParallelTranslationProvider>
           </TabletLayoutProvider>
           </WordFocusProvider>
+          </FocusModeProvider>
+          </StrongsInSearchProvider>
           </RedLetterProvider>
           </TranslationProvider>
           </SelectedVerseProvider>

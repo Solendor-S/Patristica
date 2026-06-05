@@ -71,7 +71,8 @@ export const BOOKS: Book[] = [
   { name: 'Revelation',      chapters: 22,  testament: 'NT' },
 ]
 
-export const BOOK_MAP = Object.fromEntries(BOOKS.map(b => [b.name, b]))
+export const BOOK_MAP   = Object.fromEntries(BOOKS.map(b => [b.name, b]))
+export const BOOK_ORDER = new Map(BOOKS.map((b, i) => [b.name, i]))
 
 export const APOCRYPHA_BOOKS: Book[] = [
   // Deuterocanon (accepted by Catholic & Orthodox churches)

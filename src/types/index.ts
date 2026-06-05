@@ -38,6 +38,7 @@ export interface Bookmark {
   chapter: number
   verse: number
   createdAt: number
+  position: number
 }
 
 export interface Highlight {

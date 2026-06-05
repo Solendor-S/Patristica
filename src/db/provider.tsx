@@ -6,7 +6,7 @@ import { File, Directory, Paths } from 'expo-file-system'
 import { Colors } from '../theme/colors'
 
 // Bump this number whenever the bundled bible.db gains new tables/data
-const DB_SCHEMA_VERSION = 37
+const DB_SCHEMA_VERSION = 54
 
 async function checkAndResetIfNeeded(): Promise<void> {
   const versionFile = new File(Paths.document, 'db_schema_version.txt')
@@ -46,6 +46,22 @@ async function initDb(db: SQLiteDatabase) {
   try { await db.execAsync('ALTER TABLE greek_words ADD COLUMN greek_norm TEXT') } catch {}
   try { await db.execAsync('ALTER TABLE lxx_words ADD COLUMN greek_norm TEXT') } catch {}
   try { await db.execAsync('ALTER TABLE hebrew_words ADD COLUMN hebrew_norm TEXT') } catch {}
+
+  await db.execAsync(`
+    CREATE TABLE IF NOT EXISTS lxx_apostolic_words (
+      book      TEXT    NOT NULL,
+      chapter   INTEGER NOT NULL,
+      verse     INTEGER NOT NULL,
+      position  INTEGER NOT NULL,
+      greek     TEXT    NOT NULL,
+      translit  TEXT,
+      strongs   TEXT,
+      gloss     TEXT,
+      morph     TEXT,
+      greek_norm TEXT,
+      PRIMARY KEY (book, chapter, verse, position)
+    )
+  `)
 
   await db.execAsync(`
     CREATE TABLE IF NOT EXISTS wlc_words (

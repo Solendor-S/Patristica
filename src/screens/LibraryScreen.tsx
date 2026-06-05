@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import {
   View, Text, FlatList, TouchableOpacity,
-  StyleSheet, StatusBar, Alert, ScrollView,
+  StyleSheet, StatusBar, Alert, ScrollView, PanResponder,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { useUserDb } from '../db/UserDbProvider'
@@ -9,7 +9,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
 import {
-  getBookmarks, removeBookmark,
+  getBookmarks, removeBookmark, updateBookmarkPositions,
   getAllNotes, deleteNote,
   getAllHighlights, removeHighlight,
   getHistory, clearHistory,
@@ -37,13 +37,21 @@ function navigateToReader(
 
 // ── Sub-tab: Bookmarks ────────────────────────────────────
 
+const ITEM_HEIGHT = 62
+
 function BookmarksTab() {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
   const db = useUserDb()
   const navigation = useNavigation<NavProp>()
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([])
+  const [dragFrom, setDragFrom] = useState<number | null>(null)
+  const [dragTo, setDragTo] = useState<number | null>(null)
+  const dragFromRef = useRef<number | null>(null)
+  const dragToRef = useRef<number | null>(null)
+  const bookmarksRef = useRef<Bookmark[]>([])
 
+  useEffect(() => { bookmarksRef.current = bookmarks }, [bookmarks])
   useFocusEffect(useCallback(() => { getBookmarks(db).then(setBookmarks) }, [db]))
 
   const handleDelete = (b: Bookmark) => {
@@ -61,31 +69,91 @@ function BookmarksTab() {
 
   const handleNavigate = (b: Bookmark) => navigateToReader(navigation, b.book, b.chapter, b.verse)
 
-  return (
-    <FlatList
-      data={bookmarks}
-      keyExtractor={(_, i) => i.toString()}
-      contentContainerStyle={bookmarks.length === 0 ? s.emptyContainer : s.list}
-      renderItem={({ item }) => (
-        <TouchableOpacity style={s.row} activeOpacity={0.7} onPress={() => handleNavigate(item)}>
-          <Ionicons name="bookmark" size={18} color={colors.accent} style={s.rowIcon} />
-          <View style={s.rowBody}>
-            <Text style={s.rowRef}>{item.book} {item.chapter}:{item.verse}</Text>
-            <Text style={s.rowDate}>{formatDate(item.createdAt)}</Text>
-          </View>
-          <TouchableOpacity onPress={() => handleDelete(item)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-            <Ionicons name="trash-outline" size={18} color={colors.textMuted} />
-          </TouchableOpacity>
-        </TouchableOpacity>
-      )}
-      ListEmptyComponent={
+  const panResponders = useMemo(() =>
+    bookmarks.map((_, i) => PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        dragFromRef.current = i
+        dragToRef.current = i
+        setDragFrom(i)
+        setDragTo(i)
+      },
+      onPanResponderMove: (_, gs) => {
+        const bm = bookmarksRef.current
+        const newTo = Math.max(0, Math.min(bm.length - 1, i + Math.round(gs.dy / ITEM_HEIGHT)))
+        if (newTo !== dragToRef.current) {
+          dragToRef.current = newTo
+          setDragTo(newTo)
+        }
+      },
+      onPanResponderRelease: (_, gs) => {
+        const from = dragFromRef.current
+        const to = dragToRef.current
+        if (from !== null && to !== null && from !== to) {
+          const newBM = [...bookmarksRef.current]
+          const [item] = newBM.splice(from, 1)
+          newBM.splice(to, 0, item)
+          setBookmarks(newBM)
+          updateBookmarkPositions(db, newBM)
+        }
+        dragFromRef.current = null
+        dragToRef.current = null
+        setDragFrom(null)
+        setDragTo(null)
+      },
+      onPanResponderTerminate: () => {
+        dragFromRef.current = null
+        dragToRef.current = null
+        setDragFrom(null)
+        setDragTo(null)
+      },
+    })),
+  [bookmarks, db])
+
+  if (bookmarks.length === 0) {
+    return (
+      <View style={s.emptyContainer}>
         <View style={s.empty}>
           <Ionicons name="bookmark-outline" size={48} color={colors.border} />
           <Text style={s.emptyTitle}>No bookmarks yet</Text>
           <Text style={s.emptyText}>Tap a verse in the reader then press Bookmark</Text>
         </View>
-      }
-    />
+      </View>
+    )
+  }
+
+  return (
+    <ScrollView scrollEnabled={dragFrom === null} contentContainerStyle={s.list}>
+      {bookmarks.map((item, index) => (
+        <View
+          key={`${item.book}-${item.chapter}-${item.verse}`}
+          style={[
+            s.row,
+            index === dragFrom && s.rowActive,
+            index === dragTo && dragFrom !== null && dragFrom !== dragTo && s.rowDropTarget,
+          ]}
+        >
+          <View {...panResponders[index].panHandlers} style={s.dragHandle}>
+            <Ionicons name="reorder-three-outline" size={22} color={colors.textMuted} />
+          </View>
+          <TouchableOpacity
+            style={s.rowPressable}
+            activeOpacity={0.7}
+            onPress={() => handleNavigate(item)}
+          >
+            <Ionicons name="bookmark" size={18} color={colors.accent} style={s.rowIcon} />
+            <View style={s.rowBody}>
+              <Text style={s.rowRef}>{item.book} {item.chapter}:{item.verse}</Text>
+              <Text style={s.rowDate}>{formatDate(item.createdAt)}</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleDelete(item)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+            <Ionicons name="trash-outline" size={18} color={colors.textMuted} />
+          </TouchableOpacity>
+        </View>
+      ))}
+    </ScrollView>
   )
 }
 
@@ -377,7 +445,12 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     flexDirection: 'row', alignItems: 'center',
     paddingHorizontal: 16, paddingVertical: 14,
     borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
+    backgroundColor: c.bgPrimary,
   },
+  rowActive: { backgroundColor: c.bgCard, opacity: 0.6 },
+  rowDropTarget: { borderTopWidth: 2, borderTopColor: c.accent },
+  dragHandle: { marginRight: 8, paddingHorizontal: 4 },
+  rowPressable: { flex: 1, flexDirection: 'row', alignItems: 'center' },
   rowIcon: { marginRight: 12 },
   colorDot: { width: 14, height: 14, borderRadius: 7, marginRight: 12 },
   rowBody: { flex: 1 },
@@ -421,4 +494,5 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     alignItems: 'center', justifyContent: 'center',
     marginRight: 12,
   },
+
 })

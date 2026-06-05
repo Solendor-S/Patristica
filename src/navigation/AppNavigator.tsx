@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo, useRef, useCallback } from 'react'
 import { NavigationContainer, NavigationIndependentTree } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -13,6 +13,7 @@ import LibraryScreen from '../screens/LibraryScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import { useTheme } from '../context/ThemeContext'
 import { useTabletLayout } from '../context/TabletLayoutContext'
+import { useSpaceSaver } from '../context/SpaceSaverContext'
 import type { ThemeColors } from '../theme/themes'
 import type { RootTabParamList } from '../types'
 
@@ -34,22 +35,26 @@ function TabNavigator({ hideStudyTab }: { hideStudyTab?: boolean }) {
   const insets = useSafeAreaInsets()
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
+  const { spaceSaverOn, chromeHidden } = useSpaceSaver()
+  const tabBarHidden = spaceSaverOn && chromeHidden
+
+  const screenOptions = useCallback(({ route }: { route: { name: string } }) => ({
+    headerShown: false,
+    tabBarStyle: tabBarHidden
+      ? { display: 'none' }
+      : [s.tabBar, { paddingBottom: 8 + insets.bottom, height: 60 + insets.bottom }],
+    tabBarActiveTintColor: colors.accent,
+    tabBarInactiveTintColor: colors.textMuted,
+    tabBarLabelStyle: s.tabLabel,
+    tabBarIcon: ({ focused, color, size }: { focused: boolean; color: string; size: number }) => {
+      const icons = TAB_ICONS[route.name as keyof RootTabParamList]
+      const name = focused ? icons.active : icons.inactive
+      return <Ionicons name={name} size={size} color={color} />
+    },
+  }), [tabBarHidden, s, colors.accent, colors.textMuted, insets.bottom])
 
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerShown: false,
-        tabBarStyle: [s.tabBar, { paddingBottom: 8 + insets.bottom, height: 60 + insets.bottom }],
-        tabBarActiveTintColor: colors.accent,
-        tabBarInactiveTintColor: colors.textMuted,
-        tabBarLabelStyle: s.tabLabel,
-        tabBarIcon: ({ focused, color, size }) => {
-          const icons = TAB_ICONS[route.name as keyof RootTabParamList]
-          const name = focused ? icons.active : icons.inactive
-          return <Ionicons name={name} size={size} color={color} />
-        },
-      })}
-    >
+    <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen name="Bible"    component={BibleNavigator} />
       <Tab.Screen name="Search"   component={SearchScreen} />
       <Tab.Screen name="Study"    component={StudyScreen}

@@ -57,6 +57,43 @@ async function getVerseWords(
   return { book, chapter, verse, text: row.text }
 }
 
+// Annotated variants: interleave each word with its Strong's number ("word Gxxxx word Gxxxx …")
+// Strip leading zeros via CAST trick: SUBSTR(s,1,1) || CAST(CAST(SUBSTR(s,2) AS INTEGER) AS TEXT)
+const NORM_STRONGS_EXPR = `SUBSTR(strongs,1,1) || CAST(CAST(SUBSTR(strongs,2) AS INTEGER) AS TEXT)`
+
+async function getChapterWordsAnnotated(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  table: string,
+  col: string,
+): Promise<BibleVerse[]> {
+  return db.getAllAsync<BibleVerse>(
+    `SELECT book, chapter, verse, GROUP_CONCAT(${col} || ' ' || ${NORM_STRONGS_EXPR}, ' ') AS text
+     FROM (SELECT book, chapter, verse, position, ${col}, strongs FROM ${table}
+           WHERE book = ? AND chapter = ? ORDER BY verse, position)
+     GROUP BY verse ORDER BY verse`,
+    [book, chapter],
+  )
+}
+
+async function getVerseWordsAnnotated(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number,
+  table: string,
+  col: string,
+): Promise<BibleVerse | null> {
+  const row = await db.getFirstAsync<{ text: string }>(
+    `SELECT GROUP_CONCAT(${col} || ' ' || ${NORM_STRONGS_EXPR}, ' ') AS text
+     FROM (SELECT ${col}, strongs FROM ${table} WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position)`,
+    [book, chapter, verse],
+  )
+  if (!row?.text) return null
+  return { book, chapter, verse, text: row.text }
+}
+
 // ── Bible verses ──────────────────────────────────────────
 
 export async function getApocryphaChapter(
@@ -157,6 +194,9 @@ export async function getChapter(
   chapter: number,
   translation = 'KJV'
 ): Promise<BibleVerse[]> {
+  if (translation === 'TR+')  return getChapterWordsAnnotated(db, book, chapter, 'greek_words_tr', 'greek')
+  if (translation === 'WLC+') return getChapterWordsAnnotated(db, book, chapter, 'wlc_words', 'hebrew')
+  if (translation === 'LXX+') return getChapterWordsAnnotated(db, book, chapter, 'lxx_words', 'greek')
   const greekNTTable = GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]
   if (greekNTTable) return getChapterWords(db, book, chapter, greekNTTable, 'greek')
   const otEntry = OT_WORD_TABLE[translation.toLowerCase()]
@@ -183,6 +223,9 @@ export async function getVerse(
   verse: number,
   translation = 'KJV'
 ): Promise<BibleVerse | null> {
+  if (translation === 'TR+')  return getVerseWordsAnnotated(db, book, chapter, verse, 'greek_words_tr', 'greek')
+  if (translation === 'WLC+') return getVerseWordsAnnotated(db, book, chapter, verse, 'wlc_words', 'hebrew')
+  if (translation === 'LXX+') return getVerseWordsAnnotated(db, book, chapter, verse, 'lxx_words', 'greek')
   const greekNTTable = GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]
   if (greekNTTable) return getVerseWords(db, book, chapter, verse, greekNTTable, 'greek')
   const otEntry = OT_WORD_TABLE[translation.toLowerCase()]
@@ -607,7 +650,7 @@ export async function getChapterCount(
 
 export async function getBookmarks(db: SQLiteDatabase): Promise<Bookmark[]> {
   return db.getAllAsync<Bookmark>(
-    'SELECT book, chapter, verse, created_at as createdAt FROM bookmarks ORDER BY created_at DESC'
+    'SELECT book, chapter, verse, created_at as createdAt, COALESCE(position, 0) as position FROM bookmarks ORDER BY position ASC, created_at DESC'
   )
 }
 
@@ -631,9 +674,23 @@ export async function addBookmark(
   verse: number
 ): Promise<void> {
   await db.runAsync(
-    'INSERT OR IGNORE INTO bookmarks (book, chapter, verse, created_at) VALUES (?, ?, ?, ?)',
+    `INSERT OR IGNORE INTO bookmarks (book, chapter, verse, created_at, position)
+     VALUES (?, ?, ?, ?, (SELECT COALESCE(MAX(position) + 1, 0) FROM bookmarks))`,
     [book, chapter, verse, Date.now()]
   )
+}
+
+export async function updateBookmarkPositions(
+  db: SQLiteDatabase,
+  bookmarks: Bookmark[]
+): Promise<void> {
+  for (let i = 0; i < bookmarks.length; i++) {
+    const b = bookmarks[i]
+    await db.runAsync(
+      'UPDATE bookmarks SET position = ? WHERE book = ? AND chapter = ? AND verse = ?',
+      [i, b.book, b.chapter, b.verse]
+    )
+  }
 }
 
 export async function removeBookmark(
@@ -713,6 +770,7 @@ export async function deleteNote(
     [book, chapter, verse]
   )
 }
+
 
 // ── Textual variants ──────────────────────────────────────
 
@@ -914,6 +972,13 @@ const GREEK_SOURCE_TABLE: Record<GreekSource, string> = {
   tr:     'greek_words_tr',
 }
 
+export type HebrewSource = 'tahot' | 'wlc'
+
+const HEBREW_SOURCE_TABLE: Record<HebrewSource, string> = {
+  tahot: 'hebrew_words',
+  wlc:   'wlc_words',
+}
+
 export interface GreekWord {
   position: number
   greek: string
@@ -959,10 +1024,32 @@ export async function getHebrewWords(
   db: SQLiteDatabase,
   book: string,
   chapter: number,
-  verse: number
+  verse: number,
+  source: HebrewSource = 'tahot'
 ): Promise<HebrewWord[]> {
   return db.getAllAsync<HebrewWord>(
-    'SELECT position, hebrew, translit, strongs, gloss, morph FROM hebrew_words WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position',
+    `SELECT position, hebrew, translit, strongs, gloss, morph FROM ${HEBREW_SOURCE_TABLE[source]} WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position`,
+    [book, chapter, verse]
+  )
+}
+
+export type LxxSource = 'lxx' | 'lxx_a'
+
+const LXX_WORD_TABLE: Record<LxxSource, string> = {
+  lxx:   'lxx_words',
+  lxx_a: 'lxx_apostolic_words',
+}
+
+export async function getLxxWords(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  verse: number,
+  source: LxxSource = 'lxx',
+): Promise<GreekWord[]> {
+  const table = LXX_WORD_TABLE[source]
+  return db.getAllAsync<GreekWord>(
+    `SELECT position, greek, translit, strongs, gloss, morph FROM ${table} WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position`,
     [book, chapter, verse]
   )
 }
@@ -1010,12 +1097,16 @@ export interface StrongsConcordanceResult {
 
 export async function getStrongsConcordance(
   db: SQLiteDatabase,
-  lang: 'greek' | 'hebrew',
+  lang: 'greek' | 'hebrew' | 'lxx' | 'lxx_a',
   strongs: string,
   greekSource: GreekSource = 'sblgnt',
+  hebrewSource: HebrewSource = 'tahot',
 ): Promise<StrongsConcordanceResult[]> {
-  const table = lang === 'greek' ? GREEK_SOURCE_TABLE[greekSource] : 'hebrew_words'
-  const wordCol = lang === 'greek' ? 'greek' : 'hebrew'
+  const table = lang === 'greek' ? GREEK_SOURCE_TABLE[greekSource]
+    : lang === 'lxx_a'  ? 'lxx_apostolic_words'
+    : lang === 'lxx'    ? 'lxx_words'
+    :                     HEBREW_SOURCE_TABLE[hebrewSource]
+  const wordCol = (lang === 'greek' || lang === 'lxx' || lang === 'lxx_a') ? 'greek' : 'hebrew'
   const q = `
     SELECT w.book, w.chapter, w.verse,
            MIN(w.${wordCol}) AS word,
@@ -1027,18 +1118,26 @@ export async function getStrongsConcordance(
     GROUP BY w.book, w.chapter, w.verse
     ORDER BY MIN(w.rowid)`
 
+  const normLang = (lang === 'lxx' || lang === 'lxx_a') ? 'greek' : lang
   let rows = await db.getAllAsync<StrongsConcordanceResult>(q, [strongs])
+  let normalized = strongs
   if (!rows.length) {
-    const prefix = lang === 'greek' ? 'G' : 'H'
-    const m = strongs.match(STRONGS_LEXICON_RE[lang])
+    const prefix = normLang === 'greek' ? 'G' : 'H'
+    const m = strongs.match(STRONGS_LEXICON_RE[normLang])
     if (m) {
-      const normalized = `${prefix}${parseInt(m[1])}`
+      normalized = `${prefix}${parseInt(m[1])}`
       rows = await db.getAllAsync<StrongsConcordanceResult>(q, [normalized])
     }
   }
-  if (!rows.length && lang === 'greek') {
+  if (!rows.length && normLang === 'greek') {
     const stdNum = await bsbGreekFallbackNum(db, strongs)
     if (stdNum) rows = await db.getAllAsync<StrongsConcordanceResult>(q, [stdNum])
+  }
+  // TAHOT stores strongs with disambiguation letters (e.g. H3947A, H3947B).
+  // Fall back to a LIKE prefix match so tapping KJV+ chips always finds results.
+  if (!rows.length && normLang === 'hebrew') {
+    const likeQ = q.replace('WHERE w.strongs = ?', 'WHERE w.strongs LIKE ?')
+    rows = await db.getAllAsync<StrongsConcordanceResult>(likeQ, [normalized + '%'])
   }
   return rows
 }
