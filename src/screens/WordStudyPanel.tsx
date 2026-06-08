@@ -416,6 +416,156 @@ export function StrongsConcordanceModal({
   )
 }
 
+// ── TranslationVariantsModal ──────────────────────────────
+
+// Accepts a pre-built RegExp so callers can hoist construction out of tight loops.
+function extractKjvTranslation(kjvPlusText: string | null, re: RegExp): string | null {
+  if (!kjvPlusText) return null
+  const m = kjvPlusText.match(re)
+  if (!m) return null
+  // Skip if the preceding token is itself a Strong's number (e.g. "G123 G746" → "g")
+  if (/^[GH]\d+$/i.test(m[1])) return null
+  // Strip italic braces {}, punctuation, lowercase
+  const word = m[1].replace(/[{}()[\]]/g, '').replace(/[^a-z']/gi, '').toLowerCase()
+  return word || null
+}
+
+function HighlightedVerse({
+  text, word, textStyle, highlightStyle, numberOfLines,
+}: { text: string; word: string | null; textStyle: object; highlightStyle: object; numberOfLines?: number }) {
+  const re = useMemo(
+    () => word ? new RegExp(`(${escapeRegex(word)})`, 'gi') : null,
+    [word],
+  )
+  if (!re) return <Text style={textStyle} numberOfLines={numberOfLines}>{text}</Text>
+  const parts = text.split(re)
+  return (
+    <Text style={textStyle} numberOfLines={numberOfLines}>
+      {parts.map((part, i) =>
+        i % 2 === 1 ? <Text key={i} style={highlightStyle}>{part}</Text> : part
+      )}
+    </Text>
+  )
+}
+
+export function TranslationVariantsModal({
+  visible, onClose, results, entry, strongs, onNavigate,
+}: {
+  visible: boolean
+  onClose: () => void
+  results: StrongsConcordanceResult[]
+  entry: StrongsEntry | null
+  strongs: string
+  onNavigate: (book: string, chapter: number, verse: number) => void
+}) {
+  const { colors } = useTheme()
+  const sc = useMemo(() => makeConcStyles(colors), [colors])
+  const insets = useSafeAreaInsets()
+  const [selectedGloss, setSelectedGloss] = useState<string | null>(null)
+
+  useEffect(() => { if (!visible) setSelectedGloss(null) }, [visible])
+
+  // Group results by the KJV word that precedes the strongs tag, sorted by count desc.
+  // Build regex once here; extractKjvTranslation reuses it for every row.
+  const { groups, groupMap } = useMemo(() => {
+    const re = strongs ? new RegExp(`(\\S+)\\s+${strongs.toUpperCase()}(?=\\s|$)`, 'i') : null
+    const map = new Map<string, StrongsConcordanceResult[]>()
+    for (const r of results) {
+      const key = re ? extractKjvTranslation(r.kjvPlusText, re) ?? '(other)' : '(other)'
+      const arr = map.get(key)
+      if (arr) arr.push(r)
+      else map.set(key, [r])
+    }
+    return { groups: [...map.entries()].sort((a, b) => b[1].length - a[1].length), groupMap: map }
+  }, [results, strongs])
+
+  const drillVerses = selectedGloss ? (groupMap.get(selectedGloss) ?? []) : []
+  const highlightWord = selectedGloss === '(other)' ? null : selectedGloss
+
+  const title = entry ? `${entry.lemma}  ${strongs}` : strongs
+
+  return (
+    <Modal visible={visible} transparent animationType="slide"
+      onRequestClose={() => { if (selectedGloss) setSelectedGloss(null); else onClose() }}>
+      <View style={sc.overlay}>
+        <View style={[sc.sheet, { height: '80%' }]}>
+          {/* Header */}
+          <View style={sc.header}>
+            {selectedGloss ? (
+              <TouchableOpacity
+                onPress={() => setSelectedGloss(null)}
+                style={{ flexDirection: 'row', alignItems: 'center', gap: 4, flex: 1 }}
+                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              >
+                <Ionicons name="chevron-back" size={20} color={colors.accent} />
+                <Text style={sc.lemma} numberOfLines={1}>"{selectedGloss}"</Text>
+              </TouchableOpacity>
+            ) : (
+              <View style={{ flex: 1 }}>
+                <Text style={sc.lemma}>{title}</Text>
+                <Text style={sc.meta}>Translation variants · {results.length} occurrence{results.length !== 1 ? 's' : ''}</Text>
+              </View>
+            )}
+            <TouchableOpacity onPress={onClose} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+              <Ionicons name="close" size={22} color={colors.textMuted} />
+            </TouchableOpacity>
+          </View>
+
+          {selectedGloss ? (
+            // Drill-down: verses for the selected gloss
+            <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+              showsVerticalScrollIndicator={false}>
+              {drillVerses.map((r, i) => (
+                <TouchableOpacity
+                  key={`${r.book}-${r.chapter}-${r.verse}`}
+                  style={[sc.row, i === drillVerses.length - 1 && { borderBottomWidth: 0 }]}
+                  activeOpacity={0.7}
+                  onPress={() => { onNavigate(r.book, r.chapter, r.verse); onClose() }}
+                >
+                  <Text style={sc.ref}>{r.book} {r.chapter}:{r.verse}</Text>
+                  {!!r.word && <Text style={sc.word}>{r.word}  {r.translit}</Text>}
+                  <HighlightedVerse
+                    text={stripUsfm(r.text)}
+                    word={highlightWord}
+                    textStyle={sc.text}
+                    highlightStyle={{ backgroundColor: '#4D96FF', color: '#fff', borderRadius: 2 }}
+                    numberOfLines={3}
+                  />
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          ) : (
+            // Overview: gloss groups
+            <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: insets.bottom + 16 }}
+              showsVerticalScrollIndicator={false}>
+              {groups.map(([gloss, verses], i) => (
+                <TouchableOpacity
+                  key={gloss}
+                  style={{
+                    flexDirection: 'row', alignItems: 'center',
+                    paddingHorizontal: 20, paddingVertical: 14,
+                    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border,
+                  }}
+                  activeOpacity={0.7}
+                  onPress={() => setSelectedGloss(gloss)}
+                >
+                  <Text style={{ flex: 1, fontSize: 16, color: colors.textPrimary, fontWeight: '500' }}>
+                    {gloss}
+                  </Text>
+                  <Text style={{ fontSize: 14, color: colors.textMuted, marginRight: 6 }}>
+                    {verses.length}×
+                  </Text>
+                  <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          )}
+        </View>
+      </View>
+    </Modal>
+  )
+}
+
 // Strong's numbers that are alternate forms of a root lemma.
 // Some sources (e.g. KJV+ interlinear) use the inflected-form number while
 // greek_words tables use the canonical lemma number — resolve before matching.

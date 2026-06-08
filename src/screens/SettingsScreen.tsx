@@ -3,6 +3,7 @@ import {
   View, Text, ScrollView, TouchableOpacity,
   StyleSheet, StatusBar, Alert, Linking, Switch, Modal,
 } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import Constants from 'expo-constants'
 import { useTheme } from '../context/ThemeContext'
@@ -567,6 +568,7 @@ const CREDITS: { title: string; body: string; url?: string }[] = [
 function CreditsModal({ visible, onClose }: { visible: boolean; onClose: () => void }) {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
+  const { bottom: bottomInset } = useSafeAreaInsets()
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
@@ -578,7 +580,11 @@ function CreditsModal({ visible, onClose }: { visible: boolean; onClose: () => v
               <Ionicons name="close" size={22} color={colors.textMuted} />
             </TouchableOpacity>
           </View>
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.creditsScroll}>
+          <ScrollView
+            style={{ flex: 1 }}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={[s.creditsScroll, { paddingBottom: bottomInset + 16 }]}
+          >
             {CREDITS.map((c, i) => (
               <React.Fragment key={c.title}>
                 {i > 0 && <View style={s.separator} />}
@@ -736,7 +742,7 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   creditsSheet: {
     backgroundColor: c.bgSecondary,
     borderTopLeftRadius: 20, borderTopRightRadius: 20,
-    paddingTop: 20, maxHeight: '75%',
+    paddingTop: 20, height: '70%',
   },
   creditsHeader: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',

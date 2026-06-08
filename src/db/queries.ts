@@ -324,13 +324,38 @@ export async function searchVerses(
   query: string,
   translation = 'KJV',
   books: string[] = [],
+  limit = 200,
 ): Promise<SearchResult[]> {
   const words = query.trim().split(/\s+/).filter(Boolean)
   if (words.length === 0) return []
-  const likeArgs = words.map(w => `%${w}%`)
 
-  const scoreExpr = words.map(() => `CASE WHEN LOWER(text) LIKE LOWER(?) THEN 1 ELSE 0 END`).join(' + ')
-  const whereExpr = words.map(() => `LOWER(text) LIKE LOWER(?)`).join(' OR ')
+  // For each word, compute LIKE patterns (with % wildcards) and bare forms (for scoring)
+  // together in one pass. Strong's tags also include the zero-padded DB variant.
+  const wordVariants = words.map(w => {
+    const m = w.match(/^([hgHG])(\d+)$/)
+    if (m) {
+      const prefix = m[1].toUpperCase()
+      const bare   = `${prefix}${parseInt(m[2])}`
+      const padded = `${prefix}${String(parseInt(m[2])).padStart(4, '0')}`
+      const forms  = bare === padded ? [bare] : [bare, padded]
+      return { pats: forms.map(f => `%${f}%`), counts: forms }
+    }
+    return { pats: [`%${w}%`], counts: [w] }
+  })
+  const likeArgs  = wordVariants.flatMap(v => v.pats)
+  // Bare words for occurrence-count scoring: 2×G746 scores higher than 1×G746.
+  const countArgs = wordVariants.flatMap(v => v.counts).flatMap(w => [w, w])
+  const scoreExpr = wordVariants
+    .map(v => v.counts
+      .map(() => `(length(lower(text)) - length(replace(lower(text), lower(?), ''))) / max(1, length(?))`)
+      .join(' + '))
+    .join(' + ')
+  const whereExpr = wordVariants
+    .map(v => v.pats.length === 1
+      ? `LOWER(text) LIKE LOWER(?)`
+      : `(${v.pats.map(() => `LOWER(text) LIKE LOWER(?)`).join(' OR ')})`)
+    .join(' OR ')
+
   const bookClause = books.length > 0
     ? ` AND book IN (${books.map(() => '?').join(',')})`
     : ''
@@ -341,8 +366,8 @@ export async function searchVerses(
       `SELECT book, chapter, verse, text FROM bible_verses
        WHERE (${whereExpr})${bookClause}
        ORDER BY (${scoreExpr}) DESC
-       LIMIT 200`,
-      [...likeArgs, ...bookArgs, ...likeArgs],
+       LIMIT ${limit}`,
+      [...likeArgs, ...bookArgs, ...countArgs],
     )
   }
   // Expand book filter to include Roman-numeral aliases (e.g. "1 John" → also "I John")
@@ -356,9 +381,18 @@ export async function searchVerses(
     `SELECT book, chapter, verse, text FROM bible_translations
      WHERE translation = ? AND (${whereExpr})${transBookClause}
      ORDER BY (${scoreExpr}) DESC
-     LIMIT 200`,
-    [translation, ...likeArgs, ...transBookArgs, ...likeArgs],
+     LIMIT ${limit}`,
+    [translation, ...likeArgs, ...transBookArgs, ...countArgs],
   )
+}
+
+export async function searchVersesAll(
+  db: SQLiteDatabase,
+  query: string,
+  translation = 'KJV',
+  books: string[] = [],
+): Promise<SearchResult[]> {
+  return searchVerses(db, query, translation, books, 5000)
 }
 
 // ── Fuzzy search ──────────────────────────────────────────
@@ -1092,6 +1126,7 @@ export interface StrongsConcordanceResult {
   verse: number
   word: string
   translit: string
+  kjvPlusText: string | null
   text: string
 }
 
@@ -1111,34 +1146,38 @@ export async function getStrongsConcordance(
     SELECT w.book, w.chapter, w.verse,
            MIN(w.${wordCol}) AS word,
            MIN(w.translit)   AS translit,
-           bv.text
+           bv.text,
+           MIN(bt.text) AS kjvPlusText
     FROM ${table} w
     JOIN bible_verses bv ON bv.book = w.book AND bv.chapter = w.chapter AND bv.verse = w.verse
+    LEFT JOIN bible_translations bt ON bt.book = w.book AND bt.chapter = w.chapter
+                                   AND bt.verse = w.verse AND bt.translation = 'KJV+'
     WHERE w.strongs = ?
     GROUP BY w.book, w.chapter, w.verse
     ORDER BY MIN(w.rowid)`
 
   const normLang = (lang === 'lxx' || lang === 'lxx_a') ? 'greek' : lang
+
+  // Fast path: exact match (works when stored format matches input)
   let rows = await db.getAllAsync<StrongsConcordanceResult>(q, [strongs])
-  let normalized = strongs
+  let normalized = normalizeStrongsNumber(strongs)
+
   if (!rows.length) {
-    const prefix = normLang === 'greek' ? 'G' : 'H'
-    const m = strongs.match(STRONGS_LEXICON_RE[normLang])
-    if (m) {
-      normalized = `${prefix}${parseInt(m[1])}`
-      rows = await db.getAllAsync<StrongsConcordanceResult>(q, [normalized])
-    }
+    // Normalize both sides via CAST — strips leading zeros and trailing
+    // disambiguation letters (e.g. G0746→G746, H3947A→H3947) so that
+    // the display form (already stripped by NORM_STRONGS_EXPR) always matches.
+    const normQ = q.replace(
+      'WHERE w.strongs = ?',
+      `WHERE SUBSTR(w.strongs,1,1) || CAST(CAST(SUBSTR(w.strongs,2) AS INTEGER) AS TEXT) = ?`,
+    )
+    rows = await db.getAllAsync<StrongsConcordanceResult>(normQ, [normalized])
   }
+
   if (!rows.length && normLang === 'greek') {
     const stdNum = await bsbGreekFallbackNum(db, strongs)
     if (stdNum) rows = await db.getAllAsync<StrongsConcordanceResult>(q, [stdNum])
   }
-  // TAHOT stores strongs with disambiguation letters (e.g. H3947A, H3947B).
-  // Fall back to a LIKE prefix match so tapping KJV+ chips always finds results.
-  if (!rows.length && normLang === 'hebrew') {
-    const likeQ = q.replace('WHERE w.strongs = ?', 'WHERE w.strongs LIKE ?')
-    rows = await db.getAllAsync<StrongsConcordanceResult>(likeQ, [normalized + '%'])
-  }
+
   return rows
 }
 

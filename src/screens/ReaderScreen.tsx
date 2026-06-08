@@ -19,7 +19,7 @@ import {
 } from '../db/queries'
 import type { ConcordanceResult, StrongsEntry, StrongsConcordanceResult, EarlyTextRef } from '../db/queries'
 import { getStrongsConcordance } from '../db/queries'
-import { StrongsConcordanceModal } from './WordStudyPanel'
+import { StrongsConcordanceModal, TranslationVariantsModal } from './WordStudyPanel'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
 import { useTranslation, TRANSLATIONS, GREEK_TRANSLATIONS, OT_ORIGINAL_TRANSLATIONS, OT_ONLY_TRANSLATIONS, OT_TRANSLATIONS, ANNOTATED_TRANSLATIONS } from '../context/TranslationContext'
 import { useWordFocus } from '../context/WordFocusContext'
@@ -816,7 +816,7 @@ function ConcordanceModal({
 // ── Strongs modal ─────────────────────────────────────────
 
 function StrongsModal({
-  visible, entry, loading, concordanceCount, concordanceLoading, onClose, onGoToWords, onSeeOccurrences,
+  visible, entry, loading, concordanceCount, concordanceLoading, onClose, onGoToWords, onSeeOccurrences, onSeeTranslations,
 }: {
   visible: boolean
   entry: StrongsEntry | null
@@ -826,6 +826,7 @@ function StrongsModal({
   onClose: () => void
   onGoToWords: () => void
   onSeeOccurrences: () => void
+  onSeeTranslations: () => void
 }) {
   const { colors } = useTheme()
   const { bottom } = useSafeAreaInsets()
@@ -870,10 +871,16 @@ function StrongsModal({
               : null
           }
           {!loading && entry && (
-            <TouchableOpacity style={conc.goToWordsBtn} onPress={onGoToWords} activeOpacity={0.7}>
-              <Ionicons name="language-outline" size={15} color={colors.bgPrimary} />
-              <Text style={conc.goToWordsBtnLabel}>Open in Word Study</Text>
-            </TouchableOpacity>
+            <View style={{ gap: 8, paddingBottom: 8 }}>
+              <TouchableOpacity style={conc.transBtn} onPress={onSeeTranslations} activeOpacity={0.7}>
+                <Ionicons name="git-branch-outline" size={15} color={colors.accent} />
+                <Text style={conc.transBtnLabel}>See uses / translations</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={conc.goToWordsBtn} onPress={onGoToWords} activeOpacity={0.7}>
+                <Ionicons name="language-outline" size={15} color={colors.bgPrimary} />
+                <Text style={conc.goToWordsBtnLabel}>Open in Word Study</Text>
+              </TouchableOpacity>
+            </View>
           )}
         </View>
       </View>
@@ -1124,9 +1131,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const currentStrongsVerseRef = useRef<number>(0)
   const { setWordFocus } = useWordFocus()
 
-  const [strongsConcOpen, setStrongsConcOpen]       = useState(false)
-  const [strongsConcResults, setStrongsConcResults] = useState<StrongsConcordanceResult[]>([])
-  const [strongsConcLoading, setStrongsConcLoading] = useState(false)
+  const [strongsConcOpen, setStrongsConcOpen]           = useState(false)
+  const [strongsTransVariantsOpen, setStrongsTransVariantsOpen] = useState(false)
+  const [strongsConcResults, setStrongsConcResults]     = useState<StrongsConcordanceResult[]>([])
+  const [strongsConcLoading, setStrongsConcLoading]     = useState(false)
   const strongsConcLangRef   = useRef<'greek' | 'hebrew'>('greek')
   const strongsConcLemmaRef  = useRef('')
   const strongsConcTranslitRef = useRef('')
@@ -2407,6 +2415,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
         concordanceLoading={strongsConcLoading}
         onClose={() => setStrongsOpen(false)}
         onSeeOccurrences={() => { setStrongsOpen(false); setStrongsConcOpen(true) }}
+        onSeeTranslations={() => { setStrongsOpen(false); setStrongsTransVariantsOpen(true) }}
         onGoToWords={() => {
           setStrongsOpen(false)
           const v = currentStrongsVerseRef.current
@@ -2427,6 +2436,17 @@ export default function ReaderScreen({ navigation, route }: Props) {
         onClose={() => setStrongsConcOpen(false)}
         onNavigate={(b, ch, v) => {
           setStrongsConcOpen(false)
+          navigation.setParams({ book: b, chapter: ch, verse: v, apocrypha: false } as any)
+        }}
+      />
+      <TranslationVariantsModal
+        visible={strongsTransVariantsOpen}
+        onClose={() => setStrongsTransVariantsOpen(false)}
+        results={strongsConcResults}
+        entry={strongsEntry}
+        strongs={currentStrongsRef.current}
+        onNavigate={(b, ch, v) => {
+          setStrongsTransVariantsOpen(false)
           navigation.setParams({ book: b, chapter: ch, verse: v, apocrypha: false } as any)
         }}
       />
@@ -2825,6 +2845,13 @@ const makeConc = (c: ThemeColors) => StyleSheet.create({
   ref:   { fontSize: 13, fontWeight: '700', color: c.accent, marginBottom: 3 },
   text:  { fontSize: 14, lineHeight: 20, color: c.textSecondary },
   separator: { height: StyleSheet.hairlineWidth, backgroundColor: c.border, marginLeft: 20 },
+  transBtn: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6,
+    marginHorizontal: 16, marginTop: 4,
+    paddingVertical: 12, borderRadius: 12,
+    borderWidth: 1, borderColor: c.accent, backgroundColor: c.accentDim,
+  },
+  transBtnLabel: { fontSize: 14, fontWeight: '700', color: c.accent },
   goToWordsBtn: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6,
     marginHorizontal: 16, marginBottom: 20, marginTop: 4,
