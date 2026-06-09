@@ -319,18 +319,24 @@ export async function searchOriginalLanguage(
 
 // ── Search ────────────────────────────────────────────────
 
+export const SEARCH_STOP_WORDS = new Set(['a','an','the','in','of','to','and','or','but','for','with','is','was','be','are','were','it','at','by','as','on','up','i','me','my','he','she','we','his','her','thy','thee','thou','ye','him','them','they','not','no','nor','so','do','if'])
+
 export async function searchVerses(
   db: SQLiteDatabase,
   query: string,
   translation = 'KJV',
   books: string[] = [],
   limit = 200,
+  exactWords = false,
 ): Promise<SearchResult[]> {
-  const words = query.trim().split(/\s+/).filter(Boolean)
-  if (words.length === 0) return []
+  const allWords = query.trim().split(/\s+/).filter(Boolean)
+  if (allWords.length === 0) return []
+  const filtered = exactWords ? allWords.filter(w => !SEARCH_STOP_WORDS.has(w.toLowerCase())) : allWords
+  const words = filtered.length > 0 ? filtered : allWords
 
-  // For each word, compute LIKE patterns (with % wildcards) and bare forms (for scoring)
-  // together in one pass. Strong's tags also include the zero-padded DB variant.
+  // For each word, compute LIKE patterns and bare forms for scoring.
+  // Strong's tags include the zero-padded DB variant.
+  // exactWords mode uses word-boundary patterns so "in" doesn't match "king".
   const wordVariants = words.map(w => {
     const m = w.match(/^([hgHG])(\d+)$/)
     if (m) {
@@ -338,22 +344,39 @@ export async function searchVerses(
       const bare   = `${prefix}${parseInt(m[2])}`
       const padded = `${prefix}${String(parseInt(m[2])).padStart(4, '0')}`
       const forms  = bare === padded ? [bare] : [bare, padded]
-      return { pats: forms.map(f => `%${f}%`), counts: forms }
+      return { pats: forms.map(f => `%${f}%`), counts: forms, boundary: false }
     }
-    return { pats: [`%${w}%`], counts: [w] }
+    if (exactWords) {
+      // Five patterns cover the word followed by space, comma, period, semicolon, or colon.
+      // The text is padded with a leading space so words at the start also match.
+      const wl = w.toLowerCase()
+      return {
+        pats: [`% ${wl} %`, `% ${wl},%`, `% ${wl}.%`, `% ${wl};%`, `% ${wl}:%`],
+        counts: [w],
+        boundary: true,
+      }
+    }
+    return { pats: [`%${w}%`], counts: [w], boundary: false }
   })
+
   const likeArgs  = wordVariants.flatMap(v => v.pats)
-  // Bare words for occurrence-count scoring: 2×G746 scores higher than 1×G746.
   const countArgs = wordVariants.flatMap(v => v.counts).flatMap(w => [w, w])
   const scoreExpr = wordVariants
     .map(v => v.counts
-      .map(() => `(length(lower(text)) - length(replace(lower(text), lower(?), ''))) / max(1, length(?))`)
+      .map(() => `min(1, (length(lower(text)) - length(replace(lower(text), lower(?), ''))) / max(1, length(?)))`)
       .join(' + '))
     .join(' + ')
+
   const whereExpr = wordVariants
-    .map(v => v.pats.length === 1
-      ? `LOWER(text) LIKE LOWER(?)`
-      : `(${v.pats.map(() => `LOWER(text) LIKE LOWER(?)`).join(' OR ')})`)
+    .map(v => {
+      if (v.boundary) {
+        const col = `lower(' ' || text || ' ')`
+        return `(${v.pats.map(() => `${col} LIKE ?`).join(' OR ')})`
+      }
+      return v.pats.length === 1
+        ? `LOWER(text) LIKE LOWER(?)`
+        : `(${v.pats.map(() => `LOWER(text) LIKE LOWER(?)`).join(' OR ')})`
+    })
     .join(' OR ')
 
   const bookClause = books.length > 0
@@ -370,7 +393,6 @@ export async function searchVerses(
       [...likeArgs, ...bookArgs, ...countArgs],
     )
   }
-  // Expand book filter to include Roman-numeral aliases (e.g. "1 John" → also "I John")
   const transBookArgs = books.length > 0
     ? books.flatMap(b => { const a = bookAlt(b); return a ? [b, a] : [b] })
     : []
@@ -391,8 +413,9 @@ export async function searchVersesAll(
   query: string,
   translation = 'KJV',
   books: string[] = [],
+  exactWords = false,
 ): Promise<SearchResult[]> {
-  return searchVerses(db, query, translation, books, 5000)
+  return searchVerses(db, query, translation, books, 5000, exactWords)
 }
 
 // ── Fuzzy search ──────────────────────────────────────────
@@ -1116,6 +1139,30 @@ export async function getStrongsEntry(
     if (stdNum) row = await db.getFirstAsync<StrongsEntry>(query, [stdNum])
   }
   return row ?? null
+}
+
+// ── Strong's Reverse Lookup (English → Strong's) ─────────
+
+export interface StrongsWordMatch extends StrongsEntry {
+  lang: 'greek' | 'hebrew'
+}
+
+export async function searchStrongsByEnglishWord(
+  db: SQLiteDatabase,
+  word: string,
+): Promise<StrongsWordMatch[]> {
+  const pattern = `%${word}%`
+  const rows = await db.getAllAsync<StrongsWordMatch>(`
+    SELECT number, lemma, translit, pronunciation, definition, kjv_usage, 'greek' AS lang
+    FROM strongs_greek WHERE kjv_usage LIKE ? COLLATE NOCASE
+    UNION ALL
+    SELECT number, lemma, translit, pronunciation, definition, kjv_usage, 'hebrew' AS lang
+    FROM strongs_hebrew WHERE kjv_usage LIKE ? COLLATE NOCASE
+    ORDER BY lang DESC, number
+    LIMIT 60
+  `, [pattern, pattern])
+  const re = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i')
+  return rows.filter(r => re.test(r.kjv_usage))
 }
 
 // ── Strong's Concordance ──────────────────────────────────

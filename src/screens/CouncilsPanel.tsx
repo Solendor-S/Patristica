@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native'
@@ -46,6 +46,11 @@ export const COUNCILS: Council[] = [
     yearNum: 268, year: '268', name: 'Council of Antioch', location: 'Antioch',
     type: 'Regional',
     decree: 'Condemned Paul of Samosata for adoptionist Christology and deposed him as bishop of Antioch.',
+  },
+  {
+    yearNum: 306, year: '306', name: 'Council of Alexandria', location: 'Alexandria, Egypt',
+    type: 'Regional',
+    decree: 'Condemned Meletius of Lycopolis for ordaining clergy in other bishops\' dioceses without authority during the Diocletianic persecution; deposed him and declared his ordinations invalid, sparking the Meletian Schism.',
   },
   {
     yearNum: 306, year: '306', name: 'Council of Elvira', location: 'Elvira, Spain',
@@ -151,7 +156,7 @@ export const COUNCILS: Council[] = [
   },
 ]
 
-// Ordered longest-first so "Niceno-Constantinopolitan Creed" beats "Nicene Creed"
+// Ordered longest-first so longer names match before their substrings
 const CREED_LINK_PATTERNS = [
   'Niceno-Constantinopolitan Creed',
   'Chalcedonian Definition',
@@ -159,9 +164,24 @@ const CREED_LINK_PATTERNS = [
   'Athanasian Creed',
   'Nicene Creed',
 ]
-const _creedRe = new RegExp(
-  `(${CREED_LINK_PATTERNS.map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`,
-  'g'
+const HERESY_LINK_PATTERNS = [
+  'Semi-Pelagianism',
+  'Macedonianism',
+  'Monothelitism',
+  'Eutychianism',
+  'Nestorianism',
+  'Iconoclasm',
+  'Arianism',
+  'Donatism',
+]
+const COUNCIL_HAYSTACKS = COUNCILS.map(c =>
+  [c.name, c.location, c.decree, c.type, c.year, c.notes ?? ''].join(' ').toLowerCase()
+)
+const _linkRe = new RegExp(
+  `(${[...CREED_LINK_PATTERNS, ...HERESY_LINK_PATTERNS]
+    .map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .join('|')})`,
+  'g',
 )
 
 function renderDecree(
@@ -169,23 +189,30 @@ function renderDecree(
   decreeStyle: any,
   accentColor: string,
   onCreedPress?: (name: string) => void,
+  onHeresyPress?: (name: string) => void,
 ): React.ReactElement {
-  if (!onCreedPress) return <Text style={decreeStyle}>{text}</Text>
-  const parts = text.split(_creedRe)
+  const parts = text.split(_linkRe)
   if (parts.length === 1) return <Text style={decreeStyle}>{text}</Text>
   return (
     <Text style={decreeStyle}>
-      {parts.map((part, i) =>
-        CREED_LINK_PATTERNS.includes(part)
-          ? <Text key={i} style={{ color: accentColor, textDecorationLine: 'underline' }}
-              onPress={() => onCreedPress(part)} suppressHighlighting>{part}</Text>
-          : <Text key={i}>{part}</Text>
-      )}
+      {parts.map((part, i) => {
+        if (CREED_LINK_PATTERNS.includes(part) && onCreedPress)
+          return <Text key={i} style={{ color: accentColor, textDecorationLine: 'underline' }}
+            onPress={() => onCreedPress(part)} suppressHighlighting>{part}</Text>
+        if (HERESY_LINK_PATTERNS.includes(part) && onHeresyPress)
+          return <Text key={i} style={{ color: accentColor, textDecorationLine: 'underline' }}
+            onPress={() => onHeresyPress(part)} suppressHighlighting>{part}</Text>
+        return <Text key={i}>{part}</Text>
+      })}
     </Text>
   )
 }
 
-function CouncilCard({ council, onCreedPress }: { council: Council; onCreedPress?: (name: string) => void }) {
+function CouncilCard({ council, onCreedPress, onHeresyPress }: {
+  council: Council
+  onCreedPress?: (name: string) => void
+  onHeresyPress?: (name: string) => void
+}) {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
   const badge = BADGE_COLOR[council.type]
@@ -207,28 +234,36 @@ function CouncilCard({ council, onCreedPress }: { council: Council; onCreedPress
           <Text style={s.infoText}>{council.notes}</Text>
         </View>
       )}
-      {renderDecree(council.decree, s.decree, colors.accent, onCreedPress)}
+      {renderDecree(council.decree, s.decree, colors.accent, onCreedPress, onHeresyPress)}
     </View>
   )
 }
 
-export default function CouncilsPanel({ onCreedPress }: { onCreedPress?: (name: string) => void }) {
+export default function CouncilsPanel({ onCreedPress, onHeresyPress, jumpTo }: {
+  onCreedPress?: (name: string) => void
+  onHeresyPress?: (name: string) => void
+  jumpTo?: string
+}) {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
   const [query, setQuery] = useState('')
+  const listRef = useRef<FlatList>(null)
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    if (!q) return COUNCILS
-    return COUNCILS.filter(c =>
-      c.name.toLowerCase().includes(q) ||
-      c.location.toLowerCase().includes(q) ||
-      c.decree.toLowerCase().includes(q) ||
-      c.type.toLowerCase().includes(q) ||
-      c.year.toLowerCase().includes(q) ||
-      (c.notes?.toLowerCase().includes(q) ?? false)
-    )
+    const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
+    if (words.length === 0) return COUNCILS
+    return COUNCILS.filter((_, i) => words.every(w => COUNCIL_HAYSTACKS[i].includes(w)))
   }, [query])
+
+  useEffect(() => {
+    if (!jumpTo) return
+    const idx = COUNCILS.findIndex(c => c.name === jumpTo)
+    if (idx < 0) return
+    const tid = setTimeout(() => {
+      listRef.current?.scrollToIndex({ index: idx, animated: true, viewPosition: 0.1 })
+    }, 120)
+    return () => clearTimeout(tid)
+  }, [jumpTo])
 
   return (
     <View style={s.container}>
@@ -251,12 +286,17 @@ export default function CouncilsPanel({ onCreedPress }: { onCreedPress?: (name: 
       </View>
 
       <FlatList
+        ref={listRef}
         data={filtered}
         keyExtractor={c => c.yearNum + c.name}
         style={{ flex: 1 }}
         contentContainerStyle={s.list}
         keyboardShouldPersistTaps="handled"
-        renderItem={({ item }) => <CouncilCard council={item} onCreedPress={onCreedPress} />}
+        onScrollToIndexFailed={({ averageItemLength, index }) => {
+          listRef.current?.scrollToOffset({ offset: averageItemLength * index, animated: false })
+          setTimeout(() => listRef.current?.scrollToIndex({ index, animated: true, viewPosition: 0.1 }), 100)
+        }}
+        renderItem={({ item }) => <CouncilCard council={item} onCreedPress={onCreedPress} onHeresyPress={onHeresyPress} />}
         ListEmptyComponent={
           <View style={s.empty}>
             <Text style={s.emptyText}>No councils match "{query}"</Text>

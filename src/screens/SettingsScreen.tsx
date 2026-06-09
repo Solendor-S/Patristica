@@ -348,14 +348,14 @@ function ReadingSection() {
 
 const SEARCH_MODE_OPTIONS: PickerOption[] = [
   {
-    key: 'default',
-    label: 'Default',
-    description: 'Fuzzy matching with typo correction and relevance ranking',
+    key: 'exact_words',
+    label: 'Exact Words (Default)',
+    description: "Match whole words only — 'am' won't return 'firmament'",
   },
   {
-    key: 'exact_words',
-    label: 'Exact Words',
-    description: "Match whole words only — 'am' won't return 'firmament'",
+    key: 'default',
+    label: 'Fuzzy',
+    description: 'Fuzzy matching with typo correction and relevance ranking',
   },
   {
     key: 'exact_phrase',

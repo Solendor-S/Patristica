@@ -15,7 +15,7 @@ const SearchOrderContext = createContext<ContextValue | null>(null)
 export function SearchOrderProvider({ children }: { children: React.ReactNode }) {
   const db = useUserDb()
   const [biblicalOrder, setBiblicalOrder] = useState(false)
-  const [searchMode, setSearchModeState] = useState<SearchMode>('default')
+  const [searchMode, setSearchModeState] = useState<SearchMode>('exact_words')
 
   useEffect(() => {
     db.getFirstAsync<{ value: string }>(

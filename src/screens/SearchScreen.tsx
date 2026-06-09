@@ -10,8 +10,8 @@ import { useUserDb } from '../db/UserDbProvider'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
-import { searchVerses, searchVersesAll, searchVersesFuzzy, searchOriginalLanguage, detectQueryScript, normalizeForSearch, normalizeStrongsNumber, getSearchHistory, addSearchHistory, deleteSearchHistory, getStrongsEntry, getStrongsConcordance } from '../db/queries'
-import type { StrongsEntry, StrongsConcordanceResult } from '../db/queries'
+import { searchVerses, searchVersesAll, searchVersesFuzzy, searchOriginalLanguage, detectQueryScript, normalizeForSearch, normalizeStrongsNumber, getSearchHistory, addSearchHistory, deleteSearchHistory, getStrongsEntry, getStrongsConcordance, searchStrongsByEnglishWord, SEARCH_STOP_WORDS } from '../db/queries'
+import type { StrongsEntry, StrongsConcordanceResult, StrongsWordMatch } from '../db/queries'
 import { StrongsConcordanceModal, TranslationVariantsModal } from './WordStudyPanel'
 import { useTranslation, TRANSLATIONS, ANNOTATED_TRANSLATIONS } from '../context/TranslationContext'
 import { useStrongsInSearch } from '../context/StrongsInSearchContext'
@@ -38,6 +38,11 @@ function matchesQueryWords(text: string, qWords: string[]): boolean {
     const padded = (m[1] + String(parseInt(m[2])).padStart(4, '0')).toLowerCase()
     return tokens.includes(padded)
   })
+}
+
+function sigWords(qWords: string[]): string[] {
+  const sig = qWords.filter(w => !SEARCH_STOP_WORDS.has(w))
+  return sig.length > 0 ? sig : qWords
 }
 
 // ── Book breakdown ─────────────────────────────────────────
@@ -255,6 +260,187 @@ function booksForSearch(testament: Testament, selectedBooks: Set<string>): strin
   return []
 }
 
+function extractKjvWord(kjvPlusText: string | null, num: string): string | null {
+  if (!kjvPlusText) return null
+  const escaped = num.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const m = kjvPlusText.match(new RegExp('(\\S+)\\s+' + escaped + '(?:\\s|$)', 'i'))
+  return m ? m[1].replace(/[^a-zA-Z'-]/g, '') || null : null
+}
+
+function HighlightedText({ text, word, baseStyle, accentColor }: { text: string; word: string | null; baseStyle: any; accentColor: string }) {
+  const re = useMemo(
+    () => word ? new RegExp(`(${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'i') : null,
+    [word],
+  )
+  if (!re) return <Text style={baseStyle} numberOfLines={3}>{text}</Text>
+  const parts = text.split(re)
+  return (
+    <Text style={baseStyle} numberOfLines={3}>
+      {parts.map((p, i) =>
+        i % 2 === 1
+          ? <Text key={i} style={{ color: accentColor, fontWeight: '700' }}>{p}</Text>
+          : p
+      )}
+    </Text>
+  )
+}
+
+function StrongsWordMapModal({
+  visible, query, data, loading, onClose, onSelectStrongs, onNavigate,
+}: {
+  visible: boolean
+  query: string
+  data: { word: string; matches: StrongsWordMatch[] }[]
+  loading: boolean
+  onClose: () => void
+  onSelectStrongs: (num: string) => void
+  onNavigate: (book: string, chapter: number, verse: number) => void
+}) {
+  const { colors } = useTheme()
+  const modal = useMemo(() => makeModal(colors), [colors])
+  const db = useSQLiteContext()
+  const [selectedEntry, setSelectedEntry] = useState<StrongsWordMatch | null>(null)
+  const [concResults, setConcResults]     = useState<StrongsConcordanceResult[]>([])
+  const [concLoading, setConcLoading]     = useState(false)
+
+  useEffect(() => {
+    if (!visible) setSelectedEntry(null)
+  }, [visible])
+
+  useEffect(() => {
+    if (!selectedEntry) return
+    setConcLoading(true)
+    setConcResults([])
+    getStrongsConcordance(db, selectedEntry.lang, selectedEntry.number)
+      .then(rows => { setConcResults(rows); setConcLoading(false) })
+      .catch(() => setConcLoading(false))
+  }, [selectedEntry, db])
+
+  const handleBack = () => setSelectedEntry(null)
+
+  return (
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={selectedEntry ? handleBack : onClose}>
+      <View style={modal.overlay}>
+        <View style={[modal.sheet, { maxHeight: '80%' }]}>
+
+          {/* Header */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingBottom: 14, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border }}>
+            {!!selectedEntry && (
+              <TouchableOpacity onPress={handleBack} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} style={{ marginRight: 10 }}>
+                <Ionicons name="chevron-back" size={22} color={colors.accent} />
+              </TouchableOpacity>
+            )}
+            <Text style={[modal.title, { flex: 1, marginBottom: 0, textAlign: selectedEntry ? 'left' : 'center' }]}>
+              {selectedEntry ? `${selectedEntry.number}  ${selectedEntry.lemma}` : `Strong's for "${query}"`}
+            </Text>
+            <TouchableOpacity onPress={onClose} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+              <Ionicons name="close" size={22} color={colors.textMuted} />
+            </TouchableOpacity>
+          </View>
+
+          {/* Level 1 — word list */}
+          {!selectedEntry && (
+            loading ? (
+              <ActivityIndicator color={colors.accent} style={{ marginVertical: 40 }} />
+            ) : (
+              <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 32 }}>
+                {data.map(({ word, matches }) => (
+                  <View key={word}>
+                    <Text style={{ fontSize: 13, fontWeight: '700', color: colors.accent, textTransform: 'uppercase', letterSpacing: 1, paddingHorizontal: 20, paddingTop: 18, paddingBottom: 6 }}>
+                      "{word}"
+                    </Text>
+                    {matches.length === 0 ? (
+                      <Text style={{ fontSize: 13, color: colors.textMuted, fontStyle: 'italic', paddingHorizontal: 20, paddingBottom: 4 }}>
+                        No Strong's found for "{word}". Try the base form (e.g. "drink" instead of "drank").
+                      </Text>
+                    ) : (
+                      matches.map(m => (
+                        <TouchableOpacity
+                          key={m.number}
+                          onPress={() => setSelectedEntry(m)}
+                          activeOpacity={0.7}
+                          style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingVertical: 10, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border }}
+                        >
+                          <View style={{ flex: 1 }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: 8, marginBottom: 2 }}>
+                              <Text style={{ fontSize: 13, fontWeight: '700', color: colors.accent }}>{m.number}</Text>
+                              {!!m.lemma && <Text style={{ fontSize: 15, color: colors.textPrimary }}>{m.lemma}</Text>}
+                              <Text style={{ fontSize: 12, color: colors.textMuted, fontStyle: 'italic' }}>{m.lang === 'greek' ? 'Greek' : 'Hebrew'}</Text>
+                            </View>
+                            <Text style={{ fontSize: 13, color: colors.textSecondary }} numberOfLines={2}>
+                              {m.definition?.trim().slice(0, 80) ?? ''}
+                            </Text>
+                          </View>
+                          <Ionicons name="chevron-forward" size={16} color={colors.textMuted} style={{ marginLeft: 8 }} />
+                        </TouchableOpacity>
+                      ))
+                    )}
+                  </View>
+                ))}
+              </ScrollView>
+            )
+          )}
+
+          {/* Level 2 — verse list */}
+          {selectedEntry && (
+            <>
+              {/* Definition subheader */}
+              <View style={{ paddingHorizontal: 20, paddingVertical: 12, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border }}>
+                {!!(selectedEntry.translit || selectedEntry.pronunciation) && (
+                  <Text style={{ fontSize: 13, color: colors.textSecondary, fontStyle: 'italic', marginBottom: 4 }}>
+                    {[selectedEntry.translit, selectedEntry.pronunciation].filter(Boolean).join('  ·  ')}
+                    {`  ·  ${selectedEntry.lang === 'greek' ? 'Greek' : 'Hebrew'}`}
+                  </Text>
+                )}
+                <Text style={{ fontSize: 13, color: colors.textPrimary, lineHeight: 19 }} numberOfLines={3}>
+                  {selectedEntry.definition?.trim()}
+                </Text>
+                <Text style={{ fontSize: 12, color: colors.textMuted, marginTop: 4 }}>
+                  {concLoading ? '…' : `${concResults.length} occurrence${concResults.length !== 1 ? 's' : ''}`}
+                </Text>
+              </View>
+
+              {concLoading ? (
+                <ActivityIndicator color={colors.accent} style={{ marginVertical: 32 }} />
+              ) : (
+                <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 32 }}>
+                  {concResults.map((r, i) => (
+                    <TouchableOpacity
+                      key={i}
+                      onPress={() => { onNavigate(r.book, r.chapter, r.verse); onClose() }}
+                      activeOpacity={0.7}
+                      style={{ paddingHorizontal: 20, paddingVertical: 11, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border }}
+                    >
+                      <Text style={{ fontSize: 12, fontWeight: '700', color: colors.accent, marginBottom: 3 }}>
+                        {r.book} {r.chapter}:{r.verse}
+                      </Text>
+                      <HighlightedText
+                        text={stripUsfm(r.text).replace(/[{}]/g, '')}
+                        word={extractKjvWord(r.kjvPlusText, selectedEntry!.number)}
+                        baseStyle={{ fontSize: 13, color: colors.textSecondary, lineHeight: 19 }}
+                        accentColor={colors.accent}
+                      />
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              )}
+              <TouchableOpacity
+                onPress={() => onSelectStrongs(selectedEntry.number)}
+                activeOpacity={0.7}
+                style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginHorizontal: 16, marginVertical: 12, paddingVertical: 12, borderRadius: 12, borderWidth: 1, borderColor: colors.accent, backgroundColor: colors.accentDim }}
+              >
+                <Ionicons name="git-branch-outline" size={15} color={colors.accent} />
+                <Text style={{ fontSize: 14, fontWeight: '700', color: colors.accent }}>See more info</Text>
+              </TouchableOpacity>
+            </>
+          )}
+
+        </View>
+      </View>
+    </Modal>
+  )
+}
+
 export default function SearchScreen() {
   const { colors } = useTheme()
   const styles = useMemo(() => makeStyles(colors), [colors])
@@ -291,6 +477,9 @@ export default function SearchScreen() {
   const [breakdownData, setBreakdownData]         = useState<BookBreakdown[]>([])
   const [breakdownResults, setBreakdownResults]   = useState<SearchResult[]>([])
   const [breakdownLoading, setBreakdownLoading]   = useState(false)
+  const [strongsMapVisible, setStrongsMapVisible] = useState(false)
+  const [strongsMapData, setStrongsMapData]       = useState<{ word: string; matches: StrongsWordMatch[] }[]>([])
+  const [strongsMapLoading, setStrongsMapLoading] = useState(false)
   const lastQueryRef = useRef('')
   const [strongsPopup, setStrongsPopup] = useState<{
     num: string
@@ -299,9 +488,11 @@ export default function SearchScreen() {
     book: string
     chapter: number
     verse: number
+    fromMap: boolean
   } | null>(null)
   const [strongsConcResults, setStrongsConcResults]     = useState<StrongsConcordanceResult[]>([])
   const [strongsConcLoading, setStrongsConcLoading]     = useState(false)
+  const [strongsWordTranslit, setStrongsWordTranslit]   = useState('')
   const [concModalVisible,   setConcModalVisible]       = useState(false)
   const [transVariantsVisible, setTransVariantsVisible] = useState(false)
   const inputRef = useRef<TextInput>(null)
@@ -336,13 +527,20 @@ export default function SearchScreen() {
 
   const highlightRegex = useMemo(() => {
     if (searchScript !== 'latin') return null
-    const terms = isFuzzy && correctedTerms.length > 0
+    let terms = isFuzzy && correctedTerms.length > 0
       ? correctedTerms
       : queryTrimmed.split(/\s+/).filter(Boolean)
     if (terms.length === 0) return null
+    const wordBoundary = searchMode === 'exact_words'
+    if (wordBoundary) {
+      const sig = terms.filter(w => !SEARCH_STOP_WORDS.has(w.toLowerCase()))
+      if (sig.length > 0) terms = sig
+    }
     const escaped = terms.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')
-    return new RegExp(`(${escaped})`, 'gi')
-  }, [queryTrimmed, isFuzzy, correctedTerms, searchScript])
+    return wordBoundary
+      ? new RegExp(`(\\b(?:${escaped})\\b)`, 'gi')
+      : new RegExp(`(${escaped})`, 'gi')
+  }, [queryTrimmed, isFuzzy, correctedTerms, searchScript, searchMode])
 
   const normSearchTerms = useMemo(() => {
     if (searchScript === 'latin') return []
@@ -385,11 +583,12 @@ export default function SearchScreen() {
       return
     }
     setSearchScript('latin')
-    const rows = await searchVerses(db, trimmed, trans, books)
+    const rows = await searchVerses(db, trimmed, trans, books, 200, searchMode === 'exact_words')
     const qWords = trimmed.toLowerCase().split(/\s+/).filter(Boolean)
 
     if (searchMode === 'exact_words') {
-      setResults(rows.filter(r => matchesQueryWords(r.text, qWords)))
+      const sw = sigWords(qWords)
+      setResults(rows.filter(r => matchesQueryWords(r.text, sw)))
       setLoading(false)
       return
     }
@@ -459,16 +658,21 @@ export default function SearchScreen() {
     setDraftBooks(new Set())
   }
 
-  function openStrongs(num: string, book: string, chapter: number, verse: number) {
-    setStrongsPopup({ num, entry: null, loading: true, book, chapter, verse })
+  function openStrongs(num: string, book: string, chapter: number, verse: number, fromMap = false) {
+    setStrongsPopup({ num, entry: null, loading: true, book, chapter, verse, fromMap })
     setStrongsConcResults([])
     setStrongsConcLoading(true)
+    setStrongsWordTranslit('')
     const lang: 'greek' | 'hebrew' = num.startsWith('H') ? 'hebrew' : 'greek'
     getStrongsEntry(db, lang, num)
       .then(entry => setStrongsPopup(prev => prev?.num === num ? { ...prev, entry, loading: false } : prev))
       .catch(() => setStrongsPopup(prev => prev?.num === num ? { ...prev, loading: false } : prev))
     getStrongsConcordance(db, lang, num)
-      .then(rows => { setStrongsConcResults(rows); setStrongsConcLoading(false) })
+      .then(rows => {
+        setStrongsConcResults(rows)
+        setStrongsConcLoading(false)
+        setStrongsWordTranslit(rows.find(r => r.translit)?.translit ?? '')
+      })
       .catch(() => setStrongsConcLoading(false))
   }
 
@@ -483,16 +687,31 @@ export default function SearchScreen() {
   const handleOpenBreakdown = useCallback(async () => {
     setBreakdownVisible(true)
     setBreakdownLoading(true)
-    const books = booksForSearch(testament, selectedBooks)
-    const allResults = await searchVersesAll(db, lastQueryRef.current, translation, books)
-    const qWords = lastQueryRef.current.toLowerCase().split(/\s+/).filter(Boolean)
-    const filtered = searchMode === 'exact_words'
-      ? allResults.filter(r => matchesQueryWords(r.text, qWords))
-      : allResults
-    setBreakdownResults(filtered)
-    setBreakdownData(computeBreakdown(filtered, qWords))
-    setBreakdownLoading(false)
+    try {
+      const books = booksForSearch(testament, selectedBooks)
+      const allResults = await searchVersesAll(db, lastQueryRef.current, translation, books, searchMode === 'exact_words')
+      const qWords = lastQueryRef.current.toLowerCase().split(/\s+/).filter(Boolean)
+      const sw = searchMode === 'exact_words' ? sigWords(qWords) : null
+      const filtered = sw ? allResults.filter(r => matchesQueryWords(r.text, sw)) : allResults
+      setBreakdownResults(filtered)
+      setBreakdownData(computeBreakdown(filtered, qWords))
+    } catch (e) {
+      console.error('Breakdown error:', e)
+    } finally {
+      setBreakdownLoading(false)
+    }
   }, [db, translation, testament, selectedBooks, searchMode])
+
+  const handleOpenStrongsMap = useCallback(async () => {
+    setStrongsMapVisible(true)
+    setStrongsMapLoading(true)
+    const words = [...new Set(queryTrimmed.toLowerCase().split(/\s+/).filter(w => w && !SEARCH_STOP_WORDS.has(w)))]
+    const data = await Promise.all(
+      words.map(async word => ({ word, matches: await searchStrongsByEnglishWord(db, word) }))
+    )
+    setStrongsMapData(data)
+    setStrongsMapLoading(false)
+  }, [db, queryTrimmed])
 
   function toggleDraftBook(book: string) {
     setDraftBooks(prev => {
@@ -709,6 +928,18 @@ export default function SearchScreen() {
         </TouchableOpacity>
       )}
 
+      {queryTrimmed !== '' && searched && !loading && results.length > 0 && (
+        <TouchableOpacity
+          style={styles.breakdownBtn}
+          onPress={handleOpenStrongsMap}
+          activeOpacity={0.7}
+        >
+          <Ionicons name="language-outline" size={14} color={colors.accent} />
+          <Text style={styles.breakdownBtnText}>See Strongs</Text>
+          <Ionicons name="chevron-forward" size={13} color={colors.textMuted} />
+        </TouchableOpacity>
+      )}
+
       {/* Fuzzy banner */}
       {isFuzzy && correctedTerms.length > 0 && (
         <View style={styles.fuzzyBanner}>
@@ -812,6 +1043,21 @@ export default function SearchScreen() {
         showStrongs={strongsInSearch && ANNOTATED_TRANSLATIONS.has(translation)}
       />
 
+      <StrongsWordMapModal
+        visible={strongsMapVisible}
+        query={queryTrimmed}
+        data={strongsMapData}
+        loading={strongsMapLoading}
+        onClose={() => setStrongsMapVisible(false)}
+        onSelectStrongs={num => {
+          openStrongs(num, results[0]?.book ?? 'Genesis', results[0]?.chapter ?? 1, results[0]?.verse ?? 1, true)
+        }}
+        onNavigate={(book, chapter, verse) => {
+          setStrongsMapVisible(false)
+          navigateToBook(book, chapter, verse)
+        }}
+      />
+
       {/* Strong's definition popup */}
       <Modal
         visible={!!strongsPopup}
@@ -822,9 +1068,18 @@ export default function SearchScreen() {
         <View style={modal.overlay}>
           <View style={modal.strongsSheet}>
             <View style={modal.strongsHeader}>
+              {!!strongsPopup?.fromMap && (
+                <TouchableOpacity
+                  onPress={() => setStrongsPopup(null)}
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  style={{ marginRight: 8 }}
+                >
+                  <Ionicons name="chevron-back" size={22} color={colors.accent} />
+                </TouchableOpacity>
+              )}
               <Text style={modal.title}>{strongsPopup?.num}</Text>
               <TouchableOpacity
-                onPress={() => setStrongsPopup(null)}
+                onPress={() => { setStrongsPopup(null); setStrongsMapVisible(false) }}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
                 <Ionicons name="close" size={22} color={colors.textMuted} />
@@ -845,7 +1100,7 @@ export default function SearchScreen() {
                   <Text style={modal.strongsLemma}>{strongsPopup.entry.lemma}</Text>
                   <View style={modal.strongsSubRow}>
                     <Text style={modal.strongsTranslit}>
-                      {strongsPopup.entry.translit}
+                      {strongsPopup.entry.translit || strongsWordTranslit}
                       {strongsPopup.entry.pronunciation ? ` · ${strongsPopup.entry.pronunciation}` : ''}
                       {' · '}{strongsPopup.num.startsWith('H') ? 'Hebrew' : 'Greek'}
                     </Text>
@@ -1167,8 +1422,8 @@ const makeModal = (c: ThemeColors) => StyleSheet.create({
   strongsBody: { padding: 20, gap: 10, paddingBottom: 40 },
   strongsCenter: { alignItems: 'center', paddingVertical: 40 },
   strongsEmpty: { fontSize: 14, color: c.textMuted, fontStyle: 'italic' },
-  strongsLemma: { fontSize: 26, fontWeight: '700', color: c.textPrimary },
-  strongsTranslit: { fontSize: 13, color: c.textMuted, fontStyle: 'italic' },
+  strongsLemma: { fontSize: 26, fontWeight: '700', color: c.textPrimary, fontFamily: 'serif' },
+  strongsTranslit: { fontSize: 13, color: c.textSecondary, fontStyle: 'italic' },
   strongsDef: { fontSize: 14, lineHeight: 22, color: c.textPrimary },
   kjvRow: { flexDirection: 'row', flexWrap: 'wrap', paddingTop: 4, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: c.border },
   kjvLabel: { fontSize: 12, fontWeight: '700', color: c.textMuted, textTransform: 'uppercase', letterSpacing: 0.4 },

@@ -801,7 +801,7 @@ function ConcordanceModal({
                   activeOpacity={0.7}
                 >
                   <Text style={conc.ref}>{item.book} {item.chapter}:{item.verse}</Text>
-                  <Text style={conc.text} numberOfLines={2}>{item.text}</Text>
+                  <Text style={conc.text} numberOfLines={2}>{stripUsfm(item.text)}</Text>
                 </TouchableOpacity>
               )}
               ItemSeparatorComponent={() => <View style={conc.separator} />}
@@ -816,13 +816,14 @@ function ConcordanceModal({
 // ── Strongs modal ─────────────────────────────────────────
 
 function StrongsModal({
-  visible, entry, loading, concordanceCount, concordanceLoading, onClose, onGoToWords, onSeeOccurrences, onSeeTranslations,
+  visible, entry, loading, concordanceCount, concordanceLoading, wordTranslit, onClose, onGoToWords, onSeeOccurrences, onSeeTranslations,
 }: {
   visible: boolean
   entry: StrongsEntry | null
   loading: boolean
   concordanceCount: number
   concordanceLoading: boolean
+  wordTranslit: string
   onClose: () => void
   onGoToWords: () => void
   onSeeOccurrences: () => void
@@ -837,13 +838,17 @@ function StrongsModal({
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <View style={conc.overlay}>
-        <View style={[conc.sheet, { paddingBottom: Math.max(24, 12 + bottom) }]}>
+        <View style={[conc.sheet, { paddingBottom: Math.max(12, 6 + bottom) }]}>
           <View style={conc.header}>
             {entry
               ? <View style={{ flex: 1 }}>
                   <Text style={conc.word}>{entry.lemma}  {entry.number}</Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 3 }}>
-                    <Text style={conc.count}>{entry.translit}{entry.pronunciation ? ` · ${entry.pronunciation}` : ''}</Text>
+                  {(entry.translit || entry.pronunciation || wordTranslit) && (
+                    <Text style={conc.pronun}>
+                      {[entry.translit || wordTranslit, entry.pronunciation].filter(Boolean).join('  ·  ')}
+                    </Text>
+                  )}
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
                     <TouchableOpacity
                       onPress={onSeeOccurrences}
                       activeOpacity={0.7}
@@ -1075,9 +1080,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [splitVerses, setSplitVerses]         = useState<BibleVerse[]>([])
   const [splitTranslation, setSplitTranslation] = useState<Translation>('KJV')
   const [activeSplitPane, setActiveSplitPane] = useState<'left' | 'right'>('left')
-  const splitOnRef         = useRef(false)
-  const activeSplitPaneRef = useRef<'left' | 'right'>('left')
-  const splitFlatListRef   = useRef<FlatList>(null)
+  const splitOnRef              = useRef(false)
+  const activeSplitPaneRef      = useRef<'left' | 'right'>('left')
+  const splitFlatListRef        = useRef<FlatList>(null)
+  const parallelOnBeforeSplitRef = useRef(false)
   splitOnRef.current = splitOn
   activeSplitPaneRef.current = activeSplitPane
 
@@ -1111,6 +1117,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
       if (splitOnRef.current && activeSplitPaneRef.current === 'right') {
         setSplitBook(pending.book)
         setSplitChapter(pending.chapter)
+        saveSplitSetting('split_book', pending.book)
+        saveSplitSetting('split_chapter', String(pending.chapter))
       } else {
         navigation.setParams({
           book:      pending.book,
@@ -1135,6 +1143,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [strongsTransVariantsOpen, setStrongsTransVariantsOpen] = useState(false)
   const [strongsConcResults, setStrongsConcResults]     = useState<StrongsConcordanceResult[]>([])
   const [strongsConcLoading, setStrongsConcLoading]     = useState(false)
+  const [strongsWordTranslit, setStrongsWordTranslit]   = useState('')
   const strongsConcLangRef   = useRef<'greek' | 'hebrew'>('greek')
   const strongsConcLemmaRef  = useRef('')
   const strongsConcTranslitRef = useRef('')
@@ -1147,6 +1156,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
     setStrongsLoading(true)
     setStrongsConcResults([])
     setStrongsConcLoading(true)
+    setStrongsWordTranslit('')
     const type = strongs.startsWith('G') ? 'greek' : 'hebrew'
     strongsConcLangRef.current = type
     getStrongsEntry(db, type, strongs)
@@ -1158,7 +1168,12 @@ export default function ReaderScreen({ navigation, route }: Props) {
       })
       .catch(() => setStrongsLoading(false))
     getStrongsConcordance(db, type, strongs)
-      .then(rows => { setStrongsConcResults(rows); setStrongsConcLoading(false) })
+      .then(rows => {
+        setStrongsConcResults(rows)
+        setStrongsConcLoading(false)
+        const fallback = rows.find(r => r.translit)?.translit ?? ''
+        setStrongsWordTranslit(fallback)
+      })
       .catch(() => setStrongsConcLoading(false))
   }, [db])
 
@@ -1584,9 +1599,15 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const toggleSplit = useCallback(() => {
     const next = !splitOn
     setSplitOn(next); splitOnRef.current = next
-    if (next) { setParallelOn(false); setActiveSplitPane('left'); activeSplitPaneRef.current = 'left' }
+    if (next) {
+      parallelOnBeforeSplitRef.current = parallelOn
+      setParallelOn(false)
+      setActiveSplitPane('left'); activeSplitPaneRef.current = 'left'
+    } else {
+      if (parallelOnBeforeSplitRef.current) setParallelOn(true)
+    }
     saveSplitSetting('split_on', next ? '1' : '0')
-  }, [splitOn, setParallelOn, saveSplitSetting])
+  }, [splitOn, parallelOn, setParallelOn, saveSplitSetting])
   const currentHighlightColor = selectedVerse !== null ? highlights[selectedVerse] : undefined
 
   const openEarlyFn = useCallback((marker: number) => {
@@ -1637,7 +1658,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
     Animated.timing(footerSlideAnim, {
       toValue: chromeHidden ? 1 : 0,
       duration: 180,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start()
   }, [chromeHidden, footerSlideAnim])
   useEffect(() => {
@@ -2292,56 +2313,63 @@ export default function ReaderScreen({ navigation, route }: Props) {
       </Animated.View>
 
       {/* Footer */}
-      <Animated.View style={{ transform: [{ translateY: footerSlideAnim.interpolate({ inputRange: [0, 1], outputRange: [0, footerHeight] }) }] }}
+      <Animated.View style={{
+        transform: [{ translateY: footerSlideAnim.interpolate({ inputRange: [0, 1], outputRange: [0, footerHeight] }) }],
+        marginBottom: footerSlideAnim.interpolate({ inputRange: [0, 1], outputRange: [0, -footerHeight] }),
+      }}
         onLayout={e => setFooterHeight(e.nativeEvent.layout.height)}
       >
-      <View style={styles.footer}>
+      <View style={[styles.footer, splitOn && styles.footerSplit]}>
         {splitOn ? (
           <>
-            {/* Left pane prev/next */}
-            <TouchableOpacity
-              style={[styles.splitFooterBtn, !canGoPrev && styles.footerBtnDisabled]}
-              onPress={() => canGoPrev && goChapter(-1)}
-              activeOpacity={0.7}
-            >
-              <Ionicons name="chevron-back" size={18} color={canGoPrev ? colors.textSecondary : colors.textMuted} />
-              <Text style={[styles.splitFooterLabel, !canGoPrev && styles.footerLabelDisabled]} numberOfLines={1}>
-                {abbrevBook(book)} {chapter}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.splitFooterBtn, !canGoNext && styles.footerBtnDisabled]}
-              onPress={() => canGoNext && goChapter(1)}
-              activeOpacity={0.7}
-            >
-              <Text style={[styles.splitFooterLabel, !canGoNext && styles.footerLabelDisabled]} numberOfLines={1}>
-                {abbrevBook(book)} {chapter}
-              </Text>
-              <Ionicons name="chevron-forward" size={18} color={canGoNext ? colors.textSecondary : colors.textMuted} />
-            </TouchableOpacity>
-            {/* Divider */}
+            {/* Left pane half */}
+            <View style={styles.splitFooterHalf}>
+              <TouchableOpacity
+                style={[styles.splitFooterBtn, !canGoPrev && styles.footerBtnDisabled]}
+                onPress={() => canGoPrev && goChapter(-1)}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="chevron-back" size={18} color={canGoPrev ? colors.textSecondary : colors.textMuted} />
+                <Text style={[styles.splitFooterLabel, !canGoPrev && styles.footerLabelDisabled]} numberOfLines={1}>
+                  {abbrevBook(book)} {chapter}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.splitFooterBtn, !canGoNext && styles.footerBtnDisabled]}
+                onPress={() => canGoNext && goChapter(1)}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.splitFooterLabel, !canGoNext && styles.footerLabelDisabled]} numberOfLines={1}>
+                  {abbrevBook(book)} {chapter}
+                </Text>
+                <Ionicons name="chevron-forward" size={18} color={canGoNext ? colors.textSecondary : colors.textMuted} />
+              </TouchableOpacity>
+            </View>
+            {/* Divider — lines up with the content pane divider */}
             <View style={styles.splitFooterDivider} />
-            {/* Right pane prev/next */}
-            <TouchableOpacity
-              style={[styles.splitFooterBtn, !canSplitGoPrev && styles.footerBtnDisabled]}
-              onPress={() => canSplitGoPrev && goSplitChapter(-1)}
-              activeOpacity={0.7}
-            >
-              <Ionicons name="chevron-back" size={18} color={canSplitGoPrev ? colors.accent : colors.textMuted} />
-              <Text style={[styles.splitFooterLabel, { color: colors.accent }, !canSplitGoPrev && styles.footerLabelDisabled]} numberOfLines={1}>
-                {abbrevBook(splitBook)} {splitChapter}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.splitFooterBtn, !canSplitGoNext && styles.footerBtnDisabled]}
-              onPress={() => canSplitGoNext && goSplitChapter(1)}
-              activeOpacity={0.7}
-            >
-              <Text style={[styles.splitFooterLabel, { color: colors.accent }, !canSplitGoNext && styles.footerLabelDisabled]} numberOfLines={1}>
-                {abbrevBook(splitBook)} {splitChapter}
-              </Text>
-              <Ionicons name="chevron-forward" size={18} color={canSplitGoNext ? colors.accent : colors.textMuted} />
-            </TouchableOpacity>
+            {/* Right pane half */}
+            <View style={styles.splitFooterHalf}>
+              <TouchableOpacity
+                style={[styles.splitFooterBtn, !canSplitGoPrev && styles.footerBtnDisabled]}
+                onPress={() => canSplitGoPrev && goSplitChapter(-1)}
+                activeOpacity={0.7}
+              >
+                <Ionicons name="chevron-back" size={18} color={canSplitGoPrev ? colors.accent : colors.textMuted} />
+                <Text style={[styles.splitFooterLabel, { color: colors.accent }, !canSplitGoPrev && styles.footerLabelDisabled]} numberOfLines={1}>
+                  {abbrevBook(splitBook)} {splitChapter}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.splitFooterBtn, !canSplitGoNext && styles.footerBtnDisabled]}
+                onPress={() => canSplitGoNext && goSplitChapter(1)}
+                activeOpacity={0.7}
+              >
+                <Text style={[styles.splitFooterLabel, { color: colors.accent }, !canSplitGoNext && styles.footerLabelDisabled]} numberOfLines={1}>
+                  {abbrevBook(splitBook)} {splitChapter}
+                </Text>
+                <Ionicons name="chevron-forward" size={18} color={canSplitGoNext ? colors.accent : colors.textMuted} />
+              </TouchableOpacity>
+            </View>
           </>
         ) : (
           <>
@@ -2413,6 +2441,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
         loading={strongsLoading}
         concordanceCount={strongsConcResults.length}
         concordanceLoading={strongsConcLoading}
+        wordTranslit={strongsWordTranslit}
         onClose={() => setStrongsOpen(false)}
         onSeeOccurrences={() => { setStrongsOpen(false); setStrongsConcOpen(true) }}
         onSeeTranslations={() => { setStrongsOpen(false); setStrongsTransVariantsOpen(true) }}
@@ -2683,6 +2712,8 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
     borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: c.border,
     paddingHorizontal: 24, paddingVertical: 10,
   },
+  footerSplit: { paddingHorizontal: 0 },
+  splitFooterHalf: { flex: 1, flexDirection: 'row' },
   footerBtn:           { flexDirection: 'row', alignItems: 'center', gap: 4, paddingVertical: 4 },
   footerBtnDisabled:   { opacity: 0.3 },
   footerLabel:         { fontSize: 14, fontWeight: '600', color: c.textSecondary, fontFamily: globalFont },
@@ -2838,7 +2869,8 @@ const makeConc = (c: ThemeColors) => StyleSheet.create({
     paddingHorizontal: 20, paddingBottom: 16,
     borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
   },
-  word:  { fontSize: 18, fontWeight: '700', color: c.textPrimary },
+  word:  { fontSize: 18, fontWeight: '700', color: c.textPrimary, fontFamily: 'serif' },
+  pronun: { fontSize: 13, color: c.textSecondary, fontStyle: 'italic', marginTop: 2 },
   count: { fontSize: 13, color: c.textMuted, marginTop: 3 },
   empty: { textAlign: 'center', color: c.textMuted, padding: 40 },
   row:   { paddingHorizontal: 20, paddingVertical: 12 },

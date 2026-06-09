@@ -129,7 +129,7 @@ const CREEDS: Creed[] = [
     year: '451 AD',
     name: 'Chalcedonian Definition',
     council: 'Council of Chalcedon (451 AD)',
-    heresyAddressed: 'Nestorianism, Eutychianism (Monophysitism)',
+    heresyAddressed: 'Nestorianism, Eutychianism',
     type: 'Christological',
     fullText:
       'Following, then, the holy Fathers, we all unanimously teach that our Lord Jesus Christ is to us\n' +
@@ -241,13 +241,68 @@ const CREEDS: Creed[] = [
   },
 ]
 
+// ── Cross-reference link patterns ────────────────────────
+const HERESY_LINK_PATTERNS = [
+  'Semi-Pelagianism', 'Apollinarianism', 'Macedonianism',
+  'Monothelitism', 'Eutychianism', 'Nestorianism', 'Novatianism',
+  'Adoptionism', 'Gnosticism', 'Iconoclasm', 'Docetism',
+  'Modalism', 'Arianism', 'Donatism', 'Pelagianism', 'Origenism',
+]
+const COUNCIL_LINK_PATTERNS = [
+  'First Council of Constantinople',
+  'Third Council of Constantinople',
+  'Second Council of Constantinople',
+  'Fourth Council of Constantinople',
+  'Second Council of Nicaea',
+  'First Council of Nicaea',
+  'Second Council of Orange',
+  'Council of Chalcedon',
+  'Council of Alexandria',
+  'Council of Carthage',
+  'Council of Ephesus',
+  'Council of Antioch',
+  'Council of Arles',
+  'Council of Hippo',
+]
+const _linkRe = new RegExp(
+  `(${[...HERESY_LINK_PATTERNS, ...COUNCIL_LINK_PATTERNS]
+    .map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .join('|')})`,
+  'g',
+)
+
+function renderWithLinks(
+  text: string,
+  textStyle: any,
+  accentColor: string,
+  onHeresyPress?: (name: string) => void,
+  onCouncilPress?: (name: string) => void,
+): React.ReactElement {
+  const parts = text.split(_linkRe)
+  if (parts.length === 1) return <Text style={textStyle}>{text}</Text>
+  return (
+    <Text style={textStyle}>
+      {parts.map((part, i) => {
+        const linkStyle = { color: accentColor, textDecorationLine: 'underline' as const }
+        if (HERESY_LINK_PATTERNS.includes(part) && onHeresyPress)
+          return <Text key={i} style={linkStyle} onPress={() => onHeresyPress(part)} suppressHighlighting>{part}</Text>
+        if (COUNCIL_LINK_PATTERNS.includes(part) && onCouncilPress)
+          return <Text key={i} style={linkStyle} onPress={() => onCouncilPress(part)} suppressHighlighting>{part}</Text>
+        return <Text key={i}>{part}</Text>
+      })}
+    </Text>
+  )
+}
+
 function CreedCard({
-  creed, s, colors, forceExpand,
+  creed, s, colors, forceExpand, onHeresyPress, onCouncilPress,
 }: {
   creed: Creed
   s: ReturnType<typeof makeStyles>
   colors: import('../theme/themes').ThemeColors
   forceExpand?: boolean
+  onHeresyPress?: (name: string) => void
+  onCouncilPress?: (name: string) => void
 }) {
   const [expanded, setExpanded] = useState(false)
 
@@ -279,12 +334,12 @@ function CreedCard({
 
       <View style={s.infoBox}>
         <Text style={s.infoLabel}>Issued by</Text>
-        <Text style={s.infoText}>{creed.council}</Text>
+        {renderWithLinks(creed.council, s.infoText, colors.accent, onHeresyPress, onCouncilPress)}
       </View>
 
       <View style={s.infoBox}>
         <Text style={s.infoLabel}>Heresy addressed</Text>
-        <Text style={s.infoText}>{creed.heresyAddressed}</Text>
+        {renderWithLinks(creed.heresyAddressed, s.infoText, colors.accent, onHeresyPress, onCouncilPress)}
       </View>
 
       {expanded && (
@@ -315,7 +370,11 @@ function CreedCard({
   )
 }
 
-export default function CreedPanel({ jumpTo }: { jumpTo?: string }) {
+export default function CreedPanel({ jumpTo, onHeresyPress, onCouncilPress }: {
+  jumpTo?: string
+  onHeresyPress?: (name: string) => void
+  onCouncilPress?: (name: string) => void
+}) {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
   const [query, setQuery] = useState('')
@@ -383,6 +442,8 @@ export default function CreedPanel({ jumpTo }: { jumpTo?: string }) {
             s={s}
             colors={colors}
             forceExpand={jumpTo === item.name}
+            onHeresyPress={onHeresyPress}
+            onCouncilPress={onCouncilPress}
           />
         )}
         ListEmptyComponent={

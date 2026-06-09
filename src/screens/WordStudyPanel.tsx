@@ -1460,7 +1460,7 @@ const makeConcStyles = (c: ThemeColors) => StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: c.border,
   },
-  lemma: { fontSize: 20, fontWeight: '700', color: c.textPrimary },
+  lemma: { fontSize: 20, fontWeight: '700', color: c.textPrimary, fontFamily: 'serif' },
   meta:  { fontSize: 13, color: c.textMuted, marginTop: 3 },
   headerBtns: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 4 },
   filterBtn: {

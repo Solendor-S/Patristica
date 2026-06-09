@@ -96,7 +96,7 @@ export default function TutorialModal({ visible, onComplete, onDecline }: Props)
                 <Text style={s.primaryBtnText}>Take the tour</Text>
               </TouchableOpacity>
               <TouchableOpacity style={s.secondaryBtn} onPress={handleDecline} activeOpacity={0.7}>
-                <Text style={s.secondaryBtnText}>Maybe later</Text>
+                <Text style={s.secondaryBtnText}>Skip</Text>
               </TouchableOpacity>
             </>
           ) : (

@@ -34,7 +34,8 @@ export function OnboardingProvider({ children }: { children: React.ReactNode }) 
   const onTourDecline = useCallback(() => {
     setShowTutorial(false)
     setShowFab(true)
-  }, [])
+    setOnboardingDone(db).catch(() => {})
+  }, [db])
 
   return (
     <OnboardingContext.Provider value={{ showTutorial, showFab, openTutorial, onTourComplete, onTourDecline }}>

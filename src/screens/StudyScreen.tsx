@@ -20,6 +20,7 @@ import { getHistoricalForVerse, HISTORICAL_SOURCES, CATEGORY_LABEL } from '../da
 import type { HistoricalSource } from '../data/historicalData'
 import CouncilsPanel from './CouncilsPanel'
 import HeresiesPanel from './HeresiesPanel'
+import SchismsPanel from './SchismsPanel'
 import CreedPanel from './CreedPanel'
 import PersecutionPanel from './PersecutionPanel'
 import CanonPanel from './CanonPanel'
@@ -31,7 +32,7 @@ import { useTheme } from '../context/ThemeContext'
 import type { ThemeColors } from '../theme/themes'
 import type { CommentaryEntry, CrossRef, Note, RootTabParamList } from '../types'
 
-export type StudyTab = 'fathers' | 'crossrefs' | 'historical' | 'councils' | 'heresies' | 'creeds' | 'persecution' | 'canon' | 'timeline' | 'words' | 'overview' | 'map'
+export type StudyTab = 'fathers' | 'crossrefs' | 'historical' | 'councils' | 'heresies' | 'schisms' | 'creeds' | 'persecution' | 'canon' | 'timeline' | 'words' | 'overview' | 'map'
 type HistMode = 'verse' | 'browse'
 type FatherMode = 'verse' | 'browse'
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Study'>
@@ -441,6 +442,8 @@ export default function StudyScreen() {
 
   const [activeTab, setActiveTab] = useState<StudyTab>('fathers')
   const [creedJumpTo, setCreedJumpTo] = useState<string | undefined>()
+  const [heresyJumpTo, setHeresyJumpTo] = useState<string | undefined>()
+  const [councilJumpTo, setCouncilJumpTo] = useState<string | undefined>()
   const { wordFocus } = useWordFocus()
 
   useEffect(() => {
@@ -601,6 +604,7 @@ export default function StudyScreen() {
             { key: 'historical', label: 'Historical' },
             { key: 'councils',   label: 'Councils' },
             { key: 'heresies',   label: 'Heresies' },
+            { key: 'schisms',    label: 'Schisms' },
             { key: 'creeds',       label: 'Creeds' },
             { key: 'persecution',  label: 'Persecution' },
             { key: 'canon',        label: 'Canon' },
@@ -953,14 +957,36 @@ export default function StudyScreen() {
         {activeTab === 'councils' && (
           <CouncilsPanel
             onCreedPress={name => { setCreedJumpTo(name); setActiveTab('creeds') }}
+            onHeresyPress={name => { setHeresyJumpTo(name); setActiveTab('heresies') }}
+            jumpTo={councilJumpTo}
           />
         )}
 
         {/* Heresies */}
-        {activeTab === 'heresies' && <HeresiesPanel />}
+        {activeTab === 'heresies' && (
+          <HeresiesPanel
+            onCouncilPress={name => { setCouncilJumpTo(name); setActiveTab('councils') }}
+            jumpTo={heresyJumpTo}
+          />
+        )}
+
+        {/* Schisms */}
+        {activeTab === 'schisms' && (
+          <SchismsPanel
+            onCreedPress={name => { setCreedJumpTo(name); setActiveTab('creeds') }}
+            onHeresyPress={name => { setHeresyJumpTo(name); setActiveTab('heresies') }}
+            onCouncilPress={name => { setCouncilJumpTo(name); setActiveTab('councils') }}
+          />
+        )}
 
         {/* Creeds */}
-        {activeTab === 'creeds' && <CreedPanel jumpTo={creedJumpTo} />}
+        {activeTab === 'creeds' && (
+          <CreedPanel
+            jumpTo={creedJumpTo}
+            onHeresyPress={name => { setHeresyJumpTo(name); setActiveTab('heresies') }}
+            onCouncilPress={name => { setCouncilJumpTo(name); setActiveTab('councils') }}
+          />
+        )}
 
         {/* Persecution */}
         {activeTab === 'persecution' && <PersecutionPanel />}

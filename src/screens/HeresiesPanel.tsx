@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   FlatList, LayoutAnimation, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native'
@@ -73,7 +73,7 @@ export const HERESIES: Heresy[] = [
   {
     yearNum: 200,
     year: 'c. 190–260',
-    name: 'Modalism (Sabellianism)',
+    name: 'Modalism',
     condemned: 'Condemned by Hippolytus of Rome and Dionysius of Alexandria (c. 260); rejected by synods in Rome and Alexandria',
     taught: 'Father, Son, and Holy Spirit are not three distinct persons but three successive "modes" or masks of one divine person. The Father suffered on the cross ("Patripassianism"). There is no eternal distinction of persons in God.',
     why: 'Contradicts Christ\'s prayers to the Father as a distinct person (John 17), the baptism of Jesus where all three persons are simultaneously present (Matt. 3:16–17), and the Great Commission\'s Trinitarian formula.',
@@ -91,7 +91,7 @@ export const HERESIES: Heresy[] = [
   {
     yearNum: 268,
     year: '268',
-    name: 'Adoptionism (Paul of Samosata)',
+    name: 'Adoptionism',
     condemned: 'Council of Antioch (268); Paul deposed as bishop',
     taught: 'Christ was a mere man who was filled with divine Logos-power at his baptism, progressively deified through moral perfection, and ultimately "adopted" as Son of God. The Logos is an impersonal divine quality, not a distinct person.',
     why: 'Denies the eternal pre-existence of the Son (John 1:1; 8:58) and reduces the Incarnation to mere divine influence on a human. Salvation requires a truly divine Saviour, not a morally elevated man.',
@@ -127,7 +127,7 @@ export const HERESIES: Heresy[] = [
   {
     yearNum: 362,
     year: 'c. 360–381',
-    name: 'Macedonianism (Pneumatomachi)',
+    name: 'Macedonianism',
     condemned: 'First Council of Constantinople (381)',
     taught: 'While accepting the full divinity of the Son, this group ("Spirit-fighters") denied the full divinity of the Holy Spirit. The Spirit is a created being, subordinate to and of a different substance from the Father and Son.',
     why: 'Baptism is in the name of Father, Son, and Holy Spirit equally (Matt. 28:19). The Spirit searches the depths of God (1 Cor. 2:10–11), dwells in believers as God (1 Cor. 3:16), and cannot be a creature among creatures. The Creed expanded: the Spirit is "Lord and giver of life… who with the Father and Son is worshipped and glorified."',
@@ -154,7 +154,7 @@ export const HERESIES: Heresy[] = [
   {
     yearNum: 448,
     year: '448–451',
-    name: 'Eutychianism (Monophysitism)',
+    name: 'Eutychianism',
     condemned: 'Council of Chalcedon (451)',
     taught: 'Eutyches of Constantinople over-corrected against Nestorianism by teaching that after the Incarnation Christ had only one nature — his human nature was absorbed into or overwhelmed by the divine, like a drop of honey in the ocean. Christ is "of two natures" before the union, but "in one nature" after.',
     why: 'If Christ\'s humanity is absorbed, he did not truly experience human suffering, temptation, or death, and cannot fully redeem what he did not truly assume. Chalcedon defined Christ in two natures "without confusion, without change, without division, without separation."',
@@ -198,9 +198,64 @@ export const HERESIES: Heresy[] = [
   },
 ]
 
-function HeresyCard({ heresy, s, colors }: { heresy: Heresy; s: ReturnType<typeof makeStyles>; colors: import('../theme/themes').ThemeColors }) {
+// Longest-first so multi-word names match before substrings
+const COUNCIL_LINK_PATTERNS = [
+  'First Council of Constantinople',
+  'Third Council of Constantinople',
+  'Second Council of Constantinople',
+  'Fourth Council of Constantinople',
+  'Second Council of Nicaea',
+  'First Council of Nicaea',
+  'Second Council of Orange',
+  'Council of Chalcedon',
+  'Council of Alexandria',
+  'Council of Carthage',
+  'Council of Ephesus',
+  'Council of Antioch',
+  'Council of Arles',
+  'Council of Hippo',
+]
+const _councilLinkRe = new RegExp(
+  `(${COUNCIL_LINK_PATTERNS.map(p => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`,
+  'g',
+)
+const HERESY_HAYSTACKS = HERESIES.map(h =>
+  [h.name, h.taught, h.why, h.condemned, h.year].join(' ').toLowerCase()
+)
+
+function renderCondemned(
+  text: string,
+  textStyle: any,
+  accentColor: string,
+  onCouncilPress?: (name: string) => void,
+): React.ReactElement {
+  const parts = text.split(_councilLinkRe)
+  if (parts.length === 1) return <Text style={textStyle}>{text}</Text>
+  return (
+    <Text style={textStyle}>
+      {parts.map((part, i) => {
+        if (COUNCIL_LINK_PATTERNS.includes(part) && onCouncilPress)
+          return <Text key={i} style={{ color: accentColor, textDecorationLine: 'underline' }}
+            onPress={() => onCouncilPress(part)} suppressHighlighting>{part}</Text>
+        return <Text key={i}>{part}</Text>
+      })}
+    </Text>
+  )
+}
+
+function HeresyCard({ heresy, s, colors, onCouncilPress, forceExpand }: {
+  heresy: Heresy
+  s: ReturnType<typeof makeStyles>
+  colors: import('../theme/themes').ThemeColors
+  onCouncilPress?: (name: string) => void
+  forceExpand?: boolean
+}) {
   const [showWhy, setShowWhy] = useState(false)
   const badge = BADGE_COLOR[heresy.severity]
+
+  useEffect(() => {
+    if (forceExpand) setShowWhy(true)
+  }, [forceExpand])
 
   const toggle = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
@@ -221,7 +276,7 @@ function HeresyCard({ heresy, s, colors }: { heresy: Heresy; s: ReturnType<typeo
 
       <View style={s.infoBox}>
         <Text style={s.infoLabel}>Condemned by</Text>
-        <Text style={s.infoText}>{heresy.condemned}</Text>
+        {renderCondemned(heresy.condemned, s.infoText, colors.accent, onCouncilPress)}
       </View>
 
       <View style={s.infoBox}>
@@ -248,22 +303,30 @@ function HeresyCard({ heresy, s, colors }: { heresy: Heresy; s: ReturnType<typeo
   )
 }
 
-export default function HeresiesPanel() {
+export default function HeresiesPanel({ onCouncilPress, jumpTo }: {
+  onCouncilPress?: (name: string) => void
+  jumpTo?: string
+}) {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
   const [query, setQuery] = useState('')
+  const listRef = useRef<FlatList>(null)
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    if (!q) return HERESIES
-    return HERESIES.filter(h =>
-      h.name.toLowerCase().includes(q) ||
-      h.taught.toLowerCase().includes(q) ||
-      h.why.toLowerCase().includes(q) ||
-      h.condemned.toLowerCase().includes(q) ||
-      h.year.toLowerCase().includes(q)
-    )
+    const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
+    if (words.length === 0) return HERESIES
+    return HERESIES.filter((_, i) => words.every(w => HERESY_HAYSTACKS[i].includes(w)))
   }, [query])
+
+  useEffect(() => {
+    if (!jumpTo) return
+    const idx = HERESIES.findIndex(h => h.name === jumpTo)
+    if (idx < 0) return
+    const tid = setTimeout(() => {
+      listRef.current?.scrollToIndex({ index: idx, animated: true, viewPosition: 0.1 })
+    }, 120)
+    return () => clearTimeout(tid)
+  }, [jumpTo])
 
   return (
     <View style={s.container}>
@@ -286,12 +349,25 @@ export default function HeresiesPanel() {
       </View>
 
       <FlatList
+        ref={listRef}
         data={filtered}
         keyExtractor={h => h.name}
         style={{ flex: 1 }}
         contentContainerStyle={s.list}
         keyboardShouldPersistTaps="handled"
-        renderItem={({ item }) => <HeresyCard heresy={item} s={s} colors={colors} />}
+        onScrollToIndexFailed={({ averageItemLength, index }) => {
+          listRef.current?.scrollToOffset({ offset: averageItemLength * index, animated: false })
+          setTimeout(() => listRef.current?.scrollToIndex({ index, animated: true, viewPosition: 0.1 }), 100)
+        }}
+        renderItem={({ item }) => (
+          <HeresyCard
+            heresy={item}
+            s={s}
+            colors={colors}
+            onCouncilPress={onCouncilPress}
+            forceExpand={item.name === jumpTo}
+          />
+        )}
         ListEmptyComponent={
           <View style={s.empty}>
             <Text style={s.emptyText}>No heresies match "{query}"</Text>
