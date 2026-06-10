@@ -42,3 +42,10 @@ yarn-error.*
 
 # large database asset (copy manually from BibleApp/App/data/bible.db)
 assets/db/bible.db
+
+# source data, temp files, and Python cache (not needed for builds)
+# bible-app-data/ is backed up to Google Drive > Christianity > bible-app-data.zip
+bible-app-data/
+temp/
+**/__pycache__/
+*.pyc
