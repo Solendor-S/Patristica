@@ -15,7 +15,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import {
   getChapter, getApocryphaChapter, getEarlyTextChapter, getEarlyTextFootnotes, isBookmarked, addBookmark, removeBookmark, recordHistory,
   getChapterHighlights, setHighlight, removeHighlight,
-  getNote, saveNote, deleteNote, getConcordance, getChapterFootnotes, getStrongsEntry, getEarlyTextRefs,
+  getNote, saveNote, deleteNote, getConcordance, getChapterFootnotes, getStrongsEntry, getEarlyTextRefs, getChapterCrossRefMarkers,
 } from '../db/queries'
 import type { ConcordanceResult, StrongsEntry, StrongsConcordanceResult, EarlyTextRef } from '../db/queries'
 import { getStrongsConcordance } from '../db/queries'
@@ -37,12 +37,13 @@ import { useFontSize, FONT_SIZE_MIN, FONT_SIZE_MAX } from '../context/FontSizeCo
 import { useReaderFont } from '../context/FontFamilyContext'
 import type { FontScopeKey } from '../context/FontFamilyContext'
 import type { ThemeColors } from '../theme/themes'
-import { BOOKS, BOOK_MAP, APOCRYPHA_BOOK_MAP, EARLY_TEXT_MAP } from '../data/books'
+import { BOOKS, BOOK_MAP, APOCRYPHA_BOOK_MAP, EARLY_TEXT_MAP, shortBookName } from '../data/books'
 import { getRawBookPreface } from '../data/bookPrefaces'
 import type { BookPreface } from '../data/bookPrefaces'
 import { CanonicalPrefaceView, EarlyTextPrefaceView } from './PrefaceView'
+import { ScripturePreviewModal } from './ScripturePreviewModal'
 import { pendingNav } from '../navigation/pendingNav'
-import type { BibleVerse, BibleStackParamList, Footnote } from '../types'
+import type { BibleVerse, BibleStackParamList, Footnote, CrossRef } from '../types'
 
 type Props = {
   navigation: NativeStackNavigationProp<BibleStackParamList, 'Reader'>
@@ -82,6 +83,35 @@ const BOOK_ABBREVS: Record<string, string> = {
   'Hebrews': 'Heb', 'James': 'Jas', '1 Peter': '1 Pet', '2 Peter': '2 Pet',
   '1 John': '1 Jn', '2 John': '2 Jn', '3 John': '3 Jn', 'Jude': 'Jude',
   'Revelation': 'Rev',
+  // Apocrypha
+  'Wisdom of Solomon': 'Wis', 'Sirach': 'Sir', 'Tobit': 'Tob', 'Judith': 'Jdt',
+  'Baruch': 'Bar', '1 Maccabees': '1 Macc', '2 Maccabees': '2 Macc',
+  '3 Maccabees': '3 Macc', '4 Maccabees': '4 Macc',
+  '1 Esdras': '1 Esd', '2 Esdras': '2 Esd',
+  'Prayer of Manasseh': 'Pr. Man', 'Prayer of Azariah': 'Pr. Azar',
+  'Bel and the Dragon': 'Bel & Drag', 'Psalm 151': 'Ps 151',
+  '1 Enoch': '1 En', 'Jubilees': 'Jub',
+  '1 Meqabyan': '1 Meq', '2 Meqabyan': '2 Meq', '3 Meqabyan': '3 Meq',
+  // Early texts
+  'Ignatius to the Ephesians':      'Ign. Eph',
+  'Ignatius to the Magnesians':     'Ign. Mag',
+  'Ignatius to the Trallians':      'Ign. Tra',
+  'Ignatius to the Romans':         'Ign. Rom',
+  'Ignatius to the Philadelphians': 'Ign. Phil',
+  'Ignatius to the Smyrnaeans':     'Ign. Smyr',
+  'Ignatius to Polycarp':           'Ign. Poly',
+  'Epistle to Diognetus':           'Ep. Diog',
+  'Epistle of Barnabas':            'Ep. Bar',
+  'Epistle of Polycarp':            'Ep. Poly',
+  'Martyrdom of Polycarp':          'Mart. Poly',
+  'Justin Martyr — First Apology':        'Justin 1 Apol',
+  'Justin Martyr — Dialogue with Trypho': 'Justin Dial',
+  'Tertullian — Apologeticus':            'Tert. Apol',
+  'Against Heresies Book 1': 'Ag. Her. 1',
+  'Against Heresies Book 2': 'Ag. Her. 2',
+  'Against Heresies Book 3': 'Ag. Her. 3',
+  'Against Heresies Book 4': 'Ag. Her. 4',
+  'Against Heresies Book 5': 'Ag. Her. 5',
 }
 const abbrevBook = (b: string) => BOOK_ABBREVS[b] ?? b
 
@@ -277,7 +307,7 @@ const INLINE_BOOK_RE = /^([1-3]?\s*[A-Z][a-z]+(?:\s+[A-Za-z]+)?)\s+(\d+):(\d+)/
 // ── VerseRow ──────────────────────────────────────────────
 
 const VerseRow = memo(function VerseRow({
-  verse, text, isSelected, isMirrorSelected, hlColor, onPress, onWordPress, onFnPress, redLetterOn, book, chapter, footnotes, compareText, compareLabel, isAnnotated, lazyAnnotation, compareIsAnnotated, lazyCompareAnnotation, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter, isEarlyText, onEarlyFnPress, onInlineRefPress, focusMode,
+  verse, text, isSelected, isMirrorSelected, hlColor, onPress, onWordPress, onFnPress, redLetterOn, book, chapter, footnotes, compareText, compareLabel, isAnnotated, lazyAnnotation, compareIsAnnotated, lazyCompareAnnotation, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter, isEarlyText, onEarlyFnPress, onInlineRefPress, focusMode, crossRefs, onCrossRefPress,
 }: {
   verse: number
   text: string
@@ -306,6 +336,8 @@ const VerseRow = memo(function VerseRow({
   onEarlyFnPress?: (marker: number) => void
   onInlineRefPress?: (book: string, chapter: number, verse: number) => void
   focusMode?: boolean
+  crossRefs?: CrossRef[]
+  onCrossRefPress?: (ref: CrossRef) => void
 }) {
   const { colors } = useTheme()
   const { lineHeight } = useLineSpacing()
@@ -472,7 +504,7 @@ const VerseRow = memo(function VerseRow({
       const fn = fnByWord?.get(wordIdx)
       if (fn) elems.push(
         <Text key={`fn${i}`} onPress={() => onFnPress(fn)} suppressHighlighting style={[styles.fnMarker, styles.fnMarkerSelected]}>
-          {toSuperscript(fn.marker)}{' '}
+          {`[${fn.marker}]`}{' '}
         </Text>
       )
     })
@@ -486,7 +518,10 @@ const VerseRow = memo(function VerseRow({
         onPress={() => onPress(verse)}
         style={[styles.verseRow, styles.verseRowSelected, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : null]}
       >
-        <Text style={styles.verseNum}>{verse}</Text>
+        <Text style={styles.verseNum}>
+          {verse}
+          {crossRefs?.length ? <Text onPress={() => onCrossRefPress?.(crossRefs![0])} suppressHighlighting style={styles.crossRefMarker}> †</Text> : null}
+        </Text>
         <View style={styles.verseBody}>
           {compareText ? (
             <View style={styles.verseBodyRow}>
@@ -516,7 +551,10 @@ const VerseRow = memo(function VerseRow({
         onPress={() => onPress(verse)}
         style={[styles.verseRow, isSelected && styles.verseRowSelected, isMirrorSelected && styles.verseRowMirror, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : null]}
       >
-        <Text style={styles.verseNum}>{verse}</Text>
+        <Text style={styles.verseNum}>
+          {verse}
+          {crossRefs?.length ? <Text onPress={() => onCrossRefPress?.(crossRefs![0])} suppressHighlighting style={styles.crossRefMarker}> †</Text> : null}
+        </Text>
         <View style={styles.verseBody}>
           {compareText ? (
             <View style={styles.verseBodyRow}>
@@ -580,7 +618,7 @@ const VerseRow = memo(function VerseRow({
       const fn = fnByWord.get(wordIdx)
       if (fn) elems.push(
         <Text key={`fn-${key}`} onPress={() => onFnPress(fn)} suppressHighlighting style={styles.fnMarker}>
-          {toSuperscript(fn.marker)}
+          {`[${fn.marker}]`}
         </Text>
       )
     })
@@ -591,7 +629,10 @@ const VerseRow = memo(function VerseRow({
       onPress={() => onPress(verse)}
       style={[styles.verseRow, isSelected && styles.verseRowSelected, isMirrorSelected && styles.verseRowMirror, hlColor ? { backgroundColor: getHighlightBg(hlColor) } : null]}
     >
-      <Text style={styles.verseNum}>{verse}</Text>
+      <Text style={styles.verseNum}>
+        {verse}
+        {crossRefs?.length ? <Text onPress={() => onCrossRefPress?.(crossRefs![0])} suppressHighlighting style={styles.crossRefMarker}> †</Text> : null}
+      </Text>
       <View style={styles.verseBody}>
         {compareText ? (
           <View style={styles.verseBodyRow}>
@@ -1067,7 +1108,11 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [showColorPicker, setShowColorPicker] = useState(false)
 
   const [footnotesByVerse, setFootnotesByVerse] = useState<Map<number, Footnote[]>>(new Map())
+  const [crossRefsByVerse, setCrossRefsByVerse] = useState<Map<number, CrossRef[]>>(new Map())
+  const [splitCrossRefsByVerse, setSplitCrossRefsByVerse] = useState<Map<number, CrossRef[]>>(new Map())
   const [activeFn, setActiveFn] = useState<Footnote | null>(null)
+  const [activeCrossRef, setActiveCrossRef] = useState<CrossRef | null>(null)
+  const [scripturePreview, setScripturePreview] = useState<{ book: string; chapter: number; verse: number; preloadedText?: string; chapterVerses?: { verse: number; text: string }[] } | null>(null)
   const earlyFnMapRef = useRef(new Map<number, string>())
   const [earlyRefs, setEarlyRefs] = useState<EarlyTextRef[]>([])
   const { compareTrans, setCompareTrans, parallelOn, setParallelOn } = useParallelTranslation()
@@ -1228,6 +1273,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
     Animated.spring(colorPickerAnim, { toValue: 0, useNativeDriver: false, bounciness: 0 }).start()
     setLoadError(null)
     setActiveFn(null)
+    setActiveCrossRef(null)
+    setScripturePreview(null)
 
     if (!isTranslationOnly) {
       setLoading(true)
@@ -1293,7 +1340,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
       isEarlyText
         ? getEarlyTextRefs(db, book, chapter).catch(() => [])
         : Promise.resolve([]),
-    ]).then(([rows, hl, fns, efns, erefs]) => {
+      (!isEarlyText && !isApocrypha && BOOK_MAP[book]?.testament === 'NT')
+        ? getChapterCrossRefMarkers(db, book, chapter).catch(() => new Map<number, CrossRef[]>())
+        : Promise.resolve(new Map<number, CrossRef[]>()),
+    ]).then(([rows, hl, fns, efns, erefs, crMap]) => {
       earlyFnMapRef.current = (efns as Map<number, string> | null) ?? new Map()
       setEarlyRefs(erefs as EarlyTextRef[])
       setVerses(rows)
@@ -1307,6 +1357,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
         fnMap.set(fn.verse, arr)
       })
       setFootnotesByVerse(fnMap)
+      setCrossRefsByVerse(crMap as Map<number, CrossRef[]>)
       setLoading(false)
     }).catch((e: any) => {
       setLoadError(String(e?.message ?? e))
@@ -1378,13 +1429,28 @@ export default function ReaderScreen({ navigation, route }: Props) {
     return () => { cancelled = true }
   }, [userDb])
 
+  const splitIsEarlyText = splitBook in EARLY_TEXT_MAP
+  const splitIsApocrypha = splitBook in APOCRYPHA_BOOK_MAP
+
   // Fetch right pane verses when split is on
   useEffect(() => {
     if (!splitOn) { setSplitVerses(prev => prev.length > 0 ? [] : prev); return }
-    getChapter(db, splitBook, splitChapter, splitTranslation)
-      .then(setSplitVerses)
-      .catch(() => setSplitVerses([]))
-  }, [splitOn, splitBook, splitChapter, splitTranslation, db])
+    const fetchFn = splitIsEarlyText ? getEarlyTextChapter(db, splitBook, splitChapter)
+      : splitIsApocrypha             ? getApocryphaChapter(db, splitBook, splitChapter)
+      :                                getChapter(db, splitBook, splitChapter, splitTranslation)
+    fetchFn.then(setSplitVerses).catch(() => setSplitVerses([]))
+  }, [splitOn, splitBook, splitChapter, splitTranslation, splitIsEarlyText, splitIsApocrypha, db])
+
+  // Fetch cross-ref markers for split pane (NT only)
+  useEffect(() => {
+    if (!splitOn || splitIsEarlyText || splitIsApocrypha || BOOK_MAP[splitBook]?.testament !== 'NT') {
+      setSplitCrossRefsByVerse(new Map())
+      return
+    }
+    getChapterCrossRefMarkers(db, splitBook, splitChapter).then(crMap => {
+      setSplitCrossRefsByVerse(crMap)
+    }).catch(() => setSplitCrossRefsByVerse(new Map()))
+  }, [splitOn, splitBook, splitChapter, splitIsEarlyText, splitIsApocrypha, db])
 
   useEffect(() => {
     if (route.params?.verse && verses.length > 0) {
@@ -1460,6 +1526,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
     setSelected(next !== null ? { book: targetBook, chapter: targetChapter, verse: next } : null)
     setShowColorPicker(false)
     setActiveFn(null)
+    setActiveCrossRef(null)
+    setScripturePreview(null)
   }, [book, chapter, splitBook, splitChapter, setSelected])
 
   const selectVerse      = useCallback((v: number) => selectVerseInPane('left',  v), [selectVerseInPane])
@@ -1566,9 +1634,11 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const canGoNext = chapter < totalChaptersForBook || (!isOutsideCanon && bookIndex < BOOKS.length - 1)
 
   const splitBookIndex     = useMemo(() => BOOKS.findIndex(b => b.name === splitBook), [splitBook])
-  const splitTotalChapters = useMemo(() => BOOK_MAP[splitBook]?.chapters ?? 1, [splitBook])
-  const canSplitGoPrev = splitChapter > 1 || splitBookIndex > 0
-  const canSplitGoNext = splitChapter < splitTotalChapters || splitBookIndex < BOOKS.length - 1
+  const splitTotalChapters = useMemo(() =>
+    EARLY_TEXT_MAP[splitBook]?.chapters ?? APOCRYPHA_BOOK_MAP[splitBook]?.chapters ?? BOOK_MAP[splitBook]?.chapters ?? 1,
+  [splitBook])
+  const canSplitGoPrev = splitChapter > 1 || (!splitIsEarlyText && !splitIsApocrypha && splitBookIndex > 0)
+  const canSplitGoNext = splitChapter < splitTotalChapters || (!splitIsEarlyText && !splitIsApocrypha && splitBookIndex < BOOKS.length - 1)
 
   const saveSplitSetting = useCallback((key: string, value: string) => {
     userDb.runAsync(
@@ -1615,13 +1685,38 @@ export default function ReaderScreen({ navigation, route }: Props) {
     if (note) setActiveFn({ verse: 0, marker: `[${marker}]`, word_index: 0, content: note })
   }, [])
 
-  const onEarlyRefPress = useCallback((b: string, ch: number, v: number) => {
+  const navigateToRef = useCallback((b: string, ch: number, v: number) => {
     navigation.setParams({
       book: b, chapter: ch, verse: v,
       earlyText: !!EARLY_TEXT_MAP[b],
       apocrypha: !EARLY_TEXT_MAP[b] && !!APOCRYPHA_BOOK_MAP[b],
     } as any)
   }, [navigation])
+
+  const onEarlyRefPress = useCallback((b: string, ch: number, v: number) => {
+    setScripturePreview({ book: b, chapter: ch, verse: v })
+  }, [])
+
+  const openCrossRefPreview = useCallback((ref: CrossRef) => {
+    setActiveCrossRef(ref)
+  }, [])
+
+  // Auto-fetch chapter verses whenever a scripture preview opens (or book/chapter changes)
+  useEffect(() => {
+    if (!scripturePreview) return
+    if (scripturePreview.chapterVerses !== undefined) return // already loaded
+    let cancelled = false
+    ;(async () => {
+      try {
+        const fetched = await getChapter(db, scripturePreview.book, scripturePreview.chapter, 'KJV')
+        const rows = fetched.map(v => ({ verse: v.verse, text: v.text }))
+        if (!cancelled) setScripturePreview(prev => prev ? { ...prev, chapterVerses: rows } : prev)
+      } catch {
+        if (!cancelled) setScripturePreview(prev => prev ? { ...prev, chapterVerses: [] } : prev)
+      }
+    })()
+    return () => { cancelled = true }
+  }, [scripturePreview?.book, scripturePreview?.chapter, db])
 
   const navBack = useCallback(() => {
     const idx = navIndexRef.current - 1
@@ -1665,19 +1760,29 @@ export default function ReaderScreen({ navigation, route }: Props) {
     if (chromeHiddenRef.current) setChromeHidden(false)
   }, [book, chapter])
 
-  const handleScroll = useCallback((event: { nativeEvent: { contentOffset: { y: number } } }) => {
+  const handleScroll = useCallback((event: {
+    nativeEvent: {
+      contentOffset: { y: number }
+      contentSize: { height: number }
+      layoutMeasurement: { height: number }
+    }
+  }) => {
     if (!spaceSaverOnRef.current) return
-    const y = event.nativeEvent.contentOffset.y
+    const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent
+    const y = contentOffset.y
     const diff = y - lastScrollY.current
     lastScrollY.current = y
+    const distanceFromBottom = contentSize.height - layoutMeasurement.height - y
+    const nearBottom = distanceFromBottom < 80
+
     if (y < 80) {
       if (chromeHiddenRef.current) setChromeHidden(false)
       return
     }
-    if (diff > 10 && !chromeHiddenRef.current) {
-      setChromeHidden(true)
-    } else if (diff < -10 && chromeHiddenRef.current) {
+    if (diff < -10 && chromeHiddenRef.current) {
       setChromeHidden(false)
+    } else if (diff > 10 && !chromeHiddenRef.current && !nearBottom) {
+      setChromeHidden(true)
     }
   }, [setChromeHidden])
 
@@ -1710,8 +1815,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
       onEarlyFnPress={openEarlyFn}
       onInlineRefPress={onEarlyRefPress}
       focusMode={focusMode}
+      crossRefs={crossRefsByVerse.get(item.verse)}
+      onCrossRefPress={openCrossRefPreview}
     />
-  ), [selectedVerse, highlights, selectVerse, splitOn, activeSplitPane, openConcordance, redLetterOn, book, chapter, footnotesByVerse, compareTrans, parallelOn, compareMap, isAnnotatedTrans, openStrongs, isDss, dssAllReadings, isHebrew, translation, isEarlyText, openEarlyFn, onEarlyRefPress, focusMode])
+  ), [selectedVerse, highlights, selectVerse, splitOn, activeSplitPane, openConcordance, redLetterOn, book, chapter, footnotesByVerse, compareTrans, parallelOn, compareMap, isAnnotatedTrans, openStrongs, isDss, dssAllReadings, isHebrew, translation, isEarlyText, openEarlyFn, onEarlyRefPress, focusMode, crossRefsByVerse])
   const renderSplitVerseRow = useCallback(({ item }: { item: BibleVerse }) => (
     <VerseRow
       verse={item.verse}
@@ -1737,12 +1844,14 @@ export default function ReaderScreen({ navigation, route }: Props) {
       dssAllReadings={dssAllReadings}
       isHebrew={splitTranslation === 'DSS' || splitTranslation === 'WLC' || splitTranslation === 'TAHOT'}
       useHeuristicRedLetter={false}
-      isEarlyText={false}
+      isEarlyText={splitIsEarlyText}
       onEarlyFnPress={openEarlyFn}
       onInlineRefPress={onEarlyRefPress}
       focusMode={focusMode}
+      crossRefs={splitCrossRefsByVerse.get(item.verse)}
+      onCrossRefPress={openCrossRefPreview}
     />
-  ), [activeSplitPane, selectedVerse, selectSplitVerse, splitBook, splitChapter, openConcordance, openStrongs, splitTranslation, dssAllReadings, redLetterOn, openEarlyFn, onEarlyRefPress, focusMode])
+  ), [activeSplitPane, selectedVerse, selectSplitVerse, splitBook, splitChapter, openConcordance, openStrongs, splitTranslation, dssAllReadings, redLetterOn, openEarlyFn, onEarlyRefPress, focusMode, splitIsEarlyText, splitCrossRefsByVerse])
 
   const flatListExtraData = useMemo(
     () => ({ selectedVerse, highlights, dssAllReadings, redLetterOn, focusMode, activeSplitPane }),
@@ -1792,7 +1901,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
           >
             <Text style={styles.translationLabel} numberOfLines={1}>
               {splitOn
-                ? `${abbrevBook(book)} ${chapter} ∥ ${abbrevBook(splitBook)} ${splitChapter}`
+                ? `${translation} ∥ ${splitTranslation}`
                 : parallelOn && compareTrans ? `${translation} ∥ ${compareTrans}` : translation}
             </Text>
             <Ionicons name="chevron-down" size={11} color={colors.textMuted} />
@@ -1951,7 +2060,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
                     <View style={modal.translationInfo}>
                       <Text style={modal.translationKey}>Show Split View</Text>
                       <Text style={modal.translationFull}>
-                        {splitOn ? `${splitBook} ${splitChapter}` : 'View two passages side by side'}
+                        {splitOn ? `${shortBookName(splitBook)} ${splitChapter}` : 'View two passages side by side'}
                       </Text>
                     </View>
                     <View style={[modal.rlToggle, splitOn && { backgroundColor: colors.accent, borderColor: colors.accent }]}>
@@ -2149,7 +2258,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
                 }}
                 activeOpacity={0.7}
               >
-                <Text style={styles.splitPaneBookLabel} numberOfLines={1}>{splitBook}</Text>
+                <Text style={styles.splitPaneBookLabel} numberOfLines={1}>{shortBookName(splitBook)}</Text>
                 <Ionicons name="chevron-down" size={10} color={colors.textMuted} />
               </TouchableOpacity>
               <TouchableOpacity
@@ -2232,6 +2341,42 @@ export default function ReaderScreen({ navigation, route }: Props) {
             <Ionicons name="close" size={16} color={colors.textMuted} />
           </TouchableOpacity>
         </View>
+      )}
+
+      {/* Cross-reference bottom bar — tap ref label to open full modal */}
+      {activeCrossRef && (
+        <View style={styles.fnPopup}>
+          <Text style={styles.fnPopupMarker}>†</Text>
+          <View style={styles.fnPopupDivider} />
+          <Text style={styles.fnPopupContent} numberOfLines={2}>
+            <Text
+              style={styles.crossRefLink}
+              onPress={() => setScripturePreview({ book: activeCrossRef.ref_book, chapter: activeCrossRef.ref_chapter, verse: activeCrossRef.ref_verse, preloadedText: activeCrossRef.text || undefined })}
+              suppressHighlighting
+            >
+              {shortBookName(activeCrossRef.ref_book)} {activeCrossRef.ref_chapter}:{activeCrossRef.ref_verse}
+            </Text>
+            {activeCrossRef.text ? ` — "${stripUsfm(activeCrossRef.text)}"` : ''}
+          </Text>
+          <TouchableOpacity onPress={() => setActiveCrossRef(null)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+            <Ionicons name="close" size={16} color={colors.textMuted} />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {scripturePreview && (
+        <ScripturePreviewModal
+          db={db}
+          book={scripturePreview.book}
+          chapter={scripturePreview.chapter}
+          verse={scripturePreview.verse}
+          translation={translation}
+          preloadedText={scripturePreview.preloadedText}
+          chapterVerses={scripturePreview.chapterVerses}
+          colors={colors}
+          onClose={() => setScripturePreview(null)}
+          onNavigate={navigateToRef}
+        />
       )}
 
       {/* Action bar */}
@@ -2439,7 +2584,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
         visible={strongsOpen}
         entry={strongsEntry}
         loading={strongsLoading}
-        concordanceCount={strongsConcResults.length}
+        concordanceCount={strongsConcResults.reduce((sum, r) => sum + r.word_count, 0)}
         concordanceLoading={strongsConcLoading}
         wordTranslit={strongsWordTranslit}
         onClose={() => setStrongsOpen(false)}
@@ -2643,6 +2788,8 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
   italicText: { fontStyle: 'italic' },
   fnMarker: { color: c.accent, fontSize: 14, fontWeight: '700' },
   fnMarkerSelected: { color: '#7ab8e8' },
+  crossRefMarker: { color: c.accent, fontSize: 18, fontWeight: '600', paddingHorizontal: 4 },
+  crossRefLink: { color: c.accent, fontWeight: '600', textDecorationLine: 'underline' },
   inlineScriptureRef: { color: c.accent, textDecorationLine: 'underline' },
   fnPopup: {
     flexDirection: 'row',

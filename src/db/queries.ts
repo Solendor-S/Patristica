@@ -690,6 +690,41 @@ export async function getCrossRefs(
   )
 }
 
+export async function getChapterCrossRefMarkers(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number
+): Promise<Map<number, CrossRef[]>> {
+  const rows = await db.getAllAsync<{
+    verse: number; ref_book: string; ref_chapter: number; ref_verse: number; text: string
+  }>(
+    `SELECT cr.from_verse AS verse, cr.to_book AS ref_book,
+            cr.to_chapter AS ref_chapter, cr.to_verse AS ref_verse,
+            COALESCE(bv.text, '') AS text
+     FROM cross_refs cr
+     LEFT JOIN bible_verses bv
+       ON bv.book = cr.to_book AND bv.chapter = cr.to_chapter AND bv.verse = cr.to_verse
+     WHERE cr.from_book = ? AND cr.from_chapter = ?
+       AND cr.weight >= 3.0
+       AND cr.to_book NOT IN (
+         'Matthew','Mark','Luke','John','Acts','Romans',
+         '1 Corinthians','2 Corinthians','Galatians','Ephesians',
+         'Philippians','Colossians','1 Thessalonians','2 Thessalonians',
+         '1 Timothy','2 Timothy','Titus','Philemon','Hebrews',
+         'James','1 Peter','2 Peter','1 John','2 John','3 John',
+         'Jude','Revelation'
+       )
+     ORDER BY cr.from_verse, cr.weight DESC`,
+    [book, chapter]
+  )
+  const map = new Map<number, CrossRef[]>()
+  for (const r of rows) {
+    if (!map.has(r.verse)) map.set(r.verse, [])
+    map.get(r.verse)!.push({ ref_book: r.ref_book, ref_chapter: r.ref_chapter, ref_verse: r.ref_verse, text: r.text })
+  }
+  return map
+}
+
 // ── Chapter count ─────────────────────────────────────────
 
 export async function getChapterCount(
@@ -1171,6 +1206,7 @@ export interface StrongsConcordanceResult {
   book: string
   chapter: number
   verse: number
+  word_count: number
   word: string
   translit: string
   kjvPlusText: string | null
@@ -1182,50 +1218,78 @@ export async function getStrongsConcordance(
   lang: 'greek' | 'hebrew' | 'lxx' | 'lxx_a',
   strongs: string,
   greekSource: GreekSource = 'sblgnt',
-  hebrewSource: HebrewSource = 'tahot',
 ): Promise<StrongsConcordanceResult[]> {
-  const table = lang === 'greek' ? GREEK_SOURCE_TABLE[greekSource]
-    : lang === 'lxx_a'  ? 'lxx_apostolic_words'
-    : lang === 'lxx'    ? 'lxx_words'
-    :                     HEBREW_SOURCE_TABLE[hebrewSource]
-  const wordCol = (lang === 'greek' || lang === 'lxx' || lang === 'lxx_a') ? 'greek' : 'hebrew'
-  const q = `
-    SELECT w.book, w.chapter, w.verse,
-           MIN(w.${wordCol}) AS word,
-           MIN(w.translit)   AS translit,
-           bv.text,
-           MIN(bt.text) AS kjvPlusText
-    FROM ${table} w
-    JOIN bible_verses bv ON bv.book = w.book AND bv.chapter = w.chapter AND bv.verse = w.verse
-    LEFT JOIN bible_translations bt ON bt.book = w.book AND bt.chapter = w.chapter
-                                   AND bt.verse = w.verse AND bt.translation = 'KJV+'
-    WHERE w.strongs = ?
-    GROUP BY w.book, w.chapter, w.verse
-    ORDER BY MIN(w.rowid)`
 
-  const normLang = (lang === 'lxx' || lang === 'lxx_a') ? 'greek' : lang
-
-  // Fast path: exact match (works when stored format matches input)
-  let rows = await db.getAllAsync<StrongsConcordanceResult>(q, [strongs])
-  let normalized = normalizeStrongsNumber(strongs)
-
-  if (!rows.length) {
-    // Normalize both sides via CAST — strips leading zeros and trailing
-    // disambiguation letters (e.g. G0746→G746, H3947A→H3947) so that
-    // the display form (already stripped by NORM_STRONGS_EXPR) always matches.
-    const normQ = q.replace(
-      'WHERE w.strongs = ?',
-      `WHERE SUBSTR(w.strongs,1,1) || CAST(CAST(SUBSTR(w.strongs,2) AS INTEGER) AS TEXT) = ?`,
-    )
-    rows = await db.getAllAsync<StrongsConcordanceResult>(normQ, [normalized])
+  // LXX has no KJV+ equivalent — use word table approach
+  if (lang === 'lxx' || lang === 'lxx_a') {
+    const table = lang === 'lxx_a' ? 'lxx_apostolic_words' : 'lxx_words'
+    const q = `
+      SELECT w.book, w.chapter, w.verse,
+             COUNT(*) AS word_count,
+             MIN(w.greek) AS word,
+             MIN(w.translit) AS translit,
+             bv.text,
+             NULL AS kjvPlusText
+      FROM ${table} w
+      JOIN bible_verses bv ON bv.book = w.book AND bv.chapter = w.chapter AND bv.verse = w.verse
+      WHERE w.strongs = ?
+      GROUP BY w.book, w.chapter, w.verse
+      ORDER BY MIN(w.rowid)`
+    let rows = await db.getAllAsync<StrongsConcordanceResult>(q, [strongs])
+    if (!rows.length) {
+      const normQ = q.replace(
+        'WHERE w.strongs = ?',
+        `WHERE SUBSTR(w.strongs,1,1) || CAST(CAST(SUBSTR(w.strongs,2) AS INTEGER) AS TEXT) = ?`,
+      )
+      rows = await db.getAllAsync<StrongsConcordanceResult>(normQ, [normalizeStrongsNumber(strongs)])
+    }
+    return rows
   }
 
-  if (!rows.length && normLang === 'greek') {
-    const stdNum = await bsbGreekFallbackNum(db, strongs)
-    if (stdNum) rows = await db.getAllAsync<StrongsConcordanceResult>(q, [stdNum])
-  }
+  // Hebrew/Greek: scan KJV+ annotation text — identical counting method to Search,
+  // so concordance counts always match what the user sees when searching a tag.
+  const wordTable = lang === 'greek' ? GREEK_SOURCE_TABLE[greekSource] : 'hebrew_words'
+  const wordCol  = lang === 'greek' ? 'greek' : 'hebrew'
+  const tag = normalizeStrongsNumber(strongs).toUpperCase()  // canonical e.g. 'H2719'
 
-  return rows
+  const raw = await db.getAllAsync<{
+    book: string; chapter: number; verse: number
+    kjvPlusText: string; text: string
+    word: string | null; translit: string | null
+  }>(
+    `SELECT bt.book, bt.chapter, bt.verse,
+            bt.text AS kjvPlusText,
+            COALESCE(bv.text, '') AS text,
+            MIN(w.${wordCol}) AS word,
+            MIN(w.translit)   AS translit
+     FROM bible_translations bt
+     LEFT JOIN bible_verses bv ON bv.book = bt.book AND bv.chapter = bt.chapter AND bv.verse = bt.verse
+     LEFT JOIN ${wordTable} w  ON w.book  = bt.book AND w.chapter  = bt.chapter AND w.verse  = bt.verse
+                               AND (w.strongs = ?
+                                 OR SUBSTR(w.strongs,1,1) || CAST(CAST(SUBSTR(w.strongs,2) AS INTEGER) AS TEXT) = ?)
+     WHERE bt.translation = 'KJV+'
+       AND UPPER(bt.text) LIKE '%' || ? || '%'
+     GROUP BY bt.book, bt.chapter, bt.verse
+     ORDER BY bt.rowid`,
+    [strongs, tag, tag],
+  )
+
+  const results: StrongsConcordanceResult[] = []
+  for (const row of raw) {
+    const word_count = (row.kjvPlusText.toUpperCase().match(new RegExp(`${tag}(?!\\d)`, 'g')) ?? []).length
+    if (word_count === 0) continue  // LIKE false positive
+    results.push({
+      book: row.book,
+      chapter: row.chapter,
+      verse: row.verse,
+      word_count,
+      word:    row.word    ?? '',
+      translit: row.translit ?? '',
+      kjvPlusText: row.kjvPlusText,
+      text: row.text,
+    })
+  }
+  return results
 }
 
 // ── Concordance ───────────────────────────────────────────

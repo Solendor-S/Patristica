@@ -219,7 +219,7 @@ export function StrongsConcordanceModal({
       | { type: 'header'; book: string; count: number }
       | { type: 'row'; r: StrongsConcordanceResult }
     const counts: Record<string, number> = {}
-    for (const r of filteredResults) counts[r.book] = (counts[r.book] ?? 0) + 1
+    for (const r of filteredResults) counts[r.book] = (counts[r.book] ?? 0) + r.word_count
     const items: Item[] = []
     let lastBook = ''
     for (const r of filteredResults) {
@@ -273,7 +273,14 @@ export function StrongsConcordanceModal({
     })
   }
 
-  const filteredCount = filteredResults.length
+  const filteredMatchCount = useMemo(
+    () => filteredResults.reduce((sum, r) => sum + r.word_count, 0),
+    [filteredResults],
+  )
+  const totalMatchCount = useMemo(
+    () => results.reduce((sum, r) => sum + r.word_count, 0),
+    [results],
+  )
   const hasFilter = testament !== 'all' || selectedBooks.size > 0
   const visibleBooks = draftTestament === 'OT' ? OT_BOOKS_LIST
     : draftTestament === 'NT' ? NT_BOOKS_LIST
@@ -289,7 +296,9 @@ export function StrongsConcordanceModal({
               <Text style={sc.lemma}>{lemma}</Text>
               <Text style={sc.meta}>
                 {translit} · {lang === 'greek' ? 'Greek' : 'Hebrew'} ·{' '}
-                {hasFilter ? `${filteredCount} of ${results.length}` : filteredCount} occurrences
+                {hasFilter
+                  ? `${filteredResults.length} of ${results.length} verses · ${filteredMatchCount} of ${totalMatchCount} matches`
+                  : `${results.length} verse${results.length !== 1 ? 's' : ''} · ${totalMatchCount} matches`}
               </Text>
             </View>
             <View style={sc.headerBtns}>
@@ -312,7 +321,7 @@ export function StrongsConcordanceModal({
             <View style={sc.loadingRow}>
               <ActivityIndicator color={colors.accent} size="large" />
             </View>
-          ) : filteredCount === 0 ? (
+          ) : filteredResults.length === 0 ? (
             <View style={sc.loadingRow}>
               <Text style={sc.emptyLabel}>No results for selected filter</Text>
             </View>
@@ -696,7 +705,6 @@ export default function WordStudyPanel({ selected }: Props) {
       isNT ? 'greek' : isLxx ? (otSource as LxxSource) : 'hebrew',
       activeKey!.strongs,
       source,
-      otSource as HebrewSource,
     )
       .then(rows => { setConcordanceResults(rows); setConcordanceLoading(false) })
       .catch(() => setConcordanceLoading(false))
@@ -960,8 +968,8 @@ export default function WordStudyPanel({ selected }: Props) {
                     <TouchableOpacity style={s.allUsesBtn} onPress={openConcordance} activeOpacity={0.7}>
                       <Text style={s.allUsesBtnLabel}>
                         {concordanceResults.length > 0
-                          ? `All ${concordanceResults.length} uses`
-                          : 'All uses'} →
+                          ? `${concordanceResults.length} verse${concordanceResults.length !== 1 ? 's' : ''} · ${concordanceResults.reduce((sum, r) => sum + r.word_count, 0)} matches`
+                          : 'See all uses'} →
                       </Text>
                     </TouchableOpacity>
                   </View>

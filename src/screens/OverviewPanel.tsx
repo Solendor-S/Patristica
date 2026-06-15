@@ -162,6 +162,10 @@ export default function OverviewPanel({ selected }: Props) {
         ))}
       </View>
 
+      <Text style={s.disclaimer}>
+        Overview content is sourced from third-party commentaries and may reflect particular theological perspectives. Treat as a fallible human resource, not authoritative scripture.
+      </Text>
+
       {loading && (
         <View style={s.loadingRow}>
           <ActivityIndicator color={colors.accent} size="small" />
@@ -307,6 +311,15 @@ const makeStyles = (c: ThemeColors, fontFamily?: string, fontScope: FontScopeKey
     borderColor: c.accent + '44',
   },
   themeChipText: { color: c.accent, fontSize: 12, fontWeight: '500' },
+
+  disclaimer: {
+    fontSize: 11,
+    color: c.textMuted,
+    fontStyle: 'italic',
+    lineHeight: 16,
+    marginBottom: 10,
+    opacity: 0.8,
+  },
 
   sourceSection: { gap: 10 },
   sourceLabelRow: {
