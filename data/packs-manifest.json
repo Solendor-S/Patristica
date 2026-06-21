@@ -1,0 +1,486 @@
+{
+  "version": 1,
+  "onlineBaseUrl": "https://raw.githubusercontent.com/Solendor-S/Patristica/main/data/online",
+  "packs": [
+    {
+      "slug": "asv",
+      "name": "American Standard Version",
+      "description": "Classic 1901 revision of the KJV with improved accuracy",
+      "type": "translation",
+      "translations": [
+        "ASV"
+      ],
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/asv.db",
+      "sizeMB": 5.5,
+      "version": 1
+    },
+    {
+      "slug": "web",
+      "name": "World English Bible",
+      "description": "Modern public domain translation",
+      "type": "translation",
+      "translations": [
+        "WEB"
+      ],
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/web.db",
+      "sizeMB": 5.4,
+      "version": 1
+    },
+    {
+      "slug": "bsb",
+      "name": "Berean Standard Bible",
+      "description": "Modern translation with translator footnotes",
+      "type": "translation",
+      "translations": [
+        "BSB"
+      ],
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/bsb.db",
+      "sizeMB": 5.8,
+      "version": 1
+    },
+    {
+      "slug": "elxx",
+      "name": "Septuagint (LXX)",
+      "description": "Greek Old Testament — Brenton translation + Greek word-level data",
+      "type": "translation",
+      "translations": [
+        "E_LXX",
+        "A_LXX"
+      ],
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/elxx.db",
+      "sizeMB": 92.1,
+      "version": 1
+    },
+    {
+      "slug": "dss",
+      "name": "Dead Sea Scrolls",
+      "description": "Hebrew DSS text with textual variants",
+      "type": "translation",
+      "translations": [
+        "DSS"
+      ],
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/dss.db",
+      "sizeMB": 16.0,
+      "version": 1
+    },
+    {
+      "slug": "sblgnt",
+      "name": "SBL Greek NT",
+      "description": "Society of Biblical Literature Greek New Testament (NA28-based)",
+      "type": "greek_source",
+      "translations": [],
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/sblgnt.db",
+      "sizeMB": 9.5,
+      "version": 1
+    },
+    {
+      "slug": "tagnt",
+      "name": "TAGNT",
+      "description": "Translators Amalgamated Greek NT (NA28)",
+      "type": "greek_source",
+      "translations": [],
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/tagnt.db",
+      "sizeMB": 7.9,
+      "version": 1
+    },
+    {
+      "slug": "tahot",
+      "name": "BHS Hebrew OT",
+      "description": "Biblia Hebraica Stuttgartensia word-level data",
+      "type": "hebrew_source",
+      "translations": [],
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/tahot.db",
+      "sizeMB": 22.4,
+      "version": 1
+    },
+    {
+      "slug": "apoc-tobit",
+      "name": "Tobit",
+      "type": "apocrypha",
+      "book": "Tobit",
+      "group": "Deuterocanon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-tobit.db",
+      "sizeMB": 0.1,
+      "version": 1
+    },
+    {
+      "slug": "apoc-judith",
+      "name": "Judith",
+      "type": "apocrypha",
+      "book": "Judith",
+      "group": "Deuterocanon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-judith.db",
+      "sizeMB": 0.1,
+      "version": 1
+    },
+    {
+      "slug": "apoc-1maccabees",
+      "name": "1 Maccabees",
+      "type": "apocrypha",
+      "book": "1 Maccabees",
+      "group": "Deuterocanon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-1maccabees.db",
+      "sizeMB": 0.2,
+      "version": 1
+    },
+    {
+      "slug": "apoc-2maccabees",
+      "name": "2 Maccabees",
+      "type": "apocrypha",
+      "book": "2 Maccabees",
+      "group": "Deuterocanon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-2maccabees.db",
+      "sizeMB": 0.2,
+      "version": 1
+    },
+    {
+      "slug": "apoc-wisdom-of-solomon",
+      "name": "Wisdom of Solomon",
+      "type": "apocrypha",
+      "book": "Wisdom of Solomon",
+      "group": "Deuterocanon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-wisdom-of-solomon.db",
+      "sizeMB": 0.1,
+      "version": 1
+    },
+    {
+      "slug": "apoc-sirach",
+      "name": "Sirach (Ecclesiasticus)",
+      "type": "apocrypha",
+      "book": "Sirach",
+      "group": "Deuterocanon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-sirach.db",
+      "sizeMB": 0.2,
+      "version": 1
+    },
+    {
+      "slug": "apoc-baruch",
+      "name": "Baruch",
+      "type": "apocrypha",
+      "book": "Baruch",
+      "group": "Deuterocanon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-baruch.db",
+      "sizeMB": 0.1,
+      "version": 1
+    },
+    {
+      "slug": "apoc-1esdras",
+      "name": "1 Esdras",
+      "type": "apocrypha",
+      "book": "1 Esdras",
+      "group": "Broader Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-1esdras.db",
+      "sizeMB": 0.1,
+      "version": 1
+    },
+    {
+      "slug": "apoc-2esdras",
+      "name": "2 Esdras",
+      "type": "apocrypha",
+      "book": "2 Esdras",
+      "group": "Broader Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-2esdras.db",
+      "sizeMB": 0.1,
+      "version": 1
+    },
+    {
+      "slug": "apoc-prayer-of-manasseh",
+      "name": "Prayer of Manasseh",
+      "type": "apocrypha",
+      "book": "Prayer of Manasseh",
+      "group": "Broader Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-prayer-of-manasseh.db",
+      "sizeMB": 0.05,
+      "version": 1
+    },
+    {
+      "slug": "apoc-3maccabees",
+      "name": "3 Maccabees",
+      "type": "apocrypha",
+      "book": "3 Maccabees",
+      "group": "Broader Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-3maccabees.db",
+      "sizeMB": 0.1,
+      "version": 1
+    },
+    {
+      "slug": "apoc-4maccabees",
+      "name": "4 Maccabees",
+      "type": "apocrypha",
+      "book": "4 Maccabees",
+      "group": "Broader Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-4maccabees.db",
+      "sizeMB": 0.1,
+      "version": 1
+    },
+    {
+      "slug": "apoc-1enoch",
+      "name": "1 Enoch",
+      "type": "apocrypha",
+      "book": "1 Enoch",
+      "group": "Ethiopian Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-1enoch.db",
+      "sizeMB": 0.2,
+      "version": 1
+    },
+    {
+      "slug": "apoc-jubilees",
+      "name": "Jubilees",
+      "type": "apocrypha",
+      "book": "Jubilees",
+      "group": "Ethiopian Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-jubilees.db",
+      "sizeMB": 0.2,
+      "version": 1
+    },
+    {
+      "slug": "apoc-1meqabyan",
+      "name": "1 Meqabyan",
+      "type": "apocrypha",
+      "book": "1 Meqabyan",
+      "group": "Ethiopian Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-1meqabyan.db",
+      "sizeMB": 0.1,
+      "version": 1
+    },
+    {
+      "slug": "apoc-2meqabyan",
+      "name": "2 Meqabyan",
+      "type": "apocrypha",
+      "book": "2 Meqabyan",
+      "group": "Ethiopian Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-2meqabyan.db",
+      "sizeMB": 0.05,
+      "version": 1
+    },
+    {
+      "slug": "apoc-3meqabyan",
+      "name": "3 Meqabyan",
+      "type": "apocrypha",
+      "book": "3 Meqabyan",
+      "group": "Ethiopian Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-3meqabyan.db",
+      "sizeMB": 0.05,
+      "version": 1
+    },
+    {
+      "slug": "apoc-psalm151",
+      "name": "Psalm 151",
+      "type": "apocrypha",
+      "book": "Psalm 151",
+      "group": "Broader Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-psalm151.db",
+      "sizeMB": 0.01,
+      "version": 1
+    },
+    {
+      "slug": "apoc-prayer-of-azariah",
+      "name": "Prayer of Azariah",
+      "type": "apocrypha",
+      "book": "Prayer of Azariah",
+      "group": "Broader Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-prayer-of-azariah.db",
+      "sizeMB": 0.02,
+      "version": 1
+    },
+    {
+      "slug": "apoc-bel-and-the-dragon",
+      "name": "Bel and the Dragon",
+      "type": "apocrypha",
+      "book": "Bel and the Dragon",
+      "group": "Broader Canon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/apoc-bel-and-the-dragon.db",
+      "sizeMB": 0.02,
+      "version": 1
+    },
+    {
+      "slug": "early-1clement",
+      "name": "1 Clement",
+      "type": "early_text",
+      "book": "1 Clement",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-1clement.db",
+      "sizeMB": 0.1,
+      "version": 1
+    },
+    {
+      "slug": "early-ignatius-ephesians",
+      "name": "Ignatius to the Ephesians",
+      "type": "early_text",
+      "book": "Ignatius to the Ephesians",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-ignatius-ephesians.db",
+      "sizeMB": 0.05,
+      "version": 1
+    },
+    {
+      "slug": "early-ignatius-magnesians",
+      "name": "Ignatius to the Magnesians",
+      "type": "early_text",
+      "book": "Ignatius to the Magnesians",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-ignatius-magnesians.db",
+      "sizeMB": 0.03,
+      "version": 1
+    },
+    {
+      "slug": "early-ignatius-trallians",
+      "name": "Ignatius to the Trallians",
+      "type": "early_text",
+      "book": "Ignatius to the Trallians",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-ignatius-trallians.db",
+      "sizeMB": 0.03,
+      "version": 1
+    },
+    {
+      "slug": "early-ignatius-romans",
+      "name": "Ignatius to the Romans",
+      "type": "early_text",
+      "book": "Ignatius to the Romans",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-ignatius-romans.db",
+      "sizeMB": 0.03,
+      "version": 1
+    },
+    {
+      "slug": "early-ignatius-philadelphians",
+      "name": "Ignatius to the Philadelphians",
+      "type": "early_text",
+      "book": "Ignatius to the Philadelphians",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-ignatius-philadelphians.db",
+      "sizeMB": 0.03,
+      "version": 1
+    },
+    {
+      "slug": "early-ignatius-smyrnaeans",
+      "name": "Ignatius to the Smyrnaeans",
+      "type": "early_text",
+      "book": "Ignatius to the Smyrnaeans",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-ignatius-smyrnaeans.db",
+      "sizeMB": 0.03,
+      "version": 1
+    },
+    {
+      "slug": "early-ignatius-polycarp",
+      "name": "Ignatius to Polycarp",
+      "type": "early_text",
+      "book": "Ignatius to Polycarp",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-ignatius-polycarp.db",
+      "sizeMB": 0.03,
+      "version": 1
+    },
+    {
+      "slug": "early-didache",
+      "name": "Didache",
+      "type": "early_text",
+      "book": "Didache",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-didache.db",
+      "sizeMB": 0.02,
+      "version": 1
+    },
+    {
+      "slug": "early-epistle-barnabas",
+      "name": "Epistle of Barnabas",
+      "type": "early_text",
+      "book": "Epistle of Barnabas",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-epistle-barnabas.db",
+      "sizeMB": 0.05,
+      "version": 1
+    },
+    {
+      "slug": "early-epistle-polycarp",
+      "name": "Epistle of Polycarp",
+      "type": "early_text",
+      "book": "Epistle of Polycarp",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-epistle-polycarp.db",
+      "sizeMB": 0.03,
+      "version": 1
+    },
+    {
+      "slug": "early-martyrdom-polycarp",
+      "name": "Martyrdom of Polycarp",
+      "type": "early_text",
+      "book": "Martyrdom of Polycarp",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-martyrdom-polycarp.db",
+      "sizeMB": 0.03,
+      "version": 1
+    },
+    {
+      "slug": "early-epistle-diognetus",
+      "name": "Epistle to Diognetus",
+      "type": "early_text",
+      "book": "Epistle to Diognetus",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-epistle-diognetus.db",
+      "sizeMB": 0.03,
+      "version": 1
+    },
+    {
+      "slug": "early-justin-1apology",
+      "name": "Justin Martyr — First Apology",
+      "type": "early_text",
+      "book": "Justin Martyr — First Apology",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-justin-1apology.db",
+      "sizeMB": 0.1,
+      "version": 1
+    },
+    {
+      "slug": "early-justin-dialogue",
+      "name": "Justin Martyr — Dialogue with Trypho",
+      "type": "early_text",
+      "book": "Justin Martyr — Dialogue with Trypho",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-justin-dialogue.db",
+      "sizeMB": 0.3,
+      "version": 1
+    },
+    {
+      "slug": "early-tertullian-apologeticus",
+      "name": "Tertullian — Apologeticus",
+      "type": "early_text",
+      "book": "Tertullian — Apologeticus",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-tertullian-apologeticus.db",
+      "sizeMB": 0.1,
+      "version": 1
+    },
+    {
+      "slug": "early-against-heresies-1",
+      "name": "Against Heresies Book 1",
+      "type": "early_text",
+      "book": "Against Heresies Book 1",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-against-heresies-1.db",
+      "sizeMB": 0.2,
+      "version": 1
+    },
+    {
+      "slug": "early-against-heresies-2",
+      "name": "Against Heresies Book 2",
+      "type": "early_text",
+      "book": "Against Heresies Book 2",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-against-heresies-2.db",
+      "sizeMB": 0.2,
+      "version": 1
+    },
+    {
+      "slug": "early-against-heresies-3",
+      "name": "Against Heresies Book 3",
+      "type": "early_text",
+      "book": "Against Heresies Book 3",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-against-heresies-3.db",
+      "sizeMB": 0.2,
+      "version": 1
+    },
+    {
+      "slug": "early-against-heresies-4",
+      "name": "Against Heresies Book 4",
+      "type": "early_text",
+      "book": "Against Heresies Book 4",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-against-heresies-4.db",
+      "sizeMB": 0.2,
+      "version": 1
+    },
+    {
+      "slug": "early-against-heresies-5",
+      "name": "Against Heresies Book 5",
+      "type": "early_text",
+      "book": "Against Heresies Book 5",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-against-heresies-5.db",
+      "sizeMB": 0.2,
+      "version": 1
+    }
+  ]
+}
