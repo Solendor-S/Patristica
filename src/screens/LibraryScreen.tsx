@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import {
-  View, Text, FlatList, TouchableOpacity,
-  StyleSheet, StatusBar, Alert, ScrollView, PanResponder,
+  View, Text, FlatList, TouchableOpacity, ActivityIndicator,
+  StyleSheet, StatusBar, Alert, ScrollView, PanResponder, SectionList,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { useUserDb } from '../db/UserDbProvider'
@@ -16,11 +16,13 @@ import {
 } from '../db/queries'
 import type { NoteWithVerse, HistoryEntry } from '../db/queries'
 import { useTheme } from '../context/ThemeContext'
+import { usePacks } from '../context/PackContext'
+import type { PackMeta } from '../lib/PackManager'
 import type { ThemeColors } from '../theme/themes'
 import type { Bookmark, Highlight, RootTabParamList } from '../types'
 
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Library'>
-type LibraryTab = 'bookmarks' | 'highlights' | 'notes' | 'history'
+type LibraryTab = 'bookmarks' | 'highlights' | 'notes' | 'history' | 'downloads'
 
 import { HIGHLIGHT_COLORS, getHighlightBg, getSwatchColor } from '../theme/highlightColors'
 import { EARLY_TEXT_MAP, APOCRYPHA_BOOK_MAP } from '../data/books'
@@ -363,6 +365,193 @@ function HistoryTab() {
   )
 }
 
+// ── Sub-tab: Downloads ────────────────────────────────────
+
+const PACK_TYPE_LABEL: Record<string, string> = {
+  translation:    'Translations',
+  greek_source:   'Greek NT Sources',
+  hebrew_source:  'Hebrew OT Sources',
+  apocrypha:      'Apocrypha',
+  early_text:     'Early Christian Texts',
+}
+
+function PackRow({ pack, isInstalled: packInstalled, colors, downloading, download, uninstall, hasUpdate }: {
+  pack: PackMeta
+  isInstalled: boolean
+  colors: ReturnType<typeof useTheme>['colors']
+  downloading: Map<string, number>
+  download: (slug: string) => void
+  uninstall: (slug: string) => void
+  hasUpdate: (slug: string) => boolean
+}) {
+  const isLoading = downloading.has(pack.slug)
+  const progress = downloading.get(pack.slug) ?? 0
+  const sizeLabel = pack.sizeMB < 1 ? `${Math.round(pack.sizeMB * 1000)} KB` : `${pack.sizeMB} MB`
+  return (
+    <View style={dl.row}>
+      <View style={{ flex: 1 }}>
+        <Text style={dl.packName}>{pack.name}</Text>
+        <Text style={{ fontSize: 11, color: isLoading ? colors.accent : colors.textMuted, marginTop: 2 }}>
+          {isLoading ? `Downloading… ${Math.round(progress * 100)}%` : sizeLabel}
+        </Text>
+      </View>
+      {isLoading && <ActivityIndicator size="small" color={colors.accent} />}
+      {!isLoading && packInstalled && (
+        <View style={{ flexDirection: 'row', gap: 8, alignItems: 'center' }}>
+          {hasUpdate(pack.slug) && (
+            <TouchableOpacity style={dl.updateBtn} onPress={() => download(pack.slug)} activeOpacity={0.7}>
+              <Ionicons name="arrow-up-circle-outline" size={14} color="#fff" />
+              <Text style={dl.updateLabel}>Update</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            style={dl.uninstallBtn}
+            onPress={() => Alert.alert(
+              'Remove pack',
+              `Remove "${pack.name}"? You can re-download it anytime.`,
+              [
+                { text: 'Cancel', style: 'cancel' },
+                { text: 'Remove', style: 'destructive', onPress: () => uninstall(pack.slug) },
+              ]
+            )}
+            activeOpacity={0.7}
+          >
+            <Text style={dl.uninstallLabel}>Remove</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {!isLoading && !packInstalled && (
+        <TouchableOpacity style={dl.downloadBtn} onPress={() => download(pack.slug)} activeOpacity={0.7}>
+          <Ionicons name="cloud-download-outline" size={18} color={colors.accent} />
+        </TouchableOpacity>
+      )}
+    </View>
+  )
+}
+
+function DownloadsTab() {
+  const { colors } = useTheme()
+  const s = useMemo(() => makeStyles(colors), [colors])
+  const { allPacks, installed, downloading, download, uninstall, hasUpdate, manifestReady } = usePacks()
+
+  const installedPacks = useMemo(() => allPacks.filter(p => installed.has(p.slug)), [allPacks, installed])
+  const uninstalledPacks = useMemo(() => allPacks.filter(p => !installed.has(p.slug)), [allPacks, installed])
+  const totalInstalledMB = useMemo(() => installedPacks.reduce((sum, p) => sum + (p.sizeMB ?? 0), 0), [installedPacks])
+
+  // All packs grouped in manifest order — installed and available mixed per group
+  const sections = useMemo(() => {
+    const grouped = allPacks.reduce<Record<string, PackMeta[]>>((acc, p) => {
+      const key = PACK_TYPE_LABEL[p.type] ?? p.type
+      ;(acc[key] ??= []).push(p)
+      return acc
+    }, {})
+    return Object.entries(grouped).map(([title, data]) => ({ title, data }))
+  }, [allPacks])
+
+  const rowProps = { colors, downloading, download, uninstall, hasUpdate }
+
+  if (!manifestReady) {
+    return (
+      <View style={[s.content, { alignItems: 'center', justifyContent: 'center' }]}>
+        <ActivityIndicator color={colors.accent} />
+        <Text style={{ color: colors.textMuted, marginTop: 8, fontSize: 13 }}>Loading pack catalog…</Text>
+      </View>
+    )
+  }
+
+  return (
+    <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
+      {/* Global action bar */}
+      <View style={dl.sectionHeader}>
+        {installedPacks.length > 0 ? (
+          <Text style={[dl.sectionMeta, { flex: 1 }]}>{installedPacks.length} packs · {totalInstalledMB.toFixed(1)} MB</Text>
+        ) : (
+          <View style={{ flex: 1 }} />
+        )}
+        {installedPacks.length > 0 && (
+          <TouchableOpacity
+            style={dl.removeAllBtn}
+            onPress={() => installedPacks.forEach(p => uninstall(p.slug))}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="trash-outline" size={12} color={colors.accent} />
+            <Text style={dl.downloadAllLabel}>Remove All</Text>
+          </TouchableOpacity>
+        )}
+        {uninstalledPacks.length > 0 && (
+          <TouchableOpacity
+            style={dl.downloadAllBtn}
+            onPress={() => uninstalledPacks.filter(p => !downloading.has(p.slug)).forEach(p => download(p.slug))}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="cloud-download-outline" size={12} color={colors.accent} />
+            <Text style={dl.downloadAllLabel}>Download All</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
+      {/* All groups — installed and available together in manifest order */}
+      {sections.map(({ title, data }) => {
+        const groupInstalled = data.filter(p => installed.has(p.slug))
+        const groupAvailable = data.filter(p => !installed.has(p.slug) && !downloading.has(p.slug))
+        return (
+          <View key={title}>
+            <View style={dl.sectionHeader}>
+              <Text style={[dl.sectionTitle, { flex: 1 }]}>{title.toUpperCase()}</Text>
+              {groupInstalled.length > 0 && (
+                <TouchableOpacity
+                  style={dl.removeAllBtn}
+                  onPress={() => groupInstalled.forEach(p => uninstall(p.slug))}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name="trash-outline" size={12} color={colors.accent} />
+                  <Text style={dl.downloadAllLabel}>Remove</Text>
+                </TouchableOpacity>
+              )}
+              {groupAvailable.length > 0 && (
+                <TouchableOpacity
+                  style={dl.downloadAllBtn}
+                  onPress={() => groupAvailable.forEach(p => download(p.slug))}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name="cloud-download-outline" size={12} color={colors.accent} />
+                  <Text style={dl.downloadAllLabel}>All</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            {data.map(p => (
+              <PackRow key={p.slug} pack={p} isInstalled={installed.has(p.slug)} {...rowProps} />
+            ))}
+          </View>
+        )
+      })}
+
+      {installedPacks.length === allPacks.length && (
+        <View style={{ alignItems: 'center', paddingVertical: 32 }}>
+          <Text style={{ color: colors.textMuted, fontSize: 13 }}>All packs installed</Text>
+        </View>
+      )}
+    </ScrollView>
+  )
+}
+
+// Styles for downloads tab (inline to avoid makeStyles clutter)
+const dl = StyleSheet.create({
+  sectionHeader: { flexDirection: 'row', alignItems: 'baseline', gap: 8, paddingHorizontal: 16, paddingTop: 20, paddingBottom: 6 },
+  sectionTitle:  { fontSize: 11, fontWeight: '700', color: '#888', letterSpacing: 0.8 },
+  sectionMeta:   { fontSize: 11, color: '#888' },
+  row:           { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(255,255,255,0.06)' },
+  packName:      { fontSize: 14, fontWeight: '600', color: '#fff' },
+  downloadBtn:   { padding: 4 },
+  downloadAllBtn:   { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, borderWidth: 1, borderColor: 'rgba(184,134,11,0.5)' },
+  removeAllBtn:     { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, borderWidth: 1, borderColor: 'rgba(184,134,11,0.3)', marginRight: 6 },
+  downloadAllLabel: { fontSize: 11, color: '#b8860b', fontWeight: '600' },
+  updateBtn:     { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6, backgroundColor: '#b8860b' },
+  updateLabel:   { fontSize: 12, color: '#fff', fontWeight: '600' },
+  uninstallBtn:  { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6, borderWidth: 1, borderColor: 'rgba(255,255,255,0.2)' },
+  uninstallLabel:{ fontSize: 12, color: '#888' },
+})
+
 // ── Main screen ───────────────────────────────────────────
 
 const TABS: { key: LibraryTab; label: string }[] = [
@@ -370,6 +559,7 @@ const TABS: { key: LibraryTab; label: string }[] = [
   { key: 'highlights', label: 'Highlights' },
   { key: 'notes', label: 'Notes' },
   { key: 'history', label: 'History' },
+  { key: 'downloads', label: 'Downloads' },
 ]
 
 export default function LibraryScreen() {
@@ -384,7 +574,13 @@ export default function LibraryScreen() {
       </View>
 
       {/* Sub-tabs */}
-      <View style={s.tabBar}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={s.tabBar}
+        contentContainerStyle={{ flexDirection: 'row' }}
+        alwaysBounceVertical={false}
+      >
         {TABS.map(t => (
           <TouchableOpacity
             key={t.key}
@@ -395,7 +591,7 @@ export default function LibraryScreen() {
             <Text style={[s.tabLabel, activeTab === t.key && s.tabLabelActive]}>{t.label}</Text>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
 
       {/* Content */}
       <View style={s.content}>
@@ -403,6 +599,7 @@ export default function LibraryScreen() {
         {activeTab === 'highlights' && <HighlightsTab />}
         {activeTab === 'notes'      && <NotesTab />}
         {activeTab === 'history'    && <HistoryTab />}
+        {activeTab === 'downloads'  && <DownloadsTab />}
       </View>
     </View>
   )
@@ -422,13 +619,14 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   headerTitle: { fontSize: 18, fontWeight: '700', color: c.textPrimary },
 
   tabBar: {
-    flexDirection: 'row',
+    flexGrow: 0,
+    flexShrink: 0,
     backgroundColor: c.bgSecondary,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: c.border,
   },
   tab: {
-    flex: 1, paddingVertical: 12, alignItems: 'center',
+    paddingVertical: 12, paddingHorizontal: 16, alignItems: 'center',
     borderBottomWidth: 2, borderBottomColor: 'transparent',
   },
   tabActive: { borderBottomColor: c.accent },

@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { useUserDb } from '../db/UserDbProvider'
 
-export type SearchMode = 'default' | 'exact_words' | 'exact_phrase'
+export type SearchMode = 'default' | 'exact_words' | 'exact_phrase' | 'exact_all_words'
 
 interface ContextValue {
   biblicalOrder: boolean

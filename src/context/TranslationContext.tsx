@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useUserDb } from '../db/UserDbProvider'
 
-export type Translation = 'KJV' | 'ASV' | 'WEB' | 'SBLGNT' | 'TAGNT' | 'TR' | 'TR+' | 'KJV+' | 'I_KJV+' | 'TAHOT' | 'WLC' | 'WLC+' | 'DSS' | 'LXX' | 'LXX+' | 'E_LXX' | 'A_LXX'
+export type Translation = 'KJV' | 'ASV' | 'WEB' | 'BSB' | 'SBLGNT' | 'TAGNT' | 'TR' | 'TR+' | 'KJV+' | 'I_KJV+' | 'TAHOT' | 'WLC' | 'WLC+' | 'DSS' | 'LXX' | 'LXX+' | 'E_LXX' | 'A_LXX'
 
 export const TRANSLATIONS: { key: Translation; label: string; full: string; greekOnly?: boolean; otOriginal?: boolean; otOnly?: boolean }[] = [
   { key: 'KJV',    label: 'KJV',    full: 'King James Version' },
@@ -9,6 +9,7 @@ export const TRANSLATIONS: { key: Translation; label: string; full: string; gree
   { key: 'I_KJV+', label: 'I_KJV+', full: "Interlinear KJV+ (Greek/Hebrew word order)" },
   { key: 'ASV',    label: 'ASV',    full: 'American Standard Version' },
   { key: 'WEB',    label: 'WEB',    full: 'World English Bible' },
+  { key: 'BSB',    label: 'BSB',    full: 'Berean Standard Bible' },
   { key: 'SBLGNT', label: 'SBLGNT', full: 'SBL Greek New Testament',              greekOnly: true },
   { key: 'TAGNT',  label: 'TAGNT',  full: 'Translators Amalgamated GNT (NA28)',   greekOnly: true },
   { key: 'TR',     label: 'TR',     full: 'Textus Receptus (Scrivener 1894)',      greekOnly: true },

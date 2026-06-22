@@ -94,25 +94,42 @@ async function getVerseWordsAnnotated(
   return { book, chapter, verse, text: row.text }
 }
 
+// ── Pack routing helpers ──────────────────────────────────
+
+// Maps translation string → pack slug for optional content
+export const TRANSLATION_PACK_SLUG: Record<string, string> = {
+  // Translation packs (rows in bible_translations)
+  ASV:   'asv',
+  WEB:   'web',
+  BSB:   'bsb',
+  E_LXX: 'elxx',
+  A_LXX: 'elxx',
+  DSS:   'dss',
+  // Scholar word-table packs (TR and WLC are core defaults; these are optional)
+  SBLGNT: 'sblgnt',
+  TAGNT:  'tagnt',
+  TAHOT:  'tahot',
+}
+
 // ── Bible verses ──────────────────────────────────────────
 
 export async function getApocryphaChapter(
   db: SQLiteDatabase,
   book: string,
   chapter: number,
+  packDb?: SQLiteDatabase,
 ): Promise<BibleVerse[]> {
-  return db.getAllAsync<BibleVerse>(
-    'SELECT book, chapter, verse, text FROM apocrypha_verses WHERE book = ? AND chapter = ? ORDER BY verse',
-    [book, chapter]
-  )
+  const q = 'SELECT book, chapter, verse, text FROM apocrypha_verses WHERE book = ? AND chapter = ? ORDER BY verse'
+  return (packDb ?? db).getAllAsync<BibleVerse>(q, [book, chapter])
 }
 
 export async function getEarlyTextFootnotes(
   db: SQLiteDatabase,
   book: string,
   chapter: number,
+  packDb?: SQLiteDatabase,
 ): Promise<Map<number, string>> {
-  const rows = await db.getAllAsync<{ marker: number; note: string }>(
+  const rows = await (packDb ?? db).getAllAsync<{ marker: number; note: string }>(
     'SELECT marker, note FROM early_text_footnotes WHERE book = ? AND chapter = ? ORDER BY marker',
     [book, chapter]
   )
@@ -173,8 +190,9 @@ export async function getEarlyTextChapter(
   db: SQLiteDatabase,
   book: string,
   chapter: number,
+  packDb?: SQLiteDatabase,
 ): Promise<BibleVerse[]> {
-  const rows = await db.getAllAsync<BibleVerse>(
+  const rows = await (packDb ?? db).getAllAsync<BibleVerse>(
     'SELECT book, chapter, verse, text FROM early_texts WHERE book = ? AND chapter = ? ORDER BY verse',
     [book, chapter]
   )
@@ -192,23 +210,34 @@ export async function getChapter(
   db: SQLiteDatabase,
   book: string,
   chapter: number,
-  translation = 'KJV'
+  translation = 'KJV',
+  packDb?: SQLiteDatabase,
 ): Promise<BibleVerse[]> {
   if (translation === 'TR+')  return getChapterWordsAnnotated(db, book, chapter, 'greek_words_tr', 'greek')
   if (translation === 'WLC+') return getChapterWordsAnnotated(db, book, chapter, 'wlc_words', 'hebrew')
   if (translation === 'LXX+') return getChapterWordsAnnotated(db, book, chapter, 'lxx_words', 'greek')
+  // Greek NT word tables: TR is core (use db); SBLGNT/TAGNT are pack DBs
   const greekNTTable = GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]
-  if (greekNTTable) return getChapterWords(db, book, chapter, greekNTTable, 'greek')
+  if (greekNTTable) {
+    const effectiveDb = greekNTTable === 'greek_words_tr' ? db : (packDb ?? db)
+    return getChapterWords(effectiveDb, book, chapter, greekNTTable, 'greek')
+  }
+  // OT word tables: WLC is core (use db); DSS/TAHOT/LXX are pack DBs
   const otEntry = OT_WORD_TABLE[translation.toLowerCase()]
-  if (otEntry) return getChapterWords(db, book, chapter, otEntry.table, otEntry.col)
+  if (otEntry) {
+    const effectiveDb = otEntry.table === 'wlc_words' ? db : (packDb ?? db)
+    return getChapterWords(effectiveDb, book, chapter, otEntry.table, otEntry.col)
+  }
   if (translation === 'KJV') {
     return db.getAllAsync<BibleVerse>(
       'SELECT book, chapter, verse, text FROM bible_verses WHERE book = ? AND chapter = ? ORDER BY verse',
       [book, chapter]
     )
   }
+  // Optional translations (ASV/WEB/BSB/E_LXX/A_LXX) — query their pack DB
+  const queryDb = packDb ?? db
   const alt = bookAlt(book)
-  return db.getAllAsync<BibleVerse>(
+  return queryDb.getAllAsync<BibleVerse>(
     alt
       ? 'SELECT book, chapter, verse, text FROM bible_translations WHERE translation = ? AND (book = ? OR book = ?) AND chapter = ? ORDER BY verse'
       : 'SELECT book, chapter, verse, text FROM bible_translations WHERE translation = ? AND book = ? AND chapter = ? ORDER BY verse',
@@ -221,15 +250,22 @@ export async function getVerse(
   book: string,
   chapter: number,
   verse: number,
-  translation = 'KJV'
+  translation = 'KJV',
+  packDb?: SQLiteDatabase,
 ): Promise<BibleVerse | null> {
   if (translation === 'TR+')  return getVerseWordsAnnotated(db, book, chapter, verse, 'greek_words_tr', 'greek')
   if (translation === 'WLC+') return getVerseWordsAnnotated(db, book, chapter, verse, 'wlc_words', 'hebrew')
   if (translation === 'LXX+') return getVerseWordsAnnotated(db, book, chapter, verse, 'lxx_words', 'greek')
   const greekNTTable = GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]
-  if (greekNTTable) return getVerseWords(db, book, chapter, verse, greekNTTable, 'greek')
+  if (greekNTTable) {
+    const effectiveDb = greekNTTable === 'greek_words_tr' ? db : (packDb ?? db)
+    return getVerseWords(effectiveDb, book, chapter, verse, greekNTTable, 'greek')
+  }
   const otEntry = OT_WORD_TABLE[translation.toLowerCase()]
-  if (otEntry) return getVerseWords(db, book, chapter, verse, otEntry.table, otEntry.col)
+  if (otEntry) {
+    const effectiveDb = otEntry.table === 'wlc_words' ? db : (packDb ?? db)
+    return getVerseWords(effectiveDb, book, chapter, verse, otEntry.table, otEntry.col)
+  }
   if (translation === 'KJV') {
     return db.getFirstAsync<BibleVerse>(
       'SELECT book, chapter, verse, text FROM bible_verses WHERE book = ? AND chapter = ? AND verse = ?',
@@ -237,7 +273,8 @@ export async function getVerse(
     )
   }
   const alt = bookAlt(book)
-  return db.getFirstAsync<BibleVerse>(
+  const queryDb = packDb ?? db
+  return queryDb.getFirstAsync<BibleVerse>(
     alt
       ? 'SELECT book, chapter, verse, text FROM bible_translations WHERE translation = ? AND (book = ? OR book = ?) AND chapter = ? AND verse = ?'
       : 'SELECT book, chapter, verse, text FROM bible_translations WHERE translation = ? AND book = ? AND chapter = ? AND verse = ?',
@@ -416,6 +453,61 @@ export async function searchVersesAll(
   exactWords = false,
 ): Promise<SearchResult[]> {
   return searchVerses(db, query, translation, books, 5000, exactWords)
+}
+
+// ── Strongs search for word-table translations (TR+, WLC+, LXX+) ─────────────
+
+const ANNOTATED_TABLE_MAP: Record<string, { table: string; col: string }> = {
+  'TR+':  { table: 'greek_words_tr', col: 'greek' }, // same table as GREEK_SOURCE_TABLE['tr']
+  'WLC+': OT_WORD_TABLE['wlc'],
+  'LXX+': OT_WORD_TABLE['lxx'],
+}
+
+export async function searchAnnotatedByStrongs(
+  db: SQLiteDatabase,
+  strongs: string,          // e.g. "G4145" or "g4145"
+  translation: string,
+  books: string[],
+  limit = 200,
+): Promise<SearchResult[]> {
+  const entry = ANNOTATED_TABLE_MAP[translation]
+  if (!entry) return []
+
+  // Normalise: "g4145" → "G4145", strip leading zeros
+  const norm = strongs.replace(/^([hgHG])0*(\d+)$/, (_, p, n) => p.toUpperCase() + n)
+  // Also build the zero-padded variant some tables store
+  const padded = strongs.replace(/^([hgHG])0*(\d+)$/, (_, p, n) => p.toUpperCase() + String(parseInt(n)).padStart(4, '0'))
+  const variants = norm === padded ? [norm] : [norm, padded]
+
+  const { table, col } = entry
+  const bookClause = books.length > 0
+    ? `AND t.book IN (${books.map(() => '?').join(',')})`
+    : ''
+
+  // Find verses containing this Strongs, then return full annotated text for each
+  const sql = `
+    SELECT t.book, t.chapter, t.verse,
+      GROUP_CONCAT(
+        t.${col}
+        || CASE WHEN t.strongs IS NOT NULL AND t.strongs != ''
+           THEN ' ' || SUBSTR(t.strongs,1,1) || CAST(CAST(SUBSTR(t.strongs,2) AS INTEGER) AS TEXT)
+           ELSE '' END,
+        ' '
+      ) AS text
+    FROM (SELECT book, chapter, verse, position, ${col}, strongs
+          FROM ${table} ORDER BY book, chapter, verse, position) t
+    WHERE EXISTS (
+      SELECT 1 FROM ${table} s
+      WHERE s.book = t.book AND s.chapter = t.chapter AND s.verse = t.verse
+        AND s.strongs IN (${variants.map(() => '?').join(',')})
+    )
+    ${bookClause}
+    GROUP BY t.book, t.chapter, t.verse
+    ORDER BY t.book, t.chapter, t.verse
+    LIMIT ${limit}
+  `
+
+  return db.getAllAsync<SearchResult>(sql, [...variants, ...books])
 }
 
 // ── Fuzzy search ──────────────────────────────────────────
@@ -723,6 +815,25 @@ export async function getChapterCrossRefMarkers(
     map.get(r.verse)!.push({ ref_book: r.ref_book, ref_chapter: r.ref_chapter, ref_verse: r.ref_verse, text: r.text })
   }
   return map
+}
+
+// ── OT quote spans ────────────────────────────────────────
+
+export interface OtQuoteSpan {
+  verse: number
+  word_start: number
+  word_end: number
+}
+
+export async function getOtQuoteSpans(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+): Promise<OtQuoteSpan[]> {
+  return db.getAllAsync<OtQuoteSpan>(
+    'SELECT verse, word_start, word_end FROM ot_quote_spans WHERE book=? AND chapter=? ORDER BY verse, word_start',
+    [book, chapter]
+  )
 }
 
 // ── Chapter count ─────────────────────────────────────────
@@ -1098,15 +1209,20 @@ export interface StrongsEntry {
   kjv_usage: string
 }
 
+// Derived from authoritative maps — TR and WLC are the core defaults
+const CORE_WORD_TABLES = new Set([GREEK_SOURCE_TABLE['tr'], HEBREW_SOURCE_TABLE['wlc']])
+
 export async function getGreekWords(
   db: SQLiteDatabase,
   book: string,
   chapter: number,
   verse: number,
-  source: GreekSource = 'sblgnt'
+  source: GreekSource = 'tr',
+  packDb?: SQLiteDatabase,
 ): Promise<GreekWord[]> {
   const table = GREEK_SOURCE_TABLE[source]
-  return db.getAllAsync<GreekWord>(
+  const queryDb = CORE_WORD_TABLES.has(table) ? db : (packDb ?? db)
+  return queryDb.getAllAsync<GreekWord>(
     `SELECT position, greek, translit, strongs, gloss, morph FROM ${table} WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position`,
     [book, chapter, verse]
   )
@@ -1117,10 +1233,13 @@ export async function getHebrewWords(
   book: string,
   chapter: number,
   verse: number,
-  source: HebrewSource = 'tahot'
+  source: HebrewSource = 'wlc',
+  packDb?: SQLiteDatabase,
 ): Promise<HebrewWord[]> {
-  return db.getAllAsync<HebrewWord>(
-    `SELECT position, hebrew, translit, strongs, gloss, morph FROM ${HEBREW_SOURCE_TABLE[source]} WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position`,
+  const table = HEBREW_SOURCE_TABLE[source]
+  const queryDb = CORE_WORD_TABLES.has(table) ? db : (packDb ?? db)
+  return queryDb.getAllAsync<HebrewWord>(
+    `SELECT position, hebrew, translit, strongs, gloss, morph FROM ${table} WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position`,
     [book, chapter, verse]
   )
 }
@@ -1138,9 +1257,10 @@ export async function getLxxWords(
   chapter: number,
   verse: number,
   source: LxxSource = 'lxx',
+  packDb?: SQLiteDatabase,
 ): Promise<GreekWord[]> {
   const table = LXX_WORD_TABLE[source]
-  return db.getAllAsync<GreekWord>(
+  return (packDb ?? db).getAllAsync<GreekWord>(
     `SELECT position, greek, translit, strongs, gloss, morph FROM ${table} WHERE book = ? AND chapter = ? AND verse = ? ORDER BY position`,
     [book, chapter, verse]
   )
@@ -1197,7 +1317,41 @@ export async function searchStrongsByEnglishWord(
     LIMIT 60
   `, [pattern, pattern])
   const re = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i')
-  return rows.filter(r => re.test(r.kjv_usage))
+  const lexiconResults = rows.filter(r => re.test(r.kjv_usage))
+  if (lexiconResults.length > 0) return lexiconResults
+
+  // Fallback: lexicon spelling may differ from KJV text (e.g. "sycamore" vs "sycomore").
+  // Find Strongs tags that appear directly after this word in KJV+ text, then look them up.
+  const textRows = await db.getAllAsync<{ text: string }>(
+    `SELECT text FROM bible_translations WHERE translation='KJV+' AND LOWER(text) LIKE ?`,
+    [`% ${word.toLowerCase()} %`]
+  )
+  const foundTags = new Set<string>()
+  const wordLower = word.toLowerCase()
+  const STRONGS_TOK_RE = /^[GH]\d+$/
+  for (const { text } of textRows) {
+    const tokens = text.split(' ')
+    for (let i = 0; i < tokens.length; i++) {
+      const tok = tokens[i].toLowerCase().replace(/[^a-z']/g, '')
+      if (tok !== wordLower) continue
+      // Scan forward up to 3 positions to find the next Strongs tag.
+      // Multi-word phrases put the tag after the last word in the phrase,
+      // e.g. "sycomore trees H8256" — the tag is 2 tokens after "sycomore".
+      for (let j = i + 1; j <= Math.min(i + 3, tokens.length - 1); j++) {
+        if (STRONGS_TOK_RE.test(tokens[j])) { foundTags.add(tokens[j]); break }
+      }
+    }
+  }
+  if (foundTags.size === 0) return []
+
+  const inClause = [...foundTags].map(() => '?').join(',')
+  return db.getAllAsync<StrongsWordMatch>(`
+    SELECT number, lemma, translit, pronunciation, definition, kjv_usage, 'greek' AS lang
+    FROM strongs_greek WHERE number IN (${inClause})
+    UNION ALL
+    SELECT number, lemma, translit, pronunciation, definition, kjv_usage, 'hebrew' AS lang
+    FROM strongs_hebrew WHERE number IN (${inClause})
+  `, [...foundTags, ...foundTags])
 }
 
 // ── Strong's Concordance ──────────────────────────────────
@@ -1252,16 +1406,14 @@ export async function getStrongsConcordance(
   const wordCol  = lang === 'greek' ? 'greek' : 'hebrew'
   const tag = normalizeStrongsNumber(strongs).toUpperCase()  // canonical e.g. 'H2719'
 
-  const raw = await db.getAllAsync<{
-    book: string; chapter: number; verse: number
-    kjvPlusText: string; text: string
-    word: string | null; translit: string | null
-  }>(
-    `SELECT bt.book, bt.chapter, bt.verse,
-            bt.text AS kjvPlusText,
-            COALESCE(bv.text, '') AS text,
-            MIN(w.${wordCol}) AS word,
-            MIN(w.translit)   AS translit
+  // Build the full query with word-table join (for original word + translit).
+  // Falls back to a join-free query if the word table is in an uninstalled pack.
+  const fullQ = `
+    SELECT bt.book, bt.chapter, bt.verse,
+           bt.text AS kjvPlusText,
+           COALESCE(bv.text, '') AS text,
+           MIN(w.${wordCol}) AS word,
+           MIN(w.translit)   AS translit
      FROM bible_translations bt
      LEFT JOIN bible_verses bv ON bv.book = bt.book AND bv.chapter = bt.chapter AND bv.verse = bt.verse
      LEFT JOIN ${wordTable} w  ON w.book  = bt.book AND w.chapter  = bt.chapter AND w.verse  = bt.verse
@@ -1270,9 +1422,26 @@ export async function getStrongsConcordance(
      WHERE bt.translation = 'KJV+'
        AND UPPER(bt.text) LIKE '%' || ? || '%'
      GROUP BY bt.book, bt.chapter, bt.verse
-     ORDER BY bt.rowid`,
-    [strongs, tag, tag],
-  )
+     ORDER BY bt.rowid`
+  const simpleQ = `
+    SELECT bt.book, bt.chapter, bt.verse,
+           bt.text AS kjvPlusText,
+           COALESCE(bv.text, '') AS text,
+           NULL AS word, NULL AS translit
+     FROM bible_translations bt
+     LEFT JOIN bible_verses bv ON bv.book = bt.book AND bv.chapter = bt.chapter AND bv.verse = bt.verse
+     WHERE bt.translation = 'KJV+'
+       AND UPPER(bt.text) LIKE '%' || ? || '%'
+     GROUP BY bt.book, bt.chapter, bt.verse
+     ORDER BY bt.rowid`
+
+  let raw: Array<{ book: string; chapter: number; verse: number; kjvPlusText: string; text: string; word: string | null; translit: string | null }>
+  try {
+    raw = await db.getAllAsync(fullQ, [strongs, tag, tag])
+  } catch {
+    // Word table not available (pack not installed) — fall back without it
+    raw = await db.getAllAsync(simpleQ, [tag])
+  }
 
   const results: StrongsConcordanceResult[] = []
   for (const row of raw) {
@@ -1354,6 +1523,35 @@ export async function getBooks(db: SQLiteDatabase): Promise<string[]> {
     'SELECT DISTINCT book FROM bible_verses ORDER BY MIN(rowid)'
   )
   return rows.map(r => r.book)
+}
+
+// ── BSB footnotes ─────────────────────────────────────────
+
+export async function getBsbChapterFootnotes(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+  packDb?: SQLiteDatabase | null,
+): Promise<import('../types').BsbFootnote[]> {
+  const queryDb = packDb ?? db
+  return queryDb.getAllAsync(
+    'SELECT verse, word_index, word, footnote FROM bsb_footnotes WHERE book=? AND chapter=? ORDER BY verse, word_index',
+    [book, chapter]
+  )
+}
+
+
+// ── E_LXX inline notes ───────────────────────────────────
+
+export async function getElxxChapterNotes(
+  db: SQLiteDatabase,
+  book: string,
+  chapter: number,
+): Promise<import('../types').ElxxNote[]> {
+  return db.getAllAsync(
+    'SELECT verse, word_index, note FROM elxx_notes WHERE book=? AND chapter=? ORDER BY verse, word_index',
+    [book, chapter]
+  )
 }
 
 // ── Footnotes ─────────────────────────────────────────────
@@ -1453,8 +1651,9 @@ export async function getEarlyTextRefs(
   db: SQLiteDatabase,
   book: string,
   chapter: number,
+  packDb?: SQLiteDatabase,
 ): Promise<EarlyTextRef[]> {
-  return db.getAllAsync<EarlyTextRef>(
+  return (packDb ?? db).getAllAsync<EarlyTextRef>(
     `SELECT ref_book, ref_chapter, ref_verse, ref_type
      FROM early_text_refs
      WHERE book=? AND chapter=?

@@ -13,7 +13,8 @@ import { getCommentary, getCrossRefs, getJosephusForVerse, getVariantsForVerse, 
 import type { JosephusEntry, CommentaryEntryWithRef, EarlyTextCitation, EarlyTextRef } from '../db/queries'
 import type { TextualVariant } from '../types'
 import { getFatherInfo, FATHER_DATES } from '../data/fatherDates'
-import { EARLY_TEXT_MAP } from '../data/books'
+import { BOOKS, EARLY_TEXT_MAP } from '../data/books'
+import { useCrossRefOrder } from '../context/CrossRefOrderContext'
 import { getSourceUrl, getEarlyTextBook } from '../data/sourceLinks'
 import { stripUsfm } from '../data/redLetter'
 import { getHistoricalForVerse, HISTORICAL_SOURCES, CATEGORY_LABEL } from '../data/historicalData'
@@ -430,6 +431,9 @@ function HistoricalPanel({
   )
 }
 
+// ── Book order for cross-ref sorting ─────────────────────
+const BOOK_ORDER = new Map(BOOKS.map((b, i) => [b.name, i]))
+
 // ── Main screen ───────────────────────────────────────────
 
 export default function StudyScreen() {
@@ -445,6 +449,7 @@ export default function StudyScreen() {
   const [heresyJumpTo, setHeresyJumpTo] = useState<string | undefined>()
   const [councilJumpTo, setCouncilJumpTo] = useState<string | undefined>()
   const { wordFocus } = useWordFocus()
+  const { crossRefBiblicalOrder } = useCrossRefOrder()
 
   useEffect(() => {
     if (wordFocus && activeTab !== 'words') setActiveTab('words')
@@ -542,6 +547,17 @@ export default function StudyScreen() {
       })
     } catch {}
   }, [navigation, setSelected])
+
+  const sortedCrossRefs = useMemo(() => {
+    if (!crossRefBiblicalOrder) return crossRefs
+    return [...crossRefs].sort((a, b) => {
+      const oa = BOOK_ORDER.get(a.ref_book) ?? 999
+      const ob = BOOK_ORDER.get(b.ref_book) ?? 999
+      if (oa !== ob) return oa - ob
+      if (a.ref_chapter !== b.ref_chapter) return a.ref_chapter - b.ref_chapter
+      return a.ref_verse - b.ref_verse
+    })
+  }, [crossRefs, crossRefBiblicalOrder])
 
   const loading = activeTab === 'fathers' ? loadingFathers : activeTab === 'crossrefs' ? loadingRefs : false
   const count   = activeTab === 'fathers' ? entries.length : crossRefs.length
@@ -846,7 +862,7 @@ export default function StudyScreen() {
                     </View>
                   ) : (
                     <FlatList
-                      data={crossRefs}
+                      data={sortedCrossRefs}
                       keyExtractor={r => `${r.ref_book}-${r.ref_chapter}-${r.ref_verse}`}
                       contentContainerStyle={styles.list}
                       renderItem={({ item }) => (

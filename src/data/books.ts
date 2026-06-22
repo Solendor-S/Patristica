@@ -135,3 +135,43 @@ export const EARLY_TEXTS: Array<{ name: string; chapters: number; testament: 'EA
 
 export const EARLY_TEXT_NAMES = new Set(EARLY_TEXTS.map(b => b.name))
 export const EARLY_TEXT_MAP   = Object.fromEntries(EARLY_TEXTS.map(b => [b.name, b]))
+
+// Short display names for books whose full name is too long for compact UI slots
+const SHORT_BOOK_NAMES: Record<string, string> = {
+  // Canonical
+  'Song of Solomon':    'Song of Sol.',
+  '1 Thessalonians':   '1 Thess.',
+  '2 Thessalonians':   '2 Thess.',
+  // Apocrypha
+  'Wisdom of Solomon':  'Wisdom',
+  'Prayer of Manasseh': 'Pr. Manasseh',
+  'Prayer of Azariah':  'Pr. Azariah',
+  'Bel and the Dragon': 'Bel & Dragon',
+  // Early texts — Ignatius
+  'Ignatius to the Ephesians':      'Ign. Ephesians',
+  'Ignatius to the Magnesians':     'Ign. Magnesians',
+  'Ignatius to the Trallians':      'Ign. Trallians',
+  'Ignatius to the Romans':         'Ign. Romans',
+  'Ignatius to the Philadelphians': 'Ign. Philad.',
+  'Ignatius to the Smyrnaeans':     'Ign. Smyrnaeans',
+  'Ignatius to Polycarp':           'Ign. Polycarp',
+  // Early texts — Epistles
+  'Epistle to Diognetus': 'Ep. Diognetus',
+  'Epistle of Barnabas':  'Ep. Barnabas',
+  'Epistle of Polycarp':  'Ep. Polycarp',
+  'Martyrdom of Polycarp':'Mart. Polycarp',
+  // Apologists
+  'Justin Martyr — First Apology':        'Justin — 1 Apol.',
+  'Justin Martyr — Dialogue with Trypho': 'Justin — Dialogue',
+  'Tertullian — Apologeticus':            'Tertullian — Apol.',
+  // Irenaeus
+  'Against Heresies Book 1': 'Ag. Heresies 1',
+  'Against Heresies Book 2': 'Ag. Heresies 2',
+  'Against Heresies Book 3': 'Ag. Heresies 3',
+  'Against Heresies Book 4': 'Ag. Heresies 4',
+  'Against Heresies Book 5': 'Ag. Heresies 5',
+}
+
+export function shortBookName(name: string): string {
+  return SHORT_BOOK_NAMES[name] ?? name
+}

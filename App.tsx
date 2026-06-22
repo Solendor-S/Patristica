@@ -21,11 +21,14 @@ import { OnboardingProvider, useOnboarding } from './src/context/OnboardingConte
 import { RedLetterProvider } from './src/context/RedLetterContext'
 import { StrongsInSearchProvider } from './src/context/StrongsInSearchContext'
 import { FocusModeProvider } from './src/context/FocusModeContext'
+import { OtQuoteCapsProvider } from './src/context/OtQuoteCapsContext'
 import { WordFocusProvider } from './src/context/WordFocusContext'
+import { PackProvider } from './src/context/PackContext'
 import { TabletLayoutProvider } from './src/context/TabletLayoutContext'
 import { ParallelTranslationProvider } from './src/context/ParallelTranslationContext'
 import { SpaceSaverProvider } from './src/context/SpaceSaverContext'
 import { SearchOrderProvider } from './src/context/SearchOrderContext'
+import { CrossRefOrderProvider } from './src/context/CrossRefOrderContext'
 import TutorialModal from './src/components/TutorialModal'
 import { Colors } from './src/theme/colors'
 
@@ -74,10 +77,13 @@ export default function App() {
           <RedLetterProvider>
           <StrongsInSearchProvider>
           <FocusModeProvider>
+          <OtQuoteCapsProvider>
+          <PackProvider>
           <WordFocusProvider>
           <TabletLayoutProvider>
           <ParallelTranslationProvider>
           <SearchOrderProvider>
+          <CrossRefOrderProvider>
           <SpaceSaverProvider>
           <OnboardingProvider>
             <DatabaseProvider>
@@ -85,10 +91,13 @@ export default function App() {
             </DatabaseProvider>
           </OnboardingProvider>
           </SpaceSaverProvider>
+          </CrossRefOrderProvider>
           </SearchOrderProvider>
           </ParallelTranslationProvider>
           </TabletLayoutProvider>
           </WordFocusProvider>
+          </PackProvider>
+          </OtQuoteCapsProvider>
           </FocusModeProvider>
           </StrongsInSearchProvider>
           </RedLetterProvider>

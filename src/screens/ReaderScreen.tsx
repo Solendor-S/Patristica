@@ -16,8 +16,11 @@ import {
   getChapter, getApocryphaChapter, getEarlyTextChapter, getEarlyTextFootnotes, isBookmarked, addBookmark, removeBookmark, recordHistory,
   getChapterHighlights, setHighlight, removeHighlight,
   getNote, saveNote, deleteNote, getConcordance, getChapterFootnotes, getStrongsEntry, getEarlyTextRefs, getChapterCrossRefMarkers,
+  getBsbChapterFootnotes,
+  getElxxChapterNotes,
+  getOtQuoteSpans,
 } from '../db/queries'
-import type { ConcordanceResult, StrongsEntry, StrongsConcordanceResult, EarlyTextRef } from '../db/queries'
+import type { ConcordanceResult, StrongsEntry, StrongsConcordanceResult, EarlyTextRef, OtQuoteSpan } from '../db/queries'
 import { getStrongsConcordance } from '../db/queries'
 import { StrongsConcordanceModal, TranslationVariantsModal } from './WordStudyPanel'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
@@ -26,6 +29,10 @@ import { useWordFocus } from '../context/WordFocusContext'
 import { useParallelTranslation } from '../context/ParallelTranslationContext'
 import type { Translation } from '../context/TranslationContext'
 import { useOnboarding } from '../context/OnboardingContext'
+import { useOtQuoteCaps } from '../context/OtQuoteCapsContext'
+import { usePacks } from '../context/PackContext'
+import { TRANSLATION_PACK_SLUG } from '../db/queries'
+import { isWordSourcePack, fetchOnlineWordsAsChapter } from '../lib/PackManager'
 import { useRedLetter } from '../context/RedLetterContext'
 import { useFocusMode } from '../context/FocusModeContext'
 import { useSpaceSaver } from '../context/SpaceSaverContext'
@@ -43,7 +50,7 @@ import type { BookPreface } from '../data/bookPrefaces'
 import { CanonicalPrefaceView, EarlyTextPrefaceView } from './PrefaceView'
 import { ScripturePreviewModal } from './ScripturePreviewModal'
 import { pendingNav } from '../navigation/pendingNav'
-import type { BibleVerse, BibleStackParamList, Footnote, CrossRef } from '../types'
+import type { BibleVerse, BibleStackParamList, Footnote, BsbFootnote, ElxxNote, CrossRef } from '../types'
 
 type Props = {
   navigation: NativeStackNavigationProp<BibleStackParamList, 'Reader'>
@@ -52,7 +59,7 @@ type Props = {
 
 import { HIGHLIGHT_COLORS, type ColorKey, getHighlightBg } from '../theme/highlightColors'
 
-type TaggedWord = { w: string; red: boolean; italic?: boolean }
+type TaggedWord = { w: string; red: boolean; italic?: boolean; caps?: boolean }
 
 const SUPERSCRIPT: Record<string, string> = {
   a:'ᵃ', b:'ᵇ', c:'ᶜ', d:'ᵈ', e:'ᵉ', f:'ᶠ', g:'ᵍ', h:'ʰ', i:'ⁱ', j:'ʲ',
@@ -142,6 +149,16 @@ function buildFnByWord(text: string, footnotes: Footnote[]): Map<number, Footnot
     if (insertAt < 0 && fn.word_index <= normWords.length) insertAt = fn.word_index
     if (insertAt > 0 && !map.has(insertAt)) map.set(insertAt, fn)
   }
+  return map
+}
+
+function buildVerseMap<T extends { verse: number }>(items: T[]): Map<number, T[]> {
+  const map = new Map<number, T[]>()
+  items.forEach(item => {
+    const arr = map.get(item.verse) ?? []
+    arr.push(item)
+    map.set(item.verse, arr)
+  })
   return map
 }
 
@@ -239,6 +256,26 @@ function applyItalics(seg: Segment): Segment[] {
   return result
 }
 
+function applyOtQuoteCaps(segments: Segment[], wordStart: number, wordEnd: number): Segment[] {
+  const result: Segment[] = []
+  let wordIdx = 0
+  for (const seg of segments) {
+    const tokens = seg.t.split(/(\s+)/)
+    let buf = ''
+    let bufCaps = seg.caps ?? false
+    for (const tok of tokens) {
+      if (/^\s+$/.test(tok) || tok === '') { buf += tok; continue }
+      const inQuote = wordIdx >= wordStart && wordIdx < wordEnd
+      if (inQuote !== bufCaps && buf) { result.push({ ...seg, t: buf, caps: bufCaps }); buf = '' }
+      bufCaps = inQuote
+      buf += tok
+      wordIdx++
+    }
+    if (buf) result.push({ ...seg, t: buf, caps: bufCaps })
+  }
+  return result
+}
+
 type DssSeg = { t: string; lacuna: boolean; uncertain: boolean; supralinear: boolean }
 
 function parseDssMarkers(text: string): DssSeg[] {
@@ -301,13 +338,92 @@ function renderKJVPlusTokens(
 // ── Inline scripture ref splitter (for early texts) ───────────────────────────
 // Splits prose on patterns like "Philippians 1:5", "1 Peter 1:8", "Ephesians 2:8-9"
 const INLINE_SCRIPTURE_RE = /(\[\d+\]|[1-3]?\s*[A-Z][a-z]+(?:\s+[A-Za-z]+)?\s+\d+:\d+(?:-\d+)?)/
-
 const INLINE_BOOK_RE = /^([1-3]?\s*[A-Z][a-z]+(?:\s+[A-Za-z]+)?)\s+(\d+):(\d+)/
+
+const BSB_BOOK_ALIASES: Record<string, string> = { Psalm: 'Psalms' }
+
+// ── E_LXX / Brenton reference parser (format: "Mat. 3. 3" or "John 1. 23") ──
+// Matches optional number prefix + book abbrev + chapter.verse with dots
+const ELXX_REF_RE = /([1-4]\s+)?([A-Z][A-Za-z]+)\.?\s+(\d+)\.\s*(\d+)/g
+
+// Brenton book abbreviation → canonical app book name
+// Numbered prefixes (1, 2, 3) are handled separately and prepended
+const BRENTON_BASE_BOOK: Record<string, string> = {
+  Mat: 'Matthew', Mark: 'Mark', Luke: 'Luke', John: 'John', Acts: 'Acts',
+  Rom: 'Romans', Cor: 'Corinthians', Gal: 'Galatians', Eph: 'Ephesians',
+  Phil: 'Philippians', Col: 'Colossians', Thes: 'Thessalonians',
+  Tim: 'Timothy', Tit: 'Titus', Phlm: 'Philemon', Heb: 'Hebrews',
+  Jas: 'James', Pet: 'Peter', Pe: 'Peter',
+  Jude: 'Jude', Rev: 'Revelation',
+  Gen: 'Genesis', Ex: 'Exodus', Lev: 'Leviticus', Num: 'Numbers',
+  Deu: 'Deuteronomy', Dt: 'Deuteronomy', Josh: 'Joshua', Jos: 'Joshua',
+  Judg: 'Judges', Ruth: 'Ruth', Sam: 'Samuel', Kings: 'Kings', Chr: 'Chronicles',
+  Ezr: 'Ezra', Neh: 'Nehemiah', Est: 'Esther', Job: 'Job',
+  Ps: 'Psalms', Psa: 'Psalms', Prov: 'Proverbs', Ecc: 'Ecclesiastes',
+  Song: 'Song of Solomon', Is: 'Isaiah', ISAIAH: 'Isaiah', Isa: 'Isaiah',
+  Jer: 'Jeremiah', Lam: 'Lamentations', Ezek: 'Ezekiel', Dan: 'Daniel',
+  Hos: 'Hosea', Joel: 'Joel', Amos: 'Amos', Obad: 'Obadiah',
+  Jon: 'Jonah', Mic: 'Micah', Nah: 'Nahum', Hab: 'Habakkuk',
+  Zeph: 'Zephaniah', Hag: 'Haggai', Zech: 'Zechariah', Mal: 'Malachi',
+}
+
+// LXX kingdom numbering → Hebrew canonical name
+const LXX_KINGDOM_MAP: Record<string, string> = {
+  '1 Kingdoms': '1 Samuel', '2 Kingdoms': '2 Samuel',
+  '3 Kingdoms': '1 Kings',  '4 Kingdoms': '2 Kings',
+}
+
+function parseElxxRef(numPrefix: string | undefined, abbrev: string, ch: string, v: string)
+  : { book: string; chapter: number; verse: number } | null {
+  const base = BRENTON_BASE_BOOK[abbrev]
+  if (!base) return null
+  const num = numPrefix?.trim()
+  const full = num ? `${num} ${base}` : base
+  const canonical = LXX_KINGDOM_MAP[full] ?? full
+  if (!BOOK_MAP[canonical]) return null
+  return { book: canonical, chapter: parseInt(ch, 10), verse: parseInt(v, 10) }
+}
+
+function renderElxxNoteText(
+  note: string,
+  linkStyle: any,
+  onPress: (ref: { book: string; chapter: number; verse: number }) => void,
+): React.ReactNode[] {
+  const parts: React.ReactNode[] = []
+  let last = 0
+  const re = new RegExp(ELXX_REF_RE.source, 'g')
+  let m: RegExpExecArray | null
+  while ((m = re.exec(note)) !== null) {
+    if (m.index > last) parts.push(<React.Fragment key={last}>{note.slice(last, m.index)}</React.Fragment>)
+    const ref = parseElxxRef(m[1], m[2], m[3], m[4])
+    if (ref) {
+      parts.push(
+        <Text key={m.index} style={linkStyle} onPress={() => onPress(ref)} suppressHighlighting>
+          {m[0]}
+        </Text>
+      )
+    } else {
+      parts.push(<React.Fragment key={m.index}>{m[0]}</React.Fragment>)
+    }
+    last = m.index + m[0].length
+  }
+  if (last < note.length) parts.push(<React.Fragment key={last}>{note.slice(last)}</React.Fragment>)
+  return parts
+}
+
+function parseBsbRef(raw: string): { book: string; chapter: number; verse: number } | null {
+  const s = raw.trim().replace(/^[Ss]ee\s+/, '')
+  const m = s.match(INLINE_BOOK_RE)
+  if (!m) return null
+  const book = BSB_BOOK_ALIASES[m[1].trim()] ?? m[1].trim()
+  if (!BOOK_MAP[book]) return null
+  return { book, chapter: parseInt(m[2], 10), verse: parseInt(m[3], 10) }
+}
 
 // ── VerseRow ──────────────────────────────────────────────
 
 const VerseRow = memo(function VerseRow({
-  verse, text, isSelected, isMirrorSelected, hlColor, onPress, onWordPress, onFnPress, redLetterOn, book, chapter, footnotes, compareText, compareLabel, isAnnotated, lazyAnnotation, compareIsAnnotated, lazyCompareAnnotation, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter, isEarlyText, onEarlyFnPress, onInlineRefPress, focusMode, crossRefs, onCrossRefPress,
+  verse, text, isSelected, isMirrorSelected, hlColor, onPress, onWordPress, onFnPress, onBsbFnPress, onElxxNotePress, redLetterOn, book, chapter, footnotes, bsbFootnotes, elxxNotes, compareText, compareLabel, isAnnotated, lazyAnnotation, compareIsAnnotated, lazyCompareAnnotation, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter, isEarlyText, onEarlyFnPress, onInlineRefPress, focusMode, crossRefs, onCrossRefPress, isBsb, compareIsBsb, compareBsbFootnotes, otQuoteSpans,
 }: {
   verse: number
   text: string
@@ -317,10 +433,14 @@ const VerseRow = memo(function VerseRow({
   onPress: (v: number) => void
   onWordPress: (word: string) => void
   onFnPress: (fn: Footnote) => void
+  onBsbFnPress: (fn: BsbFootnote) => void
+  onElxxNotePress: (n: ElxxNote) => void
   redLetterOn: boolean
   book: string
   chapter: number
   footnotes?: Footnote[]
+  bsbFootnotes?: BsbFootnote[]
+  elxxNotes?: ElxxNote[]
   compareText?: string
   compareLabel?: string
   isAnnotated?: boolean
@@ -338,6 +458,10 @@ const VerseRow = memo(function VerseRow({
   focusMode?: boolean
   crossRefs?: CrossRef[]
   onCrossRefPress?: (ref: CrossRef) => void
+  isBsb?: boolean
+  compareIsBsb?: boolean
+  compareBsbFootnotes?: BsbFootnote[]
+  otQuoteSpans?: OtQuoteSpan[]
 }) {
   const { colors } = useTheme()
   const { lineHeight } = useLineSpacing()
@@ -345,8 +469,25 @@ const VerseRow = memo(function VerseRow({
   const { fontFamily, fontScope } = useReaderFont()
   const styles = useMemo(() => makeStyles(colors, lineHeight, fontSize, fontFamily, fontScope), [colors, lineHeight, fontSize, fontFamily, fontScope])
 
-  const cleanText = useMemo(() => stripUsfm(text), [text])
-  const cleanCompareText = useMemo(() => compareText ? stripUsfm(compareText) : null, [compareText])
+  const cleanText = useMemo(() => {
+    const stripped = stripUsfm(text)
+    if (!isBsb) return stripped
+    // Collapse any run of 3+ dots (with optional spaces) into a single ". . ."
+    // then normalise [word] → {word} for italic rendering
+    return stripped
+      .replace(/(\.[ ]?){3,}/g, '. . . ')
+      .replace(/  +/g, ' ')
+      .replace(/\[([^\]0-9][^\]]*)\]/g, '{$1}')
+  }, [text, isBsb])
+  const cleanCompareText = useMemo(() => {
+    if (!compareText) return null
+    const stripped = stripUsfm(compareText)
+    if (!compareIsBsb) return stripped
+    return stripped
+      .replace(/(\.[ ]?){3,}/g, '. . . ')
+      .replace(/  +/g, ' ')
+      .replace(/\[([^\]0-9][^\]]*)\]/g, '{$1}')
+  }, [compareText, compareIsBsb])
   const hebrewTextStyle = isHebrew ? styles.hebrewText : undefined
 
   const kjvPlusTokens = useMemo(
@@ -365,19 +506,77 @@ const VerseRow = memo(function VerseRow({
     const isRL = redLetterOn && isRedLetter(book, chapter, verse)
     const base = markerSegs
       ?? (isRL && useHeuristicRedLetter ? splitRedLetterVerse(cleanText) : [{ t: cleanText, red: false }])
-    return cleanText.includes('{') ? base.flatMap(applyItalics) : base
-  }, [isAnnotated, isDss, isEarlyText, text, cleanText, redLetterOn, book, chapter, verse, useHeuristicRedLetter])
+    let segs = cleanText.includes('{') ? base.flatMap(applyItalics) : base
+    if (otQuoteSpans?.length) {
+      for (const span of otQuoteSpans) {
+        segs = applyOtQuoteCaps(segs, span.word_start, span.word_end)
+      }
+    }
+    return segs
+  }, [isAnnotated, isDss, isEarlyText, text, cleanText, redLetterOn, book, chapter, verse, useHeuristicRedLetter, otQuoteSpans])
 
   const fnByWord = useMemo(
     () => (!isAnnotated && !isDss && !isEarlyText && footnotes?.length) ? buildFnByWord(cleanText, footnotes) : null,
     [isAnnotated, isDss, isEarlyText, cleanText, footnotes],
   )
 
-  const compareEl = cleanCompareText ? (
-    compareKjvTokens
-      ? renderKJVPlusTokens(compareKjvTokens, styles.compareText, styles.strongsNum, styles.italicText, s => onStrongsPress?.(verse, s))
-      : <Text style={styles.compareText}>{cleanCompareText}</Text>
-  ) : null
+  const bsbFnByWord = useMemo(() => {
+    if (!bsbFootnotes?.length) return null
+    const map = new Map<number, BsbFootnote>()
+    for (const fn of bsbFootnotes) {
+      if (!map.has(fn.word_index)) map.set(fn.word_index, fn)
+    }
+    return map
+  }, [bsbFootnotes])
+
+  const elxxNoteByWord = useMemo(() => {
+    if (!elxxNotes?.length) return null
+    const map = new Map<number, ElxxNote>()
+    for (const n of elxxNotes) {
+      if (!map.has(n.word_index)) map.set(n.word_index, n)
+    }
+    return map
+  }, [elxxNotes])
+
+  // Must be before any early returns to satisfy Rules of Hooks
+  const earlyParagraphs = useMemo(
+    () => isEarlyText ? text.split(/\n{2,}/).map(para => para.split(INLINE_SCRIPTURE_RE)) : null,
+    [isEarlyText, text]
+  )
+
+  const compareBsbFnByWord = useMemo(() => {
+    if (!compareBsbFootnotes?.length) return null
+    const map = new Map<number, BsbFootnote>()
+    for (const fn of compareBsbFootnotes) {
+      if (!map.has(fn.word_index)) map.set(fn.word_index, fn)
+    }
+    return map
+  }, [compareBsbFootnotes])
+
+  const compareEl = useMemo(() => {
+    if (!cleanCompareText) return null
+    if (compareKjvTokens) {
+      return renderKJVPlusTokens(compareKjvTokens, styles.compareText, styles.strongsNum, styles.italicText, s => onStrongsPress?.(verse, s))
+    }
+    if (compareBsbFnByWord) {
+      // BSB parallel: render word-by-word so [fn] markers can be inserted
+      const elems: React.ReactNode[] = []
+      let wordIdx = 0
+      cleanCompareText.split(/(\s+)/).forEach((tok, i) => {
+        if (/^\s+$/.test(tok) || !tok) { elems.push(<React.Fragment key={i}>{tok}</React.Fragment>); return }
+        const isItalic = tok.startsWith('{') && tok.endsWith('}')
+        const word = isItalic ? tok.slice(1, -1) : tok
+        elems.push(<Text key={i} style={isItalic ? styles.italicText : undefined}>{word}</Text>)
+        const fn = compareBsbFnByWord.get(wordIdx)
+        if (fn) elems.push(
+          <Text key={`fn${i}`} style={styles.bsbFnMarker} onPress={() => onBsbFnPress(fn)} suppressHighlighting>[fn]</Text>
+        )
+        wordIdx++
+      })
+      return <Text style={styles.compareText}>{elems}</Text>
+    }
+    return <Text style={styles.compareText}>{cleanCompareText}</Text>
+  }, [cleanCompareText, compareKjvTokens, compareBsbFnByWord, styles, verse, onStrongsPress, onBsbFnPress])
 
   if (isDss) {
     const allReadings = text.split(/\s*׃\s*/).map(s => s.trim()).filter(Boolean)
@@ -412,11 +611,6 @@ const VerseRow = memo(function VerseRow({
       </TouchableOpacity>
     )
   }
-
-  const earlyParagraphs = useMemo(
-    () => isEarlyText ? text.split(/\n{2,}/).map(para => para.split(INLINE_SCRIPTURE_RE)) : null,
-    [isEarlyText, text]
-  )
 
   if (isEarlyText && earlyParagraphs) {
     return (
@@ -489,7 +683,7 @@ const VerseRow = memo(function VerseRow({
 
   if (isSelected) {
     const tagged: TaggedWord[] = segments.flatMap(seg =>
-      seg.t.trim().split(/\s+/).filter(Boolean).map(w => ({ w, red: seg.red, italic: seg.italic }))
+      seg.t.trim().split(/\s+/).filter(Boolean).map(w => ({ w, red: seg.red, italic: seg.italic, caps: seg.caps }))
     )
     const elems: React.ReactNode[] = []
     tagged.forEach((tw, i) => {
@@ -497,7 +691,7 @@ const VerseRow = memo(function VerseRow({
       const hasSpace = i < tagged.length - 1
       elems.push(
         <Text key={`w${i}`} onPress={() => onWordPress(tw.w)} suppressHighlighting
-          style={[styles.verseText, hebrewTextStyle, styles.verseTextSelected, tw.red ? styles.redLetterSelected : undefined, tw.italic ? styles.italicText : undefined]}>
+          style={[styles.verseText, hebrewTextStyle, styles.verseTextSelected, tw.red ? styles.redLetterSelected : undefined, tw.italic ? styles.italicText : undefined, tw.caps ? styles.capsText : undefined]}>
           {tw.w}{hasSpace ? ' ' : ''}
         </Text>
       )
@@ -506,6 +700,14 @@ const VerseRow = memo(function VerseRow({
         <Text key={`fn${i}`} onPress={() => onFnPress(fn)} suppressHighlighting style={[styles.fnMarker, styles.fnMarkerSelected]}>
           {`[${fn.marker}]`}{' '}
         </Text>
+      )
+      const bsbFn = bsbFnByWord?.get(i)
+      if (bsbFn) elems.push(
+        <Text key={`bfn${i}`} onPress={() => onBsbFnPress(bsbFn)} suppressHighlighting style={[styles.bsbFnMarker, styles.fnMarkerSelected]}>[fn]</Text>
+      )
+      const elxxN = elxxNoteByWord?.get(i)
+      if (elxxN) elems.push(
+        <Text key={`efn${i}`} onPress={() => onElxxNotePress(elxxN)} suppressHighlighting style={[styles.bsbFnMarker, styles.fnMarkerSelected]}>[fn]</Text>
       )
     })
     // Use View+flexWrap instead of Text parent so each word is a bounded flex item.
@@ -544,7 +746,7 @@ const VerseRow = memo(function VerseRow({
 
   // Non-selected: fast path if no footnotes
   const useFocus = focusMode && !isHebrew && !isAnnotated
-  if (!fnByWord) {
+  if (!fnByWord && !bsbFnByWord?.size && !elxxNoteByWord?.size) {
     return (
       <TouchableOpacity
         activeOpacity={0.7}
@@ -566,7 +768,7 @@ const VerseRow = memo(function VerseRow({
                 ) : (
                   <Text style={[styles.verseText, hebrewTextStyle]}>
                     {segments.map((seg, i) => (
-                      <Text key={i} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined]}>{seg.t}</Text>
+                      <Text key={i} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined]}>{seg.t}</Text>
                     ))}
                   </Text>
                 )}
@@ -584,7 +786,7 @@ const VerseRow = memo(function VerseRow({
           ) : (
             <Text style={[styles.verseText, hebrewTextStyle]}>
               {segments.map((seg, i) => (
-                <Text key={i} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined]}>{seg.t}</Text>
+                <Text key={i} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined]}>{seg.t}</Text>
               ))}
             </Text>
           )}
@@ -604,7 +806,7 @@ const VerseRow = memo(function VerseRow({
         return
       }
       wordIdx++
-      const segStyle = [seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined]
+      const segStyle = [seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined]
       if (useFocus) {
         const [bold, rest] = focusSplit(token)
         elems.push(
@@ -615,11 +817,19 @@ const VerseRow = memo(function VerseRow({
       } else {
         elems.push(<Text key={key} style={segStyle}>{token}</Text>)
       }
-      const fn = fnByWord.get(wordIdx)
+      const fn = fnByWord?.get(wordIdx)
       if (fn) elems.push(
         <Text key={`fn-${key}`} onPress={() => onFnPress(fn)} suppressHighlighting style={styles.fnMarker}>
           {`[${fn.marker}]`}
         </Text>
+      )
+      const bsbFn = bsbFnByWord?.get(wordIdx - 1)
+      if (bsbFn) elems.push(
+        <Text key={`bfn-${key}`} onPress={() => onBsbFnPress(bsbFn)} suppressHighlighting style={styles.bsbFnMarker}>[fn]</Text>
+      )
+      const elxxN = elxxNoteByWord?.get(wordIdx - 1)
+      if (elxxN) elems.push(
+        <Text key={`efn-${key}`} onPress={() => onElxxNotePress(elxxN)} suppressHighlighting style={styles.bsbFnMarker}>[fn]</Text>
       )
     })
   })
@@ -704,7 +914,7 @@ function focusSplit(word: string): [string, string] {
 
 function renderFocusSegments(segments: Segment[], styles: ReturnType<typeof makeStyles>): React.ReactNode[] {
   return segments.flatMap((seg, si) => {
-    const segStyle = seg.red ? styles.redLetterText : seg.italic ? styles.italicText : undefined
+    const segStyle = [seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined]
     return seg.t.split(/(\s+)/).map((token, ti) => {
       const key = `f${si}-${ti}`
       if (/^\s+$/.test(token) || !token) return <React.Fragment key={key}>{token}</React.Fragment>
@@ -936,15 +1146,21 @@ function StrongsModal({
 
 // ── DSS Key modal ─────────────────────────────────────────
 
-const DSS_KEY_ENTRIES: Array<{ label: string; desc: string; color?: string; small?: boolean }> = [
-  { label: 'Normal text',              desc: 'Clearly preserved consonants' },
-  { label: 'Reconstructed',           desc: 'Lacuna — letters restored by scholars from context', color: '#808080', small: true },
-  { label: 'Uncertain',               desc: 'Letter is readable but not fully certain in the manuscript', color: '#5B9BD5' },
-  { label: 'Supralinear',             desc: 'Added above the main line — scribal correction or insertion (shown smaller)', small: true },
-  { label: 'Uncertain + supralinear', desc: 'Both unclear and written above the line (shown smaller, in blue)', color: '#5B9BD5', small: true },
+const BSB_KEY_ENTRIES: Array<{ label: string; desc: string }> = [
+  { label: '. . .', desc: 'One or more Greek words folded into the surrounding English phrase — shown for transparency' },
+  { label: 'italic text', desc: 'Supplied word not present in the original — added for English readability' },
+  { label: '[fn]', desc: 'Tap to view a translator footnote for that word' },
 ]
 
-function DssKeyModal({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+type KeyEntry = { label: string; desc: string; color?: string; small?: boolean }
+
+function KeyModal({ visible, onClose, title, entries, footer }: {
+  visible: boolean
+  onClose: () => void
+  title: string
+  entries: KeyEntry[]
+  footer: string
+}) {
   const { colors } = useTheme()
   const { bottom } = useSafeAreaInsets()
   const conc = useMemo(() => makeConc(colors), [colors])
@@ -953,13 +1169,13 @@ function DssKeyModal({ visible, onClose }: { visible: boolean; onClose: () => vo
       <View style={conc.overlay}>
         <View style={[conc.sheet, { paddingBottom: Math.max(24, 12 + bottom) }]}>
           <View style={conc.header}>
-            <Text style={conc.word}>DSS Text Key</Text>
+            <Text style={conc.word}>{title}</Text>
             <TouchableOpacity onPress={onClose} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
               <Ionicons name="close" size={22} color={colors.textMuted} />
             </TouchableOpacity>
           </View>
           <View style={{ paddingHorizontal: 20, paddingTop: 8, gap: 16 }}>
-            {DSS_KEY_ENTRIES.map(entry => (
+            {entries.map(entry => (
               <View key={entry.label} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12 }}>
                 <View style={{ width: 12, height: 12, borderRadius: 6, marginTop: 4, backgroundColor: entry.color ?? colors.textPrimary, opacity: entry.color ? 1 : 0.9 }} />
                 <View style={{ flex: 1 }}>
@@ -970,15 +1186,21 @@ function DssKeyModal({ visible, onClose }: { visible: boolean; onClose: () => vo
                 </View>
               </View>
             ))}
-            <Text style={{ fontSize: 12, color: colors.textMuted, fontStyle: 'italic', marginTop: 4 }}>
-              Multiple readings per verse reflect different scroll manuscripts attesting the same passage.
-            </Text>
+            <Text style={{ fontSize: 12, color: colors.textMuted, fontStyle: 'italic', marginTop: 4 }}>{footer}</Text>
           </View>
         </View>
       </View>
     </Modal>
   )
 }
+
+const DSS_KEY_ENTRIES: KeyEntry[] = [
+  { label: 'Normal text',              desc: 'Clearly preserved consonants' },
+  { label: 'Reconstructed',           desc: 'Lacuna — letters restored by scholars from context', color: '#808080', small: true },
+  { label: 'Uncertain',               desc: 'Letter is readable but not fully certain in the manuscript', color: '#5B9BD5' },
+  { label: 'Supralinear',             desc: 'Added above the main line — scribal correction or insertion (shown smaller)', small: true },
+  { label: 'Uncertain + supralinear', desc: 'Both unclear and written above the line (shown smaller, in blue)', color: '#5B9BD5', small: true },
+]
 
 // ── Early text scripture refs section ────────────────────────────────────────
 
@@ -1080,6 +1302,12 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const { showFab, openTutorial } = useOnboarding()
   const { redLetterOn, toggleRedLetter } = useRedLetter()
   const { focusMode } = useFocusMode()
+  const { otQuoteCapsOn } = useOtQuoteCaps()
+  const { isInstalled, getPackDb, fetchOnline, packForContent } = usePacks()
+  const packDbRef = useRef<import('expo-sqlite').SQLiteDatabase | null>(null)
+  const [isOnlineMode, setIsOnlineMode] = useState(false)
+  // Increments each time packDbRef is set — triggers chapter reload when pack DB becomes ready
+  const [packDbVersion, setPackDbVersion] = useState(0)
   const { spaceSaverOn, chromeHidden, setChromeHidden } = useSpaceSaver()
   const footerSlideAnim = useRef(new Animated.Value(0)).current
   const [footerHeight, setFooterHeight] = useState(60)
@@ -1108,9 +1336,15 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [showColorPicker, setShowColorPicker] = useState(false)
 
   const [footnotesByVerse, setFootnotesByVerse] = useState<Map<number, Footnote[]>>(new Map())
+  const [bsbFnsByVerse, setBsbFnsByVerse] = useState<Map<number, BsbFootnote[]>>(new Map())
+  const [elxxNotesByVerse, setElxxNotesByVerse] = useState<Map<number, ElxxNote[]>>(new Map())
+  const [compareBsbFnsByVerse, setCompareBsbFnsByVerse] = useState<Map<number, BsbFootnote[]>>(new Map())
+  const [otQuoteSpansByVerse, setOtQuoteSpansByVerse] = useState<Map<number, OtQuoteSpan[]>>(new Map())
   const [crossRefsByVerse, setCrossRefsByVerse] = useState<Map<number, CrossRef[]>>(new Map())
   const [splitCrossRefsByVerse, setSplitCrossRefsByVerse] = useState<Map<number, CrossRef[]>>(new Map())
   const [activeFn, setActiveFn] = useState<Footnote | null>(null)
+  const [activeBsbFn, setActiveBsbFn] = useState<BsbFootnote | null>(null)
+  const [activeElxxNote, setActiveElxxNote] = useState<ElxxNote | null>(null)
   const [activeCrossRef, setActiveCrossRef] = useState<CrossRef | null>(null)
   const [scripturePreview, setScripturePreview] = useState<{ book: string; chapter: number; verse: number; preloadedText?: string; chapterVerses?: { verse: number; text: string }[] } | null>(null)
   const earlyFnMapRef = useRef(new Map<number, string>())
@@ -1139,6 +1373,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
   const [dssAllReadings, setDssAllReadings] = useState(true)
   const [dssKeyOpen, setDssKeyOpen] = useState(false)
+  const [bsbKeyOpen, setBsbKeyOpen] = useState(false)
 
   // ── Browser-style reading history ─────────────────────────
   type NavEntry = { book: string; chapter: number; earlyText: boolean; apocrypha: boolean }
@@ -1273,12 +1508,17 @@ export default function ReaderScreen({ navigation, route }: Props) {
     Animated.spring(colorPickerAnim, { toValue: 0, useNativeDriver: false, bounciness: 0 }).start()
     setLoadError(null)
     setActiveFn(null)
+    setActiveBsbFn(null)
+    setActiveElxxNote(null)
     setActiveCrossRef(null)
     setScripturePreview(null)
 
     if (!isTranslationOnly) {
       setLoading(true)
       setFootnotesByVerse(new Map())
+      setBsbFnsByVerse(new Map())
+      setElxxNotesByVerse(new Map())
+      setOtQuoteSpansByVerse(new Map())
       setEarlyRefs([])
     }
 
@@ -1288,6 +1528,9 @@ export default function ReaderScreen({ navigation, route }: Props) {
       setVerses([])
       setHighlights({})
       setFootnotesByVerse(new Map())
+      setBsbFnsByVerse(new Map())
+      setElxxNotesByVerse(new Map())
+      setOtQuoteSpansByVerse(new Map())
       earlyFnMapRef.current = new Map()
       setEarlyRefs([])
       setLoading(false)
@@ -1295,20 +1538,46 @@ export default function ReaderScreen({ navigation, route }: Props) {
     }
     setPrefaceData(null)
 
+    // Compute pack routing once — used in both the isTranslationOnly and main paths
+    const packDb = packDbRef.current ?? undefined
+    const packCType = isApocrypha ? 'apocrypha' as const : isEarlyText ? 'early_text' as const : null
+    const packSlug  = packCType ? packForContent(packCType, book)?.slug : TRANSLATION_PACK_SLUG[translation]
+    const useOnline = !!packSlug && !isInstalled(packSlug)
+    const useWordSource = !!packSlug && isWordSourcePack(packSlug)
+    setIsOnlineMode(useOnline)
+
     if (isTranslationOnly) {
       // Only the translation changed — fetch new verse text and swap in place.
       // FlatList stays mounted. We resolve the restore index while rows are in scope,
       // then defer the scroll 100ms so native layout finishes before scrollToIndex fires.
       const topVerse = topVisibleVerseRef.current
-      const fetchFn = isEarlyText ? getEarlyTextChapter(db, book, chapter)
-        : isApocrypha         ? getApocryphaChapter(db, book, chapter)
-        :                       getChapter(db, book, chapter, translation)
-      fetchFn
-        .then(rows => {
+      const fetchFn = useOnline && useWordSource
+        ? fetchOnlineWordsAsChapter(packSlug!, book, chapter)
+            .then(vs => vs ?? [])
+        : useOnline
+        ? fetchOnline(packSlug!, book, chapter)
+            .then(vs => (vs ?? []).map(v => ({ book, chapter, verse: v.verse, text: v.text })))
+        : isEarlyText ? getEarlyTextChapter(db, book, chapter, packDb)
+        : isApocrypha ? getApocryphaChapter(db, book, chapter, packDb)
+        :               getChapter(db, book, chapter, translation, packDb)
+      const fetchBsbFns = (!isApocrypha && !isEarlyText && translation === 'BSB')
+        ? getBsbChapterFootnotes(db, book, chapter, packDb).catch(() => [] as Awaited<ReturnType<typeof getBsbChapterFootnotes>>)
+        : Promise.resolve([] as Awaited<ReturnType<typeof getBsbChapterFootnotes>>)
+      const fetchElxxNotes = (!isApocrypha && !isEarlyText && translation === 'E_LXX')
+        ? getElxxChapterNotes(db, book, chapter).catch(() => [] as Awaited<ReturnType<typeof getElxxChapterNotes>>)
+        : Promise.resolve([] as Awaited<ReturnType<typeof getElxxChapterNotes>>)
+      const fetchOtSpans = (!isApocrypha && !isEarlyText && otQuoteCapsOn && BOOK_MAP[book]?.testament === 'NT')
+        ? getOtQuoteSpans(db, book, chapter).catch(() => [] as OtQuoteSpan[])
+        : Promise.resolve([] as OtQuoteSpan[])
+      Promise.all([fetchFn, fetchBsbFns, fetchElxxNotes, fetchOtSpans])
+        .then(([rows, bsbFns, elxxNotes, otSpans]) => {
           if (topVerse !== null) {
             const idx = rows.findIndex(v => v.verse === topVerse)
             if (idx > 0) pendingScrollIdxRef.current = idx
           }
+          setBsbFnsByVerse(buildVerseMap(bsbFns as BsbFootnote[]))
+          setElxxNotesByVerse(buildVerseMap(elxxNotes as ElxxNote[]))
+          setOtQuoteSpansByVerse(buildVerseMap(otSpans as OtQuoteSpan[]))
           // Changing the key forces FlatList to remount with fresh measurements.
           // This avoids stale item heights from the previous translation causing
           // scrollToIndex to land in the wrong place.
@@ -1319,7 +1588,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
       return
     }
 
-    const shouldFetchFootnotes = !isApocrypha && !isEarlyText && translation === 'KJV'
+    const shouldFetchFootnotes  = !isApocrypha && !isEarlyText && translation === 'KJV'
+    const shouldFetchBsbFns     = !isApocrypha && !isEarlyText && translation === 'BSB'
+    const shouldFetchElxxNotes  = !isApocrypha && !isEarlyText && translation === 'E_LXX'
+    const shouldFetchOtSpans    = !isApocrypha && !isEarlyText && otQuoteCapsOn && BOOK_MAP[book]?.testament === 'NT'
     const highlightsWithTimeout = new Promise<Awaited<ReturnType<typeof getChapterHighlights>>>(resolve => {
       const tid = setTimeout(() => resolve([]), 3000)
       getChapterHighlights(userDb, book, chapter)
@@ -1327,47 +1599,98 @@ export default function ReaderScreen({ navigation, route }: Props) {
         .catch(() => { clearTimeout(tid); resolve([]) })
     })
     Promise.all([
-      isEarlyText  ? getEarlyTextChapter(db, book, chapter)
-      : isApocrypha ? getApocryphaChapter(db, book, chapter)
-      :               getChapter(db, book, chapter, translation),
+      useOnline && useWordSource
+        ? fetchOnlineWordsAsChapter(packSlug!, book, chapter).then(vs => vs ?? [])
+        : useOnline ? fetchOnline(packSlug!, book, chapter)
+                         .then(vs => (vs ?? []).map(v => ({ book, chapter, verse: v.verse, text: v.text })))
+      : isEarlyText   ? getEarlyTextChapter(db, book, chapter, packDb)
+      : isApocrypha   ? getApocryphaChapter(db, book, chapter, packDb)
+      :                 getChapter(db, book, chapter, translation, packDb),
       highlightsWithTimeout,
       shouldFetchFootnotes
         ? getChapterFootnotes(db, book, chapter).catch(() => [] as Awaited<ReturnType<typeof getChapterFootnotes>>)
         : Promise.resolve([]),
-      isEarlyText
-        ? getEarlyTextFootnotes(db, book, chapter).catch(() => null)
+      isEarlyText && !useOnline
+        ? getEarlyTextFootnotes(db, book, chapter, packDb).catch(() => null)
         : Promise.resolve(null),
-      isEarlyText
-        ? getEarlyTextRefs(db, book, chapter).catch(() => [])
+      isEarlyText && !useOnline
+        ? getEarlyTextRefs(db, book, chapter, packDb).catch(() => [])
         : Promise.resolve([]),
       (!isEarlyText && !isApocrypha && BOOK_MAP[book]?.testament === 'NT')
         ? getChapterCrossRefMarkers(db, book, chapter).catch(() => new Map<number, CrossRef[]>())
         : Promise.resolve(new Map<number, CrossRef[]>()),
-    ]).then(([rows, hl, fns, efns, erefs, crMap]) => {
+      shouldFetchBsbFns
+        ? getBsbChapterFootnotes(db, book, chapter, packDb).catch(() => [] as Awaited<ReturnType<typeof getBsbChapterFootnotes>>)
+        : Promise.resolve([]),
+      shouldFetchElxxNotes
+        ? getElxxChapterNotes(db, book, chapter).catch(() => [] as Awaited<ReturnType<typeof getElxxChapterNotes>>)
+        : Promise.resolve([]),
+      shouldFetchOtSpans
+        ? getOtQuoteSpans(db, book, chapter).catch(() => [] as OtQuoteSpan[])
+        : Promise.resolve([] as OtQuoteSpan[]),
+    ]).then(([rows, hl, fns, efns, erefs, crMap, bsbFns, elxxNotes, otSpans]) => {
       earlyFnMapRef.current = (efns as Map<number, string> | null) ?? new Map()
       setEarlyRefs(erefs as EarlyTextRef[])
       setVerses(rows)
       const hlMap: Record<number, string> = {}
       hl.forEach(h => { hlMap[h.verse] = h.color })
       setHighlights(hlMap)
-      const fnMap = new Map<number, Footnote[]>()
-      fns.forEach(fn => {
-        const arr = fnMap.get(fn.verse) ?? []
-        arr.push(fn)
-        fnMap.set(fn.verse, arr)
-      })
-      setFootnotesByVerse(fnMap)
+      setFootnotesByVerse(buildVerseMap(fns as Footnote[]))
+      setBsbFnsByVerse(buildVerseMap(bsbFns as BsbFootnote[]))
+      setElxxNotesByVerse(buildVerseMap(elxxNotes as ElxxNote[]))
+      setOtQuoteSpansByVerse(buildVerseMap(otSpans as OtQuoteSpan[]))
       setCrossRefsByVerse(crMap as Map<number, CrossRef[]>)
       setLoading(false)
     }).catch((e: any) => {
       setLoadError(String(e?.message ?? e))
       setLoading(false)
     })
-  }, [book, chapter, translation, isApocrypha, isEarlyText])
+  }, [book, chapter, translation, isApocrypha, isEarlyText, packDbVersion, isInstalled])
 
   useEffect(() => {
     recordHistory(userDb, book, chapter)
   }, [book, chapter])
+
+  // Resolve pack DB (or online mode) whenever book/translation changes
+  useEffect(() => {
+    // Apocrypha and early texts use per-book packs
+    const contentType = isApocrypha ? 'apocrypha' : isEarlyText ? 'early_text' : null
+    const slug = contentType
+      ? packForContent(contentType, book)?.slug
+      : TRANSLATION_PACK_SLUG[translation]
+
+    if (!slug) {
+      packDbRef.current = null
+      setPackDbVersion(v => v + 1)
+      return
+    }
+    if (isInstalled(slug)) {
+      getPackDb(slug).then(db => {
+        packDbRef.current = db
+        // Bump version so the chapter-load effect re-fires with the now-ready pack DB
+        setPackDbVersion(v => v + 1)
+      })
+    } else {
+      packDbRef.current = null
+      setPackDbVersion(v => v + 1)
+    }
+  }, [translation, book, isApocrypha, isEarlyText, isInstalled, getPackDb, packForContent])
+
+  // Re-fetch OT quote spans when the setting is toggled while on an NT chapter.
+  // The main chapter effect only runs on book/chapter/translation change, so
+  // toggling otQuoteCapsOn mid-chapter requires this separate effect.
+  // Handles toggling caps ON/OFF mid-chapter. Book/chapter navigation is handled
+  // by the main chapter-load effect — excluding them here prevents a double fetch.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!otQuoteCapsOn || isApocrypha || isEarlyText || BOOK_MAP[book]?.testament !== 'NT') {
+      if (!otQuoteCapsOn) setOtQuoteSpansByVerse(new Map())
+      return
+    }
+    getOtQuoteSpans(db, book, chapter).then(spans => {
+      setOtQuoteSpansByVerse(buildVerseMap(spans))
+    }).catch(() => {})
+  }, [otQuoteCapsOn])
 
   // Track reading history for back/forward nav
   useEffect(() => {
@@ -1402,6 +1725,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   useEffect(() => {
     if (!compareTrans) {
       setCompareMap(prev => prev.size > 0 ? new Map() : prev)
+      setCompareBsbFnsByVerse(new Map())
       return
     }
     getChapter(db, book, chapter, compareTrans).then(rows => {
@@ -1409,6 +1733,15 @@ export default function ReaderScreen({ navigation, route }: Props) {
       rows.forEach(v => m.set(v.verse, v.text))
       setCompareMap(m)
     }).catch(() => setCompareMap(prev => prev.size > 0 ? new Map() : prev))
+    if (compareTrans === 'BSB') {
+      getPackDb('bsb').then(bsbDb =>
+        getBsbChapterFootnotes(db, book, chapter, bsbDb)
+          .then(fns => setCompareBsbFnsByVerse(buildVerseMap(fns)))
+          .catch(() => setCompareBsbFnsByVerse(new Map()))
+      )
+    } else {
+      setCompareBsbFnsByVerse(new Map())
+    }
   }, [compareTrans, book, chapter])
 
   // Load persisted split state
@@ -1668,6 +2001,13 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
   const toggleSplit = useCallback(() => {
     const next = !splitOn
+    // Preserve scroll position — the layout change triggers onContentSizeChange
+    // which will scroll back to this verse once the new layout is measured.
+    const topVerse = topVisibleVerseRef.current
+    if (topVerse !== null) {
+      const idx = verses.findIndex(v => v.verse === topVerse)
+      if (idx > 0) pendingScrollIdxRef.current = idx
+    }
     setSplitOn(next); splitOnRef.current = next
     if (next) {
       parallelOnBeforeSplitRef.current = parallelOn
@@ -1677,7 +2017,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       if (parallelOnBeforeSplitRef.current) setParallelOn(true)
     }
     saveSplitSetting('split_on', next ? '1' : '0')
-  }, [splitOn, parallelOn, setParallelOn, saveSplitSetting])
+  }, [splitOn, parallelOn, setParallelOn, saveSplitSetting, verses])
   const currentHighlightColor = selectedVerse !== null ? highlights[selectedVerse] : undefined
 
   const openEarlyFn = useCallback((marker: number) => {
@@ -1796,10 +2136,14 @@ export default function ReaderScreen({ navigation, route }: Props) {
       onPress={selectVerse}
       onWordPress={openConcordance}
       onFnPress={setActiveFn}
+      onBsbFnPress={setActiveBsbFn}
+      onElxxNotePress={setActiveElxxNote}
       redLetterOn={redLetterOn}
       book={book}
       chapter={chapter}
       footnotes={footnotesByVerse.get(item.verse)}
+      bsbFootnotes={bsbFnsByVerse.get(item.verse)}
+      elxxNotes={elxxNotesByVerse.get(item.verse)}
       compareText={parallelOn && compareTrans ? compareMap.get(item.verse) : undefined}
       compareLabel={undefined}
       isAnnotated={isAnnotatedTrans}
@@ -1817,8 +2161,12 @@ export default function ReaderScreen({ navigation, route }: Props) {
       focusMode={focusMode}
       crossRefs={crossRefsByVerse.get(item.verse)}
       onCrossRefPress={openCrossRefPreview}
+      isBsb={translation === 'BSB'}
+      compareIsBsb={compareTrans === 'BSB'}
+      compareBsbFootnotes={parallelOn && compareTrans === 'BSB' ? compareBsbFnsByVerse.get(item.verse) : undefined}
+      otQuoteSpans={otQuoteCapsOn ? otQuoteSpansByVerse.get(item.verse) : undefined}
     />
-  ), [selectedVerse, highlights, selectVerse, splitOn, activeSplitPane, openConcordance, redLetterOn, book, chapter, footnotesByVerse, compareTrans, parallelOn, compareMap, isAnnotatedTrans, openStrongs, isDss, dssAllReadings, isHebrew, translation, isEarlyText, openEarlyFn, onEarlyRefPress, focusMode, crossRefsByVerse])
+  ), [selectedVerse, highlights, selectVerse, splitOn, activeSplitPane, openConcordance, redLetterOn, book, chapter, footnotesByVerse, bsbFnsByVerse, elxxNotesByVerse, otQuoteSpansByVerse, compareTrans, parallelOn, compareMap, compareBsbFnsByVerse, isAnnotatedTrans, openStrongs, isDss, dssAllReadings, isHebrew, translation, isEarlyText, openEarlyFn, onEarlyRefPress, focusMode, crossRefsByVerse, otQuoteCapsOn])
   const renderSplitVerseRow = useCallback(({ item }: { item: BibleVerse }) => (
     <VerseRow
       verse={item.verse}
@@ -1829,6 +2177,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
       onPress={selectSplitVerse}
       onWordPress={openConcordance}
       onFnPress={setActiveFn}
+      onBsbFnPress={setActiveBsbFn}
+      onElxxNotePress={setActiveElxxNote}
       redLetterOn={redLetterOn}
       book={splitBook}
       chapter={splitChapter}
@@ -1854,22 +2204,57 @@ export default function ReaderScreen({ navigation, route }: Props) {
   ), [activeSplitPane, selectedVerse, selectSplitVerse, splitBook, splitChapter, openConcordance, openStrongs, splitTranslation, dssAllReadings, redLetterOn, openEarlyFn, onEarlyRefPress, focusMode, splitIsEarlyText, splitCrossRefsByVerse])
 
   const flatListExtraData = useMemo(
-    () => ({ selectedVerse, highlights, dssAllReadings, redLetterOn, focusMode, activeSplitPane }),
-    [selectedVerse, highlights, dssAllReadings, redLetterOn, focusMode, activeSplitPane]
+    () => ({ selectedVerse, highlights, dssAllReadings, redLetterOn, focusMode, activeSplitPane, otQuoteCapsOn, otQuoteSpansByVerse }),
+    [selectedVerse, highlights, dssAllReadings, redLetterOn, focusMode, activeSplitPane, otQuoteCapsOn, otQuoteSpansByVerse]
   )
   const currentSwatch = currentHighlightColor
     ? HIGHLIGHT_COLORS.find(c => c.key === currentHighlightColor)?.swatch
     : undefined
 
-  const renderTransRow = useCallback((t: typeof TRANSLATIONS[number], active: boolean, onPress: () => void) => (
-    <TouchableOpacity key={t.key} style={modal.translationRow} activeOpacity={0.7} onPress={onPress}>
-      <View style={modal.translationInfo}>
-        <Text style={[modal.translationKey, active && modal.translationKeyActive]}>{t.label}</Text>
-        <Text style={modal.translationFull}>{t.full}</Text>
-      </View>
-      {active && <Ionicons name="checkmark" size={18} color={colors.accent} />}
-    </TouchableOpacity>
-  ), [modal, colors.accent])
+  const { isInstalled: packInstalled, isDownloading: packDownloading, download: downloadPack, downloading: packDownloadProgress } = usePacks()
+
+  const renderTransRow = useCallback((t: typeof TRANSLATIONS[number], active: boolean, onPress: () => void) => {
+    const slug = TRANSLATION_PACK_SLUG[t.key]
+    const needsPack = !!slug
+    const installed = !slug || packInstalled(slug)
+    const isLoading = slug ? packDownloading(slug) : false
+    const progress = slug ? (packDownloadProgress.get(slug) ?? 0) : 0
+
+    return (
+      <TouchableOpacity key={t.key} style={modal.translationRow} activeOpacity={0.7}
+        onPress={onPress}>
+        <View style={modal.translationInfo}>
+          <Text style={[modal.translationKey, active && modal.translationKeyActive]}>{t.label}</Text>
+          <Text style={modal.translationFull}>{t.full}</Text>
+          {needsPack && !installed && !isLoading && (
+            <Text style={{ fontSize: 10, color: colors.textMuted, marginTop: 1 }}>🌐 Online · Tap ↓ to save offline</Text>
+          )}
+          {isLoading && (
+            <Text style={{ fontSize: 10, color: colors.accent, marginTop: 1 }}>Downloading… {Math.round(progress * 100)}%</Text>
+          )}
+        </View>
+        {active && installed && <Ionicons name="checkmark" size={18} color={colors.accent} />}
+        {needsPack && !installed && !isLoading && (
+          <TouchableOpacity
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            onPress={e => { e.stopPropagation?.(); downloadPack(slug) }}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="cloud-download-outline" size={22} color={colors.accent} />
+          </TouchableOpacity>
+        )}
+        {needsPack && !installed && isLoading && (
+          <ActivityIndicator size="small" color={colors.accent} />
+        )}
+        {needsPack && installed && !active && (
+          <View style={{ width: 22, height: 22, borderRadius: 11, backgroundColor: colors.bgTertiary, alignItems: 'center', justifyContent: 'center' }}>
+            <Ionicons name="checkmark-circle" size={16} color={colors.textMuted} />
+          </View>
+        )}
+        {!needsPack && active && <Ionicons name="checkmark" size={18} color={colors.accent} />}
+      </TouchableOpacity>
+    )
+  }, [modal, colors, packInstalled, packDownloading, packDownloadProgress, downloadPack])
 
   return (
     <GestureDetector gesture={pinchGesture}>
@@ -1925,6 +2310,20 @@ export default function ReaderScreen({ navigation, route }: Props) {
           >
             <Text style={styles.dssKeyLabel}>Key</Text>
           </TouchableOpacity>
+        )}
+        {(translation === 'BSB' || (parallelOn && compareTrans === 'BSB')) && (
+          <TouchableOpacity
+            style={styles.dssKeyBtn}
+            onPress={() => setBsbKeyOpen(true)}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.dssKeyLabel}>Key</Text>
+          </TouchableOpacity>
+        )}
+        {isOnlineMode && (
+          <View style={{ paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4, borderWidth: 1, borderColor: colors.textMuted, marginRight: 4 }}>
+            <Text style={{ fontSize: 10, color: colors.textMuted, fontWeight: '600' }}>🌐 Online</Text>
+          </View>
         )}
         {/* Back / chapter number / forward */}
         <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 8 }}>
@@ -2233,6 +2632,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
               }}
               onScrollToIndexFailed={({ averageItemLength, index }) => {
                 listRef.current?.scrollToOffset({ offset: averageItemLength * index, animated: false })
+                setTimeout(() => {
+                  if (mountedRef.current)
+                    listRef.current?.scrollToIndex({ index, animated: true, viewPosition: 0.2 })
+                }, 100)
               }}
               renderItem={renderVerseRow}
               extraData={flatListExtraData}
@@ -2338,6 +2741,46 @@ export default function ReaderScreen({ navigation, route }: Props) {
           <View style={styles.fnPopupDivider} />
           <Text style={styles.fnPopupContent}>{activeFn.content}</Text>
           <TouchableOpacity onPress={() => setActiveFn(null)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+            <Ionicons name="close" size={16} color={colors.textMuted} />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* E_LXX note popup */}
+      {activeElxxNote && (
+        <View style={styles.fnPopup}>
+          <Text style={styles.fnPopupMarker}>[fn]</Text>
+          <View style={styles.fnPopupDivider} />
+          <Text style={styles.fnPopupContent}>
+            {renderElxxNoteText(activeElxxNote.note, styles.crossRefLink, setScripturePreview)}
+          </Text>
+          <TouchableOpacity onPress={() => setActiveElxxNote(null)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+            <Ionicons name="close" size={16} color={colors.textMuted} />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* BSB footnote popup */}
+      {activeBsbFn && (
+        <View style={styles.fnPopup}>
+          <Text style={styles.fnPopupMarker}>[fn]</Text>
+          <View style={styles.fnPopupDivider} />
+          <Text style={styles.fnPopupContent}>
+            {activeBsbFn.footnote.split(INLINE_SCRIPTURE_RE).map((part, i) => {
+              const ref = parseBsbRef(part)
+              if (ref) {
+                return (
+                  <Text key={i} style={styles.crossRefLink}
+                    onPress={() => setScripturePreview(ref)}
+                    suppressHighlighting>
+                    {part}
+                  </Text>
+                )
+              }
+              return <Text key={i}>{part}</Text>
+            })}
+          </Text>
+          <TouchableOpacity onPress={() => setActiveBsbFn(null)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
             <Ionicons name="close" size={16} color={colors.textMuted} />
           </TouchableOpacity>
         </View>
@@ -2569,7 +3012,12 @@ export default function ReaderScreen({ navigation, route }: Props) {
         />
       )}
 
-      <DssKeyModal visible={dssKeyOpen} onClose={() => setDssKeyOpen(false)} />
+      <KeyModal visible={dssKeyOpen} onClose={() => setDssKeyOpen(false)}
+        title="DSS Text Key" entries={DSS_KEY_ENTRIES}
+        footer="Multiple readings per verse reflect different scroll manuscripts attesting the same passage." />
+      <KeyModal visible={bsbKeyOpen} onClose={() => setBsbKeyOpen(false)}
+        title="BSB Text Key" entries={BSB_KEY_ENTRIES}
+        footer="The Berean Standard Bible uses these markers to show where the translation departs from a strict word-for-word rendering." />
 
       <ConcordanceModal
         visible={concordanceOpen}
@@ -2786,7 +3234,9 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
   redLetterText: { color: '#D03030' },
   redLetterSelected: { color: '#FF6B6B' },
   italicText: { fontStyle: 'italic' },
+  capsText: { textTransform: 'uppercase' as const },
   fnMarker: { color: c.accent, fontSize: 14, fontWeight: '700' },
+  bsbFnMarker: { color: c.accent, fontSize: 13, fontWeight: '700' },
   fnMarkerSelected: { color: '#7ab8e8' },
   crossRefMarker: { color: c.accent, fontSize: 18, fontWeight: '600', paddingHorizontal: 4 },
   crossRefLink: { color: c.accent, fontWeight: '600', textDecorationLine: 'underline' },

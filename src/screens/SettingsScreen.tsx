@@ -24,7 +24,9 @@ import { useTabletLayout } from '../context/TabletLayoutContext'
 import { useStrongsInSearch } from '../context/StrongsInSearchContext'
 import { useFocusMode } from '../context/FocusModeContext'
 import { useSpaceSaver } from '../context/SpaceSaverContext'
+import { useOtQuoteCaps } from '../context/OtQuoteCapsContext'
 import { useSearchOrder } from '../context/SearchOrderContext'
+import { useCrossRefOrder } from '../context/CrossRefOrderContext'
 import type { SearchMode } from '../context/SearchOrderContext'
 
 // ── Shared components ─────────────────────────────────────
@@ -182,6 +184,8 @@ function ReadingSection() {
   const s = useMemo(() => makeStyles(colors), [colors])
   const { focusMode, toggleFocusMode } = useFocusMode()
   const { spaceSaverOn, toggleSpaceSaver } = useSpaceSaver()
+  const { otQuoteCapsOn, toggleOtQuoteCaps } = useOtQuoteCaps()
+  const { crossRefBiblicalOrder, toggleCrossRefBiblicalOrder } = useCrossRefOrder()
   const { spacingKey, setSpacing } = useLineSpacing()
   const { translation, setTranslation } = useTranslation()
   const { setFontSize } = useFontSize()
@@ -217,6 +221,35 @@ function ReadingSection() {
           description="Hide navigation bars when scrolling down, reveal on scroll up"
           value={spaceSaverOn}
           onToggle={toggleSpaceSaver}
+          colors={colors}
+          s={s}
+        />
+
+        <View style={s.separator} />
+
+        <SwitchRow
+          icon="text-outline"
+          label="OT Quotes in Caps"
+          description="Render Old Testament quotations in ALL CAPS within NT passages"
+          value={otQuoteCapsOn}
+          onToggle={toggleOtQuoteCaps}
+          colors={colors}
+          s={s}
+        />
+        {otQuoteCapsOn && (
+          <Text style={{ fontSize: 11, color: colors.textMuted, fontStyle: 'italic', marginHorizontal: 16, marginTop: -4, marginBottom: 10 }}>
+            ⚠ Work in progress — span accuracy varies by passage
+          </Text>
+        )}
+
+        <View style={s.separator} />
+
+        <SwitchRow
+          icon="list-outline"
+          label="Cross-Refs in Biblical Order"
+          description="Sort cross-references Genesis → Revelation instead of relevance order"
+          value={crossRefBiblicalOrder}
+          onToggle={toggleCrossRefBiblicalOrder}
           colors={colors}
           s={s}
         />
@@ -361,6 +394,11 @@ const SEARCH_MODE_OPTIONS: PickerOption[] = [
     key: 'exact_phrase',
     label: 'Exact Phrase',
     description: "Match consecutive words in order — 'in the beginning' finds that exact phrase",
+  },
+  {
+    key: 'exact_all_words',
+    label: 'Exact & All Words',
+    description: "All words must appear in the verse with exact word boundaries — 'measure of faith' only returns verses containing both 'measure' and 'faith'",
   },
 ]
 

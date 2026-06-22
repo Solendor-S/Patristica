@@ -10,7 +10,7 @@ import { useUserDb } from '../db/UserDbProvider'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
-import { searchVerses, searchVersesAll, searchVersesFuzzy, searchOriginalLanguage, detectQueryScript, normalizeForSearch, normalizeStrongsNumber, getSearchHistory, addSearchHistory, deleteSearchHistory, getStrongsEntry, getStrongsConcordance, searchStrongsByEnglishWord, SEARCH_STOP_WORDS } from '../db/queries'
+import { searchVerses, searchVersesAll, searchVersesFuzzy, searchOriginalLanguage, detectQueryScript, normalizeForSearch, normalizeStrongsNumber, getSearchHistory, addSearchHistory, deleteSearchHistory, getStrongsEntry, getStrongsConcordance, searchStrongsByEnglishWord, searchAnnotatedByStrongs, SEARCH_STOP_WORDS } from '../db/queries'
 import type { StrongsEntry, StrongsConcordanceResult, StrongsWordMatch } from '../db/queries'
 import { StrongsConcordanceModal, TranslationVariantsModal } from './WordStudyPanel'
 import { useTranslation, TRANSLATIONS, ANNOTATED_TRANSLATIONS } from '../context/TranslationContext'
@@ -298,6 +298,7 @@ function StrongsWordMapModal({
 }) {
   const { colors } = useTheme()
   const modal = useMemo(() => makeModal(colors), [colors])
+  const { bottom } = useSafeAreaInsets()
   const db = useSQLiteContext()
   const [selectedEntry, setSelectedEntry] = useState<StrongsWordMatch | null>(null)
   const [concResults, setConcResults]     = useState<StrongsConcordanceResult[]>([])
@@ -321,7 +322,7 @@ function StrongsWordMapModal({
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={selectedEntry ? handleBack : onClose}>
       <View style={modal.overlay}>
-        <View style={[modal.sheet, { maxHeight: '80%' }]}>
+        <View style={[modal.sheet, { maxHeight: '80%', paddingBottom: bottom }]}>
 
           {/* Header */}
           <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingBottom: 14, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border }}>
@@ -531,7 +532,7 @@ export default function SearchScreen() {
       ? correctedTerms
       : queryTrimmed.split(/\s+/).filter(Boolean)
     if (terms.length === 0) return null
-    const wordBoundary = searchMode === 'exact_words'
+    const wordBoundary = searchMode === 'exact_words' || searchMode === 'exact_all_words'
     if (wordBoundary) {
       const sig = terms.filter(w => !SEARCH_STOP_WORDS.has(w.toLowerCase()))
       if (sig.length > 0) terms = sig
@@ -583,12 +584,32 @@ export default function SearchScreen() {
       return
     }
     setSearchScript('latin')
-    const rows = await searchVerses(db, trimmed, trans, books, 200, searchMode === 'exact_words')
+
+    // Strongs number search on word-table translations (TR+, WLC+, LXX+)
+    if (/^[hgHG]\d+$/.test(trimmed) && (trans === 'TR+' || trans === 'WLC+' || trans === 'LXX+')) {
+      const rows = await searchAnnotatedByStrongs(db, trimmed, trans, books)
+      setResults(rows)
+      setLoading(false)
+      return
+    }
+
+    const isWordBoundary = searchMode === 'exact_words' || searchMode === 'exact_all_words'
+    const rows = await searchVerses(db, trimmed, trans, books, 200, isWordBoundary)
     const qWords = trimmed.toLowerCase().split(/\s+/).filter(Boolean)
 
     if (searchMode === 'exact_words') {
       const sw = sigWords(qWords)
       setResults(rows.filter(r => matchesQueryWords(r.text, sw)))
+      setLoading(false)
+      return
+    }
+
+    if (searchMode === 'exact_all_words') {
+      const sw = sigWords(qWords)
+      setResults(rows.filter(r => {
+        const tokens = r.text.toLowerCase().match(WORD_TOKEN_RE) ?? []
+        return sw.every(w => tokens.includes(w))
+      }))
       setLoading(false)
       return
     }
@@ -689,10 +710,14 @@ export default function SearchScreen() {
     setBreakdownLoading(true)
     try {
       const books = booksForSearch(testament, selectedBooks)
-      const allResults = await searchVersesAll(db, lastQueryRef.current, translation, books, searchMode === 'exact_words')
+      const isWordBoundary = searchMode === 'exact_words' || searchMode === 'exact_all_words'
+      const allResults = await searchVersesAll(db, lastQueryRef.current, translation, books, isWordBoundary)
       const qWords = lastQueryRef.current.toLowerCase().split(/\s+/).filter(Boolean)
-      const sw = searchMode === 'exact_words' ? sigWords(qWords) : null
-      const filtered = sw ? allResults.filter(r => matchesQueryWords(r.text, sw)) : allResults
+      const sw = isWordBoundary ? sigWords(qWords) : null
+      const filtered = !sw ? allResults
+        : searchMode === 'exact_all_words'
+          ? allResults.filter(r => { const tokens = r.text.toLowerCase().match(WORD_TOKEN_RE) ?? []; return sw.every(w => tokens.includes(w)) })
+          : allResults.filter(r => matchesQueryWords(r.text, sw))
       setBreakdownResults(filtered)
       setBreakdownData(computeBreakdown(filtered, qWords))
     } catch (e) {
