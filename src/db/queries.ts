@@ -1531,8 +1531,10 @@ export async function getBsbChapterFootnotes(
   db: SQLiteDatabase,
   book: string,
   chapter: number,
+  packDb?: SQLiteDatabase | null,
 ): Promise<import('../types').BsbFootnote[]> {
-  return db.getAllAsync(
+  const queryDb = packDb ?? db
+  return queryDb.getAllAsync(
     'SELECT verse, word_index, word, footnote FROM bsb_footnotes WHERE book=? AND chapter=? ORDER BY verse, word_index',
     [book, chapter]
   )

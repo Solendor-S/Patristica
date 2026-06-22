@@ -1561,7 +1561,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
         : isApocrypha ? getApocryphaChapter(db, book, chapter, packDb)
         :               getChapter(db, book, chapter, translation, packDb)
       const fetchBsbFns = (!isApocrypha && !isEarlyText && translation === 'BSB')
-        ? getBsbChapterFootnotes(db, book, chapter).catch(() => [] as Awaited<ReturnType<typeof getBsbChapterFootnotes>>)
+        ? getBsbChapterFootnotes(db, book, chapter, packDb).catch(() => [] as Awaited<ReturnType<typeof getBsbChapterFootnotes>>)
         : Promise.resolve([] as Awaited<ReturnType<typeof getBsbChapterFootnotes>>)
       const fetchElxxNotes = (!isApocrypha && !isEarlyText && translation === 'E_LXX')
         ? getElxxChapterNotes(db, book, chapter).catch(() => [] as Awaited<ReturnType<typeof getElxxChapterNotes>>)
@@ -1620,7 +1620,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
         ? getChapterCrossRefMarkers(db, book, chapter).catch(() => new Map<number, CrossRef[]>())
         : Promise.resolve(new Map<number, CrossRef[]>()),
       shouldFetchBsbFns
-        ? getBsbChapterFootnotes(db, book, chapter).catch(() => [] as Awaited<ReturnType<typeof getBsbChapterFootnotes>>)
+        ? getBsbChapterFootnotes(db, book, chapter, packDb).catch(() => [] as Awaited<ReturnType<typeof getBsbChapterFootnotes>>)
         : Promise.resolve([]),
       shouldFetchElxxNotes
         ? getElxxChapterNotes(db, book, chapter).catch(() => [] as Awaited<ReturnType<typeof getElxxChapterNotes>>)
@@ -1734,9 +1734,11 @@ export default function ReaderScreen({ navigation, route }: Props) {
       setCompareMap(m)
     }).catch(() => setCompareMap(prev => prev.size > 0 ? new Map() : prev))
     if (compareTrans === 'BSB') {
-      getBsbChapterFootnotes(db, book, chapter)
-        .then(fns => setCompareBsbFnsByVerse(buildVerseMap(fns)))
-        .catch(() => setCompareBsbFnsByVerse(new Map()))
+      getPackDb('bsb').then(bsbDb =>
+        getBsbChapterFootnotes(db, book, chapter, bsbDb)
+          .then(fns => setCompareBsbFnsByVerse(buildVerseMap(fns)))
+          .catch(() => setCompareBsbFnsByVerse(new Map()))
+      )
     } else {
       setCompareBsbFnsByVerse(new Map())
     }
