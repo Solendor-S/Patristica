@@ -24,6 +24,9 @@ import { useReaderFont } from '../context/FontFamilyContext'
 import type { FontScopeKey } from '../context/FontFamilyContext'
 import type { ThemeColors } from '../theme/themes'
 import { TRANSLATIONS } from '../context/TranslationContext'
+import { usePacks } from '../context/PackContext'
+import { TRANSLATION_PACK_SLUG } from '../db/queries'
+import { fetchOnlineWords } from '../lib/PackManager'
 
 const NT_BOOKS = new Set(BOOKS.filter(b => b.testament === 'NT').map(b => b.name))
 const OT_BOOKS_LIST = BOOKS.filter(b => b.testament === 'OT').map(b => b.name)
@@ -33,6 +36,17 @@ type ConcTestament = 'all' | 'OT' | 'NT'
 const GREEK_SOURCES = TRANSLATIONS
   .filter(t => t.greekOnly && !t.key.endsWith('+'))
   .map(t => ({ key: t.key.toLowerCase() as GreekSource, label: t.label, desc: t.full }))
+
+// Which source keys need a downloadable pack (TR/WLC are core)
+const GREEK_SOURCE_PACK: Partial<Record<GreekSource, string>> = {
+  sblgnt: 'sblgnt',
+  tagnt:  'tagnt',
+}
+const OT_SOURCE_PACK: Partial<Record<string, string>> = {
+  tahot: 'tahot',
+  lxx:   'elxx',
+  lxx_a: 'elxx',
+}
 
 type OtSource = HebrewSource | LxxSource
 
@@ -607,10 +621,11 @@ export default function WordStudyPanel({ selected }: Props) {
 
   const { wordFocus, setWordFocus } = useWordFocus()
 
-  const [source, setSource]         = useState<GreekSource>('sblgnt')
+  const [source, setSource]         = useState<GreekSource>('tr')
   const [favSource, setFavSource]   = useState<GreekSource | null>(null)
-  const [otSource, setOtSource]     = useState<OtSource>('tahot')
+  const [otSource, setOtSource]     = useState<OtSource>('wlc')
   const [favOtSource, setFavOtSource] = useState<OtSource | null>(null)
+  const { isInstalled, isDownloading, download, getPackDb } = usePacks()
 
   useEffect(() => {
     userDb.getFirstAsync<{ value: string }>(
@@ -649,6 +664,8 @@ export default function WordStudyPanel({ selected }: Props) {
   const firstMentionRef   = useRef<View>(null)
   const handleWordPressRef = useRef(handleWordPress)
   useLayoutEffect(() => { handleWordPressRef.current = handleWordPress })
+  const activeKeyRef = useRef(activeKey)
+  useLayoutEffect(() => { activeKeyRef.current = activeKey })
 
   const isLxx = !isNT && (otSource === 'lxx' || otSource === 'lxx_a')
 
@@ -660,13 +677,48 @@ export default function WordStudyPanel({ selected }: Props) {
     setLexicon(null)
     setConcordanceResults([])
     setLoading(true)
-    const fetch = isNT
-      ? getGreekWords(db, selected.book, selected.chapter, selected.verse, source)
-      : isLxx
-        ? getLxxWords(db, selected.book, selected.chapter, selected.verse, otSource as LxxSource)
-        : getHebrewWords(db, selected.book, selected.chapter, selected.verse, otSource as HebrewSource)
-    fetch.then(w => { setWords(w); setLoading(false) }).catch(() => setLoading(false))
-  }, [selected.book, selected.chapter, selected.verse, source, otSource])
+    const verse = selected.verse ?? 1
+    // Resolve pack DB for optional sources (SBLGNT/TAGNT/TAHOT/LXX)
+    const packSlug = TRANSLATION_PACK_SLUG[isNT ? source.toUpperCase() : otSource === 'tahot' ? 'TAHOT' : 'elxx']
+    const fetchWords = (packDb?: import('expo-sqlite').SQLiteDatabase | null) => {
+      const pdb = packDb ?? undefined
+      const fetch = isNT
+        ? getGreekWords(db, selected.book, selected.chapter, verse, source, pdb)
+        : isLxx
+          ? getLxxWords(db, selected.book, selected.chapter, verse, otSource as LxxSource, pdb)
+          : getHebrewWords(db, selected.book, selected.chapter, verse, otSource as HebrewSource, pdb)
+      fetch.then(w => { setWords(w); setLoading(false) }).catch(() => setLoading(false))
+    }
+    if (packSlug && isInstalled(packSlug)) {
+      getPackDb(packSlug).then(fetchWords)
+    } else if (packSlug && !isInstalled(packSlug)) {
+      // Source not downloaded — fetch word data from online API
+      const onlineSource = isNT ? source : otSource === 'tahot' ? 'tahot' : null
+      if (onlineSource) {
+        fetchOnlineWords(onlineSource, selected.book, selected.chapter, verse)
+          .then(onlineWords => {
+            if (onlineWords && onlineWords.length > 0) {
+              // Map online word format to GreekWord/HebrewWord shape
+              const mapped = onlineWords.map(w => ({
+                position: w.p,
+                [isNT ? 'greek' : 'hebrew']: w.t,
+                translit: w.tr,
+                strongs: w.s,
+                gloss: w.g,
+                morph: w.m,
+              })) as any[]
+              setWords(mapped)
+            }
+            setLoading(false)
+          })
+          .catch(() => setLoading(false))
+      } else {
+        fetchWords(null)
+      }
+    } else {
+      fetchWords(null)
+    }
+  }, [selected.book, selected.chapter, selected.verse, source, otSource, isInstalled, getPackDb])
 
   useEffect(() => {
     if (!wordFocus || loading || !words.length) return
@@ -675,7 +727,14 @@ export default function WordStudyPanel({ selected }: Props) {
       const n = normalizeStrongsNumber(w.strongs)
       return n === wordFocus || n === canonical
     })
-    if (match) handleWordPressRef.current(match.strongs, match.position)
+    if (match) {
+      const cur = activeKeyRef.current
+      // Only select if not already selected — avoids deselecting when pressing
+      // "Open in Word Study" on a word that's already active in the Words tab
+      if (!(cur?.strongs === match.strongs && cur?.position === match.position)) {
+        handleWordPressRef.current(match.strongs, match.position)
+      }
+    }
     setWordFocus(null)
   }, [wordFocus, words, loading, setWordFocus])
 
@@ -834,8 +893,12 @@ export default function WordStudyPanel({ selected }: Props) {
       {isNT ? (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.sourcePicker}>
           {GREEK_SOURCES.map(opt => {
-            const active = opt.key === source
-            const isFav  = opt.key === favSource
+            const active   = opt.key === source
+            const isFav    = opt.key === favSource
+            const packSlug = GREEK_SOURCE_PACK[opt.key]
+            const needsPack = !!packSlug
+            const installed = !needsPack || isInstalled(packSlug!)
+            const loading   = needsPack && isDownloading(packSlug!)
             return (
               <View key={opt.key} style={s.sourceChipWrapper}>
                 <TouchableOpacity
@@ -845,7 +908,15 @@ export default function WordStudyPanel({ selected }: Props) {
                 >
                   <Text style={[s.sourceChipLabel, active && s.sourceChipLabelActive]}>{opt.label}</Text>
                   <Text style={[s.sourceChipDesc, active && s.sourceChipDescActive]}>{opt.desc}</Text>
+                  {needsPack && !installed && !loading && (
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                      <Ionicons name="cloud-download-outline" size={11} color={colors.textMuted} />
+                      <Text style={{ fontSize: 9, color: colors.textMuted }}>Tap ↓ to download</Text>
+                    </View>
+                  )}
+                  {loading && <Text style={{ fontSize: 9, color: colors.accent, marginTop: 2 }}>Downloading…</Text>}
                 </TouchableOpacity>
+                {/* Star stays absolutely positioned top-right (original position) */}
                 <TouchableOpacity
                   style={s.sourceStarBtn}
                   hitSlop={{ top: 6, right: 6, bottom: 6, left: 6 }}
@@ -862,6 +933,20 @@ export default function WordStudyPanel({ selected }: Props) {
                 >
                   <Ionicons name={isFav ? 'star' : 'star-outline'} size={14} color={isFav ? colors.accent : colors.textMuted} />
                 </TouchableOpacity>
+                {/* Download button — absolute bottom-right when pack needed */}
+                {needsPack && !installed && !loading && (
+                  <TouchableOpacity
+                    style={{ position: 'absolute', bottom: 6, right: 6 }}
+                    hitSlop={{ top: 6, right: 6, bottom: 6, left: 6 }}
+                    onPress={() => download(packSlug!)}
+                    activeOpacity={0.7}
+                  >
+                    <Ionicons name="cloud-download-outline" size={16} color={colors.accent} />
+                  </TouchableOpacity>
+                )}
+                {loading && (
+                  <ActivityIndicator size={12} color={colors.accent} style={{ position: 'absolute', bottom: 6, right: 6 }} />
+                )}
               </View>
             )
           })}
@@ -869,8 +954,12 @@ export default function WordStudyPanel({ selected }: Props) {
       ) : (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.sourcePicker}>
           {OT_SOURCES.map(opt => {
-            const active = opt.key === otSource
-            const isFav  = opt.key === favOtSource
+            const active   = opt.key === otSource
+            const isFav    = opt.key === favOtSource
+            const packSlug = OT_SOURCE_PACK[opt.key]
+            const needsPack = !!packSlug
+            const installed = !needsPack || isInstalled(packSlug!)
+            const loading   = needsPack && isDownloading(packSlug!)
             return (
               <View key={opt.key} style={s.sourceChipWrapper}>
                 <TouchableOpacity
@@ -880,6 +969,13 @@ export default function WordStudyPanel({ selected }: Props) {
                 >
                   <Text style={[s.sourceChipLabel, active && s.sourceChipLabelActive]}>{opt.label}</Text>
                   <Text style={[s.sourceChipDesc, active && s.sourceChipDescActive]}>{opt.desc}</Text>
+                  {needsPack && !installed && !loading && (
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                      <Ionicons name="cloud-download-outline" size={11} color={colors.textMuted} />
+                      <Text style={{ fontSize: 9, color: colors.textMuted }}>Tap ↓ to download</Text>
+                    </View>
+                  )}
+                  {loading && <Text style={{ fontSize: 9, color: colors.accent, marginTop: 2 }}>Downloading…</Text>}
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={s.sourceStarBtn}
@@ -897,6 +993,19 @@ export default function WordStudyPanel({ selected }: Props) {
                 >
                   <Ionicons name={isFav ? 'star' : 'star-outline'} size={14} color={isFav ? colors.accent : colors.textMuted} />
                 </TouchableOpacity>
+                {needsPack && !installed && !loading && (
+                  <TouchableOpacity
+                    style={{ position: 'absolute', bottom: 6, right: 6 }}
+                    hitSlop={{ top: 6, right: 6, bottom: 6, left: 6 }}
+                    onPress={() => download(packSlug!)}
+                    activeOpacity={0.7}
+                  >
+                    <Ionicons name="cloud-download-outline" size={16} color={colors.accent} />
+                  </TouchableOpacity>
+                )}
+                {loading && (
+                  <ActivityIndicator size={12} color={colors.accent} style={{ position: 'absolute', bottom: 6, right: 6 }} />
+                )}
               </View>
             )
           })}

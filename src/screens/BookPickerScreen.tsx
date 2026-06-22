@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import {
   View, Text, FlatList, TouchableOpacity, ScrollView,
-  StyleSheet, TextInput, StatusBar, SectionList,
+  StyleSheet, TextInput, StatusBar, SectionList, ActivityIndicator,
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -11,6 +11,7 @@ import { StackActions } from '@react-navigation/native'
 import { pendingNav } from '../navigation/pendingNav'
 import { useTheme } from '../context/ThemeContext'
 import { useNavDepth } from '../context/NavDepthContext'
+import { usePacks } from '../context/PackContext'
 import type { ThemeColors } from '../theme/themes'
 import type { BibleStackParamList } from '../types'
 
@@ -76,20 +77,42 @@ if (__DEV__) {
 
 function BookCard({
   entry, cardStyle, badge, onPress, s,
+  packSlug, packInstalled, packDownloading, onDownload,
 }: {
   entry: BookEntry | null
   cardStyle: object | object[]
   badge?: string
   onPress: (name: string) => void
   s: ReturnType<typeof makeStyles>
+  packSlug?: string
+  packInstalled?: boolean
+  packDownloading?: boolean
+  onDownload?: (slug: string) => void
 }) {
   if (!entry) return <View style={[s.card, { opacity: 0 }]} />
+  const needsPack = !!packSlug
+  const downloaded = !needsPack || packInstalled
   return (
     <TouchableOpacity style={cardStyle} activeOpacity={0.7} onPress={() => onPress(entry.name)}>
-      <Text style={s.bookName} numberOfLines={2}>{entry.name}</Text>
-      <Text style={s.chapterCount}>{entry.chapters} ch</Text>
-      {'date' in entry && !!entry.date && <Text style={s.earlyDate}>{entry.date}</Text>}
-      {!!badge && <Text style={s.mutedBadge}>{badge}</Text>}
+      <View style={{ flex: 1 }}>
+        <Text style={s.bookName} numberOfLines={2}>{entry.name}</Text>
+        <Text style={s.chapterCount}>{entry.chapters} ch</Text>
+        {'date' in entry && !!entry.date && <Text style={s.earlyDate}>{entry.date}</Text>}
+        {!!badge && <Text style={s.mutedBadge}>{badge}</Text>}
+      </View>
+      {needsPack && !downloaded && !packDownloading && (
+        <TouchableOpacity
+          style={{ position: 'absolute', top: 4, right: 4 }}
+          hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
+          onPress={e => { e.stopPropagation?.(); packSlug && onDownload?.(packSlug) }}
+          activeOpacity={0.7}
+        >
+          <Ionicons name="cloud-download-outline" size={14} color="#aaa" />
+        </TouchableOpacity>
+      )}
+      {needsPack && packDownloading && (
+        <ActivityIndicator size={12} style={{ position: 'absolute', top: 4, right: 4 }} />
+      )}
     </TouchableOpacity>
   )
 }
@@ -101,6 +124,7 @@ export default function BookPickerScreen({ navigation, route }: Props) {
   const [query, setQuery] = useState('')
   const [tab, setTab]     = useState<Tab>(route.params?.initialTab ?? 'OT')
   const { navDepth } = useNavDepth()
+  const { isInstalled, isDownloading, download, packForContent } = usePacks()
 
   const isSearching = query.trim().length > 0
 
@@ -241,10 +265,16 @@ export default function BookPickerScreen({ navigation, route }: Props) {
             const spurious = section.title === 'Spurious'
             const cardStyle = [s.card, spurious ? s.cardSpurious : s.cardEarly]
             const badge = spurious ? 'Spurious' : undefined
+            const slugA = a ? packForContent('early_text', a.name)?.slug : undefined
+            const slugB = b ? packForContent('early_text', b.name)?.slug : undefined
             return (
               <View style={s.row}>
-                <BookCard entry={a} cardStyle={cardStyle} badge={badge} onPress={navigateToBook} s={s} />
-                <BookCard entry={b} cardStyle={cardStyle} badge={badge} onPress={navigateToBook} s={s} />
+                <BookCard entry={a} cardStyle={cardStyle} badge={badge} onPress={navigateToBook} s={s}
+                  packSlug={slugA} packInstalled={!slugA || isInstalled(slugA)}
+                  packDownloading={!!slugA && isDownloading(slugA)} onDownload={download} />
+                <BookCard entry={b} cardStyle={cardStyle} badge={badge} onPress={navigateToBook} s={s}
+                  packSlug={slugB} packInstalled={!slugB || isInstalled(slugB)}
+                  packDownloading={!!slugB && isDownloading(slugB)} onDownload={download} />
               </View>
             )
           }}
@@ -271,12 +301,20 @@ export default function BookPickerScreen({ navigation, route }: Props) {
               <Text style={s.sectionSubtitle}>{section.subtitle}</Text>
             </View>
           )}
-          renderItem={({ item: [a, b] }) => (
-            <View style={s.row}>
-              <BookCard entry={a} cardStyle={s.card} onPress={navigateToBook} s={s} />
-              <BookCard entry={b} cardStyle={s.card} onPress={navigateToBook} s={s} />
-            </View>
-          )}
+          renderItem={({ item: [a, b] }) => {
+            const slugA = a ? packForContent('apocrypha', a.name)?.slug : undefined
+            const slugB = b ? packForContent('apocrypha', b.name)?.slug : undefined
+            return (
+              <View style={s.row}>
+                <BookCard entry={a} cardStyle={s.card} onPress={navigateToBook} s={s}
+                  packSlug={slugA} packInstalled={!slugA || isInstalled(slugA)}
+                  packDownloading={!!slugA && isDownloading(slugA)} onDownload={download} />
+                <BookCard entry={b} cardStyle={s.card} onPress={navigateToBook} s={s}
+                  packSlug={slugB} packInstalled={!slugB || isInstalled(slugB)}
+                  packDownloading={!!slugB && isDownloading(slugB)} onDownload={download} />
+              </View>
+            )
+          }}
         />
       )}
     </View>

@@ -19,6 +19,19 @@ export interface Footnote {
   content: string
 }
 
+export interface BsbFootnote {
+  verse: number
+  word_index: number
+  word: string
+  footnote: string
+}
+
+export interface ElxxNote {
+  verse: number
+  word_index: number
+  note: string
+}
+
 export interface Book {
   name: string
   chapters: number

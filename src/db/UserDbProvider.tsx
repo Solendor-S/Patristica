@@ -48,6 +48,12 @@ async function initUserDb(db: SQLiteDatabase): Promise<void> {
       key   TEXT PRIMARY KEY,
       value TEXT NOT NULL
     );
+    CREATE TABLE IF NOT EXISTS installed_packs (
+      slug         TEXT PRIMARY KEY,
+      version      INTEGER NOT NULL,
+      installed_at TEXT    NOT NULL,
+      size_mb      REAL
+    );
   `)
 }
 

@@ -21,7 +21,9 @@ import { OnboardingProvider, useOnboarding } from './src/context/OnboardingConte
 import { RedLetterProvider } from './src/context/RedLetterContext'
 import { StrongsInSearchProvider } from './src/context/StrongsInSearchContext'
 import { FocusModeProvider } from './src/context/FocusModeContext'
+import { OtQuoteCapsProvider } from './src/context/OtQuoteCapsContext'
 import { WordFocusProvider } from './src/context/WordFocusContext'
+import { PackProvider } from './src/context/PackContext'
 import { TabletLayoutProvider } from './src/context/TabletLayoutContext'
 import { ParallelTranslationProvider } from './src/context/ParallelTranslationContext'
 import { SpaceSaverProvider } from './src/context/SpaceSaverContext'
@@ -74,6 +76,8 @@ export default function App() {
           <RedLetterProvider>
           <StrongsInSearchProvider>
           <FocusModeProvider>
+          <OtQuoteCapsProvider>
+          <PackProvider>
           <WordFocusProvider>
           <TabletLayoutProvider>
           <ParallelTranslationProvider>
@@ -89,6 +93,8 @@ export default function App() {
           </ParallelTranslationProvider>
           </TabletLayoutProvider>
           </WordFocusProvider>
+          </PackProvider>
+          </OtQuoteCapsProvider>
           </FocusModeProvider>
           </StrongsInSearchProvider>
           </RedLetterProvider>
