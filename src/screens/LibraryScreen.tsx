@@ -435,19 +435,19 @@ function DownloadsTab() {
   const { allPacks, installed, downloading, download, uninstall, hasUpdate, manifestReady } = usePacks()
 
   const installedPacks = useMemo(() => allPacks.filter(p => installed.has(p.slug)), [allPacks, installed])
+  const uninstalledPacks = useMemo(() => allPacks.filter(p => !installed.has(p.slug)), [allPacks, installed])
   const totalInstalledMB = useMemo(() => installedPacks.reduce((sum, p) => sum + (p.sizeMB ?? 0), 0), [installedPacks])
-  const sections = useMemo(() => {
-    const grouped = allPacks
-      .filter(p => !installed.has(p.slug))
-      .reduce<Record<string, PackMeta[]>>((acc, p) => {
-        const key = PACK_TYPE_LABEL[p.type] ?? p.type;
-        (acc[key] ??= []).push(p)
-        return acc
-      }, {})
-    return Object.entries(grouped).map(([title, data]) => ({ title, data }))
-  }, [allPacks, installed])
 
-  const available = useMemo(() => allPacks.filter(p => !installed.has(p.slug)), [allPacks, installed])
+  // All packs grouped in manifest order — installed and available mixed per group
+  const sections = useMemo(() => {
+    const grouped = allPacks.reduce<Record<string, PackMeta[]>>((acc, p) => {
+      const key = PACK_TYPE_LABEL[p.type] ?? p.type
+      ;(acc[key] ??= []).push(p)
+      return acc
+    }, {})
+    return Object.entries(grouped).map(([title, data]) => ({ title, data }))
+  }, [allPacks])
+
   const rowProps = { colors, downloading, download, uninstall, hasUpdate }
 
   if (!manifestReady) {
@@ -461,49 +461,70 @@ function DownloadsTab() {
 
   return (
     <ScrollView contentContainerStyle={{ paddingBottom: 40 }}>
-      {/* Installed section */}
-      {installedPacks.length > 0 && (
-        <View>
-          <View style={dl.sectionHeader}>
-            <Text style={dl.sectionTitle}>INSTALLED</Text>
-            <Text style={dl.sectionMeta}>{installedPacks.length} packs · {totalInstalledMB.toFixed(1)} MB</Text>
-          </View>
-          {installedPacks.map(p => <PackRow key={p.slug} pack={p} isInstalled={true} {...rowProps} />)}
-        </View>
-      )}
-
-      {/* Available sections */}
-      {sections.length > 0 && (
-        <View style={[dl.sectionHeader, { paddingTop: installedPacks.length > 0 ? 20 : 12 }]}>
-          <Text style={dl.sectionTitle}>AVAILABLE</Text>
+      {/* Global action bar */}
+      <View style={dl.sectionHeader}>
+        {installedPacks.length > 0 ? (
+          <Text style={[dl.sectionMeta, { flex: 1 }]}>{installedPacks.length} packs · {totalInstalledMB.toFixed(1)} MB</Text>
+        ) : (
+          <View style={{ flex: 1 }} />
+        )}
+        {installedPacks.length > 0 && (
+          <TouchableOpacity
+            style={dl.removeAllBtn}
+            onPress={() => installedPacks.forEach(p => uninstall(p.slug))}
+            activeOpacity={0.7}
+          >
+            <Ionicons name="trash-outline" size={12} color={colors.accent} />
+            <Text style={dl.downloadAllLabel}>Remove All</Text>
+          </TouchableOpacity>
+        )}
+        {uninstalledPacks.length > 0 && (
           <TouchableOpacity
             style={dl.downloadAllBtn}
-            onPress={() => available.filter(p => !downloading.has(p.slug)).forEach(p => download(p.slug))}
+            onPress={() => uninstalledPacks.filter(p => !downloading.has(p.slug)).forEach(p => download(p.slug))}
             activeOpacity={0.7}
           >
             <Ionicons name="cloud-download-outline" size={12} color={colors.accent} />
             <Text style={dl.downloadAllLabel}>Download All</Text>
           </TouchableOpacity>
-        </View>
-      )}
-      {sections.map(({ title, data }) => (
-        <View key={title}>
-          <View style={dl.sectionHeader}>
-            <Text style={[dl.sectionTitle, { flex: 1 }]}>{title.toUpperCase()}</Text>
-            {data.some(p => !downloading.has(p.slug)) && (
-              <TouchableOpacity
-                style={dl.downloadAllBtn}
-                onPress={() => data.filter(p => !downloading.has(p.slug)).forEach(p => download(p.slug))}
-                activeOpacity={0.7}
-              >
-                <Ionicons name="cloud-download-outline" size={12} color={colors.accent} />
-                <Text style={dl.downloadAllLabel}>All</Text>
-              </TouchableOpacity>
-            )}
+        )}
+      </View>
+
+      {/* All groups — installed and available together in manifest order */}
+      {sections.map(({ title, data }) => {
+        const groupInstalled = data.filter(p => installed.has(p.slug))
+        const groupAvailable = data.filter(p => !installed.has(p.slug) && !downloading.has(p.slug))
+        return (
+          <View key={title}>
+            <View style={dl.sectionHeader}>
+              <Text style={[dl.sectionTitle, { flex: 1 }]}>{title.toUpperCase()}</Text>
+              {groupInstalled.length > 0 && (
+                <TouchableOpacity
+                  style={dl.removeAllBtn}
+                  onPress={() => groupInstalled.forEach(p => uninstall(p.slug))}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name="trash-outline" size={12} color={colors.accent} />
+                  <Text style={dl.downloadAllLabel}>Remove</Text>
+                </TouchableOpacity>
+              )}
+              {groupAvailable.length > 0 && (
+                <TouchableOpacity
+                  style={dl.downloadAllBtn}
+                  onPress={() => groupAvailable.forEach(p => download(p.slug))}
+                  activeOpacity={0.7}
+                >
+                  <Ionicons name="cloud-download-outline" size={12} color={colors.accent} />
+                  <Text style={dl.downloadAllLabel}>All</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            {data.map(p => (
+              <PackRow key={p.slug} pack={p} isInstalled={installed.has(p.slug)} {...rowProps} />
+            ))}
           </View>
-          {data.map(p => <PackRow key={p.slug} pack={p} isInstalled={false} {...rowProps} />)}
-        </View>
-      ))}
+        )
+      })}
 
       {installedPacks.length === allPacks.length && (
         <View style={{ alignItems: 'center', paddingVertical: 32 }}>
@@ -523,6 +544,7 @@ const dl = StyleSheet.create({
   packName:      { fontSize: 14, fontWeight: '600', color: '#fff' },
   downloadBtn:   { padding: 4 },
   downloadAllBtn:   { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, borderWidth: 1, borderColor: 'rgba(184,134,11,0.5)' },
+  removeAllBtn:     { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 6, borderWidth: 1, borderColor: 'rgba(184,134,11,0.3)', marginRight: 6 },
   downloadAllLabel: { fontSize: 11, color: '#b8860b', fontWeight: '600' },
   updateBtn:     { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6, backgroundColor: '#b8860b' },
   updateLabel:   { fontSize: 12, color: '#fff', fontWeight: '600' },
