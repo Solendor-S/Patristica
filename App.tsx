@@ -28,6 +28,7 @@ import { TabletLayoutProvider } from './src/context/TabletLayoutContext'
 import { ParallelTranslationProvider } from './src/context/ParallelTranslationContext'
 import { SpaceSaverProvider } from './src/context/SpaceSaverContext'
 import { SearchOrderProvider } from './src/context/SearchOrderContext'
+import { CrossRefOrderProvider } from './src/context/CrossRefOrderContext'
 import TutorialModal from './src/components/TutorialModal'
 import { Colors } from './src/theme/colors'
 
@@ -82,6 +83,7 @@ export default function App() {
           <TabletLayoutProvider>
           <ParallelTranslationProvider>
           <SearchOrderProvider>
+          <CrossRefOrderProvider>
           <SpaceSaverProvider>
           <OnboardingProvider>
             <DatabaseProvider>
@@ -89,6 +91,7 @@ export default function App() {
             </DatabaseProvider>
           </OnboardingProvider>
           </SpaceSaverProvider>
+          </CrossRefOrderProvider>
           </SearchOrderProvider>
           </ParallelTranslationProvider>
           </TabletLayoutProvider>

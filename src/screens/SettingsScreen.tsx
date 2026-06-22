@@ -26,6 +26,7 @@ import { useFocusMode } from '../context/FocusModeContext'
 import { useSpaceSaver } from '../context/SpaceSaverContext'
 import { useOtQuoteCaps } from '../context/OtQuoteCapsContext'
 import { useSearchOrder } from '../context/SearchOrderContext'
+import { useCrossRefOrder } from '../context/CrossRefOrderContext'
 import type { SearchMode } from '../context/SearchOrderContext'
 
 // ── Shared components ─────────────────────────────────────
@@ -184,6 +185,7 @@ function ReadingSection() {
   const { focusMode, toggleFocusMode } = useFocusMode()
   const { spaceSaverOn, toggleSpaceSaver } = useSpaceSaver()
   const { otQuoteCapsOn, toggleOtQuoteCaps } = useOtQuoteCaps()
+  const { crossRefBiblicalOrder, toggleCrossRefBiblicalOrder } = useCrossRefOrder()
   const { spacingKey, setSpacing } = useLineSpacing()
   const { translation, setTranslation } = useTranslation()
   const { setFontSize } = useFontSize()
@@ -239,6 +241,18 @@ function ReadingSection() {
             ⚠ Work in progress — span accuracy varies by passage
           </Text>
         )}
+
+        <View style={s.separator} />
+
+        <SwitchRow
+          icon="list-outline"
+          label="Cross-Refs in Biblical Order"
+          description="Sort cross-references Genesis → Revelation instead of relevance order"
+          value={crossRefBiblicalOrder}
+          onToggle={toggleCrossRefBiblicalOrder}
+          colors={colors}
+          s={s}
+        />
 
         <View style={s.separator} />
 
