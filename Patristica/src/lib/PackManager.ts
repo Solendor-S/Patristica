@@ -34,7 +34,7 @@ export type DownloadProgress = {
 // ── Manifest (bundled + remote merge) ────────────────────────────────────────
 
 const REMOTE_MANIFEST_URL =
-  'https://raw.githubusercontent.com/Solendor-S/Patristica/master/data/packs-manifest.json'
+  'https://raw.githubusercontent.com/Solendor-S/Patristica/master/Patristica/data/packs-manifest.json'
 
 let _manifest: PackManifest = BUNDLED_MANIFEST as PackManifest
 
@@ -311,7 +311,7 @@ function reconstructVerses(
 
 // Fallback base URL — used if manifest hasn't refreshed yet (branch is master, not main)
 const ONLINE_FALLBACK_BASE =
-  'https://raw.githubusercontent.com/Solendor-S/Patristica/master/data/online'
+  'https://raw.githubusercontent.com/Solendor-S/Patristica/master/Patristica/data/online'
 
 export async function fetchOnlineChapter(
   slug: string,   // pack slug OR folder name ('apoc', 'early', translation slug)

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "onlineBaseUrl": "https://raw.githubusercontent.com/Solendor-S/Patristica/master/data/online",
+  "onlineBaseUrl": "https://raw.githubusercontent.com/Solendor-S/Patristica/master/Patristica/data/online",
   "packs": [
     {
       "slug": "asv",

@@ -2,7 +2,7 @@
 Fill downloadUrl and onlineBaseUrl in assets/packs-manifest.json.
 
 Sets:
-  onlineBaseUrl  → https://raw.githubusercontent.com/Solendor-S/Patristica/main/data/online
+  onlineBaseUrl  → https://raw.githubusercontent.com/Solendor-S/Patristica/master/Patristica/data/online
   downloadUrl    → https://github.com/Solendor-S/Patristica/releases/download/packs-v1/{slug}.db
 
 Also copies the updated manifest to data/packs-manifest.json for remote fetch.
@@ -19,7 +19,7 @@ REMOTE_COPY   = "data/packs-manifest.json"
 REPO          = "Solendor-S/Patristica"
 RELEASE_TAG   = "packs-v1"
 
-ONLINE_BASE = f"https://raw.githubusercontent.com/{REPO}/master/data/online"
+ONLINE_BASE = f"https://raw.githubusercontent.com/{REPO}/master/Patristica/data/online"
 DOWNLOAD_BASE = f"https://github.com/{REPO}/releases/download/{RELEASE_TAG}"
 
 with open(MANIFEST_PATH, encoding="utf-8") as f:
