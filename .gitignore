@@ -1,5 +1,6 @@
-# Workspace-level ignores
-.claude/settings.local.json
+# Workspace-level ignores (Claude env is local tooling, not for public repo)
+.claude/
+CLAUDE.md
 .env
 .env.*
 *.env
