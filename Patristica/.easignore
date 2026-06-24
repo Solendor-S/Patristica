@@ -25,7 +25,7 @@ bible-app-data/
 scripts/
 docs/
 .claude/
-data/
+/data/
 
 # debug
 npm-debug.*
