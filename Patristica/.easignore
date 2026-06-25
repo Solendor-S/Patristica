@@ -1,13 +1,16 @@
-# dependencies
 node_modules/
-
-# Expo
 .expo/
 dist/
 web-build/
 expo-env.d.ts
-
-# Native
+android/
+ios/
+temp/
+bible-app-data/
+scripts/
+docs/
+data/
+.claude/
 .kotlin/
 *.orig.*
 *.jks
@@ -15,33 +18,11 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
-
-# Metro
 .metro-health-check*
-
-# project-specific — not needed for the build
-temp/
-bible-app-data/
-scripts/
-docs/
-.claude/
-data/
-
-# debug
 npm-debug.*
 yarn-debug.*
 yarn-error.*
-
-# macOS
 .DS_Store
 *.pem
-
-# local env files
 .env*.local
-
-# typescript
 *.tsbuildinfo
-
-# generated native folders
-ios/
-android/
