@@ -1,0 +1,16 @@
+data/
+Patristica/node_modules/
+Patristica/.expo/
+Patristica/dist/
+Patristica/web-build/
+Patristica/android/
+Patristica/ios/
+Patristica/temp/
+Patristica/bible-app-data/
+Patristica/scripts/
+Patristica/data/
+Patristica/.kotlin/
+Patristica/*.tsbuildinfo
+Patristica/expo-env.d.ts
+.claude/
+CLAUDE.md
