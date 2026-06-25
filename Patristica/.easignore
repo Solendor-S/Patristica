@@ -25,7 +25,7 @@ bible-app-data/
 scripts/
 docs/
 .claude/
-/data/
+data/
 
 # debug
 npm-debug.*
@@ -43,5 +43,5 @@ yarn-error.*
 *.tsbuildinfo
 
 # generated native folders
-/ios
-/android
+ios/
+android/
