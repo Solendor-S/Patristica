@@ -8,9 +8,11 @@ Output: data/online/words/{source}/{book}/{chapter}.json
 Format: {"1": [{pos, text, translit, strongs, gloss, morph}, ...], "2": [...]}
 
 Sources:
-  sblgnt  -> greek_words       (NT)
-  tagnt   -> greek_words_tagnt (NT)
-  tahot   -> hebrew_words      (OT)
+  sblgnt  -> greek_words            (NT, core db)
+  tagnt   -> greek_words_tagnt      (NT, core db)
+  tahot   -> hebrew_words           (OT, core db)
+  lxx     -> lxx_words              (OT, elxx pack db)
+  lxx_a   -> lxx_apostolic_words    (OT, elxx pack db)
 
 python3 scripts/generate_online_word_json.py
 """
@@ -18,36 +20,44 @@ python3 scripts/generate_online_word_json.py
 import sqlite3
 import json
 import os
-import sys
 
-# Use full backup DB as source (has all optional tables)
-SRC = "temp/bible_full_backup.db" if os.path.exists("temp/bible_full_backup.db") else "assets/db/bible.db"
+# Default source DB (has NT + TAHOT tables)
+MAIN_SRC = "temp/bible_full_backup.db" if os.path.exists("temp/bible_full_backup.db") else "assets/db/bible.db"
+ELXX_SRC = "temp/packs/elxx.db"
 OUT_DIR = "data/online/words"
 
-print(f"Source DB: {SRC}")
-db = sqlite3.connect(SRC)
-total = 0
-
+# (slug, table, text_col, db_path)
 SOURCES = [
-    ("sblgnt", "greek_words",       "greek",  "greek"),
-    ("tagnt",  "greek_words_tagnt", "greek",  "greek"),
-    ("tahot",  "hebrew_words",      "hebrew", "hebrew"),
+    ("sblgnt", "greek_words",            "greek",  MAIN_SRC),
+    ("tagnt",  "greek_words_tagnt",      "greek",  MAIN_SRC),
+    ("tahot",  "hebrew_words",           "hebrew", MAIN_SRC),
+    ("lxx",    "lxx_words",              "greek",  ELXX_SRC),
+    ("lxx_a",  "lxx_apostolic_words",    "greek",  ELXX_SRC),
 ]
 
-for slug, table, text_col, lang in SOURCES:
-    # Check table exists
+total = 0
+
+for slug, table, text_col, db_path in SOURCES:
+    if not os.path.exists(db_path):
+        print(f"  Skipping {slug} — db not found: {db_path}")
+        continue
+
+    db = sqlite3.connect(db_path)
+
     exists = db.execute(
         f"SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='{table}'"
     ).fetchone()[0]
     if not exists:
-        print(f"  Skipping {slug} — table {table} not found")
+        print(f"  Skipping {slug} — table {table} not found in {db_path}")
+        db.close()
         continue
 
-    print(f"\nGenerating {slug} ({table})...")
+    print(f"\nGenerating {slug} ({table}) from {db_path}...")
     rows = db.execute(
         f"SELECT book, chapter, verse, position, {text_col}, translit, strongs, gloss, morph "
         f"FROM {table} ORDER BY book, chapter, verse, position"
     ).fetchall()
+    db.close()
 
     # Group by (book, chapter)
     chapters: dict = {}
@@ -78,6 +88,5 @@ for slug, table, text_col, lang in SOURCES:
     ) / 1024 / 1024
     print(f"  {file_count} chapter files, {size_mb:.1f} MB")
 
-db.close()
 print(f"\nTotal files: {total}")
 print(f"Output: {OUT_DIR}/")

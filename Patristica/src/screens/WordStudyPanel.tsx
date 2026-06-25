@@ -666,6 +666,7 @@ export default function WordStudyPanel({ selected }: Props) {
   useLayoutEffect(() => { handleWordPressRef.current = handleWordPress })
   const activeKeyRef = useRef(activeKey)
   useLayoutEffect(() => { activeKeyRef.current = activeKey })
+  const activePackDbRef = useRef<import('expo-sqlite').SQLiteDatabase | null>(null)
 
   const isLxx = !isNT && (otSource === 'lxx' || otSource === 'lxx_a')
 
@@ -679,7 +680,7 @@ export default function WordStudyPanel({ selected }: Props) {
     setLoading(true)
     const verse = selected.verse ?? 1
     // Resolve pack DB for optional sources (SBLGNT/TAGNT/TAHOT/LXX)
-    const packSlug = TRANSLATION_PACK_SLUG[isNT ? source.toUpperCase() : otSource === 'tahot' ? 'TAHOT' : 'elxx']
+    const packSlug = isNT ? TRANSLATION_PACK_SLUG[source.toUpperCase()] : OT_SOURCE_PACK[otSource]
     const fetchWords = (packDb?: import('expo-sqlite').SQLiteDatabase | null) => {
       const pdb = packDb ?? undefined
       const fetch = isNT
@@ -690,18 +691,19 @@ export default function WordStudyPanel({ selected }: Props) {
       fetch.then(w => { setWords(w); setLoading(false) }).catch(() => setLoading(false))
     }
     if (packSlug && isInstalled(packSlug)) {
-      getPackDb(packSlug).then(fetchWords)
+      getPackDb(packSlug).then(packDb => { activePackDbRef.current = packDb; fetchWords(packDb) })
     } else if (packSlug && !isInstalled(packSlug)) {
       // Source not downloaded — fetch word data from online API
-      const onlineSource = isNT ? source : otSource === 'tahot' ? 'tahot' : null
+      const onlineSource = isNT ? source : (otSource === 'tahot' || otSource === 'lxx' || otSource === 'lxx_a') ? otSource : null
       if (onlineSource) {
         fetchOnlineWords(onlineSource, selected.book, selected.chapter, verse)
           .then(onlineWords => {
             if (onlineWords && onlineWords.length > 0) {
               // Map online word format to GreekWord/HebrewWord shape
+              const wordField = (isNT || isLxx) ? 'greek' : 'hebrew'
               const mapped = onlineWords.map(w => ({
                 position: w.p,
-                [isNT ? 'greek' : 'hebrew']: w.t,
+                [wordField]: w.t,
                 translit: w.tr,
                 strongs: w.s,
                 gloss: w.g,
@@ -713,9 +715,11 @@ export default function WordStudyPanel({ selected }: Props) {
           })
           .catch(() => setLoading(false))
       } else {
+        activePackDbRef.current = null
         fetchWords(null)
       }
     } else {
+      activePackDbRef.current = null
       fetchWords(null)
     }
   }, [selected.book, selected.chapter, selected.verse, source, otSource, isInstalled, getPackDb])
@@ -764,6 +768,7 @@ export default function WordStudyPanel({ selected }: Props) {
       isNT ? 'greek' : isLxx ? (otSource as LxxSource) : 'hebrew',
       activeKey!.strongs,
       source,
+      isLxx ? activePackDbRef.current ?? undefined : undefined,
     )
       .then(rows => { setConcordanceResults(rows); setConcordanceLoading(false) })
       .catch(() => setConcordanceLoading(false))
@@ -865,11 +870,16 @@ export default function WordStudyPanel({ selected }: Props) {
   }
 
   if (!words.length) {
+    const needsPack = false // all sources now have online fallback
     return (
       <View style={s.center}>
-        <Ionicons name="language-outline" size={52} color={colors.border} />
-        <Text style={s.emptyTitle}>No words found</Text>
-        <Text style={s.emptyText}>No {isNT ? 'Greek' : isLxx ? 'LXX Greek' : 'Hebrew'} data for this verse</Text>
+        <Ionicons name={needsPack ? 'download-outline' : 'language-outline'} size={52} color={colors.border} />
+        <Text style={s.emptyTitle}>{needsPack ? 'Pack not downloaded' : 'No words found'}</Text>
+        <Text style={s.emptyText}>
+          {needsPack
+            ? `Download the ${isLxx ? 'LXX' : 'TAHOT'} pack from the Library tab to use this source`
+            : `No ${isNT ? 'Greek' : isLxx ? 'LXX Greek' : 'Hebrew'} data for this verse`}
+        </Text>
       </View>
     )
   }

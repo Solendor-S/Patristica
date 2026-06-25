@@ -1372,11 +1372,13 @@ export async function getStrongsConcordance(
   lang: 'greek' | 'hebrew' | 'lxx' | 'lxx_a',
   strongs: string,
   greekSource: GreekSource = 'sblgnt',
+  packDb?: SQLiteDatabase,
 ): Promise<StrongsConcordanceResult[]> {
 
-  // LXX has no KJV+ equivalent — use word table approach
+  // LXX has no KJV+ equivalent — query word table in pack db; join bible_verses from core db
   if (lang === 'lxx' || lang === 'lxx_a') {
     const table = lang === 'lxx_a' ? 'lxx_apostolic_words' : 'lxx_words'
+    const wordDb = packDb ?? db
     const q = `
       SELECT w.book, w.chapter, w.verse,
              COUNT(*) AS word_count,
@@ -1389,13 +1391,13 @@ export async function getStrongsConcordance(
       WHERE w.strongs = ?
       GROUP BY w.book, w.chapter, w.verse
       ORDER BY MIN(w.rowid)`
-    let rows = await db.getAllAsync<StrongsConcordanceResult>(q, [strongs])
+    let rows = await wordDb.getAllAsync<StrongsConcordanceResult>(q, [strongs])
     if (!rows.length) {
       const normQ = q.replace(
         'WHERE w.strongs = ?',
         `WHERE SUBSTR(w.strongs,1,1) || CAST(CAST(SUBSTR(w.strongs,2) AS INTEGER) AS TEXT) = ?`,
       )
-      rows = await db.getAllAsync<StrongsConcordanceResult>(normQ, [normalizeStrongsNumber(strongs)])
+      rows = await wordDb.getAllAsync<StrongsConcordanceResult>(normQ, [normalizeStrongsNumber(strongs)])
     }
     return rows
   }
