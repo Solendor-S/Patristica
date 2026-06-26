@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react'
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 import {
   View, Text, FlatList, TouchableOpacity, ScrollView,
   StyleSheet, ActivityIndicator, StatusBar, LayoutAnimation, Linking, TextInput,
@@ -9,10 +9,13 @@ import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
 import { useWordFocus } from '../context/WordFocusContext'
-import { getCommentary, getCrossRefs, getJosephusForVerse, getVariantsForVerse, getVerseText, getMaxVerse, getAllCommentaryByFather, getBibleVerseCitedByEarlyTexts, getEarlyTextRefs } from '../db/queries'
+import { getCommentary, getCrossRefs, getJosephusForVerse, getVariantsForVerse, getVerseText, getMaxVerse, getAllCommentaryByFather, getBibleVerseCitedByEarlyTexts, getEarlyTextRefs, searchCommentary } from '../db/queries'
 import type { JosephusEntry, CommentaryEntryWithRef, EarlyTextCitation, EarlyTextRef } from '../db/queries'
 import type { TextualVariant } from '../types'
 import { getFatherInfo, FATHER_DATES } from '../data/fatherDates'
+import { getFatherInfluences } from '../data/fatherInfluences'
+import { TRADITION_COLORS } from '../data/traditionColors'
+import DoctrinePanel from './DoctrinePanel'
 import { BOOKS, EARLY_TEXT_MAP } from '../data/books'
 import { useCrossRefOrder } from '../context/CrossRefOrderContext'
 import { getSourceUrl, getEarlyTextBook } from '../data/sourceLinks'
@@ -33,10 +36,26 @@ import { useTheme } from '../context/ThemeContext'
 import type { ThemeColors } from '../theme/themes'
 import type { CommentaryEntry, CrossRef, Note, RootTabParamList } from '../types'
 
-export type StudyTab = 'fathers' | 'crossrefs' | 'historical' | 'councils' | 'heresies' | 'schisms' | 'creeds' | 'persecution' | 'canon' | 'timeline' | 'words' | 'overview' | 'map'
+export type StudyTab = 'fathers' | 'crossrefs' | 'historical' | 'councils' | 'heresies' | 'schisms' | 'creeds' | 'persecution' | 'canon' | 'timeline' | 'words' | 'overview' | 'map' | 'doctrine'
 type HistMode = 'verse' | 'browse'
 type FatherMode = 'verse' | 'browse'
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Study'>
+
+const TRADITIONS = ['All', 'Eastern', 'Western', 'Alexandrian', 'Syrian', 'North African'] as const
+
+// Deduped + sorted base father list — computed once at module load, never changes
+const FATHER_BASE_LIST = (() => {
+  const seen = new Set<string>()
+  return Object.entries(FATHER_DATES)
+    .filter(([, info]) => info.sort >= 30 && info.sort <= 800)
+    .filter(([name, info]) => {
+      const key = `${info.sort}-${name.split(' ')[0]}`
+      if (seen.has(key)) return false
+      seen.add(key)
+      return true
+    })
+    .sort(([, a], [, b]) => a.sort - b.sort)
+})()
 
 // ── Entry card ────────────────────────────────────────────
 
@@ -464,7 +483,61 @@ export default function StudyScreen() {
   const [browseFather, setBrowseFather] = useState<string | null>(null)
   const [browseEntries, setBrowseEntries] = useState<CommentaryEntryWithRef[]>([])
   const [loadingBrowse, setLoadingBrowse] = useState(false)
+  const [returnTab, setReturnTab] = useState<StudyTab | null>(null)
   const [fatherQuery, setFatherQuery] = useState('')
+  const [activeTradition, setActiveTradition] = useState<string | null>(null)
+  const [commentaryInput, setCommentaryInput] = useState('')
+  const [commentaryResults, setCommentaryResults] = useState<CommentaryEntryWithRef[]>([])
+  const [commentarySearching, setCommentarySearching] = useState(false)
+  const commentaryTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+
+  useEffect(() => {
+    clearTimeout(commentaryTimer.current)
+    if (commentaryInput.length < 2) { setCommentaryResults([]); setCommentarySearching(false); return }
+    commentaryTimer.current = setTimeout(() => {
+      setCommentarySearching(true)
+      searchCommentary(db, commentaryInput)
+        .then(rows => { setCommentaryResults(rows); setCommentarySearching(false) })
+        .catch(() => setCommentarySearching(false))
+    }, 700)
+    return () => clearTimeout(commentaryTimer.current)
+  }, [commentaryInput, db])
+
+  const filteredEntries = useMemo(
+    () => activeTradition ? entries.filter(e => getFatherInfo(e.father_name)?.tradition === activeTradition) : entries,
+    [entries, activeTradition]
+  )
+
+  const consensusByTradition = useMemo(() => {
+    const counts: Record<string, number> = {}
+    for (const e of entries) {
+      const t = getFatherInfo(e.father_name)?.tradition ?? 'Other'
+      counts[t] = (counts[t] ?? 0) + 1
+    }
+    return counts
+  }, [entries])
+
+  const fatherList = useMemo(() => {
+    const q = fatherQuery.trim().toLowerCase()
+    return FATHER_BASE_LIST.filter(([name, info]) =>
+      (!q ||
+        name.toLowerCase().includes(q) ||
+        (info.role?.toLowerCase().includes(q) ?? false) ||
+        (info.location?.toLowerCase().includes(q) ?? false) ||
+        (info.tradition?.toLowerCase().includes(q) ?? false)
+      ) && (!activeTradition || info.tradition === activeTradition)
+    )
+  }, [fatherQuery, activeTradition])
+
+  const openFather = useCallback((name: string) => {
+    setBrowseFather(name)
+    setFatherMode('browse')
+    setLoadingBrowse(true)
+    getAllCommentaryByFather(db, name)
+      .then(rows => { setBrowseEntries(rows); setLoadingBrowse(false) })
+      .catch(() => setLoadingBrowse(false))
+  }, [db])
+
   const [loadingFathers, setLoadingFathers] = useState(false)
   const [loadingRefs, setLoadingRefs] = useState(false)
   const [verseText, setVerseText] = useState<string | null>(null)
@@ -562,6 +635,97 @@ export default function StudyScreen() {
   const loading = activeTab === 'fathers' ? loadingFathers : activeTab === 'crossrefs' ? loadingRefs : false
   const count   = activeTab === 'fathers' ? entries.length : crossRefs.length
 
+  const renderTraditionChips = () => (
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.traditionChipsRow} contentContainerStyle={styles.chipRowContent}>
+      {TRADITIONS.map(t => {
+        const isActive = t === 'All' ? activeTradition === null : activeTradition === t
+        return (
+          <TouchableOpacity key={t} style={[styles.traditionChip, isActive && styles.traditionChipActive]} onPress={() => setActiveTradition(t === 'All' ? null : t)} activeOpacity={0.7}>
+            <Text style={[styles.traditionChipText, isActive && styles.traditionChipTextActive]}>{t}</Text>
+          </TouchableOpacity>
+        )
+      })}
+    </ScrollView>
+  )
+
+  const renderInfluenceNetwork = () => {
+    if (!browseFather) return null
+    const { influencedBy, influenced } = getFatherInfluences(browseFather)
+    if (influencedBy.length === 0 && influenced.length === 0) return null
+    return (
+      <View style={styles.browseKeyWorks}>
+        <Text style={styles.browseKeyWorksLabel}>Influence network</Text>
+        {influencedBy.length > 0 && (
+          <View style={styles.influenceRow}>
+            <Text style={styles.influenceDir}>Shaped by </Text>
+            <View style={styles.influenceChips}>
+              {influencedBy.map(link => (
+                <TouchableOpacity key={link.to} style={styles.influenceChip} onPress={() => openFather(link.to)} activeOpacity={0.7}>
+                  <Text style={styles.influenceChipText}>{link.to}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        )}
+        {influenced.length > 0 && (
+          <View style={[styles.influenceRow, { marginTop: influencedBy.length > 0 ? 6 : 0 }]}>
+            <Text style={styles.influenceDir}>Shaped </Text>
+            <View style={styles.influenceChips}>
+              {influenced.map(link => (
+                <TouchableOpacity key={link.from} style={styles.influenceChip} onPress={() => openFather(link.from)} activeOpacity={0.7}>
+                  <Text style={styles.influenceChipText}>{link.from}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        )}
+      </View>
+    )
+  }
+
+  const renderConsensusBar = () => {
+    const keys = Object.keys(consensusByTradition).filter(k => k !== 'Other')
+    const otherCount = consensusByTradition['Other'] ?? 0
+    if (keys.length === 0 && otherCount === 0) return null
+    return (
+      <View style={styles.consensusBar}>
+        {keys.map(t => (
+          <View key={t} style={styles.consensusItem}>
+            <View style={[styles.consensusDot, { backgroundColor: TRADITION_COLORS[t] ?? '#94a3b8' }]} />
+            <Text style={styles.consensusLabel}>{t} <Text style={styles.consensusCount}>{consensusByTradition[t]}</Text></Text>
+          </View>
+        ))}
+        {otherCount > 0 && (
+          <View style={styles.consensusItem}>
+            <View style={[styles.consensusDot, { backgroundColor: '#94a3b8' }]} />
+            <Text style={styles.consensusLabel}>Other <Text style={styles.consensusCount}>{otherCount}</Text></Text>
+          </View>
+        )}
+      </View>
+    )
+  }
+
+  const renderCommentarySearchBar = (placeholder: string, autoFocus?: boolean) => (
+    <View style={[styles.fatherSearchRow, autoFocus && { marginTop: 10 }]}>
+      <Ionicons name="search" size={15} color={autoFocus ? colors.accent : colors.textMuted} style={{ marginRight: 6 }} />
+      <TextInput
+        style={styles.fatherSearchInput}
+        placeholder={placeholder}
+        placeholderTextColor={colors.textMuted}
+        value={commentaryInput}
+        onChangeText={setCommentaryInput}
+        returnKeyType="search"
+        autoCorrect={false}
+        autoFocus={!!autoFocus}
+      />
+      {!!commentaryInput && (
+        <TouchableOpacity onPress={() => setCommentaryInput('')} hitSlop={8}>
+          <Ionicons name="close-circle" size={15} color={colors.textMuted} />
+        </TouchableOpacity>
+      )}
+    </View>
+  )
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -615,7 +779,8 @@ export default function StudyScreen() {
           {([
             { key: 'words',      label: 'Words' },
             { key: 'overview',   label: 'Overview' },
-            { key: 'fathers',    label: 'Church Fathers', badge: entries.length   || undefined },
+            { key: 'fathers',    label: 'Church Fathers', badge: filteredEntries.length || undefined },
+            { key: 'doctrine',   label: 'Doctrine' },
             { key: 'crossrefs',  label: 'Cross-Refs',    badge: crossRefs.length || undefined },
             { key: 'historical', label: 'Historical' },
             { key: 'councils',   label: 'Councils' },
@@ -655,53 +820,91 @@ export default function StudyScreen() {
 
         {/* Fathers list */}
         {!loading && activeTab === 'fathers' && (() => {
+          // ── Commentary search mode ──
+          if (commentaryInput.length >= 2) {
+            const filteredSearchResults = activeTradition
+              ? commentaryResults.filter(e => getFatherInfo(e.father_name)?.tradition === activeTradition)
+              : commentaryResults
+            const searchHeader = (
+              <>
+                {renderCommentarySearchBar('Search all commentaries…', true)}
+                {renderTraditionChips()}
+              </>
+            )
+            return (
+              <View style={{ flex: 1 }}>
+                {commentarySearching ? (
+                  <>
+                    {searchHeader}
+                    <View style={styles.center}><ActivityIndicator color={colors.accent} /></View>
+                  </>
+                ) : (
+                  <FlatList
+                    data={filteredSearchResults}
+                    keyExtractor={e => `${e.id}-${e.book}-${e.chapter}-${e.verse}`}
+                    ListHeaderComponent={searchHeader}
+                    ListEmptyComponent={
+                      <View style={styles.center}>
+                        <Ionicons name="search-outline" size={52} color={colors.border} />
+                        <Text style={styles.emptyTitle}>No results</Text>
+                        <Text style={styles.emptyText}>
+                          {activeTradition
+                            ? `No ${activeTradition} commentary matches "${commentaryInput}"`
+                            : `No commentary matches "${commentaryInput}"`}
+                        </Text>
+                      </View>
+                    }
+                    contentContainerStyle={styles.list}
+                    renderItem={({ item }) => (
+                      <EntryCard
+                        entry={item}
+                        book={item.book}
+                        verseRef={`${item.book} ${item.chapter}:${item.verse}`}
+                      />
+                    )}
+                  />
+                )}
+              </View>
+            )
+          }
+
           // ── Browse mode: father list ──
           if (fatherMode === 'browse' && !browseFather) {
-            const q = fatherQuery.trim().toLowerCase()
-            const fatherList = Object.entries(FATHER_DATES)
-              .filter(([, info]) => info.sort >= 30 && info.sort <= 800)
-              // deduplicate by sort+first-word key
-              .filter(([name], _, arr) => {
-                const key = `${FATHER_DATES[name].sort}-${name.split(' ')[0]}`
-                return arr.findIndex(([n]) => `${FATHER_DATES[n].sort}-${n.split(' ')[0]}` === key) === arr.findIndex(([n]) => n === name)
-              })
-              .filter(([name, info]) => !q ||
-                name.toLowerCase().includes(q) ||
-                (info.role?.toLowerCase().includes(q) ?? false) ||
-                (info.location?.toLowerCase().includes(q) ?? false) ||
-                (info.tradition?.toLowerCase().includes(q) ?? false)
-              )
-              .sort(([, a], [, b]) => a.sort - b.sort)
             return (
               <View style={{ flex: 1 }}>
                 <View style={styles.modeToggle}>
-                  <TouchableOpacity style={[styles.modeBtn]} onPress={() => setFatherMode('verse')} activeOpacity={0.7}>
+                  <TouchableOpacity style={[styles.modeBtn]} onPress={() => { setFatherMode('verse'); setActiveTradition(null) }} activeOpacity={0.7}>
                     <Text style={[styles.modeBtnText]}>This Verse</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={[styles.modeBtn, styles.modeBtnActive]} onPress={() => setFatherMode('browse')} activeOpacity={0.7}>
+                  <TouchableOpacity style={[styles.modeBtn, styles.modeBtnActive]} onPress={() => { setFatherMode('browse'); setActiveTradition(null) }} activeOpacity={0.7}>
                     <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>Browse Fathers</Text>
                   </TouchableOpacity>
-                </View>
-                <View style={styles.fatherSearchRow}>
-                  <Ionicons name="search" size={15} color={colors.textMuted} style={{ marginRight: 6 }} />
-                  <TextInput
-                    style={styles.fatherSearchInput}
-                    placeholder="Search fathers…"
-                    placeholderTextColor={colors.textMuted}
-                    value={fatherQuery}
-                    onChangeText={setFatherQuery}
-                    returnKeyType="search"
-                    autoCorrect={false}
-                  />
-                  {!!fatherQuery && (
-                    <TouchableOpacity onPress={() => setFatherQuery('')} hitSlop={8}>
-                      <Ionicons name="close-circle" size={15} color={colors.textMuted} />
-                    </TouchableOpacity>
-                  )}
                 </View>
                 <FlatList
                   data={fatherList}
                   keyExtractor={([name]) => name}
+                  ListHeaderComponent={
+                    <>
+                      <View style={styles.fatherSearchRow}>
+                        <Ionicons name="search" size={15} color={colors.textMuted} style={{ marginRight: 6 }} />
+                        <TextInput
+                          style={styles.fatherSearchInput}
+                          placeholder="Search fathers…"
+                          placeholderTextColor={colors.textMuted}
+                          value={fatherQuery}
+                          onChangeText={setFatherQuery}
+                          returnKeyType="search"
+                          autoCorrect={false}
+                        />
+                        {!!fatherQuery && (
+                          <TouchableOpacity onPress={() => setFatherQuery('')} hitSlop={8}>
+                            <Ionicons name="close-circle" size={15} color={colors.textMuted} />
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                      {renderTraditionChips()}
+                    </>
+                  }
                   ListEmptyComponent={
                     <View style={styles.center}>
                       <Text style={styles.emptyText}>No fathers match "{fatherQuery}"</Text>
@@ -712,13 +915,7 @@ export default function StudyScreen() {
                     <TouchableOpacity
                       style={styles.fatherBrowseRow}
                       activeOpacity={0.7}
-                      onPress={() => {
-                        setBrowseFather(name)
-                        setLoadingBrowse(true)
-                        getAllCommentaryByFather(db, name)
-                          .then(rows => { setBrowseEntries(rows); setLoadingBrowse(false) })
-                          .catch(() => setLoadingBrowse(false))
-                      }}
+                      onPress={() => openFather(name)}
                     >
                       <View style={{ flex: 1 }}>
                         <Text style={styles.fatherBrowseName}>{name}</Text>
@@ -745,8 +942,18 @@ export default function StudyScreen() {
             return (
               <View style={{ flex: 1 }}>
                 <View style={styles.browseHeader}>
-                  <TouchableOpacity onPress={() => { setBrowseFather(null); setBrowseEntries([]) }} hitSlop={8} activeOpacity={0.7}>
+                  <TouchableOpacity
+                    style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}
+                    onPress={() => {
+                      setBrowseFather(null)
+                      setBrowseEntries([])
+                      if (returnTab) { setActiveTab(returnTab); setReturnTab(null) }
+                    }}
+                    hitSlop={8}
+                    activeOpacity={0.7}
+                  >
                     <Ionicons name="arrow-back" size={18} color={colors.accent} />
+                    {!!returnTab && <Text style={{ color: colors.accent, fontSize: 13, fontWeight: '500' }}>{returnTab.charAt(0).toUpperCase() + returnTab.slice(1)}</Text>}
                   </TouchableOpacity>
                   <View style={{ flex: 1, marginLeft: 10 }}>
                     <Text style={styles.browseHeaderName}>{browseFather}</Text>
@@ -759,6 +966,7 @@ export default function StudyScreen() {
                     <Text style={styles.browseKeyWorksText}>{info.keyWorks}</Text>
                   </View>
                 )}
+                {renderInfluenceNetwork()}
                 {loadingBrowse ? (
                   <View style={styles.center}><ActivityIndicator color={colors.accent} /></View>
                 ) : browseEntries.length === 0 ? (
@@ -787,10 +995,10 @@ export default function StudyScreen() {
           return (
             <View style={{ flex: 1 }}>
               <View style={styles.modeToggle}>
-                <TouchableOpacity style={[styles.modeBtn, styles.modeBtnActive]} onPress={() => setFatherMode('verse')} activeOpacity={0.7}>
+                <TouchableOpacity style={[styles.modeBtn, styles.modeBtnActive]} onPress={() => { setFatherMode('verse'); setActiveTradition(null) }} activeOpacity={0.7}>
                   <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>This Verse</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.modeBtn]} onPress={() => setFatherMode('browse')} activeOpacity={0.7}>
+                <TouchableOpacity style={[styles.modeBtn]} onPress={() => { setFatherMode('browse'); setActiveTradition(null) }} activeOpacity={0.7}>
                   <Text style={[styles.modeBtnText]}>Browse Fathers</Text>
                 </TouchableOpacity>
               </View>
@@ -806,14 +1014,33 @@ export default function StudyScreen() {
                   <Text style={styles.emptyTitle}>No commentary found</Text>
                   <Text style={styles.emptyText}>No patristic commentary recorded for {verseRef}</Text>
                 </View>
-              ) : (
-                <FlatList
-                  data={entries}
-                  keyExtractor={e => e.id.toString()}
-                  contentContainerStyle={styles.list}
-                  renderItem={({ item }) => <EntryCard entry={item} book={selected.book} />}
-                />
-              )}
+              ) : (() => {
+                const verseHeader = (
+                  <>
+                    {renderConsensusBar()}
+                    {renderCommentarySearchBar('Search all commentaries…')}
+                    {renderTraditionChips()}
+                  </>
+                )
+                return filteredEntries.length === 0 ? (
+                  <>
+                    {verseHeader}
+                    <View style={styles.center}>
+                      <Ionicons name="filter-outline" size={52} color={colors.border} />
+                      <Text style={styles.emptyTitle}>No {activeTradition} fathers</Text>
+                      <Text style={styles.emptyText}>No {activeTradition} commentary recorded for {verseRef}</Text>
+                    </View>
+                  </>
+                ) : (
+                  <FlatList
+                    data={filteredEntries}
+                    keyExtractor={e => e.id.toString()}
+                    ListHeaderComponent={verseHeader}
+                    contentContainerStyle={styles.list}
+                    renderItem={({ item }) => <EntryCard entry={item} book={selected.book} />}
+                  />
+                )
+              })()}
             </View>
           )
         })()}
@@ -1015,8 +1242,20 @@ export default function StudyScreen() {
           <TimelinePanel onNavigate={tab => setActiveTab(tab)} />
         )}
 
+        {/* Doctrine tracer */}
+        {activeTab === 'doctrine' && <DoctrinePanel />}
+
         {/* Map */}
-        {activeTab === 'map' && <MapPanel selected={selected} />}
+        {activeTab === 'map' && (
+          <MapPanel
+            selected={selected}
+            onNavigateToFather={(name) => {
+              openFather(name)
+              setReturnTab('map')
+              setActiveTab('fathers')
+            }}
+          />
+        )}
       </View>
     </View>
   )
@@ -1166,6 +1405,41 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     paddingHorizontal: 10, height: 36,
   },
   fatherSearchInput: { flex: 1, fontSize: 14, color: c.textPrimary },
+
+  consensusBar: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: c.border,
+  },
+  consensusItem: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  consensusDot: { width: 8, height: 8, borderRadius: 4 },
+  consensusLabel: { fontSize: 12, color: c.textSecondary },
+  consensusCount: { fontWeight: '700', color: c.textPrimary },
+
+  influenceRow: { flexDirection: 'row', alignItems: 'flex-start', flexWrap: 'wrap' },
+  influenceDir: { fontSize: 12, color: c.textMuted, marginTop: 4, flexShrink: 0 },
+  influenceChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, flex: 1 },
+  influenceChip: {
+    paddingHorizontal: 10, paddingVertical: 4,
+    borderRadius: 12, borderWidth: 1, borderColor: c.accent + '60',
+    backgroundColor: c.accent + '15',
+  },
+  influenceChipText: { fontSize: 12, color: c.accent, fontWeight: '500' },
+
+  traditionChipsRow: { marginBottom: 4 },
+  chipRowContent: { paddingHorizontal: 12, paddingVertical: 6, gap: 6, alignItems: 'center' as const },
+  traditionChip: {
+    paddingHorizontal: 12, paddingVertical: 6,
+    borderRadius: 16, borderWidth: 1.5, borderColor: c.border,
+    backgroundColor: c.bgCard,
+  },
+  traditionChipActive: { backgroundColor: c.accent, borderColor: c.accent },
+  traditionChipText: { fontSize: 12, fontWeight: '600', color: c.textMuted },
+  traditionChipTextActive: { color: '#fff' },
 
   fatherBrowseRow: {
     flexDirection: 'row', alignItems: 'center',

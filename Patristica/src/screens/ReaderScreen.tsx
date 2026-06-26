@@ -31,7 +31,7 @@ import type { Translation } from '../context/TranslationContext'
 import { useOnboarding } from '../context/OnboardingContext'
 import { useOtQuoteCaps } from '../context/OtQuoteCapsContext'
 import { usePacks } from '../context/PackContext'
-import { TRANSLATION_PACK_SLUG } from '../db/queries'
+import { TRANSLATION_PACK_SLUG, TRANSLATION_ONLINE_SOURCE } from '../db/queries'
 import { isWordSourcePack, fetchOnlineWordsAsChapter } from '../lib/PackManager'
 import { useRedLetter } from '../context/RedLetterContext'
 import { useFocusMode } from '../context/FocusModeContext'
@@ -341,6 +341,13 @@ const INLINE_SCRIPTURE_RE = /(\[\d+\]|[1-3]?\s*[A-Z][a-z]+(?:\s+[A-Za-z]+)?\s+\d
 const INLINE_BOOK_RE = /^([1-3]?\s*[A-Z][a-z]+(?:\s+[A-Za-z]+)?)\s+(\d+):(\d+)/
 
 const BSB_BOOK_ALIASES: Record<string, string> = { Psalm: 'Psalms' }
+
+const INCOMPLETE_DATASET_NOTE: Record<string, string> = {
+  LXX:   'Incomplete dataset — Psalms 10–147 and a few other chapters unavailable',
+  'LXX+': 'Incomplete dataset — Psalms 10–147 and a few other chapters unavailable',
+  A_LXX: 'Incomplete dataset — Psalms unavailable',
+}
+
 
 // ── E_LXX / Brenton reference parser (format: "Mat. 3. 3" or "John 1. 23") ──
 // Matches optional number prefix + book abbrev + chapter.verse with dots
@@ -1542,8 +1549,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
     const packDb = packDbRef.current ?? undefined
     const packCType = isApocrypha ? 'apocrypha' as const : isEarlyText ? 'early_text' as const : null
     const packSlug  = packCType ? packForContent(packCType, book)?.slug : TRANSLATION_PACK_SLUG[translation]
-    const useOnline = !!packSlug && !isInstalled(packSlug)
-    const useWordSource = !!packSlug && isWordSourcePack(packSlug)
+    const onlineOverride = !packCType ? TRANSLATION_ONLINE_SOURCE[translation] : undefined
+    const onlineSource   = onlineOverride?.source ?? packSlug
+    const useOnline      = !!packSlug && !isInstalled(packSlug) && !!onlineSource
+    const useWordSource  = onlineOverride ? onlineOverride.isWordSource : (!!packSlug && isWordSourcePack(packSlug))
     setIsOnlineMode(useOnline)
 
     if (isTranslationOnly) {
@@ -1552,10 +1561,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
       // then defer the scroll 100ms so native layout finishes before scrollToIndex fires.
       const topVerse = topVisibleVerseRef.current
       const fetchFn = useOnline && useWordSource
-        ? fetchOnlineWordsAsChapter(packSlug!, book, chapter)
+        ? fetchOnlineWordsAsChapter(onlineSource!, book, chapter)
             .then(vs => vs ?? [])
         : useOnline
-        ? fetchOnline(packSlug!, book, chapter)
+        ? fetchOnline(onlineSource!, book, chapter)
             .then(vs => (vs ?? []).map(v => ({ book, chapter, verse: v.verse, text: v.text })))
         : isEarlyText ? getEarlyTextChapter(db, book, chapter, packDb)
         : isApocrypha ? getApocryphaChapter(db, book, chapter, packDb)
@@ -1600,8 +1609,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
     })
     Promise.all([
       useOnline && useWordSource
-        ? fetchOnlineWordsAsChapter(packSlug!, book, chapter).then(vs => vs ?? [])
-        : useOnline ? fetchOnline(packSlug!, book, chapter)
+        ? fetchOnlineWordsAsChapter(onlineSource!, book, chapter).then(vs => vs ?? [])
+        : useOnline ? fetchOnline(onlineSource!, book, chapter)
                          .then(vs => (vs ?? []).map(v => ({ book, chapter, verse: v.verse, text: v.text })))
       : isEarlyText   ? getEarlyTextChapter(db, book, chapter, packDb)
       : isApocrypha   ? getApocryphaChapter(db, book, chapter, packDb)
@@ -2226,6 +2235,9 @@ export default function ReaderScreen({ navigation, route }: Props) {
         <View style={modal.translationInfo}>
           <Text style={[modal.translationKey, active && modal.translationKeyActive]}>{t.label}</Text>
           <Text style={modal.translationFull}>{t.full}</Text>
+          {INCOMPLETE_DATASET_NOTE[t.key] && (
+            <Text style={{ fontSize: 10, color: colors.textMuted, marginTop: 1, fontStyle: 'italic' }}>{INCOMPLETE_DATASET_NOTE[t.key]}</Text>
+          )}
           {needsPack && !installed && !isLoading && (
             <Text style={{ fontSize: 10, color: colors.textMuted, marginTop: 1 }}>🌐 Online · Tap ↓ to save offline</Text>
           )}

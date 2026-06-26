@@ -1,3 +1,5 @@
+import { FATHER_DATES } from './fatherDates'
+
 export interface MapCity {
   name: string
   lat: number
@@ -389,3 +391,134 @@ export const JOURNEYS: MapJourney[] = [
     ],
   },
 ]
+
+// ── Father Geographic Map ─────────────────────────────────────────────────────
+
+export interface FatherCityEntry {
+  name: string
+  dates: string
+  sort: number
+  tradition?: string
+  role?: string
+}
+
+export interface FatherCity {
+  displayName: string
+  lat: number
+  lng: number
+  fathers: FatherCityEntry[]
+}
+
+// Maps exact FATHER_DATES location strings to coordinates.
+// Multiple strings with the same displayName merge into one pin.
+const FATHER_CITY_COORDS: Record<string, { lat: number; lng: number; displayName: string }> = {
+  'Antioch, Syria':                            { lat: 36.20, lng:  36.16, displayName: 'Antioch' },
+  'Antioch & Tarsus':                          { lat: 36.20, lng:  36.16, displayName: 'Antioch' },
+  'Antioch & Constantinople':                  { lat: 36.20, lng:  36.16, displayName: 'Antioch' },
+  'Syria / Antioch':                           { lat: 36.20, lng:  36.16, displayName: 'Antioch' },
+  'Smyrna, Asia Minor':                        { lat: 38.42, lng:  27.14, displayName: 'Smyrna' },
+  'Ephesus, Asia Minor':                       { lat: 37.94, lng:  27.34, displayName: 'Ephesus' },
+  'Hierapolis, Phrygia':                       { lat: 37.92, lng:  29.12, displayName: 'Hierapolis' },
+  'Rome':                                      { lat: 41.90, lng:  12.49, displayName: 'Rome' },
+  'Rome (North African origin)':               { lat: 41.90, lng:  12.49, displayName: 'Rome' },
+  'Rome or Corinth':                           { lat: 41.90, lng:  12.49, displayName: 'Rome' },
+  'Gaul / Rome (secretary to Leo I)':          { lat: 41.90, lng:  12.49, displayName: 'Rome' },
+  'Antwerp & Rome':                            { lat: 41.90, lng:  12.49, displayName: 'Rome' },
+  'Lyon, Gaul':                                { lat: 45.74, lng:   4.83, displayName: 'Lyon' },
+  'Palestine / Rome':                          { lat: 31.77, lng:  35.23, displayName: 'Jerusalem' },
+  'Jerusalem / Emmaus':                        { lat: 31.77, lng:  35.23, displayName: 'Jerusalem' },
+  'Jerusalem':                                 { lat: 31.77, lng:  35.23, displayName: 'Jerusalem' },
+  'Corinth, Greece':                           { lat: 37.94, lng:  22.93, displayName: 'Corinth' },
+  'Alexandria, Egypt':                         { lat: 31.20, lng:  29.92, displayName: 'Alexandria' },
+  'Alexandria & Caesarea':                     { lat: 31.20, lng:  29.92, displayName: 'Alexandria' },
+  'Carthage, North Africa':                    { lat: 36.86, lng:  10.32, displayName: 'Carthage' },
+  'Neocaesarea, Pontus':                       { lat: 40.55, lng:  36.50, displayName: 'Neocaesarea' },
+  'Olympus, Lycia':                            { lat: 36.40, lng:  30.46, displayName: 'Olympus, Lycia' },
+  'Sicca Veneria, North Africa':               { lat: 36.48, lng:   8.70, displayName: 'Sicca Veneria' },
+  'Caesarea Maritima':                         { lat: 32.50, lng:  34.89, displayName: 'Caesarea Maritima' },
+  'Nicomedia & Trier':                         { lat: 40.77, lng:  29.92, displayName: 'Nicomedia' },
+  'Caesarea, Cappadocia':                      { lat: 38.74, lng:  35.49, displayName: 'Caesarea, Cappadocia' },
+  'Nyssa, Cappadocia':                         { lat: 38.38, lng:  34.71, displayName: 'Nyssa' },
+  'Constantinople':                            { lat: 41.01, lng:  28.97, displayName: 'Constantinople' },
+  'Constantinople & Palestine':                { lat: 41.01, lng:  28.97, displayName: 'Constantinople' },
+  'Milan, Italy':                              { lat: 45.46, lng:   9.19, displayName: 'Milan' },
+  'Nitria & Kellia, Egypt':                    { lat: 30.42, lng:  30.33, displayName: 'Nitria' },
+  'Emesa, Syria':                              { lat: 34.73, lng:  36.72, displayName: 'Emesa' },
+  'Salamis (Constantia), Cyprus':              { lat: 35.18, lng:  33.91, displayName: 'Salamis, Cyprus' },
+  'Bethlehem (via Rome & Antioch)':            { lat: 31.71, lng:  35.20, displayName: 'Bethlehem' },
+  'Aquileia & Jerusalem (via Egypt)':          { lat: 45.77, lng:  13.37, displayName: 'Aquileia' },
+  'Aquileia, Italy':                           { lat: 45.77, lng:  13.37, displayName: 'Aquileia' },
+  'Iconium, Lycaonia':                         { lat: 37.87, lng:  32.49, displayName: 'Iconium' },
+  'Marseille, Gaul (via Egypt & Bethlehem)':   { lat: 43.30, lng:   5.37, displayName: 'Marseille' },
+  'Marseille, Gaul':                           { lat: 43.30, lng:   5.37, displayName: 'Marseille' },
+  'Hippo Regius, North Africa':                { lat: 36.90, lng:   7.77, displayName: 'Hippo Regius' },
+  'Nola, Italy':                               { lat: 40.92, lng:  14.53, displayName: 'Nola' },
+  'Bracara Augusta, Hispania':                 { lat: 41.55, lng:  -8.43, displayName: 'Braga' },
+  'Gaul (Aquitaine)':                          { lat: 44.84, lng:  -0.58, displayName: 'Aquitaine' },
+  'Lérins, Gaul':                              { lat: 43.52, lng:   7.05, displayName: 'Lérins' },
+  'Ravenna, Italy':                            { lat: 44.42, lng:  12.20, displayName: 'Ravenna' },
+  'Ruspe, North Africa':                       { lat: 36.73, lng:  11.00, displayName: 'Ruspe' },
+  'Vivarium, Calabria, Italy':                 { lat: 38.62, lng:  16.52, displayName: 'Vivarium' },
+  'Arles, Gaul':                               { lat: 43.68, lng:   4.63, displayName: 'Arles' },
+  'Monte Cassino, Italy':                      { lat: 41.49, lng:  13.82, displayName: 'Monte Cassino' },
+  'Gaza, Palestine':                           { lat: 31.50, lng:  34.46, displayName: 'Gaza' },
+  'Serugh, Mesopotamia':                       { lat: 36.93, lng:  38.95, displayName: 'Serugh' },
+  'Mabbug, Syria':                             { lat: 36.52, lng:  37.95, displayName: 'Mabbug' },
+  'Seville, Spain':                            { lat: 37.39, lng:  -5.99, displayName: 'Seville' },
+  'Monastery of Mar Saba, Palestine':          { lat: 31.70, lng:  35.33, displayName: 'Mar Saba' },
+  'Nineveh (via Beth Qatraye, Persia)':        { lat: 36.34, lng:  43.13, displayName: 'Nineveh' },
+  'Assyria (via Rome)':                        { lat: 36.34, lng:  43.13, displayName: 'Nineveh' },
+  'Jarrow, Northumbria':                       { lat: 54.98, lng:  -1.50, displayName: 'Jarrow' },
+  'Tours, Francia':                            { lat: 47.39, lng:   0.69, displayName: 'Tours' },
+  'Fulda & Mainz, Germania':                   { lat: 50.55, lng:   9.68, displayName: 'Fulda' },
+  'Auxerre, Francia':                          { lat: 47.80, lng:   3.57, displayName: 'Auxerre' },
+  'Auxerre & Reims, Francia':                  { lat: 47.80, lng:   3.57, displayName: 'Auxerre' },
+  'Ohrid, Bulgaria':                           { lat: 41.12, lng:  20.80, displayName: 'Ohrid' },
+  'Canterbury, England':                       { lat: 51.28, lng:   1.08, displayName: 'Canterbury' },
+  'Clairvaux, France':                         { lat: 48.14, lng:   4.78, displayName: 'Clairvaux' },
+  'Thessalonica':                              { lat: 40.64, lng:  22.94, displayName: 'Thessalonica' },
+  'Paris & Naples':                            { lat: 48.85, lng:   2.35, displayName: 'Paris' },
+  'Paris':                                     { lat: 48.85, lng:   2.35, displayName: 'Paris' },
+  'Laon & Paris, Francia':                     { lat: 48.85, lng:   2.35, displayName: 'Paris' },
+  'London':                                    { lat: 51.51, lng:  -0.13, displayName: 'London' },
+  'Lancashire, England':                       { lat: 53.76, lng:  -2.70, displayName: 'Lancashire' },
+  'Poetovio (Ptuj), Pannonia':                 { lat: 46.41, lng:  15.87, displayName: 'Poetovio' },
+  'Gabala, Syria':                             { lat: 35.73, lng:  35.88, displayName: 'Gabala' },
+  'Reims, Francia':                            { lat: 49.25, lng:   4.03, displayName: 'Reims' },
+  'Douai & Rheims, France':                    { lat: 49.25, lng:   4.03, displayName: 'Reims' },
+  'Tricca, Thessaly':                          { lat: 39.55, lng:  21.77, displayName: 'Trikala' },
+  'Eclanum, Italy':                            { lat: 41.01, lng:  15.14, displayName: 'Eclanum' },
+  'Egyptian Desert (Thebaid)':                 { lat: 26.56, lng:  31.72, displayName: 'Egyptian Desert' },
+  'Scetis (Wadi el-Natrun), Egypt':            { lat: 30.43, lng:  30.33, displayName: 'Scetis' },
+  'Persian Empire (Mesopotamia)':              { lat: 33.34, lng:  44.40, displayName: 'Mesopotamia' },
+  'Nisibis & Edessa, Syria':                   { lat: 37.15, lng:  38.79, displayName: 'Edessa' },
+  'Poitiers, Gaul':                            { lat: 46.58, lng:   0.34, displayName: 'Poitiers' },
+  'Barcelona, Spain':                          { lat: 41.38, lng:   2.17, displayName: 'Barcelona' },
+  'Cyrrhus, Syria':                            { lat: 36.74, lng:  36.97, displayName: 'Cyrrhus' },
+  'Athens / Alexandria':                       { lat: 37.98, lng:  23.73, displayName: 'Athens' },
+  'Brescia, Italy':                            { lat: 45.54, lng:  10.22, displayName: 'Brescia' },
+}
+
+const SKIP_FATHER_KEYS = new Set(['2 Clement'])
+
+function buildFatherCities(): FatherCity[] {
+  const map = new Map<string, FatherCity>()
+  for (const [name, info] of Object.entries(FATHER_DATES)) {
+    if (SKIP_FATHER_KEYS.has(name)) continue
+    if (!info.location) continue
+    const coord = FATHER_CITY_COORDS[info.location]
+    if (!coord) continue
+    const key = coord.displayName
+    if (!map.has(key)) {
+      map.set(key, { displayName: coord.displayName, lat: coord.lat, lng: coord.lng, fathers: [] })
+    }
+    const city = map.get(key)!
+    // Deduplicate aliases (same dates + role = same person under a different name key)
+    if (!city.fathers.some(f => f.dates === info.dates && f.role === info.role)) {
+      city.fathers.push({ name, dates: info.dates, sort: info.sort, tradition: info.tradition, role: info.role })
+    }
+  }
+  return Array.from(map.values())
+}
+
+export const FATHER_CITIES: FatherCity[] = buildFatherCities()

@@ -104,11 +104,29 @@ export const TRANSLATION_PACK_SLUG: Record<string, string> = {
   BSB:   'bsb',
   E_LXX: 'elxx',
   A_LXX: 'elxx',
+  LXX:   'elxx',
+  'LXX+': 'elxx',
   DSS:   'dss',
   // Scholar word-table packs (TR and WLC are core defaults; these are optional)
   SBLGNT: 'sblgnt',
   TAGNT:  'tagnt',
   TAHOT:  'tahot',
+}
+
+// Maps annotation translation key → its word table/column.
+// TR+/WLC+ are in the core DB; LXX+ is in a pack DB — use TRANSLATION_PACK_SLUG to decide.
+const ANNOTATED_TRANSLATION_TABLE: Record<string, { table: string; col: string }> = {
+  'TR+':  { table: 'greek_words_tr', col: 'greek'  },
+  'WLC+': OT_WORD_TABLE['wlc'],
+  'LXX+': OT_WORD_TABLE['lxx'],
+}
+
+// Maps translation key → online fetch source and whether it is word-level data.
+// Needed for translations whose online path differs from their pack slug.
+export const TRANSLATION_ONLINE_SOURCE: Record<string, { source: string; isWordSource: boolean }> = {
+  LXX:    { source: 'lxx',  isWordSource: true  },
+  'LXX+': { source: 'lxx',  isWordSource: true  },
+  A_LXX:  { source: 'alxx', isWordSource: false },
 }
 
 // ── Bible verses ──────────────────────────────────────────
@@ -213,9 +231,11 @@ export async function getChapter(
   translation = 'KJV',
   packDb?: SQLiteDatabase,
 ): Promise<BibleVerse[]> {
-  if (translation === 'TR+')  return getChapterWordsAnnotated(db, book, chapter, 'greek_words_tr', 'greek')
-  if (translation === 'WLC+') return getChapterWordsAnnotated(db, book, chapter, 'wlc_words', 'hebrew')
-  if (translation === 'LXX+') return getChapterWordsAnnotated(db, book, chapter, 'lxx_words', 'greek')
+  const annotatedEntry = ANNOTATED_TRANSLATION_TABLE[translation]
+  if (annotatedEntry) {
+    const effectiveDb = TRANSLATION_PACK_SLUG[translation] ? (packDb ?? db) : db
+    return getChapterWordsAnnotated(effectiveDb, book, chapter, annotatedEntry.table, annotatedEntry.col)
+  }
   // Greek NT word tables: TR is core (use db); SBLGNT/TAGNT are pack DBs
   const greekNTTable = GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]
   if (greekNTTable) {
@@ -253,9 +273,11 @@ export async function getVerse(
   translation = 'KJV',
   packDb?: SQLiteDatabase,
 ): Promise<BibleVerse | null> {
-  if (translation === 'TR+')  return getVerseWordsAnnotated(db, book, chapter, verse, 'greek_words_tr', 'greek')
-  if (translation === 'WLC+') return getVerseWordsAnnotated(db, book, chapter, verse, 'wlc_words', 'hebrew')
-  if (translation === 'LXX+') return getVerseWordsAnnotated(db, book, chapter, verse, 'lxx_words', 'greek')
+  const annotatedEntry = ANNOTATED_TRANSLATION_TABLE[translation]
+  if (annotatedEntry) {
+    const effectiveDb = TRANSLATION_PACK_SLUG[translation] ? (packDb ?? db) : db
+    return getVerseWordsAnnotated(effectiveDb, book, chapter, verse, annotatedEntry.table, annotatedEntry.col)
+  }
   const greekNTTable = GREEK_SOURCE_TABLE[translation.toLowerCase() as GreekSource]
   if (greekNTTable) {
     const effectiveDb = greekNTTable === 'greek_words_tr' ? db : (packDb ?? db)
@@ -457,12 +479,6 @@ export async function searchVersesAll(
 
 // ── Strongs search for word-table translations (TR+, WLC+, LXX+) ─────────────
 
-const ANNOTATED_TABLE_MAP: Record<string, { table: string; col: string }> = {
-  'TR+':  { table: 'greek_words_tr', col: 'greek' }, // same table as GREEK_SOURCE_TABLE['tr']
-  'WLC+': OT_WORD_TABLE['wlc'],
-  'LXX+': OT_WORD_TABLE['lxx'],
-}
-
 export async function searchAnnotatedByStrongs(
   db: SQLiteDatabase,
   strongs: string,          // e.g. "G4145" or "g4145"
@@ -470,7 +486,7 @@ export async function searchAnnotatedByStrongs(
   books: string[],
   limit = 200,
 ): Promise<SearchResult[]> {
-  const entry = ANNOTATED_TABLE_MAP[translation]
+  const entry = ANNOTATED_TRANSLATION_TABLE[translation]
   if (!entry) return []
 
   // Normalise: "g4145" → "G4145", strip leading zeros
@@ -758,6 +774,41 @@ export async function getAllCommentaryByFather(
      WHERE father_name LIKE ?
      ORDER BY book, chapter, verse`,
     [`${fatherName}%`]
+  )
+}
+
+export async function searchCommentary(
+  db: SQLiteDatabase,
+  query: string
+): Promise<CommentaryEntryWithRef[]> {
+  const like = `%${query.toLowerCase()}%`
+  return db.getAllAsync<CommentaryEntryWithRef>(
+    `SELECT id, father_name, father_era, excerpt, full_text, source, source_url,
+            book, chapter, verse
+     FROM commentary
+     WHERE LOWER(father_name) LIKE ? OR LOWER(excerpt) LIKE ? OR LOWER(full_text) LIKE ?
+     ORDER BY book, chapter, verse
+     LIMIT 150`,
+    [like, like, like]
+  )
+}
+
+export async function searchCommentaryByKeywords(
+  db: SQLiteDatabase,
+  keywords: string[],
+  limit = 300,
+): Promise<CommentaryEntryWithRef[]> {
+  if (keywords.length === 0) return []
+  // Build: (LOWER(full_text) LIKE ? OR LOWER(excerpt) LIKE ?) OR ...
+  const clause = keywords.map(() => `(LOWER(full_text) LIKE ? OR LOWER(excerpt) LIKE ?)`).join(' OR ')
+  const params = keywords.flatMap(k => [`%${k}%`, `%${k}%`])
+  return db.getAllAsync<CommentaryEntryWithRef>(
+    `SELECT id, father_name, father_era, excerpt, full_text, source, source_url,
+            book, chapter, verse
+     FROM commentary
+     WHERE ${clause}
+     LIMIT ${limit}`,
+    params,
   )
 }
 
