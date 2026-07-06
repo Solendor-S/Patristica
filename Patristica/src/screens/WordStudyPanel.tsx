@@ -669,16 +669,17 @@ export default function WordStudyPanel({ selected }: Props) {
   const activePackDbRef = useRef<import('expo-sqlite').SQLiteDatabase | null>(null)
 
   const isLxx = !isNT && (otSource === 'lxx' || otSource === 'lxx_a')
+  const isHebrew = !isNT && !isLxx
 
   useEffect(() => {
-    if (!selected.verse) return
+    if (selected.verse == null) return
     setWords([])
     setActiveKey(null)
     setDef(null)
     setLexicon(null)
     setConcordanceResults([])
     setLoading(true)
-    const verse = selected.verse ?? 1
+    const verse = selected.verse ?? 0
     // Resolve pack DB for optional sources (SBLGNT/TAGNT/TAHOT/LXX)
     const packSlug = isNT ? TRANSLATION_PACK_SLUG[source.toUpperCase()] : OT_SOURCE_PACK[otSource]
     const fetchWords = (packDb?: import('expo-sqlite').SQLiteDatabase | null) => {
@@ -851,7 +852,7 @@ export default function WordStudyPanel({ selected }: Props) {
 
   // ── Empty / loading states ────────────────────────────────
 
-  if (!selected.verse) {
+  if (selected.verse == null) {
     return (
       <View style={s.center}>
         <Ionicons name="language-outline" size={52} color={colors.border} />
@@ -865,21 +866,6 @@ export default function WordStudyPanel({ selected }: Props) {
     return (
       <View style={s.center}>
         <ActivityIndicator color={colors.accent} size="large" />
-      </View>
-    )
-  }
-
-  if (!words.length) {
-    const needsPack = false // all sources now have online fallback
-    return (
-      <View style={s.center}>
-        <Ionicons name={needsPack ? 'download-outline' : 'language-outline'} size={52} color={colors.border} />
-        <Text style={s.emptyTitle}>{needsPack ? 'Pack not downloaded' : 'No words found'}</Text>
-        <Text style={s.emptyText}>
-          {needsPack
-            ? `Download the ${isLxx ? 'LXX' : 'TAHOT'} pack from the Library tab to use this source`
-            : `No ${isNT ? 'Greek' : isLxx ? 'LXX Greek' : 'Hebrew'} data for this verse`}
-        </Text>
       </View>
     )
   }
@@ -1022,9 +1008,29 @@ export default function WordStudyPanel({ selected }: Props) {
         </ScrollView>
       )}
 
+
+      {isHebrew && selected.book === 'Psalms' && (
+        <Text style={s.psalmDisclaimer}>
+          Note: Strongs tagging and English glosses for Hebrew Psalms may be approximate due to morphological splitting in the source data.
+        </Text>
+      )}
+
+      {!words.length ? (
+        <View style={s.center}>
+          <Ionicons name="language-outline" size={52} color={colors.border} />
+          <Text style={s.emptyTitle}>No words found</Text>
+          <Text style={s.emptyText}>{`No ${isNT ? 'Greek' : isLxx ? 'LXX Greek' : 'Hebrew'} data for this verse`}</Text>
+        </View>
+      ) : (
+      <>
+      {selected.verse === 0 && (
+        <Text style={[s.superscriptionLabel, { paddingHorizontal: 14, paddingTop: 10, paddingBottom: 8 }]}>SUPERSCRIPTION</Text>
+      )}
       <View style={[s.pillsRow, !isNT && !isLxx && s.pillsRowRTL]}>
         {words.map((w, i) => {
-          const text = (isNT || isLxx) ? (w as GreekWord).greek : (w as HebrewWord).hebrew
+          const raw = (isNT || isLxx) ? (w as GreekWord).greek : (w as HebrewWord).hebrew
+          // Strip OSIS/XML markup leaked into the greek field in some lxx_apostolic_words rows
+          const text = raw?.includes('<') ? raw.replace(/<[^>]*>/g, '').split(/\s+/)[0] : (raw ?? '')
           const active = activeKey?.strongs === w.strongs && activeKey?.position === w.position
           return (
             <TouchableOpacity
@@ -1261,6 +1267,8 @@ export default function WordStudyPanel({ selected }: Props) {
           )}
         </View>
       )}
+      </>
+      )}
     </ScrollView>
   )
 }
@@ -1344,6 +1352,10 @@ const makeStyles = (c: ThemeColors, fontFamily?: string, fontScope: FontScopeKey
 
   pillsRow:    { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   pillsRowRTL: { flexDirection: 'row-reverse' },
+  psalmDisclaimer: { fontSize: 11, color: c.textMuted, fontStyle: 'italic', marginHorizontal: 14, marginBottom: 8, lineHeight: 16, opacity: 0.8 },
+  superscriptionSection: { paddingHorizontal: 14, paddingTop: 10, paddingBottom: 4 },
+  superscriptionLabel: { fontSize: 10, fontWeight: '700', color: c.textMuted, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 8 },
+  superscriptionDivider: { marginTop: 12, height: StyleSheet.hairlineWidth, backgroundColor: c.border },
 
   pill: {
     backgroundColor: c.bgCard,

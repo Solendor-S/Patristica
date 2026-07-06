@@ -21,7 +21,9 @@ import { OnboardingProvider, useOnboarding } from './src/context/OnboardingConte
 import { RedLetterProvider } from './src/context/RedLetterContext'
 import { StrongsInSearchProvider } from './src/context/StrongsInSearchContext'
 import { FocusModeProvider } from './src/context/FocusModeContext'
+import { ReadingModeProvider } from './src/context/ReadingModeContext'
 import { OtQuoteCapsProvider } from './src/context/OtQuoteCapsContext'
+import { ReadingPlanProvider } from './src/context/ReadingPlanContext'
 import { WordFocusProvider } from './src/context/WordFocusContext'
 import { PackProvider } from './src/context/PackContext'
 import { TabletLayoutProvider } from './src/context/TabletLayoutContext'
@@ -77,6 +79,7 @@ export default function App() {
           <RedLetterProvider>
           <StrongsInSearchProvider>
           <FocusModeProvider>
+          <ReadingModeProvider>
           <OtQuoteCapsProvider>
           <PackProvider>
           <WordFocusProvider>
@@ -85,11 +88,13 @@ export default function App() {
           <SearchOrderProvider>
           <CrossRefOrderProvider>
           <SpaceSaverProvider>
+          <ReadingPlanProvider>
           <OnboardingProvider>
             <DatabaseProvider>
               <AppShell />
             </DatabaseProvider>
           </OnboardingProvider>
+          </ReadingPlanProvider>
           </SpaceSaverProvider>
           </CrossRefOrderProvider>
           </SearchOrderProvider>
@@ -98,6 +103,7 @@ export default function App() {
           </WordFocusProvider>
           </PackProvider>
           </OtQuoteCapsProvider>
+          </ReadingModeProvider>
           </FocusModeProvider>
           </StrongsInSearchProvider>
           </RedLetterProvider>

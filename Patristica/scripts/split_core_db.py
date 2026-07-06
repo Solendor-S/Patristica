@@ -84,7 +84,7 @@ optional_tables = [
     'apocrypha_verses',
     'early_texts',
     'early_text_footnotes',
-    'early_text_refs',
+    # early_text_refs stays in core — needed for Bible verse cross-ref citations
     'elxx_notes',
     'bsb_footnotes',
     'lxx_words',           # LXX Greek OT — goes with elxx pack

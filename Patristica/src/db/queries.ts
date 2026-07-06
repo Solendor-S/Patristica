@@ -1,5 +1,8 @@
 import type { SQLiteDatabase } from 'expo-sqlite'
 import type { BibleVerse, Bookmark, CommentaryEntry, CrossRef, Note, SearchResult, TextualVariant } from '../types'
+import { distributeChapters, PLAN_TEMPLATES } from '../data/planTemplates'
+export type { PlanTemplate } from '../data/planTemplates'
+export { PLAN_TEMPLATES } from '../data/planTemplates'
 
 // ── Book name normalisation ────────────────────────────────
 // ASV (and some other translations) store numbered books with Roman numerals
@@ -387,6 +390,7 @@ export async function searchVerses(
   books: string[] = [],
   limit = 200,
   exactWords = false,
+  packDb?: SQLiteDatabase,
 ): Promise<SearchResult[]> {
   const allWords = query.trim().split(/\s+/).filter(Boolean)
   if (allWords.length === 0) return []
@@ -458,7 +462,7 @@ export async function searchVerses(
   const transBookClause = transBookArgs.length > 0
     ? ` AND book IN (${transBookArgs.map(() => '?').join(',')})`
     : ''
-  return db.getAllAsync<SearchResult>(
+  return (packDb ?? db).getAllAsync<SearchResult>(
     `SELECT book, chapter, verse, text FROM bible_translations
      WHERE translation = ? AND (${whereExpr})${transBookClause}
      ORDER BY (${scoreExpr}) DESC
@@ -473,8 +477,9 @@ export async function searchVersesAll(
   translation = 'KJV',
   books: string[] = [],
   exactWords = false,
+  packDb?: SQLiteDatabase,
 ): Promise<SearchResult[]> {
-  return searchVerses(db, query, translation, books, 5000, exactWords)
+  return searchVerses(db, query, translation, books, 5000, exactWords, packDb)
 }
 
 // ── Strongs search for word-table translations (TR+, WLC+, LXX+) ─────────────
@@ -1295,6 +1300,17 @@ export async function getHebrewWords(
   )
 }
 
+export async function getPsalmHeading(
+  db: SQLiteDatabase,
+  chapter: number,
+): Promise<string | null> {
+  const row = await db.getFirstAsync<{ heading: string }>(
+    'SELECT heading FROM psalm_headings WHERE chapter = ?',
+    [chapter]
+  )
+  return row?.heading ?? null
+}
+
 export type LxxSource = 'lxx' | 'lxx_a'
 
 const LXX_WORD_TABLE: Record<LxxSource, string> = {
@@ -1735,4 +1751,158 @@ export async function getBibleVerseCitedByEarlyTexts(
      ORDER BY book, chapter`,
     [refBook, refChapter, refVerse]
   )
+}
+
+// ── Reading Plans ──────────────────────────────────────────────────────────────
+
+export interface ReadingPlan {
+  id: number
+  name: string
+  created_at: number
+}
+
+export interface PlanEntry {
+  id: number
+  plan_id: number
+  day_number: number
+  target_date: string
+  book: string
+  chapter: number
+  completed_at: number | null
+}
+
+export interface PlanWithProgress extends ReadingPlan {
+  total_days: number
+  total_entries: number
+  completed_entries: number
+  today_book: string | null
+  today_chapter: number | null
+  today_completed: number | null
+}
+
+function isoDate(date: Date): string {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+export async function createPlanFromTemplate(
+  db: SQLiteDatabase,
+  templateKey: string,
+  startDate: Date = new Date(),
+): Promise<number> {
+  const tpl = PLAN_TEMPLATES.find(t => t.key === templateKey)
+  if (!tpl) throw new Error(`Unknown template: ${templateKey}`)
+  return createCustomPlan(db, tpl.label, tpl.getChapters(), tpl.days, startDate)
+}
+
+export async function createCustomPlan(
+  db: SQLiteDatabase,
+  name: string,
+  chapters: [string, number][],
+  totalDays: number,
+  startDate: Date = new Date(),
+): Promise<number> {
+  const plan = await db.runAsync(
+    'INSERT INTO reading_plans (name, created_at) VALUES (?, ?)',
+    [name, Date.now()]
+  )
+  const planId = plan.lastInsertRowId
+  const dayGroups = distributeChapters(chapters, totalDays)
+  const start = new Date(startDate)
+  start.setHours(0, 0, 0, 0)
+
+  // Build all rows first, then insert in a single transaction
+  const rows: [number, number, string, string, number][] = []
+  for (let i = 0; i < dayGroups.length; i++) {
+    const date = new Date(start)
+    date.setDate(start.getDate() + i)
+    const dateStr = isoDate(date)
+    for (const [book, chapter] of dayGroups[i]) {
+      rows.push([planId, i + 1, dateStr, book, chapter])
+    }
+  }
+
+  await db.withTransactionAsync(async () => {
+    for (const row of rows) {
+      await db.runAsync(
+        'INSERT INTO plan_entries (plan_id, day_number, target_date, book, chapter) VALUES (?, ?, ?, ?, ?)',
+        row
+      )
+    }
+  })
+
+  return planId
+}
+
+export async function deletePlan(db: SQLiteDatabase, planId: number): Promise<void> {
+  await db.runAsync('DELETE FROM plan_entries WHERE plan_id = ?', [planId])
+  await db.runAsync('DELETE FROM reading_plans WHERE id = ?', [planId])
+}
+
+export async function markEntryComplete(db: SQLiteDatabase, entryId: number): Promise<void> {
+  await db.runAsync('UPDATE plan_entries SET completed_at = ? WHERE id = ?', [Date.now(), entryId])
+}
+
+export async function markEntryIncomplete(db: SQLiteDatabase, entryId: number): Promise<void> {
+  await db.runAsync('UPDATE plan_entries SET completed_at = NULL WHERE id = ?', [entryId])
+}
+
+export async function getPlans(db: SQLiteDatabase): Promise<PlanWithProgress[]> {
+  const today = isoDate(new Date())
+  return db.getAllAsync<PlanWithProgress>(`
+    SELECT
+      p.id, p.name, p.created_at,
+      COUNT(DISTINCT e.day_number)             AS total_days,
+      COUNT(e.id)                              AS total_entries,
+      COUNT(e.completed_at)                    AS completed_entries,
+      MAX(CASE WHEN e.target_date = '${today}' THEN e.book         END) AS today_book,
+      MAX(CASE WHEN e.target_date = '${today}' THEN e.chapter      END) AS today_chapter,
+      MAX(CASE WHEN e.target_date = '${today}' THEN e.completed_at END) AS today_completed
+    FROM reading_plans p
+    LEFT JOIN plan_entries e ON e.plan_id = p.id
+    GROUP BY p.id
+    ORDER BY p.created_at DESC
+  `, [])
+}
+
+export async function getPlanEntriesForMonth(
+  db: SQLiteDatabase,
+  planId: number,
+  year: number,
+  month: number,
+): Promise<PlanEntry[]> {
+  const prefix = `${year}-${String(month).padStart(2, '0')}`
+  return db.getAllAsync<PlanEntry>(
+    "SELECT * FROM plan_entries WHERE plan_id = ? AND target_date LIKE ? ORDER BY day_number, id",
+    [planId, `${prefix}%`]
+  )
+}
+
+export async function getTodayEntries(db: SQLiteDatabase, planId: number): Promise<PlanEntry[]> {
+  const today = isoDate(new Date())
+  return db.getAllAsync<PlanEntry>(
+    'SELECT * FROM plan_entries WHERE plan_id = ? AND target_date = ? ORDER BY id',
+    [planId, today]
+  )
+}
+
+export async function getStreak(db: SQLiteDatabase, planId: number): Promise<number> {
+  const rows = await db.getAllAsync<{ target_date: string; total: number; done: number }>(
+    `SELECT target_date, COUNT(*) AS total, COUNT(completed_at) AS done
+     FROM plan_entries WHERE plan_id = ?
+     GROUP BY target_date ORDER BY target_date DESC`,
+    [planId]
+  )
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  let streak = 0
+  for (const row of rows) {
+    const rowDate = new Date(row.target_date + 'T00:00:00')
+    const diffDays = Math.round((today.getTime() - rowDate.getTime()) / 86400000)
+    if (diffDays !== streak) break
+    if (row.done === row.total && row.total > 0) streak++
+  }
+  return streak
 }

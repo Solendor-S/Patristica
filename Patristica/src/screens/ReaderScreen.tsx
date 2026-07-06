@@ -5,6 +5,7 @@ import {
   StyleSheet, ActivityIndicator, StatusBar, Animated, TextInput,
   KeyboardAvoidingView, Platform, Alert,
 } from 'react-native'
+import type { TextStyle } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { useUserDb } from '../db/UserDbProvider'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -21,7 +22,7 @@ import {
   getOtQuoteSpans,
 } from '../db/queries'
 import type { ConcordanceResult, StrongsEntry, StrongsConcordanceResult, EarlyTextRef, OtQuoteSpan } from '../db/queries'
-import { getStrongsConcordance } from '../db/queries'
+import { getStrongsConcordance, getPsalmHeading } from '../db/queries'
 import { StrongsConcordanceModal, TranslationVariantsModal } from './WordStudyPanel'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
 import { useTranslation, TRANSLATIONS, GREEK_TRANSLATIONS, OT_ORIGINAL_TRANSLATIONS, OT_ONLY_TRANSLATIONS, OT_TRANSLATIONS, ANNOTATED_TRANSLATIONS } from '../context/TranslationContext'
@@ -35,6 +36,7 @@ import { TRANSLATION_PACK_SLUG, TRANSLATION_ONLINE_SOURCE } from '../db/queries'
 import { isWordSourcePack, fetchOnlineWordsAsChapter } from '../lib/PackManager'
 import { useRedLetter } from '../context/RedLetterContext'
 import { useFocusMode } from '../context/FocusModeContext'
+import { useReadingMode } from '../context/ReadingModeContext'
 import { useSpaceSaver } from '../context/SpaceSaverContext'
 import { isRedLetter, splitRedLetterVerse, splitByWMarkers, stripUsfm } from '../data/redLetter'
 import type { Segment } from '../data/redLetter'
@@ -244,12 +246,13 @@ function parseKJVPlus(text: string, lazyPush = false): KJVToken[] {
 function applyItalics(seg: Segment): Segment[] {
   if (!seg.t.includes('{')) return [seg]
   const result: Segment[] = []
-  const re = /\{([^}]+)\}/g
+  const re = /\{([^}]*)\}/g
   let last = 0
   let m: RegExpExecArray | null
   while ((m = re.exec(seg.t)) !== null) {
     if (m.index > last) result.push({ t: seg.t.slice(last, m.index), red: seg.red })
-    result.push({ t: m[1], red: seg.red, italic: true })
+    if (m[1]) result.push({ t: m[1], red: seg.red, italic: true })
+    // empty {} (artifact of stripping \+w inside italic markers) → consume but push nothing
     last = m.index + m[0].length
   }
   if (last < seg.t.length) result.push({ t: seg.t.slice(last), red: seg.red })
@@ -1274,6 +1277,78 @@ const EarlyRefsSection = memo(function EarlyRefsSection({
   )
 })
 
+// ── Prose chapter (reading mode) ──────────────────────────
+
+// Splits "{word}" KJV italic markers into segments for inline italic rendering
+function parseItalicSegments(text: string): { t: string; italic: boolean }[] {
+  const segs: { t: string; italic: boolean }[] = []
+  let i = 0
+  while (i < text.length) {
+    const open = text.indexOf('{', i)
+    if (open === -1) { segs.push({ t: text.slice(i), italic: false }); break }
+    if (open > i) segs.push({ t: text.slice(i, open), italic: false })
+    const close = text.indexOf('}', open + 1)
+    if (close === -1) { segs.push({ t: text.slice(open), italic: false }); break }
+    segs.push({ t: text.slice(open + 1, close), italic: true })
+    i = close + 1
+  }
+  return segs.filter(s => s.t.length > 0)
+}
+
+function ProseChapter({
+  verses,
+  fontSize,
+  lineHeight,
+  fontFamily,
+  colors,
+  bottomInset,
+}: {
+  verses: BibleVerse[]
+  fontSize: number
+  lineHeight: number
+  fontFamily?: string
+  colors: ThemeColors
+  bottomInset: number
+}) {
+  // Build paragraph groups and pre-clean text once per verses change
+  type ProseVerse = { verse: number; segs: { t: string; italic: boolean }[] }
+  const paragraphs = useMemo(() => {
+    const groups: ProseVerse[][] = []
+    let current: ProseVerse[] = []
+    for (const v of verses) {
+      const isParagraphBreak = v.text.startsWith('¶')
+      if (isParagraphBreak && current.length > 0) { groups.push(current); current = [] }
+      const cleaned = stripUsfm(v.text.replace(/^¶\s*/, ''))
+      current.push({ verse: v.verse, segs: parseItalicSegments(cleaned) })
+    }
+    if (current.length > 0) groups.push(current)
+    return groups
+  }, [verses])
+
+  const proseStyle: TextStyle = { fontSize, lineHeight, color: colors.textPrimary, fontFamily }
+  const italicStyle: TextStyle = { fontStyle: 'italic' }
+
+  return (
+    <ScrollView
+      contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 20, paddingBottom: Math.max(40, 20 + bottomInset) }}
+      showsVerticalScrollIndicator={false}
+    >
+      {paragraphs.map((group, gi) => (
+        <Text key={gi} style={[proseStyle, gi > 0 && { marginTop: lineHeight * 0.9 }]}>
+          {group.map((v, vi) => (
+            <Text key={v.verse}>
+              {v.segs.map((seg, si) => (
+                <Text key={si} style={seg.italic ? italicStyle : undefined}>{seg.t}</Text>
+              ))}
+              {vi < group.length - 1 && <Text> </Text>}
+            </Text>
+          ))}
+        </Text>
+      ))}
+    </ScrollView>
+  )
+}
+
 // ── Reader screen ─────────────────────────────────────────
 
 export default function ReaderScreen({ navigation, route }: Props) {
@@ -1309,6 +1384,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const { showFab, openTutorial } = useOnboarding()
   const { redLetterOn, toggleRedLetter } = useRedLetter()
   const { focusMode } = useFocusMode()
+  const { readingMode } = useReadingMode()
   const { otQuoteCapsOn } = useOtQuoteCaps()
   const { isInstalled, getPackDb, fetchOnline, packForContent } = usePacks()
   const packDbRef = useRef<import('expo-sqlite').SQLiteDatabase | null>(null)
@@ -1356,6 +1432,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [scripturePreview, setScripturePreview] = useState<{ book: string; chapter: number; verse: number; preloadedText?: string; chapterVerses?: { verse: number; text: string }[] } | null>(null)
   const earlyFnMapRef = useRef(new Map<number, string>())
   const [earlyRefs, setEarlyRefs] = useState<EarlyTextRef[]>([])
+  const [psalmHeading, setPsalmHeading] = useState<string | null>(null)
   const { compareTrans, setCompareTrans, parallelOn, setParallelOn } = useParallelTranslation()
   const [compareMap, setCompareMap] = useState<Map<number, string>>(new Map())
 
@@ -1486,6 +1563,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const pendingScrollIdxRef = useRef<number | null>(null)
   const topVisibleVerseRef = useRef<number | null>(null)
   const prevBookChapterRef = useRef<{ book: string; chapter: number } | null>(null)
+  // Tracks the last _ts we scrolled to — prevents repeated snap when verses reload
+  const handledVerseScrollTsRef = useRef<number | null>(null)
   const mountedRef = useRef(true)
   const selectedVerseRef = useRef<number | null>(null)
   selectedVerseRef.current = selectedVerse
@@ -1511,6 +1590,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
     setSelectedVerse(null)
     setShowColorPicker(false)
     pendingScrollIdxRef.current = null
+    handledVerseScrollTsRef.current = null
     Animated.spring(actionBarAnim, { toValue: 0, useNativeDriver: false, bounciness: 0 }).start()
     Animated.spring(colorPickerAnim, { toValue: 0, useNativeDriver: false, bounciness: 0 }).start()
     setLoadError(null)
@@ -1561,7 +1641,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       // then defer the scroll 100ms so native layout finishes before scrollToIndex fires.
       const topVerse = topVisibleVerseRef.current
       const fetchFn = useOnline && useWordSource
-        ? fetchOnlineWordsAsChapter(onlineSource!, book, chapter)
+        ? fetchOnlineWordsAsChapter(onlineSource!, book, chapter, isAnnotatedTrans)
             .then(vs => vs ?? [])
         : useOnline
         ? fetchOnline(onlineSource!, book, chapter)
@@ -1609,7 +1689,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
     })
     Promise.all([
       useOnline && useWordSource
-        ? fetchOnlineWordsAsChapter(onlineSource!, book, chapter).then(vs => vs ?? [])
+        ? fetchOnlineWordsAsChapter(onlineSource!, book, chapter, isAnnotatedTrans).then(vs => vs ?? [])
         : useOnline ? fetchOnline(onlineSource!, book, chapter)
                          .then(vs => (vs ?? []).map(v => ({ book, chapter, verse: v.verse, text: v.text })))
       : isEarlyText   ? getEarlyTextChapter(db, book, chapter, packDb)
@@ -1658,6 +1738,15 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
   useEffect(() => {
     recordHistory(userDb, book, chapter)
+  }, [book, chapter])
+
+  // Psalm heading only depends on book+chapter, not translation or pack state
+  useEffect(() => {
+    if (book === 'Psalms' && chapter > 0) {
+      getPsalmHeading(db, chapter).then(setPsalmHeading).catch(() => setPsalmHeading(null))
+    } else {
+      setPsalmHeading(null)
+    }
   }, [book, chapter])
 
   // Resolve pack DB (or online mode) whenever book/translation changes
@@ -1796,6 +1885,12 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
   useEffect(() => {
     if (route.params?.verse && verses.length > 0) {
+      // Only scroll once per navigation event (_ts). Without this guard, every
+      // verses reload (e.g. packDbVersion bump) re-fires and snaps back to the
+      // param verse even though the user has already scrolled away.
+      const ts = route.params._ts ?? 0
+      if (handledVerseScrollTsRef.current === ts) return
+      handledVerseScrollTsRef.current = ts
       const v = route.params.verse
       const idx = verses.findIndex(vv => vv.verse === v)
       if (idx >= 0) {
@@ -2705,6 +2800,15 @@ export default function ReaderScreen({ navigation, route }: Props) {
             )}
           </View>
         </View>
+      ) : readingMode && !isAnnotatedTrans && !isHebrew && !isDss ? (
+        <ProseChapter
+          verses={verses}
+          fontSize={fontSize}
+          lineHeight={lineHeight}
+          fontFamily={fontFamily}
+          colors={colors}
+          bottomInset={bottomInset}
+        />
       ) : (
         <FlatList
           key={listKey}
@@ -2736,6 +2840,15 @@ export default function ReaderScreen({ navigation, route }: Props) {
           maxToRenderPerBatch={isAnnotatedTrans ? 4 : 8}
           initialNumToRender={isAnnotatedTrans ? 10 : 20}
           removeClippedSubviews={!isDss}
+          ListHeaderComponent={psalmHeading ? (
+            <TouchableOpacity
+              style={styles.psalmHeadingRow}
+              onPress={() => { setSelected({ book, chapter, verse: 0 }); setSelectedVerse(0) }}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.psalmHeadingText}>{psalmHeading}</Text>
+            </TouchableOpacity>
+          ) : null}
           ListFooterComponent={isEarlyText && earlyRefs.length > 0 ? (
             <EarlyRefsSection
               refs={earlyRefs}
@@ -3242,6 +3355,15 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
     marginBottom: 3,
   },
   compareText: { fontSize: verseFontSize - 2, lineHeight: verseLineHeight - 2, color: c.textPrimary, fontStyle: 'italic', fontFamily },
+  psalmHeadingRow: {
+    paddingHorizontal: 10, paddingVertical: 10,
+    marginBottom: 4,
+    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
+  },
+  psalmHeadingText: {
+    fontSize: verseFontSize - 2, lineHeight: verseLineHeight - 2,
+    color: c.textMuted, fontStyle: 'italic', fontFamily,
+  },
   verseTextSelected: { color: c.textAccent },
   redLetterText: { color: '#D03030' },
   redLetterSelected: { color: '#FF6B6B' },

@@ -85,8 +85,8 @@
     },
     {
       "slug": "tahot",
-      "name": "BHS Hebrew OT",
-      "description": "Biblia Hebraica Stuttgartensia word-level data",
+      "name": "TAHOT",
+      "description": "Translators Amalgamated Hebrew OT — morphological word-level data",
       "type": "hebrew_source",
       "translations": [],
       "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/tahot.db",

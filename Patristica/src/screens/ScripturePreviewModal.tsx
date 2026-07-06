@@ -34,6 +34,8 @@ export function ScripturePreviewModal({
   const targetY = useRef<number>(0)
   const s = useMemo(() => makeStyles(colors), [colors])
 
+  const [localChapterVerses, setLocalChapterVerses] = useState<VerseRow[] | undefined>(chapterVerses)
+
   // Load single verse text (skipped if preloadedText provided)
   useEffect(() => {
     if (preloadedText) { setVerseText(preloadedText); return }
@@ -50,13 +52,22 @@ export function ScripturePreviewModal({
     run()
   }, [db, book, chapter, verse, preloadedText])
 
+  // Fetch chapter when expanded and not already provided by parent
+  useEffect(() => {
+    if (!expanded || localChapterVerses !== undefined) return
+    db.getAllAsync<VerseRow>(
+      'SELECT verse, text FROM bible_verses WHERE book=? AND chapter=? ORDER BY verse',
+      [book, chapter]
+    ).then(setLocalChapterVerses).catch(() => setLocalChapterVerses([]))
+  }, [expanded, book, chapter, db, localChapterVerses])
+
   // Scroll to target verse after chapter data arrives
   useEffect(() => {
-    if (!expanded || !chapterVerses?.length) return
+    if (!expanded || !localChapterVerses?.length) return
     setTimeout(() => {
       scrollRef.current?.scrollTo({ y: targetY.current, animated: false })
     }, 80)
-  }, [expanded, chapterVerses])
+  }, [expanded, localChapterVerses])
 
   const cleanText = verseText ? stripUsfm(verseText) : null
   const refLabel = `${shortBookName(book)} ${chapter}:${verse}`
@@ -79,13 +90,13 @@ export function ScripturePreviewModal({
 
           {/* Body */}
           {expanded ? (
-            !chapterVerses ? (
+            !localChapterVerses ? (
               <View style={s.loadingWrap}>
                 <ActivityIndicator color={colors.accent} />
               </View>
             ) : (
               <ScrollView ref={scrollRef} style={s.chapterList} contentContainerStyle={s.chapterContent}>
-                {chapterVerses.map(item => {
+                {localChapterVerses!.map(item => {
                   const isTarget = item.verse === verse
                   return (
                     <Text
@@ -98,7 +109,7 @@ export function ScripturePreviewModal({
                     </Text>
                   )
                 })}
-                {chapterVerses.length === 0 && (
+                {localChapterVerses!.length === 0 && (
                   <Text style={[s.verseText, { fontStyle: 'italic', color: colors.textSecondary }]}>No verses found.</Text>
                 )}
               </ScrollView>

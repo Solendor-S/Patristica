@@ -6,7 +6,7 @@ import { File, Directory, Paths } from 'expo-file-system'
 import { Colors } from '../theme/colors'
 
 // Bump this number whenever the bundled bible.db gains new tables/data
-const DB_SCHEMA_VERSION = 65
+const DB_SCHEMA_VERSION = 68
 
 async function checkAndResetIfNeeded(): Promise<void> {
   const versionFile = new File(Paths.document, 'db_schema_version.txt')
@@ -142,6 +142,13 @@ async function initDb(db: SQLiteDatabase) {
   `)
   await db.execAsync('CREATE INDEX IF NOT EXISTS idx_etr_source ON early_text_refs(book, chapter, verse)')
   await db.execAsync('CREATE INDEX IF NOT EXISTS idx_etr_target ON early_text_refs(ref_book, ref_chapter, ref_verse)')
+
+  await db.execAsync(`
+    CREATE TABLE IF NOT EXISTS psalm_headings (
+      chapter  INTEGER PRIMARY KEY,
+      heading  TEXT NOT NULL
+    )
+  `)
 
   // User tables (bookmarks, notes, highlights, history, search_history, settings)
   // are now in user.db (UserDbProvider) — bible.db is read-only Bible content only.

@@ -21,8 +21,10 @@ import type { PackMeta } from '../lib/PackManager'
 import type { ThemeColors } from '../theme/themes'
 import type { Bookmark, Highlight, RootTabParamList } from '../types'
 
+import ReadingPlanScreen from './ReadingPlanScreen'
+
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Library'>
-type LibraryTab = 'bookmarks' | 'highlights' | 'notes' | 'history' | 'downloads'
+type LibraryTab = 'bookmarks' | 'highlights' | 'notes' | 'history' | 'downloads' | 'plans'
 
 import { HIGHLIGHT_COLORS, getHighlightBg, getSwatchColor } from '../theme/highlightColors'
 import { EARLY_TEXT_MAP, APOCRYPHA_BOOK_MAP } from '../data/books'
@@ -555,6 +557,7 @@ const dl = StyleSheet.create({
 // ── Main screen ───────────────────────────────────────────
 
 const TABS: { key: LibraryTab; label: string }[] = [
+  { key: 'plans', label: 'Plans' },
   { key: 'bookmarks', label: 'Bookmarks' },
   { key: 'highlights', label: 'Highlights' },
   { key: 'notes', label: 'Notes' },
@@ -595,6 +598,7 @@ export default function LibraryScreen() {
 
       {/* Content */}
       <View style={s.content}>
+        {activeTab === 'plans'      && <ReadingPlanScreen />}
         {activeTab === 'bookmarks'  && <BookmarksTab />}
         {activeTab === 'highlights' && <HighlightsTab />}
         {activeTab === 'notes'      && <NotesTab />}

@@ -204,9 +204,14 @@ export async function openPackDb(slug: string): Promise<SQLiteDatabase | null> {
   if (!f.exists) return null
   try {
     const db = await openDatabaseAsync(f.uri, { useNewConnection: true })
+    // Validate — SQLite opens malformed files without error; queries blow up later
+    await db.getFirstAsync('SELECT 1')
     _openDbs.set(slug, db)
     return db
   } catch {
+    // Corrupt file: delete it so isInstalled returns false and online fallback kicks in
+    try { packFilePath(slug).delete() } catch {}
+    _openDbs.delete(slug)
     return null
   }
 }
@@ -289,23 +294,26 @@ export async function fetchOnlineWordsAsChapter(
   packSlug: string,
   book: string,
   chapter: number,
+  annotated = false,
 ): Promise<Array<{ book: string; chapter: number; verse: number; text: string }> | null> {
   const base = _manifest.onlineBaseUrl || ONLINE_FALLBACK_BASE
   const path = `/words/${packSlug}/${encodeURIComponent(book)}/${chapter}.json`
   const fallback = base !== ONLINE_FALLBACK_BASE ? ONLINE_FALLBACK_BASE + path : undefined
-  const data = await fetchJson<Record<string, Array<{ t: string }>>>(base + path, fallback)
-  return data ? reconstructVerses(data, book, chapter) : null
+  const data = await fetchJson<Record<string, Array<{ t: string; s?: string }>>>(base + path, fallback)
+  return data ? reconstructVerses(data, book, chapter, annotated) : null
 }
 
 function reconstructVerses(
-  data: Record<string, Array<{ t: string }>>,
+  data: Record<string, Array<{ t: string; s?: string }>>,
   book: string,
   chapter: number,
+  annotated = false,
 ): Array<{ book: string; chapter: number; verse: number; text: string }> {
   return Object.entries(data).map(([v, words]) => ({
     book, chapter,
     verse: parseInt(v, 10),
-    text: words.map(w => w.t).join(' '),
+    // annotated = true (LXX+): include Strongs so parseKJVPlus can tag each word
+    text: words.map(w => annotated && w.s ? `${w.t} ${w.s}` : w.t).join(' '),
   })).sort((a, b) => a.verse - b.verse)
 }
 

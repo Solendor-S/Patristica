@@ -259,14 +259,33 @@ const W_DENSITY_THRESHOLD = 0.7
  */
 export function splitByWMarkers(text: string): Segment[] | null {
   if (!text.includes('\\+w')) return null
-  const stripped = stripUsfm(text)
+
+  // Pre-process interleaved markers before splitting — render-time only, raw data unchanged.
+  //
+  // Case 1 (e.g. Luke 10:30): \+add wraps a \+w-tagged word, so the italic opener/closer
+  // end up straddling the \+w boundary → split into orphaned { and } segments.
+  // Fix: restructure so the italic marker lives *inside* the red-letter span.
+  // \+add \+w word\+w*\+add*  →  \+w {word}\+w*
+  let t = text.replace(/\\\+add\s+\\\+w\s+([\s\S]*?)\\\+w\*\s*\\\+add\*/g, '\\+w {$1}\\+w*')
+
+  // Case 2 (e.g. 1 John 2:23): \+w markers appear *inside* {} braces (data artifact where
+  // the Strongs closer landed inside an italic/add span).
+  // {\+w} → remove (empty word-marker inside brace adds nothing)
+  t = t.replace(/\{\s*\\\+w\s*\}/g, '')
+  // {word\+w*} → {word}  (strip \+w* closing tag from inside the italic span)
+  t = t.replace(/\{([^}]*?)\\\+w\*\}/g, '{$1}')
+
+  // After preprocessing, bail if no real \+w markers remain (avoids false red-letter coloring)
+  if (!t.includes('\\+w')) return null
+
+  const stripped = stripUsfm(t)
   const re = /\\\+w\s*([\s\S]*?)\\\+w\*/g
   const segs: Segment[] = []
   let last = 0, taggedWords = 0, gapWords = 0
   let m: RegExpExecArray | null
-  while ((m = re.exec(text)) !== null) {
+  while ((m = re.exec(t)) !== null) {
     if (m.index > last) {
-      const gap = text.slice(last, m.index)
+      const gap = t.slice(last, m.index)
       const isPunct = taggedWords > 0 && /^[\s ;:,.!\-—–?'"'"«»]+$/.test(gap)
       segs.push({ t: stripUsfm(gap), red: isPunct })
       if (!isPunct) gapWords += wordCount(gap)
@@ -276,8 +295,8 @@ export function splitByWMarkers(text: string): Segment[] | null {
     last = m.index + m[0].length
   }
   if (taggedWords === 0) return null
-  if (last < text.length) {
-    const tail = text.slice(last)
+  if (last < t.length) {
+    const tail = t.slice(last)
     const isPunct = /^[\s ;:,.!\-—–?'"'"«»]+$/.test(tail) // taggedWords > 0 guaranteed above
     segs.push({ t: stripUsfm(tail), red: isPunct })
     if (!isPunct) gapWords += wordCount(tail)

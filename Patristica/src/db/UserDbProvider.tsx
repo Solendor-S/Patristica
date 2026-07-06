@@ -54,6 +54,20 @@ async function initUserDb(db: SQLiteDatabase): Promise<void> {
       installed_at TEXT    NOT NULL,
       size_mb      REAL
     );
+    CREATE TABLE IF NOT EXISTS reading_plans (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      name       TEXT    NOT NULL,
+      created_at INTEGER NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS plan_entries (
+      id           INTEGER PRIMARY KEY AUTOINCREMENT,
+      plan_id      INTEGER NOT NULL REFERENCES reading_plans(id) ON DELETE CASCADE,
+      day_number   INTEGER NOT NULL,
+      target_date  TEXT    NOT NULL,
+      book         TEXT    NOT NULL,
+      chapter      INTEGER NOT NULL,
+      completed_at INTEGER
+    );
   `)
 }
 
@@ -68,6 +82,26 @@ async function migrateUserDb(db: SQLiteDatabase): Promise<void> {
       SELECT COUNT(*) FROM bookmarks b2 WHERE b2.created_at > bookmarks.created_at
     ) WHERE position IS NULL
   `)
+
+  // Drop plan_entries if it was created with the UNIQUE(plan_id, day_number) constraint
+  // (multiple chapters per day legitimately share the same day_number)
+  const hasUnique = await db.getFirstAsync<{ sql: string }>(
+    "SELECT sql FROM sqlite_master WHERE type='table' AND name='plan_entries'"
+  )
+  if (hasUnique?.sql?.includes('UNIQUE')) {
+    await db.execAsync('DROP TABLE IF EXISTS plan_entries')
+    await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS plan_entries (
+        id           INTEGER PRIMARY KEY AUTOINCREMENT,
+        plan_id      INTEGER NOT NULL REFERENCES reading_plans(id) ON DELETE CASCADE,
+        day_number   INTEGER NOT NULL,
+        target_date  TEXT    NOT NULL,
+        book         TEXT    NOT NULL,
+        chapter      INTEGER NOT NULL,
+        completed_at INTEGER
+      )
+    `)
+  }
 }
 
 const UserDbContext = createContext<SQLiteDatabase | null>(null)

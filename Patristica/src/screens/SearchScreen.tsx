@@ -10,7 +10,7 @@ import { useUserDb } from '../db/UserDbProvider'
 import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { Ionicons } from '@expo/vector-icons'
-import { searchVerses, searchVersesAll, searchVersesFuzzy, searchOriginalLanguage, detectQueryScript, normalizeForSearch, normalizeStrongsNumber, getSearchHistory, addSearchHistory, deleteSearchHistory, getStrongsEntry, getStrongsConcordance, searchStrongsByEnglishWord, searchAnnotatedByStrongs, SEARCH_STOP_WORDS } from '../db/queries'
+import { searchVerses, searchVersesAll, searchVersesFuzzy, searchOriginalLanguage, detectQueryScript, normalizeForSearch, normalizeStrongsNumber, getSearchHistory, addSearchHistory, deleteSearchHistory, getStrongsEntry, getStrongsConcordance, searchStrongsByEnglishWord, searchAnnotatedByStrongs, SEARCH_STOP_WORDS, TRANSLATION_PACK_SLUG } from '../db/queries'
 import type { StrongsEntry, StrongsConcordanceResult, StrongsWordMatch } from '../db/queries'
 import { StrongsConcordanceModal, TranslationVariantsModal } from './WordStudyPanel'
 import { useTranslation, TRANSLATIONS, ANNOTATED_TRANSLATIONS } from '../context/TranslationContext'
@@ -22,6 +22,7 @@ import { matchBookRefs, type BookRef } from '../lib/parsePassage'
 import { useTheme } from '../context/ThemeContext'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
 import { useWordFocus } from '../context/WordFocusContext'
+import { usePacks } from '../context/PackContext'
 import { stripUsfm } from '../data/redLetter'
 import type { ThemeColors } from '../theme/themes'
 
@@ -446,10 +447,12 @@ export default function SearchScreen() {
   const { colors } = useTheme()
   const styles = useMemo(() => makeStyles(colors), [colors])
   const modal = useMemo(() => makeModal(colors), [colors])
+  const { bottom } = useSafeAreaInsets()
   const db = useSQLiteContext()
   const userDb = useUserDb()
   const navigation = useNavigation<NavProp>()
   const { translation, setTranslation } = useTranslation()
+  const { getPackDb, isInstalled } = usePacks()
   const { strongsInSearch } = useStrongsInSearch()
   const { biblicalOrder, searchMode } = useSearchOrder()
   const { setSelected } = useSelectedVerse()
@@ -514,6 +517,10 @@ export default function SearchScreen() {
 
   const queryTrimmed = query.trim()
   const bookRefs = useMemo(() => matchBookRefs(queryTrimmed), [queryTrimmed])
+  const searchNeedsInstall = useMemo(() => {
+    const slug = TRANSLATION_PACK_SLUG[translation]
+    return !!slug && !isInstalled(slug)
+  }, [translation, isInstalled])
 
   const displayResults = useMemo(() => {
     if (!biblicalOrder) return results
@@ -576,6 +583,11 @@ export default function SearchScreen() {
     addSearchHistory(userDb, trimmed).catch(() => {})
     setHistory(prev => [trimmed, ...prev.filter(h => h !== trimmed)].slice(0, 20))
     const books = booksForSearch(test, selBooks)
+
+    // Open pack DB for translations that live in pack files (ASV, WEB, BSB, etc.)
+    const packSlug = TRANSLATION_PACK_SLUG[trans]
+    const packDb = (packSlug && isInstalled(packSlug)) ? (await getPackDb(packSlug) ?? undefined) : undefined
+
     const script = detectQueryScript(trimmed)
     if (script !== 'latin') {
       setSearchScript(script)
@@ -594,7 +606,7 @@ export default function SearchScreen() {
     }
 
     const isWordBoundary = searchMode === 'exact_words' || searchMode === 'exact_all_words'
-    const rows = await searchVerses(db, trimmed, trans, books, 200, isWordBoundary)
+    const rows = await searchVerses(db, trimmed, trans, books, 200, isWordBoundary, packDb)
     const qWords = trimmed.toLowerCase().split(/\s+/).filter(Boolean)
 
     if (searchMode === 'exact_words') {
@@ -632,7 +644,7 @@ export default function SearchScreen() {
       }))
       const anyChanged = correctedWords.some((cw, i) => cw !== qWords[i])
       if (anyChanged) {
-        const correctedRows = await searchVerses(db, correctedWords.join(' '), trans, books)
+        const correctedRows = await searchVerses(db, correctedWords.join(' '), trans, books, 200, false, packDb)
         setResults(correctedRows.length > 0 ? correctedRows : rows)
         if (correctedRows.length > 0) {
           setIsFuzzy(true)
@@ -645,7 +657,7 @@ export default function SearchScreen() {
       setResults(rows)
     }
     setLoading(false)
-  }, [db, translation, testament, selectedBooks, searchMode])
+  }, [db, translation, testament, selectedBooks, searchMode, getPackDb, isInstalled])
 
   const navigateToVerse = (result: SearchResult) => {
     navigation.navigate('Bible' as any, {
@@ -711,7 +723,9 @@ export default function SearchScreen() {
     try {
       const books = booksForSearch(testament, selectedBooks)
       const isWordBoundary = searchMode === 'exact_words' || searchMode === 'exact_all_words'
-      const allResults = await searchVersesAll(db, lastQueryRef.current, translation, books, isWordBoundary)
+      const bkSlug = TRANSLATION_PACK_SLUG[translation]
+      const bkPackDb = (bkSlug && isInstalled(bkSlug)) ? (await getPackDb(bkSlug) ?? undefined) : undefined
+      const allResults = await searchVersesAll(db, lastQueryRef.current, translation, books, isWordBoundary, bkPackDb)
       const qWords = lastQueryRef.current.toLowerCase().split(/\s+/).filter(Boolean)
       const sw = isWordBoundary ? sigWords(qWords) : null
       const filtered = !sw ? allResults
@@ -725,7 +739,7 @@ export default function SearchScreen() {
     } finally {
       setBreakdownLoading(false)
     }
-  }, [db, translation, testament, selectedBooks, searchMode])
+  }, [db, translation, testament, selectedBooks, searchMode, getPackDb, isInstalled])
 
   const handleOpenStrongsMap = useCallback(async () => {
     setStrongsMapVisible(true)
@@ -931,7 +945,9 @@ export default function SearchScreen() {
       {/* Results count */}
       {queryTrimmed !== '' && searched && !loading && (
         <Text style={styles.resultCount}>
-          {results.length === 0
+          {searchNeedsInstall
+            ? 'Pack not installed — search unavailable'
+            : results.length === 0
             ? 'No results'
             : isFuzzy
               ? `~${results.length} fuzzy match${results.length === 1 ? '' : 'es'}`
@@ -1047,7 +1063,11 @@ export default function SearchScreen() {
           ListEmptyComponent={
             searched ? (
               <View style={styles.center}>
-                <Text style={styles.emptyText}>No verses found for "{query}"</Text>
+                <Text style={styles.emptyText}>
+                  {searchNeedsInstall
+                    ? `Search requires the ${translation} pack to be installed`
+                    : `No verses found for "${query}"`}
+                </Text>
               </View>
             ) : null
           }
@@ -1145,7 +1165,7 @@ export default function SearchScreen() {
                     </View>
                   )}
                 </ScrollView>
-                <View style={modal.strongsFooter}>
+                <View style={[modal.strongsFooter, { paddingBottom: Math.max(16, 8 + bottom) }]}>
                   <TouchableOpacity style={modal.translationsBtn} onPress={() => setTransVariantsVisible(true)} activeOpacity={0.7}>
                     <Ionicons name="git-branch-outline" size={16} color={colors.accent} />
                     <Text style={modal.translationsBtnLabel}>See uses / translations</Text>
@@ -1465,7 +1485,7 @@ const makeModal = (c: ThemeColors) => StyleSheet.create({
   occBtnLabel: { fontSize: 12, fontWeight: '600', color: c.accent },
 
   strongsFooter: {
-    padding: 16, paddingBottom: 32, gap: 10,
+    padding: 16, gap: 10,
     borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: c.border,
   },
   translationsBtn: {

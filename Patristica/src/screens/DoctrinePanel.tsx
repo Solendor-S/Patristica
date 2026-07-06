@@ -215,6 +215,9 @@ export default function DoctrinePanel() {
         })}
       </ScrollView>
 
+      <Text style={styles.disclaimer}>
+        Views expressed by Church Fathers may not reflect biblical teachings. Cross-reference with Scripture.
+      </Text>
 
       {/* Results */}
       {!selected ? (
@@ -278,6 +281,11 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   doctrineChipActive: { backgroundColor: c.accent, borderColor: c.accent },
   doctrineChipText: { fontSize: 13, fontWeight: '600', color: c.textMuted },
   doctrineChipTextActive: { color: '#fff' },
+
+  disclaimer: {
+    fontSize: 11, color: c.textMuted, fontStyle: 'italic',
+    lineHeight: 16, marginHorizontal: 14, marginBottom: 6, opacity: 0.8,
+  },
 
   descRow: {
     paddingHorizontal: 14, paddingBottom: 8,

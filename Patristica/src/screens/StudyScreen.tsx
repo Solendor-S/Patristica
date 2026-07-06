@@ -94,11 +94,16 @@ function EntryCard({ entry, book, verseRef }: { entry: CommentaryEntry; book: st
     })
   }, [earlyTextNav, navigation])
 
+  const traditionColor = TRADITION_COLORS[info?.tradition ?? ''] ?? '#94a3b8'
+
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
         <View style={styles.fatherInfo}>
-          <Text style={styles.fatherName}>{entry.father_name}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+            <View style={[styles.consensusDot, { backgroundColor: traditionColor }]} />
+            <Text style={styles.fatherName}>{entry.father_name}</Text>
+          </View>
           {!!dateLabel && <Text style={styles.fatherEra}>{dateLabel}</Text>}
         </View>
         {earlyTextNav ? (
@@ -780,8 +785,8 @@ export default function StudyScreen() {
             { key: 'words',      label: 'Words' },
             { key: 'overview',   label: 'Overview' },
             { key: 'fathers',    label: 'Church Fathers', badge: filteredEntries.length || undefined },
-            { key: 'doctrine',   label: 'Doctrine' },
             { key: 'crossrefs',  label: 'Cross-Refs',    badge: crossRefs.length || undefined },
+            { key: 'doctrine',   label: 'Doctrine' },
             { key: 'historical', label: 'Historical' },
             { key: 'councils',   label: 'Councils' },
             { key: 'heresies',   label: 'Heresies' },

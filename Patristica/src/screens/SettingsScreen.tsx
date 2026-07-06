@@ -11,8 +11,8 @@ import { THEMES } from '../theme/themes'
 import type { ThemeColors, ThemeKey } from '../theme/themes'
 import { useLineSpacing, LINE_SPACING_OPTIONS } from '../context/LineSpacingContext'
 import type { LineSpacingKey } from '../context/LineSpacingContext'
-import { useTranslation, TRANSLATIONS } from '../context/TranslationContext'
-import type { Translation } from '../context/TranslationContext'
+import { useTranslation, TRANSLATIONS, STARTUP_LAST_USED } from '../context/TranslationContext'
+import type { Translation, StartupTranslation } from '../context/TranslationContext'
 import { useFontSize, FONT_SIZE_DEFAULT } from '../context/FontSizeContext'
 import { useNavDepth, NAV_DEPTH_OPTIONS } from '../context/NavDepthContext'
 import type { NavDepthKey } from '../context/NavDepthContext'
@@ -23,6 +23,7 @@ import type { FontFamilyKey, FontScopeKey } from '../context/FontFamilyContext'
 import { useTabletLayout } from '../context/TabletLayoutContext'
 import { useStrongsInSearch } from '../context/StrongsInSearchContext'
 import { useFocusMode } from '../context/FocusModeContext'
+import { useReadingMode } from '../context/ReadingModeContext'
 import { useSpaceSaver } from '../context/SpaceSaverContext'
 import { useOtQuoteCaps } from '../context/OtQuoteCapsContext'
 import { useSearchOrder } from '../context/SearchOrderContext'
@@ -111,7 +112,7 @@ function AppearanceSection() {
 
 // ── Reading section ───────────────────────────────────────
 
-type ExpandedRow = 'lineSpacing' | 'translation' | 'navDepth' | 'startupMode' | 'fontFamily' | 'fontScope' | 'tabletLayout' | 'searchMode' | null
+type ExpandedRow = 'lineSpacing' | 'translation' | 'startupTranslation' | 'navDepth' | 'startupMode' | 'fontFamily' | 'fontScope' | 'tabletLayout' | 'searchMode' | null
 type PickerOption = { key: string; label: string; description: string }
 
 function PickerRow({
@@ -183,11 +184,12 @@ function ReadingSection() {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
   const { focusMode, toggleFocusMode } = useFocusMode()
+  const { readingMode, toggleReadingMode } = useReadingMode()
   const { spaceSaverOn, toggleSpaceSaver } = useSpaceSaver()
   const { otQuoteCapsOn, toggleOtQuoteCaps } = useOtQuoteCaps()
   const { crossRefBiblicalOrder, toggleCrossRefBiblicalOrder } = useCrossRefOrder()
   const { spacingKey, setSpacing } = useLineSpacing()
-  const { translation, setTranslation } = useTranslation()
+  const { translation, setTranslation, startupTranslation, setStartupTranslation } = useTranslation()
   const { setFontSize } = useFontSize()
   const { navDepth, setNavDepth } = useNavDepth()
   const { startupMode, setStartupMode } = useStartupMode()
@@ -202,6 +204,18 @@ function ReadingSection() {
     <View style={s.section}>
       <Text style={s.sectionTitle}>Reading</Text>
       <View style={s.card}>
+
+        <SwitchRow
+          icon="book-outline"
+          label="Reading Mode"
+          description="Show the chapter as continuous prose with paragraph breaks — no verse selection"
+          value={readingMode}
+          onToggle={toggleReadingMode}
+          colors={colors}
+          s={s}
+        />
+
+        <View style={s.separator} />
 
         <SwitchRow
           icon="eye-outline"
@@ -313,13 +327,16 @@ function ReadingSection() {
 
         <PickerRow
           icon="book-outline"
-          rowLabel="Default Translation"
-          valueLabel={translation}
-          expanded={expanded === 'translation'}
-          onToggle={() => toggle('translation')}
-          options={TRANSLATIONS.map(t => ({ key: t.key, label: t.label, description: t.full }))}
-          selectedKey={translation}
-          onSelect={key => { setTranslation(key as Translation); setExpanded(null) }}
+          rowLabel="Startup Translation"
+          valueLabel={startupTranslation === STARTUP_LAST_USED ? 'Same as left off' : startupTranslation}
+          expanded={expanded === 'startupTranslation'}
+          onToggle={() => toggle('startupTranslation')}
+          options={[
+            { key: STARTUP_LAST_USED, label: 'Same as left off', description: 'Resume with the last translation you used' },
+            ...TRANSLATIONS.map(t => ({ key: t.key, label: t.label, description: t.full })),
+          ]}
+          selectedKey={startupTranslation}
+          onSelect={key => { setStartupTranslation(key as StartupTranslation); setExpanded(null) }}
           s={s}
           colors={colors}
         />

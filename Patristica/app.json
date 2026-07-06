@@ -2,7 +2,7 @@
   "expo": {
     "name": "Patristica",
     "slug": "BibleAndroidApp",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -38,6 +38,25 @@
         {
           "assets": [
             "assets/db/bible.db"
+          ]
+        }
+      ],
+      [
+        "react-native-android-widget",
+        {
+          "widgets": [
+            {
+              "name": "StudyWidget",
+              "label": "Today's Reading",
+              "minWidth": "320dp",
+              "minHeight": "120dp",
+              "minResizeWidth": "200dp",
+              "minResizeHeight": "80dp",
+              "description": "Shows your daily Patristica reading plan",
+              "previewImage": "./assets/icon.png",
+              "updatePeriodMillis": 1800000,
+              "widgetFeatures": ["reconfigurable", "configuration_optional"]
+            }
           ]
         }
       ]

@@ -1,10 +1,74 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   FlatList, LayoutAnimation, StyleSheet, Text, TextInput, TouchableOpacity, View,
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { useSQLiteContext } from 'expo-sqlite'
 import { useTheme } from '../context/ThemeContext'
 import type { ThemeColors } from '../theme/themes'
+import { ScripturePreviewModal } from './ScripturePreviewModal'
+
+// Matches full names ("Philippians 2:13") and abbreviated ("Phil. 2:13")
+const VERSE_RE_SRC = /\b((?:[1-4]\s+)?[A-Z][a-zA-Z]+\.?(?:\s+of\s+[A-Za-z]+)?)\s+(\d+):(\d+)\b/
+
+const BOOK_ABBREV: Record<string, string> = {
+  'Gen': 'Genesis', 'Ex': 'Exodus', 'Exod': 'Exodus', 'Lev': 'Leviticus',
+  'Num': 'Numbers', 'Deut': 'Deuteronomy', 'Josh': 'Joshua', 'Judg': 'Judges',
+  'Sam': 'Samuel', 'Kgs': 'Kings', 'Chr': 'Chronicles', 'Neh': 'Nehemiah',
+  'Est': 'Esther', 'Prov': 'Proverbs', 'Eccl': 'Ecclesiastes', 'Isa': 'Isaiah',
+  'Jer': 'Jeremiah', 'Lam': 'Lamentations', 'Ezek': 'Ezekiel', 'Dan': 'Daniel',
+  'Hos': 'Hosea', 'Hab': 'Habakkuk', 'Zeph': 'Zephaniah', 'Zech': 'Zechariah',
+  'Mal': 'Malachi', 'Matt': 'Matthew', 'Mk': 'Mark', 'Lk': 'Luke',
+  'Rom': 'Romans', 'Cor': 'Corinthians', 'Gal': 'Galatians', 'Eph': 'Ephesians',
+  'Phil': 'Philippians', 'Col': 'Colossians', 'Thess': 'Thessalonians',
+  'Tim': 'Timothy', 'Tit': 'Titus', 'Heb': 'Hebrews', 'Jas': 'James',
+  'Pet': 'Peter', 'Rev': 'Revelation',
+}
+
+function canonicalBook(raw: string): string {
+  const stripped = raw.replace(/\.$/, '').trim()
+  // Check for numbered prefix (e.g. "1 Cor" → "1 Corinthians")
+  const m = stripped.match(/^([1-4])\s+(.+)$/)
+  if (m) {
+    const resolved = BOOK_ABBREV[m[2]] ?? m[2]
+    return `${m[1]} ${resolved}`
+  }
+  return BOOK_ABBREV[stripped] ?? stripped
+}
+
+type TextSeg = { type: 'text'; content: string } | { type: 'ref'; raw: string; book: string; chapter: number; verse: number }
+function parseVerseRefs(text: string): TextSeg[] {
+  const segs: TextSeg[] = []
+  let last = 0
+  for (const m of text.matchAll(new RegExp(VERSE_RE_SRC.source, 'g'))) {
+    if (m.index! > last) segs.push({ type: 'text', content: text.slice(last, m.index) })
+    segs.push({ type: 'ref', raw: m[0], book: canonicalBook(m[1]), chapter: parseInt(m[2]), verse: parseInt(m[3]) })
+    last = m.index! + m[0].length
+  }
+  if (last < text.length) segs.push({ type: 'text', content: text.slice(last) })
+  return segs
+}
+
+function LinkedText({ text, style, accentColor, onRef }: {
+  text: string
+  style: any
+  accentColor: string
+  onRef: (book: string, chapter: number, verse: number) => void
+}) {
+  const segs = useMemo(() => parseVerseRefs(text), [text])
+  return (
+    <Text style={style}>
+      {segs.map((seg, i) =>
+        seg.type === 'text' ? seg.content : (
+          <Text key={i} style={{ color: accentColor, fontWeight: '600' }}
+            onPress={() => onRef(seg.book, seg.chapter, seg.verse)} suppressHighlighting>
+            {seg.raw}
+          </Text>
+        )
+      )}
+    </Text>
+  )
+}
 
 type Severity = 'Major' | 'Significant' | 'Regional'
 
@@ -243,11 +307,12 @@ function renderCondemned(
   )
 }
 
-function HeresyCard({ heresy, s, colors, onCouncilPress, forceExpand }: {
+function HeresyCard({ heresy, s, colors, onCouncilPress, onVerseRef, forceExpand }: {
   heresy: Heresy
   s: ReturnType<typeof makeStyles>
   colors: import('../theme/themes').ThemeColors
   onCouncilPress?: (name: string) => void
+  onVerseRef: (book: string, chapter: number, verse: number) => void
   forceExpand?: boolean
 }) {
   const [showWhy, setShowWhy] = useState(false)
@@ -281,13 +346,13 @@ function HeresyCard({ heresy, s, colors, onCouncilPress, forceExpand }: {
 
       <View style={s.infoBox}>
         <Text style={s.infoLabel}>What it taught</Text>
-        <Text style={s.infoText}>{heresy.taught}</Text>
+        <LinkedText text={heresy.taught} style={s.infoText} accentColor={colors.accent} onRef={onVerseRef} />
       </View>
 
       {showWhy && (
         <View style={s.infoBox}>
           <Text style={s.infoLabel}>Why condemned</Text>
-          <Text style={s.infoText}>{heresy.why}</Text>
+          <LinkedText text={heresy.why} style={s.infoText} accentColor={colors.accent} onRef={onVerseRef} />
         </View>
       )}
 
@@ -308,9 +373,14 @@ export default function HeresiesPanel({ onCouncilPress, jumpTo }: {
   jumpTo?: string
 }) {
   const { colors } = useTheme()
+  const db = useSQLiteContext()
   const s = useMemo(() => makeStyles(colors), [colors])
   const [query, setQuery] = useState('')
   const listRef = useRef<FlatList>(null)
+  const [previewVerse, setPreviewVerse] = useState<{ book: string; chapter: number; verse: number } | null>(null)
+  const handleVerseRef = useCallback((book: string, chapter: number, verse: number) => {
+    setPreviewVerse({ book, chapter, verse })
+  }, [])
 
   const filtered = useMemo(() => {
     const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
@@ -365,6 +435,7 @@ export default function HeresiesPanel({ onCouncilPress, jumpTo }: {
             s={s}
             colors={colors}
             onCouncilPress={onCouncilPress}
+            onVerseRef={handleVerseRef}
             forceExpand={item.name === jumpTo}
           />
         )}
@@ -374,6 +445,19 @@ export default function HeresiesPanel({ onCouncilPress, jumpTo }: {
           </View>
         }
       />
+
+      {!!previewVerse && (
+        <ScripturePreviewModal
+          db={db}
+          book={previewVerse.book}
+          chapter={previewVerse.chapter}
+          verse={previewVerse.verse}
+          translation="KJV"
+          colors={colors}
+          onClose={() => setPreviewVerse(null)}
+          onNavigate={() => setPreviewVerse(null)}
+        />
+      )}
     </View>
   )
 }
