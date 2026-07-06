@@ -54,8 +54,7 @@
               "minResizeHeight": "80dp",
               "description": "Shows your daily Patristica reading plan",
               "previewImage": "./assets/icon.png",
-              "updatePeriodMillis": 1800000,
-              "widgetFeatures": ["reconfigurable", "configuration_optional"]
+              "updatePeriodMillis": 1800000
             }
           ]
         }

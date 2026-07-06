@@ -1852,16 +1852,27 @@ export async function markEntryIncomplete(db: SQLiteDatabase, entryId: number): 
 export async function getPlans(db: SQLiteDatabase): Promise<PlanWithProgress[]> {
   const today = isoDate(new Date())
   return db.getAllAsync<PlanWithProgress>(`
+    WITH comp AS (
+      SELECT plan_id, COUNT(*) AS cnt
+      FROM (
+        SELECT plan_id, day_number
+        FROM plan_entries
+        GROUP BY plan_id, day_number
+        HAVING SUM(CASE WHEN completed_at IS NULL THEN 1 ELSE 0 END) = 0
+      )
+      GROUP BY plan_id
+    )
     SELECT
       p.id, p.name, p.created_at,
       COUNT(DISTINCT e.day_number)             AS total_days,
       COUNT(e.id)                              AS total_entries,
-      COUNT(e.completed_at)                    AS completed_entries,
+      COALESCE(comp.cnt, 0)                    AS completed_entries,
       MAX(CASE WHEN e.target_date = '${today}' THEN e.book         END) AS today_book,
       MAX(CASE WHEN e.target_date = '${today}' THEN e.chapter      END) AS today_chapter,
       MAX(CASE WHEN e.target_date = '${today}' THEN e.completed_at END) AS today_completed
     FROM reading_plans p
     LEFT JOIN plan_entries e ON e.plan_id = p.id
+    LEFT JOIN comp ON comp.plan_id = p.id
     GROUP BY p.id
     ORDER BY p.created_at DESC
   `, [])

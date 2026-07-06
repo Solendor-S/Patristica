@@ -1,5 +1,7 @@
+'use no memo';
+
 import React from 'react'
-import { FlexWidget, TextWidget, ImageWidget } from 'react-native-android-widget'
+import { FlexWidget, TextWidget } from 'react-native-android-widget'
 import type { PlanEntry, PlanWithProgress } from '../db/queries'
 
 interface Props {
@@ -8,177 +10,192 @@ interface Props {
   streak: number
 }
 
-const ACCENT = '#b8860b'
-const BG = '#1a1a1a'
-const BG_CARD = '#242424'
-const TEXT_PRIMARY = '#e8e0d0'
-const TEXT_MUTED = '#888888'
-const BORDER = '#333333'
-
 export function StudyWidget({ plan, todayEntries, streak }: Props) {
   if (!plan) {
     return (
       <FlexWidget
         style={{
-          flex: 1,
+          height: 'match_parent',
+          width: 'match_parent',
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: BG,
-          borderRadius: 16,
+          backgroundColor: '#111111',
+          borderRadius: 20,
         }}
       >
         <TextWidget
-          text="📖 Patristica"
-          style={{ fontSize: 15, color: ACCENT, fontFamily: 'sans-serif-medium' }}
+          text="Patristica"
+          style={{ fontSize: 16, color: '#b8860b', fontFamily: 'sans-serif-medium' }}
         />
         <TextWidget
           text="No active reading plan"
-          style={{ fontSize: 13, color: TEXT_MUTED, marginTop: 4 }}
+          style={{ fontSize: 12, color: '#666666', marginTop: 6 }}
         />
+        <FlexWidget
+          clickAction="OPEN_APP"
+          style={{
+            marginTop: 14,
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            backgroundColor: '#242424',
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: '#333333',
+          }}
+        >
+          <TextWidget
+            text="Open app"
+            style={{ fontSize: 12, color: '#cccccc', fontFamily: 'sans-serif-medium' }}
+          />
+        </FlexWidget>
       </FlexWidget>
     )
   }
 
   const allDone = todayEntries.length > 0 && todayEntries.every(e => e.completed_at != null)
-  const pct = plan.total_entries > 0
-    ? Math.round((plan.completed_entries / plan.total_entries) * 100)
+  const pct = plan.total_days > 0
+    ? Math.round((plan.completed_entries / plan.total_days) * 100)
     : 0
   const chaptersText = todayEntries.length > 0
-    ? todayEntries.map(e => `${e.book} ${e.chapter}`).join(' · ')
-    : 'No reading today'
-  const streakText = streak > 0 ? `🔥 ${streak}` : ''
-
-  // Progress bar uses flex ratio
+    ? todayEntries.map(e => `${e.book} ${e.chapter}`).join('  ·  ')
+    : 'Rest day'
   const filled = Math.max(1, pct)
-  const empty = Math.max(0, 100 - filled)
+  const empty = 100 - filled
+  const dayLabel = `Day ${Math.min(plan.completed_entries + 1, plan.total_days)} of ${plan.total_days}`
 
   return (
     <FlexWidget
       style={{
-        flex: 1,
+        height: 'match_parent',
+        width: 'match_parent',
         flexDirection: 'column',
-        backgroundColor: BG,
-        borderRadius: 16,
-        padding: 14,
+        justifyContent: 'space-between',
+        backgroundColor: '#111111',
+        borderRadius: 20,
+        padding: 16,
       }}
     >
-      {/* Header row */}
-      <FlexWidget
-        style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}
-      >
-        <TextWidget
-          text={`📖 ${plan.name}`}
-          style={{ fontSize: 13, color: ACCENT, fontFamily: 'sans-serif-medium' }}
-          maxLines={1}
-        />
-        {streakText ? (
-          <TextWidget
-            text={streakText}
-            style={{ fontSize: 13, color: '#ff8c00', fontFamily: 'sans-serif-medium' }}
-          />
-        ) : (
-          <FlexWidget style={{ width: 1 }} />
-        )}
-      </FlexWidget>
-
-      {/* Chapters */}
-      <TextWidget
-        text={chaptersText}
-        style={{
-          fontSize: 17,
-          color: allDone ? TEXT_MUTED : TEXT_PRIMARY,
-          fontFamily: 'sans-serif-medium',
-          marginTop: 8,
-          textDecorationLine: allDone ? 'line-through' : 'none',
-        }}
-        maxLines={2}
-      />
-
-      {/* Day counter */}
-      <TextWidget
-        text={`Day ${Math.min(plan.completed_entries + 1, plan.total_days)} of ${plan.total_days} · ${pct}%`}
-        style={{ fontSize: 11, color: TEXT_MUTED, marginTop: 4 }}
-      />
-
-      {/* Progress bar */}
+      {/* Top: plan name + streak */}
       <FlexWidget
         style={{
           flexDirection: 'row',
-          height: 4,
-          borderRadius: 2,
-          marginTop: 10,
-          overflow: 'hidden',
-          backgroundColor: BORDER,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: 'match_parent',
         }}
       >
-        <FlexWidget
-          style={{ flex: filled, height: 4, backgroundColor: ACCENT }}
+        <TextWidget
+          text={plan.name.toUpperCase()}
+          style={{
+            fontSize: 10,
+            color: '#b8860b',
+            fontFamily: 'sans-serif-medium',
+          }}
+          maxLines={1}
         />
-        {empty > 0 && (
-          <FlexWidget
-            style={{ flex: empty, height: 4, backgroundColor: BORDER }}
+        {streak > 0 && (
+          <TextWidget
+            text={`${streak} day streak`}
+            style={{ fontSize: 10, color: '#b8860b', fontFamily: 'sans-serif' }}
           />
         )}
       </FlexWidget>
 
-      {/* Action buttons row */}
-      {todayEntries.length > 0 && (
+      {/* Middle: chapters + day label */}
+      <FlexWidget
+        style={{
+          flexDirection: 'column',
+          width: 'match_parent',
+        }}
+      >
+        <TextWidget
+          text={chaptersText}
+          style={{
+            fontSize: 20,
+            color: allDone ? '#555555' : '#f0e8d8',
+            fontFamily: 'sans-serif-medium',
+          }}
+          maxLines={1}
+        />
+        <TextWidget
+          text={dayLabel}
+          style={{ fontSize: 11, color: '#666666', marginTop: 4, fontFamily: 'sans-serif' }}
+        />
+      </FlexWidget>
+
+      {/* Bottom: progress bar + buttons */}
+      <FlexWidget style={{ flexDirection: 'column', width: 'match_parent' }}>
+
+        {/* Progress bar */}
         <FlexWidget
           style={{
             flexDirection: 'row',
-            marginTop: 12,
-            gap: 8,
+            width: 'match_parent',
+            height: 3,
+            borderRadius: 2,
+            backgroundColor: '#2a2a2a',
+            overflow: 'hidden',
+            marginBottom: 12,
           }}
         >
-          {/* Open reading button */}
-          {todayEntries[0] && (
-            <FlexWidget
-              clickAction="OPEN_READING"
-              clickActionData={{
-                book: todayEntries[0].book,
-                chapter: String(todayEntries[0].chapter),
-              }}
-              style={{
-                flex: 1,
-                backgroundColor: BG_CARD,
-                borderRadius: 8,
-                paddingVertical: 8,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <TextWidget
-                text="Open"
-                style={{ fontSize: 12, color: TEXT_PRIMARY, fontFamily: 'sans-serif-medium' }}
-              />
-            </FlexWidget>
+          <FlexWidget style={{ flex: filled, height: 3, backgroundColor: '#b8860b' }} />
+          {empty > 0 && (
+            <FlexWidget style={{ flex: empty, height: 3, backgroundColor: '#2a2a2a' }} />
           )}
+        </FlexWidget>
 
-          {/* Mark done button */}
+        {/* Buttons row */}
+        <FlexWidget
+          style={{
+            flexDirection: 'row',
+            width: 'match_parent',
+            flexGap: 10,
+          }}
+        >
           <FlexWidget
-            clickAction={allDone ? 'MARK_UNDONE' : 'MARK_DONE'}
-            clickActionData={{ planId: String(plan.id) }}
+            clickAction="OPEN_APP"
             style={{
               flex: 1,
-              backgroundColor: allDone ? ACCENT : BG_CARD,
-              borderRadius: 8,
-              paddingVertical: 8,
-              alignItems: 'center',
+              height: 36,
+              backgroundColor: '#242424',
+              borderRadius: 10,
+              borderWidth: 1,
+              borderColor: '#333333',
               justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
             <TextWidget
-              text={allDone ? '✓ Done' : 'Mark done'}
+              text="Open"
+              style={{ fontSize: 12, color: '#cccccc', fontFamily: 'sans-serif-medium' }}
+            />
+          </FlexWidget>
+
+          <FlexWidget
+            clickAction="OPEN_APP"
+            style={{
+              flex: 1,
+              height: 36,
+              backgroundColor: allDone ? '#b8860b' : '#1e1a0d',
+              borderRadius: 10,
+              borderWidth: 1,
+              borderColor: '#b8860b',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <TextWidget
+              text={allDone ? 'Done ✓' : 'Mark done'}
               style={{
                 fontSize: 12,
-                color: allDone ? '#fff' : ACCENT,
+                color: allDone ? '#ffffff' : '#b8860b',
                 fontFamily: 'sans-serif-medium',
               }}
             />
           </FlexWidget>
         </FlexWidget>
-      )}
+      </FlexWidget>
     </FlexWidget>
   )
 }

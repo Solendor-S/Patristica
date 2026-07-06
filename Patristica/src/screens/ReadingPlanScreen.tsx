@@ -18,6 +18,9 @@ import {
   markEntryComplete, markEntryIncomplete,
 } from '../db/queries'
 import type { PlanEntry, PlanWithProgress } from '../db/queries'
+
+const planPct = (p: PlanWithProgress) =>
+  p.total_days > 0 ? Math.round((p.completed_entries / p.total_days) * 100) : 0
 import { BOOKS } from '../data/books'
 import { chaptersForBooks } from '../data/planTemplates'
 
@@ -118,8 +121,7 @@ function PlanCard({ plan, colors, onOpen }: {
   const { completeEntry, uncompleteEntry, todayEntries, removePlan } = useReadingPlan()
   const entries = todayEntries[plan.id] ?? []
   const allDone = entries.length > 0 && entries.every(e => e.completed_at != null)
-  const progress = plan.total_entries > 0 ? plan.completed_entries / plan.total_entries : 0
-  const pct = Math.round(progress * 100)
+  const pct = planPct(plan)
 
   const handleDelete = () => Alert.alert('Delete Plan', `Delete "${plan.name}"?`, [
     { text: 'Cancel', style: 'cancel' },
@@ -133,7 +135,7 @@ function PlanCard({ plan, colors, onOpen }: {
           <View style={{ flex: 1 }}>
             <Text style={s.cardTitle}>{plan.name}</Text>
             <Text style={s.cardSub}>
-              {plan.completed_entries === plan.total_entries && plan.total_entries > 0
+              {plan.completed_entries === plan.total_days && plan.total_days > 0
                 ? 'Completed ✓'
                 : `Day ${Math.min(plan.completed_entries + 1, plan.total_days)} of ${plan.total_days} · ${pct}%`}
             </Text>
@@ -172,7 +174,7 @@ function PlanCard({ plan, colors, onOpen }: {
         </View>
       )}
 
-      {entries.length === 0 && plan.completed_entries < plan.total_entries && (
+      {entries.length === 0 && plan.completed_entries < plan.total_days && (
         <Text style={s.noTodayText}>No reading scheduled for today</Text>
       )}
     </View>
@@ -212,8 +214,7 @@ function PlanDetailView({ plan, colors, onBack }: {
 
   useEffect(() => { load() }, [load])
 
-  const progress = plan.total_entries > 0 ? plan.completed_entries / plan.total_entries : 0
-  const pct = Math.round(progress * 100)
+  const pct = planPct(plan)
   const today = isoDate(new Date())
   const allTodayDone = todayList.length > 0 && todayList.every(e => e.completed_at != null)
 

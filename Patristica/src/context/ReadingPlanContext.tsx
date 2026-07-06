@@ -6,16 +6,13 @@ import type { PlanWithProgress, PlanEntry } from '../db/queries'
 import { getPlans, getTodayEntries, getStreak, markEntryComplete, markEntryIncomplete, deletePlan } from '../db/queries'
 import { StudyWidget } from '../widgets/StudyWidget'
 
-// Push a fresh render to all pinned StudyWidgets after plan data changes
-async function pushWidgetUpdate(db: SQLiteDatabase) {
+// Push a fresh render to all pinned StudyWidgets.
+// Receives already-fetched plan + todayEntries from refresh() to avoid re-querying.
+async function pushWidgetUpdate(db: SQLiteDatabase, plan: PlanWithProgress | null, todayEntries: PlanEntry[]) {
   if (Platform.OS !== 'android') return
   try {
     const { requestWidgetUpdate } = await import('react-native-android-widget')
-    const plans = await getPlans(db)
-    const plan = plans[0] ?? null
-    const [todayEntries, streak] = plan
-      ? await Promise.all([getTodayEntries(db, plan.id), getStreak(db, plan.id)])
-      : [[], 0]
+    const streak = plan ? await getStreak(db, plan.id) : 0
     requestWidgetUpdate({
       widgetName: 'StudyWidget',
       renderWidget: () => React.createElement(StudyWidget, { plan, todayEntries, streak }),
@@ -55,6 +52,8 @@ export function ReadingPlanProvider({ children }: { children: React.ReactNode })
       entries[p.id] = await getTodayEntries(db, p.id)
     }))
     setTodayEntries(entries)
+    const plan = loaded[0] ?? null
+    pushWidgetUpdate(db, plan, plan ? (entries[plan.id] ?? []) : []).catch(() => {})
   }, [db])
 
   useEffect(() => { refresh().catch(console.error) }, [refresh])
@@ -62,19 +61,16 @@ export function ReadingPlanProvider({ children }: { children: React.ReactNode })
   const completeEntry = useCallback(async (planId: number, entryId: number) => {
     await markEntryComplete(db, entryId)
     await refresh()
-    pushWidgetUpdate(db).catch(() => {})
   }, [db, refresh])
 
   const uncompleteEntry = useCallback(async (planId: number, entryId: number) => {
     await markEntryIncomplete(db, entryId)
     await refresh()
-    pushWidgetUpdate(db).catch(() => {})
   }, [db, refresh])
 
   const removePlan = useCallback(async (planId: number) => {
     await deletePlan(db, planId)
     await refresh()
-    pushWidgetUpdate(db).catch(() => {})
   }, [db, refresh])
 
   return (
