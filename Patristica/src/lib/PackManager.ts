@@ -330,8 +330,10 @@ export async function fetchOnlineChapter(
   const folder = meta?.type === 'apocrypha' ? 'apoc'
     : meta?.type === 'early_text' ? 'early'
     : slug
+  // BSB's online tree stores Psalms under "Psalm" (from its source VerseId); the app uses "Psalms".
+  const bookForPath = slug === 'bsb' && book === 'Psalms' ? 'Psalm' : book
   const base = _manifest.onlineBaseUrl || ONLINE_FALLBACK_BASE
-  const path = `/${folder}/${encodeURIComponent(book)}/${chapter}.json`
+  const path = `/${folder}/${encodeURIComponent(bookForPath)}/${chapter}.json`
   const fallback = base !== ONLINE_FALLBACK_BASE ? ONLINE_FALLBACK_BASE + path : undefined
   return fetchJson<OnlineVerse[]>(base + path, fallback)
 }

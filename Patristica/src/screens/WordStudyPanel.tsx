@@ -14,7 +14,7 @@ import {
   getBdbEntry, getThayersEntry, getVerse, getStrongsConcordance, normalizeStrongsNumber,
 } from '../db/queries'
 import type { GreekWord, HebrewWord, StrongsEntry, LexiconEntry, StrongsConcordanceResult, GreekSource, HebrewSource, LxxSource } from '../db/queries'
-import { decodeMorphology, TAG_DEFINITIONS, GREEK_TAG_EXAMPLES, HEBREW_TAG_EXAMPLES } from '../utils/morphology'
+import { decodeMorphology, compactMorph, TAG_DEFINITIONS, GREEK_TAG_EXAMPLES, HEBREW_TAG_EXAMPLES } from '../utils/morphology'
 import { stripUsfm } from '../data/redLetter'
 import type { SelectedVerse, RootTabParamList } from '../types'
 import { BOOKS } from '../data/books'
@@ -1032,6 +1032,7 @@ export default function WordStudyPanel({ selected }: Props) {
           // Strip OSIS/XML markup leaked into the greek field in some lxx_apostolic_words rows
           const text = raw?.includes('<') ? raw.replace(/<[^>]*>/g, '').split(/\s+/)[0] : (raw ?? '')
           const active = activeKey?.strongs === w.strongs && activeKey?.position === w.position
+          const parseCode = w.morph ? compactMorph(w.morph, (isNT || isLxx) ? 'greek' : 'hebrew') : ''
           return (
             <TouchableOpacity
               key={i}
@@ -1048,6 +1049,11 @@ export default function WordStudyPanel({ selected }: Props) {
               {!!w.gloss && (
                 <Text style={[s.pillGloss, active && s.pillGlossActive]}>
                   {w.gloss}
+                </Text>
+              )}
+              {!!parseCode && (
+                <Text style={[s.pillMorph, active && s.pillMorphActive]}>
+                  {parseCode}
                 </Text>
               )}
             </TouchableOpacity>
@@ -1375,6 +1381,8 @@ const makeStyles = (c: ThemeColors, fontFamily?: string, fontScope: FontScopeKey
   pillTranslitActive:{ color: c.accent },
   pillGloss:         { fontSize: 11, color: c.textSecondary, fontWeight: '500' },
   pillGlossActive:   { color: c.accent },
+  pillMorph:         { fontSize: 9, color: c.textMuted, fontWeight: '600', letterSpacing: 0.2, marginTop: 1 },
+  pillMorphActive:   { color: c.accent },
 
   defCard: {
     backgroundColor: c.bgCard,

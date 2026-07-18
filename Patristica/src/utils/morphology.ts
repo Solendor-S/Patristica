@@ -8,11 +8,11 @@ export interface ParsedMorph {
 // ── Greek (Robinson's / TAGNT style) ─────────────────────
 
 const GK_POS: Record<string, string> = {
-  N: 'Noun', V: 'Verb', A: 'Adjective', D: 'Article',
+  N: 'Noun', V: 'Verb', A: 'Adjective', T: 'Article',
   P: 'Personal Pronoun', R: 'Relative Pronoun', C: 'Reciprocal Pronoun',
   K: 'Correlative Pronoun', I: 'Interrogative Pronoun', X: 'Indefinite Pronoun',
   Q: 'Correlative/Interrogative Pronoun', F: 'Reflexive Pronoun',
-  S: 'Possessive Pronoun', T: 'Demonstrative Pronoun',
+  S: 'Possessive Pronoun', D: 'Demonstrative Pronoun',
   PREP: 'Preposition', CONJ: 'Conjunction', COND: 'Conditional Particle',
   ADV: 'Adverb', PRT: 'Particle', INJ: 'Interjection',
   HEB: 'Hebrew Transliteration', ARAM: 'Aramaic Transliteration',
@@ -30,6 +30,8 @@ const GK_MOOD: Record<string, string> = {
   N: 'Infinitive', P: 'Participle', R: 'Imperative Participle',
 }
 const GK_PERSON: Record<string, string> = { '1': '1st Person', '2': '2nd Person', '3': '3rd Person' }
+// Robinson indeclinable suffixes: PRoper, NUmeral, Letter, Other, ARamaic/Hebrew Indeclinable.
+const GK_INDECL = new Set(['PRI', 'NUI', 'LI', 'OI', 'ARI', 'HEI'])
 
 export function decodeGreek(code: string): ParsedMorph | null {
   if (!code) return null
@@ -68,6 +70,11 @@ export function decodeGreek(code: string): ParsedMorph | null {
   } else {
     // Noun, adjective, pronoun, article: POS-CNG[-P]
     const cng = parts[1] ?? ''
+    // Indeclinable codes carry no case/number/gender (e.g. N-PRI proper name, A-NUI numeral).
+    if (GK_INDECL.has(cng)) {
+      if (cng === 'PRI') tags.push('Proper')
+      return { partOfSpeech: posLabel, tags }
+    }
     if (cng.length >= 1 && GK_CASE[cng[0]])   tags.push(GK_CASE[cng[0]])
     if (cng.length >= 2 && GK_NUMBER[cng[1]])  tags.push(GK_NUMBER[cng[1]])
     if (cng.length >= 3 && GK_GENDER[cng[2]])  tags.push(GK_GENDER[cng[2]])
@@ -91,8 +98,22 @@ const HB_VERB_FORM: Record<string, string> = {
   r: 'Active Participle', s: 'Passive Participle',
 }
 const HB_PERSON: Record<string, string> = { '1': '1st Person', '2': '2nd Person', '3': '3rd Person' }
-const HB_GENDER: Record<string, string> = { m: 'Masculine', f: 'Feminine', c: 'Common' }
+const HB_GENDER: Record<string, string> = { m: 'Masculine', f: 'Feminine', c: 'Common', b: 'Common' }
 const HB_NUMBER: Record<string, string> = { s: 'Singular', p: 'Plural', d: 'Dual' }
+
+// Aramaic (Daniel 2:4b–7:28, Ezra 4:8–6:18; 7:12–26) uses the same POS/gender/number
+// letters as Hebrew but a different set of verb stems and aspects.
+const ARAM_STEM: Record<string, string> = {
+  q: 'Peal', Q: 'Peil', u: 'Hithpeel', i: 'Ithpeel', p: 'Pael', P: 'Ithpaal',
+  M: 'Hithpaal', a: 'Aphel', h: 'Haphel', H: 'Hophal', s: 'Saphel', e: 'Shaphel',
+  t: 'Hishtaphel', v: 'Ishtaphel', w: 'Hithaphel',
+}
+const ARAM_FORM: Record<string, string> = {
+  p: 'Perfect', q: 'Sequential Perfect', i: 'Imperfect', u: 'Imperfect',
+  w: 'Sequential Imperfect', h: 'Cohortative', j: 'Jussive', v: 'Imperative',
+  r: 'Active Participle', s: 'Passive Participle',
+  a: 'Infinitive Absolute', c: 'Infinitive Construct',
+}
 const HB_STATE:  Record<string, string> = { a: 'Absolute', c: 'Construct', d: 'Determined' }
 const HB_POS: Record<string, string> = {
   V: 'Verb', N: 'Noun', A: 'Adjective', P: 'Pronoun',
@@ -100,14 +121,74 @@ const HB_POS: Record<string, string> = {
   S: 'Preposition/Particle', M: 'Numeral', I: 'Interjection',
 }
 
+// ── Dead Sea Scrolls (Abegg/Qumran feature:value tags) ──────────
+// Format: "sp:verb vs:qal vt:wayy gn:m nu:s ps:3". gn/nu/ps/st letters match Hebrew.
+const DSS_SP: Record<string, string> = {
+  verb: 'Verb', subs: 'Noun', adjv: 'Adjective', ptcl: 'Particle',
+  pron: 'Pronoun', numr: 'Numeral', suff: 'Suffix',
+}
+const DSS_VS: Record<string, string> = {
+  qal: 'Qal', nifal: 'Niphal', piel: 'Piel', pual: 'Pual', hifil: 'Hiphil',
+  hofal: 'Hophal', hophal: 'Hophal', hitpael: 'Hithpael', passive: 'Passive',
+  peal: 'Peal', peil: 'Peil', pael: 'Pael', aphel: 'Aphel', haphel: 'Haphel',
+  hithpeel: 'Hithpeel', ithpeel: 'Ithpeel', hithpaal: 'Hithpaal', ithpaal: 'Ithpaal',
+  shaphel: 'Shaphel', hishtafel: 'Hishtaphel',
+}
+const DSS_VT: Record<string, string> = {
+  perf: 'Perfect', impf: 'Imperfect', wayy: 'Sequential Imperfect', weqt: 'Sequential Perfect',
+  impv: 'Imperative', infc: 'Infinitive Construct', infa: 'Infinitive Absolute',
+  ptca: 'Active Participle', ptcp: 'Passive Participle', juss: 'Jussive', coho: 'Cohortative',
+}
+const cap = (s: string) => s ? s[0].toUpperCase() + s.slice(1) : s
+
+function decodeDss(code: string): ParsedMorph {
+  const f: Record<string, string> = {}
+  for (const tok of code.split(/\s+/)) {
+    const i = tok.indexOf(':')
+    if (i > 0) f[tok.slice(0, i)] = tok.slice(i + 1)
+  }
+  const posLabel = DSS_SP[f.sp] ?? (f.sp ? cap(f.sp) : 'Unknown')
+  const tags: string[] = []
+  if (f.sp === 'verb') {
+    if (f.vs) tags.push(DSS_VS[f.vs] ?? cap(f.vs))
+    if (f.vt) tags.push(DSS_VT[f.vt] ?? cap(f.vt))
+    if (HB_PERSON[f.ps]) tags.push(HB_PERSON[f.ps])
+    if (HB_GENDER[f.gn]) tags.push(HB_GENDER[f.gn])
+    if (HB_NUMBER[f.nu]) tags.push(HB_NUMBER[f.nu])
+    if (HB_STATE[f.st])  tags.push(HB_STATE[f.st])
+  } else {
+    if (HB_PERSON[f.ps]) tags.push(HB_PERSON[f.ps])
+    if (HB_GENDER[f.gn]) tags.push(HB_GENDER[f.gn])
+    if (HB_NUMBER[f.nu]) tags.push(HB_NUMBER[f.nu])
+    if (HB_STATE[f.st])  tags.push(HB_STATE[f.st])
+  }
+  return { partOfSpeech: posLabel, tags }
+}
+
+// Pick the main content segment from a slash-chained code (prefixes + root + suffixes),
+// e.g. "C/R/Aampc" → "Aampc". Prefers verb > noun > adjective > pronoun over prep/particle/suffix.
+const POS_PRIORITY = ['V', 'N', 'A', 'P', 'R', 'D', 'T', 'C', 'S']
+function pickRoot(stem: string): string {
+  const segs = stem.split('/').filter(Boolean)
+  if (segs.length <= 1) return segs[0] ?? ''
+  for (const p of POS_PRIORITY) {
+    const hit = segs.find(s => s[0] === p)
+    if (hit) return hit
+  }
+  return segs[0]
+}
+
 export function decodeHebrew(code: string): ParsedMorph | null {
   if (!code) return null
+  if (code.includes(':')) return decodeDss(code)  // DSS Abegg feature:value format
 
-  // Strip leading H (Hebrew marker) and any prefix before /
-  let stem = code.startsWith('H') ? code.slice(1) : code
-  const slashIdx = stem.indexOf('/')
-  if (slashIdx !== -1) stem = stem.slice(slashIdx + 1)  // take the root word, ignore prefix
-
+  // TAHOT prefixes a language marker (H=Hebrew, A=Aramaic) before an uppercase POS letter.
+  // WLC/other codes carry no marker and start with the POS letter directly, so only treat a
+  // leading H/A as a marker when the next char is an uppercase POS letter (not a lowercase subtype).
+  const marked = (code[0] === 'H' || code[0] === 'A') && /[A-Z]/.test(code[1] ?? '')
+  const aramaic = marked && code[0] === 'A'
+  const body = marked ? code.slice(1) : code
+  const stem = pickRoot(body)
   if (!stem) return { partOfSpeech: 'Particle', tags: [] }
 
   const pos = stem[0]
@@ -116,25 +197,37 @@ export function decodeHebrew(code: string): ParsedMorph | null {
   const tags: string[] = []
 
   if (pos === 'V') {
-    // V + stem + form + person + gender + number
+    const STEMS = aramaic ? ARAM_STEM : HB_STEM
+    const FORMS = aramaic ? ARAM_FORM : HB_VERB_FORM
     const stemCode = rest[0]
     const formCode = rest[1]
-    const personCode = rest[2]
-    const genderCode = rest[3]
-    const numberCode = rest[4]
-    if (stemCode && HB_STEM[stemCode])       tags.push(HB_STEM[stemCode])
-    if (formCode && HB_VERB_FORM[formCode])  tags.push(HB_VERB_FORM[formCode])
-    if (personCode && HB_PERSON[personCode]) tags.push(HB_PERSON[personCode])
-    if (genderCode && HB_GENDER[genderCode]) tags.push(HB_GENDER[genderCode])
-    if (numberCode && HB_NUMBER[numberCode]) tags.push(HB_NUMBER[numberCode])
+    if (stemCode && STEMS[stemCode]) tags.push(STEMS[stemCode])
+    if (formCode && FORMS[formCode]) tags.push(FORMS[formCode])
+    // Participles carry gender+number+state (no person); infinitives carry nothing;
+    // finite forms carry person+gender+number.
+    if (formCode === 'r' || formCode === 's') {
+      if (HB_GENDER[rest[2]]) tags.push(HB_GENDER[rest[2]])
+      if (HB_NUMBER[rest[3]]) tags.push(HB_NUMBER[rest[3]])
+      if (HB_STATE[rest[4]])  tags.push(HB_STATE[rest[4]])
+    } else if (formCode !== 'a' && formCode !== 'c') {
+      if (HB_PERSON[rest[2]]) tags.push(HB_PERSON[rest[2]])
+      if (HB_GENDER[rest[3]]) tags.push(HB_GENDER[rest[3]])
+      if (HB_NUMBER[rest[4]]) tags.push(HB_NUMBER[rest[4]])
+    }
+  } else if (pos === 'N' || pos === 'A') {
+    // Noun/Adjective: pos + subtype + gender + number + state (e.g. Ncmpa, Aampc).
+    // The subtype letter (c=common, p=proper, g=gentilic…) sits before gender — skip it.
+    const subtype = rest[0]
+    if (pos === 'N' && subtype === 'p') tags.push('Proper')
+    if (pos === 'N' && subtype === 'g') tags.push('Gentilic')
+    if (HB_GENDER[rest[1]]) tags.push(HB_GENDER[rest[1]])
+    if (HB_NUMBER[rest[2]]) tags.push(HB_NUMBER[rest[2]])
+    if (HB_STATE[rest[3]])  tags.push(HB_STATE[rest[3]])
   } else {
-    // Noun/Adj/Pronoun: pos + gender + number + state
-    const genderCode = rest[0]
-    const numberCode = rest[1]
-    const stateCode  = rest[2]
-    if (genderCode && HB_GENDER[genderCode]) tags.push(HB_GENDER[genderCode])
-    if (numberCode && HB_NUMBER[numberCode]) tags.push(HB_NUMBER[numberCode])
-    if (stateCode  && HB_STATE[stateCode])   tags.push(HB_STATE[stateCode])
+    // Pronoun/particle fallback: pos + gender + number + state
+    if (HB_GENDER[rest[0]]) tags.push(HB_GENDER[rest[0]])
+    if (HB_NUMBER[rest[1]]) tags.push(HB_NUMBER[rest[1]])
+    if (HB_STATE[rest[2]])  tags.push(HB_STATE[rest[2]])
   }
 
   return { partOfSpeech: posLabel, tags }
@@ -204,6 +297,7 @@ export const HEBREW_TAG_EXAMPLES: Record<string, string> = {
   'Determined': '"The king" (הַמֶּלֶךְ) — equivalent to the English definite article.',
   'Common': 'Applies to both masculine and feminine, e.g. "the fathers and mothers".',
   'Dual':   '"Two tablets", "hands", "eyes" — always a pair of the noun.',
+  'Gentilic': '"the Hittite", "an Egyptian" — a noun naming someone by people or place.',
 }
 
 export const TAG_DEFINITIONS: Record<string, string> = {
@@ -264,8 +358,79 @@ export const TAG_DEFINITIONS: Record<string, string> = {
   // Hebrew noun state
   'Absolute':   'The noun stands alone, not in a possessive chain.',
   'Construct':  'The noun is linked to the following noun in a genitive chain.',
-  'Determined': 'The noun carries the definite article.',
+  'Determined': 'The noun carries the definite article (or Aramaic emphatic state).',
+  // Aramaic verb stems (Daniel & Ezra)
+  'Peal':      'The basic Aramaic verb stem — simple active action (like Hebrew Qal).',
+  'Peil':      'Passive of the Peal stem.',
+  'Pael':      'Intensive active Aramaic stem (like Hebrew Piel).',
+  'Ithpaal':   'Reflexive/passive of the Pael stem.',
+  'Hithpaal':  'Reflexive or intensive-passive Aramaic stem.',
+  'Hithpeel':  'Reflexive or passive of the Peal stem.',
+  'Ithpeel':   'Reflexive or passive of the Peal stem.',
+  'Aphel':     'Causative active Aramaic stem (like Hebrew Hiphil).',
+  'Haphel':    'Causative active Aramaic stem — "to cause to do".',
+  'Hophal':    'Causative passive Aramaic stem — "to be caused to do".',
+  'Shaphel':   'Causative Aramaic stem formed with a š-prefix.',
+  'Saphel':    'Causative Aramaic stem formed with an s-prefix.',
+  'Hishtaphel':'Reflexive of the causative Shaphel stem.',
+  'Ishtaphel': 'Reflexive of the causative Shaphel stem.',
+  'Hithaphel': 'Reflexive of the causative Aphel stem.',
+  // Aramaic / extended verb aspects
+  'Sequential Perfect':   'Perfect linked to a preceding verb (waw-conjunctive).',
+  'Sequential Imperfect': 'Imperfect linked to a preceding verb (waw-consecutive).',
+  'Cohortative':          'Expresses the speaker\'s wish or resolve — "let me/us…".',
+  'Jussive':              'Expresses a third-person command or wish — "let him…".',
   // Hebrew gender/number
   'Common': 'Common gender — applies to both masculine and feminine.',
   'Dual':   'Refers to exactly two of something.',
+  'Gentilic': 'A noun derived from a people or place name (e.g. Hittite, Egyptian).',
+}
+
+// ── Compact parsing code (BibleHub style, e.g. "V-Qal-Perf-3ms") ──
+// Segment tokens get their own hyphen slot; person/gender/number/case/state
+// collapse into one trailing cluster like "3ms".
+const MORPH_SHORT: Record<string, string> = {
+  // POS
+  Verb: 'V', Noun: 'N', Adjective: 'Adj', Article: 'Art',
+  'Personal Pronoun': 'Pron', 'Relative Pronoun': 'Rel', 'Demonstrative Pronoun': 'Dem',
+  Pronoun: 'Pron', Preposition: 'Prep', Conjunction: 'Conj', Adverb: 'Adv',
+  Particle: 'Prt', Interjection: 'Interj', Numeral: 'Num',
+  // Greek tense
+  Present: 'Pres', Imperfect: 'Impf', Future: 'Fut', Aorist: 'Aor', Perfect: 'Perf', Pluperfect: 'Plup',
+  // Greek voice
+  Active: 'Act', Middle: 'Mid', Passive: 'Pass', 'Middle/Passive': 'M/P',
+  'Middle Deponent': 'MidD', 'Passive Deponent': 'PasD',
+  // Greek mood
+  Indicative: 'Ind', Subjunctive: 'Sub', Optative: 'Opt', Imperative: 'Impv',
+  Infinitive: 'Inf', Participle: 'Ptc',
+  // Hebrew verb forms (stems Qal/Niphal/… stay as-is)
+  'Infinitive Construct': 'InfC', 'Infinitive Absolute': 'InfA',
+  'Active Participle': 'ActPtc', 'Passive Participle': 'PasPtc',
+  'Sequential Perfect': 'SeqPerf', 'Sequential Imperfect': 'SeqImpf',
+  Cohortative: 'Coho', Jussive: 'Juss',
+}
+// Tags that collapse into the trailing cluster, mapped to their short letter ('' = omit).
+const MORPH_CLUSTER: Record<string, string> = {
+  '1st Person': '1', '2nd Person': '2', '3rd Person': '3',
+  Masculine: 'm', Feminine: 'f', Neuter: 'n', Common: 'c',
+  Singular: 's', Plural: 'p', Dual: 'd',
+  Nominative: 'N', Genitive: 'G', Dative: 'D', Accusative: 'A', Vocative: 'V',
+  Construct: '', Determined: '', Absolute: '',
+  Proper: '', Gentilic: '',
+}
+
+// Turns a raw morph code into a short parsing label, e.g. "HVqp3ms" → "V-Qal-Perf-3ms".
+export function compactMorph(code: string, lang: 'greek' | 'hebrew'): string {
+  const parsed = decodeMorphology(code, lang)
+  if (!parsed) return ''
+  const pos = MORPH_SHORT[parsed.partOfSpeech] ?? parsed.partOfSpeech
+  const segs: string[] = []
+  let cluster = ''
+  for (const tag of parsed.tags) {
+    if (tag in MORPH_CLUSTER) cluster += MORPH_CLUSTER[tag]
+    else segs.push(MORPH_SHORT[tag] ?? tag)
+  }
+  const parts = [pos, ...segs]
+  if (cluster) parts.push(cluster)
+  return parts.join('-')
 }

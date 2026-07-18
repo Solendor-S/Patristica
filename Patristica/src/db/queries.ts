@@ -11,6 +11,8 @@ export { PLAN_TEMPLATES } from '../data/planTemplates'
 const NUM_PREFIX: Record<string, string> = { '1 ': 'I ', '2 ': 'II ', '3 ': 'III ' }
 const ROM_PREFIX: Record<string, string> = { 'I ': '1 ', 'II ': '2 ', 'III ': '3 ' }
 function bookAlt(book: string): string | null {
+  // BSB stores Psalms as "Psalm" (singular, from its source VerseId); the app uses "Psalms".
+  if (book === 'Psalms') return 'Psalm'
   for (const [from, to] of Object.entries(NUM_PREFIX))
     if (book.startsWith(from)) return to + book.slice(from.length)
   for (const [from, to] of Object.entries(ROM_PREFIX))
@@ -1603,9 +1605,12 @@ export async function getBsbChapterFootnotes(
   packDb?: SQLiteDatabase | null,
 ): Promise<import('../types').BsbFootnote[]> {
   const queryDb = packDb ?? db
+  const alt = bookAlt(book)  // bsb_footnotes stores Psalms as "Psalm"
   return queryDb.getAllAsync(
-    'SELECT verse, word_index, word, footnote FROM bsb_footnotes WHERE book=? AND chapter=? ORDER BY verse, word_index',
-    [book, chapter]
+    alt
+      ? 'SELECT verse, word_index, word, footnote FROM bsb_footnotes WHERE (book=? OR book=?) AND chapter=? ORDER BY verse, word_index'
+      : 'SELECT verse, word_index, word, footnote FROM bsb_footnotes WHERE book=? AND chapter=? ORDER BY verse, word_index',
+    alt ? [book, alt, chapter] : [book, chapter]
   )
 }
 

@@ -33,12 +33,17 @@ def fetch_tsv() -> list[dict]:
     return list(csv.DictReader(data.splitlines(), delimiter="\t"))
 
 
+# BSB's VerseId uses "Psalm" (singular); the app's canonical book name is "Psalms".
+BOOK_FIX = {"Psalm": "Psalms"}
+
+
 def parse_verse_id(verse_id: str) -> tuple[str, int, int] | None:
     """'Matthew 21:5' → ('Matthew', 21, 5). Returns None if unparseable."""
     m = re.match(r"^(.+?)\s+(\d+):(\d+)$", verse_id.strip())
     if not m:
         return None
-    return m.group(1), int(m.group(2)), int(m.group(3))
+    book = BOOK_FIX.get(m.group(1), m.group(1))
+    return book, int(m.group(2)), int(m.group(3))
 
 
 def build_verses(rows: list[dict]) -> tuple[

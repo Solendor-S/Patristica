@@ -432,8 +432,21 @@ function parseBsbRef(raw: string): { book: string; chapter: number; verse: numbe
 
 // ── VerseRow ──────────────────────────────────────────────
 
+// BSB text carries ". . ." runs marking Greek words folded into the English phrase.
+// foldedOn collapses each run to a single ". . ." marker; off removes it (and tidies spacing).
+function foldBsbDots(stripped: string, foldedOn: boolean): string {
+  let out = stripped.replace(/(\.[ ]?){3,}/g, foldedOn ? '. . . ' : ' ')
+  if (!foldedOn) out = out.replace(/\s+([,;:.!?])/g, '$1')
+  return out.replace(/  +/g, ' ').trim()
+}
+
+// Reader display variant: fold markers, then convert [x] → {x} italic markers.
+function formatBsbText(stripped: string, foldedOn: boolean): string {
+  return foldBsbDots(stripped, foldedOn).replace(/\[([^\]0-9][^\]]*)\]/g, '{$1}')
+}
+
 const VerseRow = memo(function VerseRow({
-  verse, text, isSelected, isMirrorSelected, hlColor, onPress, onWordPress, onFnPress, onBsbFnPress, onElxxNotePress, redLetterOn, book, chapter, footnotes, bsbFootnotes, elxxNotes, compareText, compareLabel, isAnnotated, lazyAnnotation, compareIsAnnotated, lazyCompareAnnotation, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter, isEarlyText, onEarlyFnPress, onInlineRefPress, focusMode, crossRefs, onCrossRefPress, isBsb, compareIsBsb, compareBsbFootnotes, otQuoteSpans,
+  verse, text, isSelected, isMirrorSelected, hlColor, onPress, onWordPress, onFnPress, onBsbFnPress, onElxxNotePress, redLetterOn, book, chapter, footnotes, bsbFootnotes, elxxNotes, compareText, compareLabel, isAnnotated, lazyAnnotation, compareIsAnnotated, lazyCompareAnnotation, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter, isEarlyText, onEarlyFnPress, onInlineRefPress, focusMode, crossRefs, onCrossRefPress, isBsb, compareIsBsb, compareBsbFootnotes, bsbFoldedOn = true, otQuoteSpans,
 }: {
   verse: number
   text: string
@@ -471,6 +484,7 @@ const VerseRow = memo(function VerseRow({
   isBsb?: boolean
   compareIsBsb?: boolean
   compareBsbFootnotes?: BsbFootnote[]
+  bsbFoldedOn?: boolean
   otQuoteSpans?: OtQuoteSpan[]
 }) {
   const { colors } = useTheme()
@@ -482,22 +496,14 @@ const VerseRow = memo(function VerseRow({
   const cleanText = useMemo(() => {
     const stripped = stripUsfm(text)
     if (!isBsb) return stripped
-    // Collapse any run of 3+ dots (with optional spaces) into a single ". . ."
-    // then normalise [word] → {word} for italic rendering
-    return stripped
-      .replace(/(\.[ ]?){3,}/g, '. . . ')
-      .replace(/  +/g, ' ')
-      .replace(/\[([^\]0-9][^\]]*)\]/g, '{$1}')
-  }, [text, isBsb])
+    return formatBsbText(stripped, bsbFoldedOn)
+  }, [text, isBsb, bsbFoldedOn])
   const cleanCompareText = useMemo(() => {
     if (!compareText) return null
     const stripped = stripUsfm(compareText)
     if (!compareIsBsb) return stripped
-    return stripped
-      .replace(/(\.[ ]?){3,}/g, '. . . ')
-      .replace(/  +/g, ' ')
-      .replace(/\[([^\]0-9][^\]]*)\]/g, '{$1}')
-  }, [compareText, compareIsBsb])
+    return formatBsbText(stripped, bsbFoldedOn)
+  }, [compareText, compareIsBsb, bsbFoldedOn])
   const hebrewTextStyle = isHebrew ? styles.hebrewText : undefined
 
   const kjvPlusTokens = useMemo(
@@ -939,10 +945,10 @@ function renderFocusSegments(segments: Segment[], styles: ReturnType<typeof make
 // ── Share range modal ─────────────────────────────────────
 
 function ShareModal({
-  visible, onClose, book, chapter, verses, anchorVerse, translation,
+  visible, onClose, book, chapter, verses, anchorVerse, translation, bsbFoldedOn = true,
 }: {
   visible: boolean; onClose: () => void; book: string; chapter: number
-  verses: BibleVerse[]; anchorVerse: number; translation: string
+  verses: BibleVerse[]; anchorVerse: number; translation: string; bsbFoldedOn?: boolean
 }) {
   const { colors } = useTheme()
   const { bottom } = useSafeAreaInsets()
@@ -966,9 +972,15 @@ function ShareModal({
 
   const body = useMemo(
     () => rangeVerses
-      .map(v => { const t = stripMarkers(stripUsfm(v.text)).replace(/¶\s*/g, ''); return fromVerse === toVerse ? t : `[${v.verse}] ${t}` })
+      .map(v => {
+        let t = stripMarkers(stripUsfm(v.text)).replace(/¶\s*/g, '')
+        // Copy text isn't rendered through the italic-brace renderer, so fold the ". . ."
+        // markers (matching the reader's toggle) but keep the [x] brackets as-is.
+        if (translation === 'BSB') t = foldBsbDots(t, bsbFoldedOn)
+        return fromVerse === toVerse ? t : `[${v.verse}] ${t}`
+      })
       .join(' '),
-    [rangeVerses, fromVerse, toVerse],
+    [rangeVerses, fromVerse, toVerse, translation, bsbFoldedOn],
   )
 
   const doShare = async () => { onClose(); await Share.share({ message: `${refLabel} — ${body}` }) }
@@ -1156,13 +1168,13 @@ function StrongsModal({
 
 // ── DSS Key modal ─────────────────────────────────────────
 
-const BSB_KEY_ENTRIES: Array<{ label: string; desc: string }> = [
-  { label: '. . .', desc: 'One or more Greek words folded into the surrounding English phrase — shown for transparency' },
+const BSB_KEY_ENTRIES: KeyEntry[] = [
+  { id: 'fold', label: '. . .', desc: 'One or more Greek words folded into the surrounding English phrase — shown for transparency' },
   { label: 'italic text', desc: 'Supplied word not present in the original — added for English readability' },
   { label: '[fn]', desc: 'Tap to view a translator footnote for that word' },
 ]
 
-type KeyEntry = { label: string; desc: string; color?: string; small?: boolean }
+type KeyEntry = { id?: string; label: string; desc: string; color?: string; small?: boolean; toggle?: boolean; onToggle?: () => void }
 
 function KeyModal({ visible, onClose, title, entries, footer }: {
   visible: boolean
@@ -1186,14 +1198,32 @@ function KeyModal({ visible, onClose, title, entries, footer }: {
           </View>
           <View style={{ paddingHorizontal: 20, paddingTop: 8, gap: 16 }}>
             {entries.map(entry => (
-              <View key={entry.label} style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 12 }}>
-                <View style={{ width: 12, height: 12, borderRadius: 6, marginTop: 4, backgroundColor: entry.color ?? colors.textPrimary, opacity: entry.color ? 1 : 0.9 }} />
+              <View key={entry.label} style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+                <View style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: entry.color ?? colors.textPrimary, opacity: entry.color ? 1 : 0.9 }} />
                 <View style={{ flex: 1 }}>
                   <Text style={{ fontSize: entry.small ? 11 : 14, fontWeight: '700', color: entry.color ?? colors.textPrimary }}>
                     {entry.label}
                   </Text>
                   <Text style={{ fontSize: 13, color: colors.textMuted, marginTop: 2 }}>{entry.desc}</Text>
                 </View>
+                {entry.onToggle && (
+                  <TouchableOpacity
+                    onPress={entry.onToggle}
+                    activeOpacity={0.8}
+                    style={{
+                      width: 44, height: 26, borderRadius: 13, justifyContent: 'center', paddingHorizontal: 3,
+                      borderWidth: 1,
+                      backgroundColor: entry.toggle ? colors.accent : colors.bgTertiary,
+                      borderColor: entry.toggle ? colors.accent : colors.border,
+                    }}
+                  >
+                    <View style={{
+                      width: 18, height: 18, borderRadius: 9,
+                      backgroundColor: entry.toggle ? '#fff' : colors.textMuted,
+                      alignSelf: entry.toggle ? 'flex-end' : 'flex-start',
+                    }} />
+                  </TouchableOpacity>
+                )}
               </View>
             ))}
             <Text style={{ fontSize: 12, color: colors.textMuted, fontStyle: 'italic', marginTop: 4 }}>{footer}</Text>
@@ -1458,6 +1488,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [dssAllReadings, setDssAllReadings] = useState(true)
   const [dssKeyOpen, setDssKeyOpen] = useState(false)
   const [bsbKeyOpen, setBsbKeyOpen] = useState(false)
+  const [bsbFoldedOn, setBsbFoldedOn] = useState(true)  // show ". . ." folded-Greek markers in BSB
 
   // ── Browser-style reading history ─────────────────────────
   type NavEntry = { book: string; chapter: number; earlyText: boolean; apocrypha: boolean }
@@ -2268,9 +2299,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
       isBsb={translation === 'BSB'}
       compareIsBsb={compareTrans === 'BSB'}
       compareBsbFootnotes={parallelOn && compareTrans === 'BSB' ? compareBsbFnsByVerse.get(item.verse) : undefined}
+      bsbFoldedOn={bsbFoldedOn}
       otQuoteSpans={otQuoteCapsOn ? otQuoteSpansByVerse.get(item.verse) : undefined}
     />
-  ), [selectedVerse, highlights, selectVerse, splitOn, activeSplitPane, openConcordance, redLetterOn, book, chapter, footnotesByVerse, bsbFnsByVerse, elxxNotesByVerse, otQuoteSpansByVerse, compareTrans, parallelOn, compareMap, compareBsbFnsByVerse, isAnnotatedTrans, openStrongs, isDss, dssAllReadings, isHebrew, translation, isEarlyText, openEarlyFn, onEarlyRefPress, focusMode, crossRefsByVerse, otQuoteCapsOn])
+  ), [selectedVerse, highlights, selectVerse, splitOn, activeSplitPane, openConcordance, redLetterOn, book, chapter, footnotesByVerse, bsbFnsByVerse, elxxNotesByVerse, otQuoteSpansByVerse, compareTrans, parallelOn, compareMap, compareBsbFnsByVerse, isAnnotatedTrans, openStrongs, isDss, dssAllReadings, isHebrew, translation, isEarlyText, openEarlyFn, onEarlyRefPress, focusMode, crossRefsByVerse, otQuoteCapsOn, bsbFoldedOn])
   const renderSplitVerseRow = useCallback(({ item }: { item: BibleVerse }) => (
     <VerseRow
       verse={item.verse}
@@ -2308,8 +2340,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
   ), [activeSplitPane, selectedVerse, selectSplitVerse, splitBook, splitChapter, openConcordance, openStrongs, splitTranslation, dssAllReadings, redLetterOn, openEarlyFn, onEarlyRefPress, focusMode, splitIsEarlyText, splitCrossRefsByVerse])
 
   const flatListExtraData = useMemo(
-    () => ({ selectedVerse, highlights, dssAllReadings, redLetterOn, focusMode, activeSplitPane, otQuoteCapsOn, otQuoteSpansByVerse }),
-    [selectedVerse, highlights, dssAllReadings, redLetterOn, focusMode, activeSplitPane, otQuoteCapsOn, otQuoteSpansByVerse]
+    () => ({ selectedVerse, highlights, dssAllReadings, redLetterOn, focusMode, activeSplitPane, otQuoteCapsOn, otQuoteSpansByVerse, bsbFoldedOn }),
+    [selectedVerse, highlights, dssAllReadings, redLetterOn, focusMode, activeSplitPane, otQuoteCapsOn, otQuoteSpansByVerse, bsbFoldedOn]
   )
   const currentSwatch = currentHighlightColor
     ? HIGHLIGHT_COLORS.find(c => c.key === currentHighlightColor)?.swatch
@@ -3134,6 +3166,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
           verses={verses}
           anchorVerse={selectedVerse}
           translation={translation}
+          bsbFoldedOn={bsbFoldedOn}
         />
       )}
 
@@ -3141,7 +3174,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
         title="DSS Text Key" entries={DSS_KEY_ENTRIES}
         footer="Multiple readings per verse reflect different scroll manuscripts attesting the same passage." />
       <KeyModal visible={bsbKeyOpen} onClose={() => setBsbKeyOpen(false)}
-        title="BSB Text Key" entries={BSB_KEY_ENTRIES}
+        title="BSB Text Key"
+        entries={BSB_KEY_ENTRIES.map(e => e.id === 'fold'
+          ? { ...e, toggle: bsbFoldedOn, onToggle: () => setBsbFoldedOn(v => !v) }
+          : e)}
         footer="The Berean Standard Bible uses these markers to show where the translation departs from a strict word-for-word rendering." />
 
       <ConcordanceModal
