@@ -432,17 +432,26 @@ function parseBsbRef(raw: string): { book: string; chapter: number; verse: numbe
 
 // ── VerseRow ──────────────────────────────────────────────
 
+// BSB source text carries scrape artifacts. These are hidden at render only — the DB keeps
+// the raw text. In Psalms, a |reftext| span marks where verse 1 begins; everything before it
+// is the superscription, which the reader already shows as a separate heading, so we drop the
+// prefix along with the marker. Elsewhere a few stray <p>/<b> tags survive; strip those too.
+const BSB_VERSE1_MARKER = /^[\s\S]*?<span class=\|reftext\|>[\s\S]*?<\/span>/
+function stripBsbMarkup(s: string): string {
+  return s.replace(BSB_VERSE1_MARKER, '').replace(/<[^>]*>/g, '')
+}
+
 // BSB text carries ". . ." runs marking Greek words folded into the English phrase.
 // foldedOn collapses each run to a single ". . ." marker; off removes it (and tidies spacing).
-function foldBsbDots(stripped: string, foldedOn: boolean): string {
-  let out = stripped.replace(/(\.[ ]?){3,}/g, foldedOn ? '. . . ' : ' ')
+function cleanBsbText(stripped: string, foldedOn: boolean): string {
+  let out = stripBsbMarkup(stripped).replace(/(\.[ ]?){3,}/g, foldedOn ? '. . . ' : ' ')
   if (!foldedOn) out = out.replace(/\s+([,;:.!?])/g, '$1')
   return out.replace(/  +/g, ' ').trim()
 }
 
-// Reader display variant: fold markers, then convert [x] → {x} italic markers.
+// Reader display variant: clean the source, then convert [x] → {x} italic markers.
 function formatBsbText(stripped: string, foldedOn: boolean): string {
-  return foldBsbDots(stripped, foldedOn).replace(/\[([^\]0-9][^\]]*)\]/g, '{$1}')
+  return cleanBsbText(stripped, foldedOn).replace(/\[([^\]0-9][^\]]*)\]/g, '{$1}')
 }
 
 const VerseRow = memo(function VerseRow({
@@ -976,7 +985,7 @@ function ShareModal({
         let t = stripMarkers(stripUsfm(v.text)).replace(/¶\s*/g, '')
         // Copy text isn't rendered through the italic-brace renderer, so fold the ". . ."
         // markers (matching the reader's toggle) but keep the [x] brackets as-is.
-        if (translation === 'BSB') t = foldBsbDots(t, bsbFoldedOn)
+        if (translation === 'BSB') t = cleanBsbText(t, bsbFoldedOn)
         return fromVerse === toVerse ? t : `[${v.verse}] ${t}`
       })
       .join(' '),
@@ -1416,7 +1425,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const { focusMode } = useFocusMode()
   const { readingMode } = useReadingMode()
   const { otQuoteCapsOn } = useOtQuoteCaps()
-  const { isInstalled, getPackDb, fetchOnline, packForContent } = usePacks()
+  const { isInstalled, installedReady, getPackDb, fetchOnline, packForContent } = usePacks()
   const packDbRef = useRef<import('expo-sqlite').SQLiteDatabase | null>(null)
   const [isOnlineMode, setIsOnlineMode] = useState(false)
   // Increments each time packDbRef is set — triggers chapter reload when pack DB becomes ready
@@ -1660,6 +1669,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
     const packDb = packDbRef.current ?? undefined
     const packCType = isApocrypha ? 'apocrypha' as const : isEarlyText ? 'early_text' as const : null
     const packSlug  = packCType ? packForContent(packCType, book)?.slug : TRANSLATION_PACK_SLUG[translation]
+    // Pack install state hydrates asynchronously on cold start. Deciding online-vs-pack before
+    // it lands treats an installed pack as missing, briefly showing "No verses found" until the
+    // effect re-runs. Wait for hydration whenever the routing depends on it (`loading` stays true).
+    if (packSlug && !installedReady) return
     const onlineOverride = !packCType ? TRANSLATION_ONLINE_SOURCE[translation] : undefined
     const onlineSource   = onlineOverride?.source ?? packSlug
     const useOnline      = !!packSlug && !isInstalled(packSlug) && !!onlineSource
@@ -1765,7 +1778,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       setLoadError(String(e?.message ?? e))
       setLoading(false)
     })
-  }, [book, chapter, translation, isApocrypha, isEarlyText, packDbVersion, isInstalled])
+  }, [book, chapter, translation, isApocrypha, isEarlyText, packDbVersion, isInstalled, installedReady])
 
   useEffect(() => {
     recordHistory(userDb, book, chapter)

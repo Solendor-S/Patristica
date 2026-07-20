@@ -15,6 +15,8 @@ interface PackContextValue {
   installed: Set<string>
   downloading: Map<string, number>
   updatesAvailable: Set<string>
+  /** True once the installed-pack set is known (local DB + disk scan, no network). */
+  installedReady: boolean
   manifestReady: boolean
   download: (slug: string) => Promise<void>
   uninstall: (slug: string) => void
@@ -37,6 +39,7 @@ export function PackProvider({ children }: { children: React.ReactNode }) {
   const [installed, setInstalled] = useState<Set<string>>(new Set())
   const [downloading, setDownloading] = useState<Map<string, number>>(new Map())
   const [updatesAvailable, setUpdatesAvailable] = useState<Set<string>>(new Set())
+  const [installedReady, setInstalledReady] = useState(false)
   const [manifestReady, setManifestReady] = useState(false)
 
   // On mount: load installed packs from DB, then refresh manifest and check for updates
@@ -47,7 +50,9 @@ export function PackProvider({ children }: { children: React.ReactNode }) {
       const installedVersions = await loadInstalledVersionsFromDb(userDb)
       const fromDisk = new Set(getAllPacks().map(p => p.slug).filter(isPackDownloaded))
       const merged = new Set([...installedVersions.keys(), ...fromDisk])
-      if (!cancelled) setInstalled(merged)
+      // Publish install state before the (network) manifest refresh — readers gate on this,
+      // so it must not wait on the network.
+      if (!cancelled) { setInstalled(merged); setInstalledReady(true) }
 
       // Refresh manifest from GitHub (updates download URLs + versions)
       await refreshManifest(userDb)
@@ -63,7 +68,8 @@ export function PackProvider({ children }: { children: React.ReactNode }) {
         setManifestReady(true)
       }
     }
-    init().catch(() => { if (!cancelled) setManifestReady(true) })
+    // On failure still release the gates, so readers fall back rather than hang loading.
+    init().catch(() => { if (!cancelled) { setInstalledReady(true); setManifestReady(true) } })
     return () => { cancelled = true }
   }, [userDb])
 
@@ -108,7 +114,7 @@ export function PackProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <PackContext.Provider value={{
-      installed, downloading, updatesAvailable, manifestReady,
+      installed, downloading, updatesAvailable, installedReady, manifestReady,
       download, uninstall,
       isInstalled, isDownloading, hasUpdate,
       getPackDb, fetchOnline,
