@@ -747,13 +747,23 @@ export async function getCommentary(
   db: SQLiteDatabase,
   book: string,
   chapter: number,
-  verse: number
+  verse: number,
+  includeLegacy = false
 ): Promise<CommentaryEntry[]> {
-  return db.getAllAsync<CommentaryEntry>(
-    `SELECT id, father_name, father_era, excerpt, full_text, source, source_url
+  const base = `SELECT id, father_name, father_era, excerpt, full_text, source, source_url
      FROM commentary
+     WHERE book = ? AND chapter = ? AND verse = ?`
+  if (!includeLegacy) {
+    return db.getAllAsync<CommentaryEntry>(base, [book, chapter, verse])
+  }
+  // legacy ids offset so FlatList keys never collide with hand-picked rows
+  return db.getAllAsync<CommentaryEntry>(
+    `${base}
+     UNION ALL
+     SELECT id + 1000000 AS id, father_name, father_era, excerpt, full_text, source, source_url
+     FROM commentary_legacy
      WHERE book = ? AND chapter = ? AND verse = ?`,
-    [book, chapter, verse]
+    [book, chapter, verse, book, chapter, verse]
   )
 }
 

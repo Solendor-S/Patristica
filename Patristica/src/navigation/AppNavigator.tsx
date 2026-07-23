@@ -7,6 +7,7 @@ import { StyleSheet, View, useWindowDimensions } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import BibleNavigator from './BibleNavigator'
+import { navigationRef } from './navigationRef'
 import SearchScreen from '../screens/SearchScreen'
 import StudyScreen from '../screens/StudyScreen'
 import LibraryScreen from '../screens/LibraryScreen'
@@ -78,7 +79,7 @@ export default function AppNavigator() {
   if (showSplit) sidebarEverMounted.current = true
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <View style={{ flex: 1, flexDirection: 'row' }}>
         <View style={{ flex: showSplit ? 0.55 : 1 }}>
           <TabNavigator hideStudyTab={showSplit} />

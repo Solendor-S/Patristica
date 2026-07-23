@@ -23,6 +23,7 @@ import {
 } from '../db/queries'
 import type { ConcordanceResult, StrongsEntry, StrongsConcordanceResult, EarlyTextRef, OtQuoteSpan } from '../db/queries'
 import { getStrongsConcordance, getPsalmHeading } from '../db/queries'
+import { maybeRequestReview } from '../lib/review'
 import { StrongsConcordanceModal, TranslationVariantsModal } from './WordStudyPanel'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
 import { useTranslation, TRANSLATIONS, GREEK_TRANSLATIONS, OT_ORIGINAL_TRANSLATIONS, OT_ONLY_TRANSLATIONS, OT_TRANSLATIONS, ANNOTATED_TRANSLATIONS } from '../context/TranslationContext'
@@ -1782,6 +1783,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
   useEffect(() => {
     recordHistory(userDb, book, chapter)
+      .then(() => maybeRequestReview(userDb))
+      .catch(() => {})
   }, [book, chapter])
 
   // Psalm heading only depends on book+chapter, not translation or pack state

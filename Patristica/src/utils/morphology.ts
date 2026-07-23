@@ -309,10 +309,10 @@ export const HEBREW_TAG_EXAMPLES: Record<string, string> = {
 export const TAG_DEFINITIONS: Record<string, string> = {
   // Greek tense
   'Present':    'Action occurring now, typically ongoing or repeated.',
-  'Imperfect':  'Past action that was ongoing, repeated, or left incomplete.',
+  'Imperfect':  'Greek: past action that was ongoing or incomplete. Hebrew (yiqtol): incomplete action, typically future or continuous.',
   'Future':     'Action that will occur in the future.',
   'Aorist':     'A simple past action viewed as a single whole, without regard to duration.',
-  'Perfect':    'A past action whose results persist into the present.',
+  'Perfect':    'Greek: a past action whose results persist into the present. Hebrew (qatal): completed action, typically past.',
   'Pluperfect': 'A past action whose results were complete before another past event.',
   // Voice
   'Active':          'The subject performs the action.',
@@ -355,14 +355,12 @@ export const TAG_DEFINITIONS: Record<string, string> = {
   'Piel':      'Intensive active stem — often causative or factitive.',
   'Pual':      'Intensive passive stem.',
   'Hiphil':    'Causative active stem — "to cause to do".',
-  'Hophal':    'Causative passive stem — "to be caused to do".',
+  'Hophal':    'Causative passive stem — "to be caused to do" (Hebrew and Aramaic).',
   'Hithpael':  'Reflexive or reciprocal intensive stem.',
   'Nithpael':  'Rare reflexive-passive stem blending Niphal and Hithpael traits.',
   'Poel':      'Piel-like intensive stem formed with a long first vowel — common with hollow roots.',
   'Hithpoel':  'Reflexive of the Poel stem.',
-  // Hebrew verbal forms
-  'Perfect':              'Completed action (qatal) — typically past.',
-  'Imperfect':            'Incomplete action (yiqtol) — typically future or continuous.',
+  // Hebrew verbal forms ('Perfect'/'Imperfect' are defined once above, covering both languages)
   'Active Participle':    'Ongoing action used as an adjective or noun.',
   'Passive Participle':   'A completed state used as an adjective or noun.',
   'Infinitive Construct': 'Verbal noun used with prepositions and complements.',
@@ -381,7 +379,6 @@ export const TAG_DEFINITIONS: Record<string, string> = {
   'Ithpeel':   'Reflexive or passive of the Peal stem.',
   'Aphel':     'Causative active Aramaic stem (like Hebrew Hiphil).',
   'Haphel':    'Causative active Aramaic stem — "to cause to do".',
-  'Hophal':    'Causative passive Aramaic stem — "to be caused to do".',
   'Shaphel':   'Causative Aramaic stem formed with a š-prefix.',
   'Saphel':    'Causative Aramaic stem formed with an s-prefix.',
   'Hishtaphel':'Reflexive of the causative Shaphel stem.',

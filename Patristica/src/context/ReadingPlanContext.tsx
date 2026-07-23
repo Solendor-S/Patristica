@@ -16,7 +16,6 @@ async function pushWidgetUpdate(db: SQLiteDatabase, plan: PlanWithProgress | nul
     requestWidgetUpdate({
       widgetName: 'StudyWidget',
       renderWidget: () => React.createElement(StudyWidget, { plan, todayEntries, streak }),
-      onNotFound: () => {},
     })
   } catch { /* no widget pinned or library unavailable */ }
 }

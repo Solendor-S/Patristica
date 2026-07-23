@@ -28,7 +28,9 @@ import { useSpaceSaver } from '../context/SpaceSaverContext'
 import { useOtQuoteCaps } from '../context/OtQuoteCapsContext'
 import { useSearchOrder } from '../context/SearchOrderContext'
 import { useCrossRefOrder } from '../context/CrossRefOrderContext'
+import { useNotifications } from '../context/NotificationContext'
 import type { SearchMode } from '../context/SearchOrderContext'
+import DateTimePicker from '@react-native-community/datetimepicker'
 
 // ── Shared components ─────────────────────────────────────
 
@@ -177,6 +179,90 @@ function PickerRow({
         </View>
       )}
     </>
+  )
+}
+
+// ── Reminders section ─────────────────────────────────────
+
+const NOTIF_STYLE_OPTIONS: PickerOption[] = [
+  { key: 'verse',    label: 'Verse of the day', description: 'A different verse each morning' },
+  { key: 'continue', label: 'Continue reading',  description: 'Nudge to pick up where you left off' },
+]
+
+function formatTime(hour: number, minute: number): string {
+  const ampm = hour < 12 ? 'AM' : 'PM'
+  const h12 = hour % 12 === 0 ? 12 : hour % 12
+  return `${h12}:${String(minute).padStart(2, '0')} ${ampm}`
+}
+
+function RemindersSection() {
+  const { colors } = useTheme()
+  const s = useMemo(() => makeStyles(colors), [colors])
+  const { enabled, style, hour, minute, setEnabled, setStyle, setTime } = useNotifications()
+  const [styleExpanded, setStyleExpanded] = useState(false)
+  const [showPicker, setShowPicker] = useState(false)
+
+  const pickerDate = useMemo(() => {
+    const d = new Date(); d.setHours(hour, minute, 0, 0); return d
+  }, [hour, minute])
+
+  return (
+    <View style={s.section}>
+      <Text style={s.sectionTitle}>Reminders</Text>
+      <View style={s.card}>
+        <SwitchRow
+          icon="notifications-outline"
+          label="Daily reading reminder"
+          description="A gentle daily notification to keep your study a habit"
+          value={enabled}
+          onToggle={() => { setEnabled(!enabled).catch(() => {}) }}
+          colors={colors}
+          s={s}
+        />
+
+        {enabled && (
+          <>
+            <View style={s.separator} />
+            <PickerRow
+              icon="chatbox-ellipses-outline"
+              rowLabel="Reminder type"
+              valueLabel={NOTIF_STYLE_OPTIONS.find(o => o.key === style)!.label}
+              expanded={styleExpanded}
+              onToggle={() => setStyleExpanded(v => !v)}
+              options={NOTIF_STYLE_OPTIONS}
+              selectedKey={style}
+              onSelect={key => { setStyle(key as 'verse' | 'continue'); setStyleExpanded(false) }}
+              s={s}
+              colors={colors}
+            />
+
+            <View style={s.separator} />
+            <TouchableOpacity style={s.row} activeOpacity={0.6} onPress={() => setShowPicker(true)}>
+              <View style={s.iconWrap}>
+                <Ionicons name="time-outline" size={18} color={colors.accent} />
+              </View>
+              <Text style={s.rowLabel}>Reminder time</Text>
+              <View style={s.navRight}>
+                <Text style={s.navValue}>{formatTime(hour, minute)}</Text>
+                <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
+              </View>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
+
+      {showPicker && (
+        <DateTimePicker
+          value={pickerDate}
+          mode="time"
+          is24Hour={false}
+          onChange={(event, date) => {
+            setShowPicker(false)
+            if (event.type === 'set' && date) setTime(date.getHours(), date.getMinutes())
+          }}
+        />
+      )}
+    </View>
   )
 }
 
@@ -676,6 +762,7 @@ export default function SettingsScreen() {
 
       <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
         <AppearanceSection />
+        <RemindersSection />
         <ReadingSection />
         <SearchSection />
         <DataSection />

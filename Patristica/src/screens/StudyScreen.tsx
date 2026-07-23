@@ -59,7 +59,51 @@ const FATHER_BASE_LIST = (() => {
 
 // ── Entry card ────────────────────────────────────────────
 
-function EntryCard({ entry, book, verseRef }: { entry: CommentaryEntry; book: string; verseRef?: string }) {
+// Citation display text inside commentary paragraphs sometimes names the book
+// differently from our canonical name
+const REF_BOOK_VARIANTS: Record<string, string[]> = {
+  'Psalms': ['Psalms', 'Psalm'],
+  'Wisdom of Solomon': ['Wisdom of Solomon', 'Wisdom'],
+  'Song of Solomon': ['Song of Solomon', 'Song of Songs', 'Songs'],
+}
+
+function refCoversVerse(versePart: string, verse?: number): boolean {
+  if (!verse) return true // chapter-level entry — any verse of the chapter counts
+  return versePart.split(',').some(part => {
+    const m = part.trim().match(/^(\d+)(?:-(\d+))?$/)
+    if (!m) return false
+    const a = parseInt(m[1], 10)
+    const b = m[2] ? parseInt(m[2], 10) : a
+    return verse >= a && verse <= b
+  })
+}
+
+/** Split text into nodes, underlining scripture refs that match the current verse. */
+function highlightVerseRefs(
+  text: string, book: string, chapter: number | undefined,
+  verse: number | undefined, style: object,
+): React.ReactNode {
+  const names = REF_BOOK_VARIANTS[book] ?? [book]
+  const escaped = names.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')
+  const re = new RegExp(`(?:${escaped})\\s+(\\d+):(\\d+(?:-\\d+)?(?:,\\s*\\d+(?:-\\d+)?)*)`, 'g')
+  const parts: React.ReactNode[] = []
+  let last = 0
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text))) {
+    if ((!chapter || parseInt(m[1], 10) === chapter) && refCoversVerse(m[2], verse)) {
+      parts.push(text.slice(last, m.index))
+      parts.push(<Text key={m.index} style={style}>{m[0]}</Text>)
+      last = m.index + m[0].length
+    }
+  }
+  if (!parts.length) return text
+  parts.push(text.slice(last))
+  return parts
+}
+
+function EntryCard({ entry, book, chapter, verse, verseRef }: {
+  entry: CommentaryEntry; book: string; chapter?: number; verse?: number; verseRef?: string
+}) {
   const { colors } = useTheme()
   const styles = useMemo(() => makeStyles(colors), [colors])
   const navigation = useNavigation<NavProp>()
@@ -72,6 +116,10 @@ function EntryCard({ entry, book, verseRef }: { entry: CommentaryEntry; book: st
 
   const hasMore = entry.full_text.length > entry.excerpt.length
   const body = expanded ? entry.full_text : entry.excerpt
+  const displayBody = useMemo(
+    () => expanded ? highlightVerseRefs(body, book, chapter, verse, styles.refHighlight) : body,
+    [expanded, body, book, chapter, verse, styles.refHighlight],
+  )
   const info = useMemo(() => getFatherInfo(entry.father_name), [entry.father_name])
   const dateLabel = info?.dates ?? entry.father_era
 
@@ -130,7 +178,7 @@ function EntryCard({ entry, book, verseRef }: { entry: CommentaryEntry; book: st
       </View>
 
       {!!verseRef && <Text style={styles.browseVerseRef}>{verseRef}</Text>}
-      <Text style={styles.cardText}>{body}</Text>
+      <Text style={styles.cardText}>{displayBody}</Text>
 
       {!!entry.source && <Text style={styles.source}>{entry.source}</Text>}
 
@@ -485,6 +533,8 @@ export default function StudyScreen() {
   const [crossRefPanel, setCrossRefPanel] = useState<'bible' | 'early'>('bible')
   const [histMode, setHistMode] = useState<HistMode>('verse')
   const [fatherMode, setFatherMode] = useState<FatherMode>('verse')
+  // 'handpicked' = New Advent in-text citations; 'all' = hand-picked + legacy HCF/e-Catena
+  const [verseSource, setVerseSource] = useState<'handpicked' | 'all'>('handpicked')
   const [browseFather, setBrowseFather] = useState<string | null>(null)
   const [browseEntries, setBrowseEntries] = useState<CommentaryEntryWithRef[]>([])
   const [loadingBrowse, setLoadingBrowse] = useState(false)
@@ -573,7 +623,7 @@ export default function StudyScreen() {
     }
 
     setLoadingFathers(true)
-    getCommentary(db, selected.book, selected.chapter, selected.verse)
+    getCommentary(db, selected.book, selected.chapter, selected.verse, verseSource === 'all')
       .then(rows => {
         const sorted = [...rows].sort((a, b) => {
           const aSort = getFatherInfo(a.father_name)?.sort ?? 9999
@@ -608,7 +658,7 @@ export default function StudyScreen() {
       })
       .catch(() => setLoadingRefs(false))
 
-  }, [selected?.book, selected?.chapter, selected?.verse])
+  }, [selected?.book, selected?.chapter, selected?.verse, verseSource])
 
   const verseRef = selected
     ? `${selected.book} ${selected.chapter}:${selected.verse}`
@@ -651,6 +701,24 @@ export default function StudyScreen() {
         )
       })}
     </ScrollView>
+  )
+
+  // Hand-picked (New Advent in-text citations, default) vs All (+ legacy HCF/e-Catena)
+  const renderSourceChips = () => (
+    <View style={[styles.chipRowContent, { flexDirection: 'row' }]}>
+      {([['handpicked', 'Hand-picked'], ['all', 'All']] as const).map(([key, label]) => (
+        <TouchableOpacity
+          key={key}
+          style={[styles.traditionChip, verseSource === key && styles.traditionChipActive]}
+          onPress={() => setVerseSource(key)}
+          activeOpacity={0.7}
+        >
+          <Text style={[styles.traditionChipText, verseSource === key && styles.traditionChipTextActive]}>
+            {label}
+          </Text>
+        </TouchableOpacity>
+      ))}
+    </View>
   )
 
   const renderInfluenceNetwork = () => {
@@ -864,6 +932,8 @@ export default function StudyScreen() {
                       <EntryCard
                         entry={item}
                         book={item.book}
+                        chapter={item.chapter}
+                        verse={item.verse}
                         verseRef={`${item.book} ${item.chapter}:${item.verse}`}
                       />
                     )}
@@ -987,6 +1057,8 @@ export default function StudyScreen() {
                       <EntryCard
                         entry={item}
                         book={item.book}
+                        chapter={item.chapter}
+                        verse={item.verse}
                         verseRef={`${item.book} ${item.chapter}:${item.verse}`}
                       />
                     )}
@@ -1014,14 +1086,26 @@ export default function StudyScreen() {
                   <Text style={styles.emptyText}>Tap a verse in the Bible tab to see Church Fathers commentary</Text>
                 </View>
               ) : entries.length === 0 ? (
-                <View style={styles.center}>
-                  <Ionicons name="chatbubble-ellipses-outline" size={52} color={colors.border} />
-                  <Text style={styles.emptyTitle}>No commentary found</Text>
-                  <Text style={styles.emptyText}>No patristic commentary recorded for {verseRef}</Text>
-                </View>
+                <>
+                  {renderSourceChips()}
+                  <View style={styles.center}>
+                    <Ionicons name="chatbubble-ellipses-outline" size={52} color={colors.border} />
+                    <Text style={styles.emptyTitle}>No commentary found</Text>
+                    <Text style={styles.emptyText}>
+                      No {verseSource === 'handpicked' ? 'hand-picked' : 'patristic'} commentary recorded for {verseRef}
+                      {verseSource === 'handpicked' ? ' — try "All"' : ''}
+                    </Text>
+                  </View>
+                </>
               ) : (() => {
                 const verseHeader = (
                   <>
+                    {renderSourceChips()}
+                    {verseSource === 'all' && (
+                      <Text style={styles.sourceNote}>
+                        “All” combines both collections — some fathers may appear twice for the same verse.
+                      </Text>
+                    )}
                     {renderConsensusBar()}
                     {renderCommentarySearchBar('Search all commentaries…')}
                     {renderTraditionChips()}
@@ -1042,7 +1126,10 @@ export default function StudyScreen() {
                     keyExtractor={e => e.id.toString()}
                     ListHeaderComponent={verseHeader}
                     contentContainerStyle={styles.list}
-                    renderItem={({ item }) => <EntryCard entry={item} book={selected.book} />}
+                    renderItem={({ item }) => (
+                      <EntryCard entry={item} book={selected.book}
+                        chapter={selected.chapter} verse={selected.verse} />
+                    )}
                   />
                 )
               })()}
@@ -1355,6 +1442,8 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   readFullLabel: { fontSize: 11, fontWeight: '600', color: c.accent },
 
   cardText: { fontSize: 15, lineHeight: 24, color: c.textPrimary },
+  refHighlight: { textDecorationLine: 'underline', color: c.accent, fontWeight: '600' },
+  sourceNote: { fontSize: 11, color: c.textMuted, paddingHorizontal: 12, paddingBottom: 4, fontStyle: 'italic' },
   source:   { fontSize: 12, color: c.textMuted, marginTop: 8, fontStyle: 'italic' },
 
   expandBtn: {

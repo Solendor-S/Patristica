@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar'
+import * as Notifications from 'expo-notifications'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { StyleSheet, View, ActivityIndicator } from 'react-native'
@@ -31,12 +32,34 @@ import { ParallelTranslationProvider } from './src/context/ParallelTranslationCo
 import { SpaceSaverProvider } from './src/context/SpaceSaverContext'
 import { SearchOrderProvider } from './src/context/SearchOrderContext'
 import { CrossRefOrderProvider } from './src/context/CrossRefOrderContext'
+import { NotificationProvider } from './src/context/NotificationContext'
+import { openPassage } from './src/navigation/navigationRef'
 import TutorialModal from './src/components/TutorialModal'
 import { Colors } from './src/theme/colors'
+
+// A notification tap opens the reader at the passage carried in its data.
+function useNotificationTap() {
+  useEffect(() => {
+    function open(data: unknown) {
+      const d = data as { book?: string; chapter?: number; verse?: number } | undefined
+      if (d?.book && typeof d.chapter === 'number') openPassage(d.book, d.chapter, d.verse)
+    }
+    // App already running / backgrounded:
+    const sub = Notifications.addNotificationResponseReceivedListener(r =>
+      open(r.notification.request.content.data)
+    )
+    // Cold start from a notification tap:
+    Notifications.getLastNotificationResponseAsync()
+      .then(r => { if (r) open(r.notification.request.content.data) })
+      .catch(() => {})
+    return () => sub.remove()
+  }, [])
+}
 
 function AppShell() {
   const { colors } = useTheme()
   const { showTutorial, onTourComplete, onTourDecline } = useOnboarding()
+  useNotificationTap()
   return (
     <View style={{ flex: 1, backgroundColor: colors.bgPrimary }}>
       <StatusBar
@@ -89,11 +112,13 @@ export default function App() {
           <CrossRefOrderProvider>
           <SpaceSaverProvider>
           <ReadingPlanProvider>
+          <NotificationProvider>
           <OnboardingProvider>
             <DatabaseProvider>
               <AppShell />
             </DatabaseProvider>
           </OnboardingProvider>
+          </NotificationProvider>
           </ReadingPlanProvider>
           </SpaceSaverProvider>
           </CrossRefOrderProvider>

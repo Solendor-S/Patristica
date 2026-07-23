@@ -307,7 +307,8 @@ function buildSearchUrl(quoteText: string, authorUrl: string | undefined): strin
 
 /**
  * Returns the best "Read full text" URL for a commentary entry.
- * Priority: quote-text Google site search → book-specific work → author fallback → existing URL
+ * Priority: verified deep link on the entry → quote-text Google site search
+ *           → book-specific work → author fallback
  */
 export function getSourceUrl(
   fatherName: string,
@@ -318,18 +319,19 @@ export function getSourceUrl(
   const name = fatherName.split(',')[0].trim()
   const authorUrl = AUTHOR_MAP[fatherName] ?? AUTHOR_MAP[name]
 
+  // A stored deep link to the actual source page beats everything else
+  if (
+    existingUrl &&
+    (existingUrl.includes('newadvent.org/fathers') || existingUrl.includes('ccel.org')) &&
+    !existingUrl.includes('newadvent.org/cathen')
+  ) return existingUrl
+
   if (quoteText?.trim()) return buildSearchUrl(quoteText, authorUrl)
 
   const byFather = WORK_MAP[fatherName] ?? WORK_MAP[name]
   if (byFather?.[book]) return byFather[book]
 
   if (authorUrl) return authorUrl
-
-  if (
-    existingUrl &&
-    (existingUrl.includes('newadvent.org/fathers') || existingUrl.includes('ccel.org')) &&
-    !existingUrl.includes('newadvent.org/cathen')
-  ) return existingUrl
 
   return null
 }

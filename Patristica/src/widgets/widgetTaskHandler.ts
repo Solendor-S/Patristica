@@ -14,9 +14,9 @@ import { StudyWidget } from './StudyWidget'
 //   - WIDGET_CLICK OPEN_READING: deep link handled by the widget framework automatically.
 
 export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
-  const { taskType, clickAction } = props
+  const { widgetAction } = props
 
-  if (taskType === 'WIDGET_CLICK') {
+  if (widgetAction === 'WIDGET_CLICK') {
     // OPEN_READING and MARK_DONE/MARK_UNDONE use clickAction deep links.
     // The widget framework launches the app automatically for clickAction links.
     // Nothing to do here — the app handles state changes and will call

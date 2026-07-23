@@ -6,7 +6,7 @@ import { File, Directory, Paths } from 'expo-file-system'
 import { Colors } from '../theme/colors'
 
 // Bump this number whenever the bundled bible.db gains new tables/data
-const DB_SCHEMA_VERSION = 68
+const DB_SCHEMA_VERSION = 69
 
 async function checkAndResetIfNeeded(): Promise<void> {
   const versionFile = new File(Paths.document, 'db_schema_version.txt')
