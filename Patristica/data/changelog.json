@@ -5,25 +5,25 @@
       "id": "1.0.8",
       "version": "1.0.8",
       "date": "2026-08-01",
-      "title": "Commentary everywhere, and ESV",
+      "title": "Commentary everywhere",
       "changes": [
         "Church Fathers commentary expanded to 60,376 entries from 55 fathers, drawn from their own scripture citations.",
         "Commentary now loads without any download, and can be saved offline as a pack from Library → Downloads.",
         "The app itself is much smaller: the bundled database dropped from 307 MB to 165 MB.",
-        "Hand-picked and Legacy commentary are now separate collections you switch between.",
-        "ESV translation support — bring your own free Crossway API key from Settings."
+        "Hand-picked and Legacy commentary are now separate collections you switch between."
       ]
     },
     {
       "id": "1.0.7",
       "version": "1.0.7",
       "date": "2026-07-23",
-      "title": "Patristic commentary rebuilt",
+      "title": "Patristic commentary rebuilt, and ESV",
       "changes": [
         "Verse-by-verse commentary rebuilt from the fathers' own citations, replacing the previous dataset.",
         "Daily reading notifications.",
         "Morphology parsing and display fixes, including Berean Standard Bible Psalms.",
-        "Fixed verses failing to load on a cold start."
+        "Fixed verses failing to load on a cold start.",
+        "ESV translation support — bring your own free Crossway API key from Settings."
       ]
     },
     {
