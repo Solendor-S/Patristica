@@ -9,7 +9,8 @@ import { useNavigation } from '@react-navigation/native'
 import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
 import { useWordFocus } from '../context/WordFocusContext'
-import { getCommentary, getCrossRefs, getJosephusForVerse, getVariantsForVerse, getVerseText, getMaxVerse, getAllCommentaryByFather, getBibleVerseCitedByEarlyTexts, getEarlyTextRefs, searchCommentary } from '../db/queries'
+import { useCommentary } from '../context/PackContext'
+import { getCrossRefs, getJosephusForVerse, getVariantsForVerse, getVerseText, getMaxVerse, getAllCommentaryByFather, getBibleVerseCitedByEarlyTexts, getEarlyTextRefs, searchCommentary } from '../db/queries'
 import type { JosephusEntry, CommentaryEntryWithRef, EarlyTextCitation, EarlyTextRef } from '../db/queries'
 import type { TextualVariant } from '../types'
 import { getFatherInfo, FATHER_DATES } from '../data/fatherDates'
@@ -513,6 +514,9 @@ export default function StudyScreen() {
   const styles = useMemo(() => makeStyles(colors), [colors])
   const hist   = useMemo(() => makeHist(colors), [colors])
   const db = useSQLiteContext()
+  // commentary lives in packs when installed, otherwise it streams from the
+  // online JSON — same pack-or-online arrangement as translations
+  const commentaryLoader = useCommentary()
   const { selected, setSelected } = useSelectedVerse()
   const navigation = useNavigation<NavProp>()
 
@@ -533,8 +537,9 @@ export default function StudyScreen() {
   const [crossRefPanel, setCrossRefPanel] = useState<'bible' | 'early'>('bible')
   const [histMode, setHistMode] = useState<HistMode>('verse')
   const [fatherMode, setFatherMode] = useState<FatherMode>('verse')
-  // 'handpicked' = New Advent in-text citations; 'all' = hand-picked + legacy HCF/e-Catena
-  const [verseSource, setVerseSource] = useState<'handpicked' | 'all'>('handpicked')
+  // The two corpora are separate packs and mutually exclusive in the UI:
+  // 'fathers' = hand-picked New Advent citations, 'legacy' = the HCF/e-Catena archive
+  const [verseSource, setVerseSource] = useState<'fathers' | 'legacy'>('fathers')
   const [browseFather, setBrowseFather] = useState<string | null>(null)
   const [browseEntries, setBrowseEntries] = useState<CommentaryEntryWithRef[]>([])
   const [loadingBrowse, setLoadingBrowse] = useState(false)
@@ -551,12 +556,12 @@ export default function StudyScreen() {
     if (commentaryInput.length < 2) { setCommentaryResults([]); setCommentarySearching(false); return }
     commentaryTimer.current = setTimeout(() => {
       setCommentarySearching(true)
-      searchCommentary(db, commentaryInput)
+      searchCommentary(commentaryLoader.fathers, commentaryInput)
         .then(rows => { setCommentaryResults(rows); setCommentarySearching(false) })
         .catch(() => setCommentarySearching(false))
     }, 700)
     return () => clearTimeout(commentaryTimer.current)
-  }, [commentaryInput, db])
+  }, [commentaryInput, commentaryLoader.fathers])
 
   const filteredEntries = useMemo(
     () => activeTradition ? entries.filter(e => getFatherInfo(e.father_name)?.tradition === activeTradition) : entries,
@@ -588,12 +593,14 @@ export default function StudyScreen() {
     setBrowseFather(name)
     setFatherMode('browse')
     setLoadingBrowse(true)
-    getAllCommentaryByFather(db, name)
+    getAllCommentaryByFather(commentaryLoader.fathers, name)
       .then(rows => { setBrowseEntries(rows); setLoadingBrowse(false) })
       .catch(() => setLoadingBrowse(false))
-  }, [db])
+  }, [commentaryLoader.fathers])
 
   const [loadingFathers, setLoadingFathers] = useState(false)
+  // true when commentary had to come from the network and the network didn't answer
+  const [commentaryOffline, setCommentaryOffline] = useState(false)
   const [loadingRefs, setLoadingRefs] = useState(false)
   const [verseText, setVerseText] = useState<string | null>(null)
   const [maxVerse, setMaxVerse] = useState(1)
@@ -616,24 +623,29 @@ export default function StudyScreen() {
     setSelected({ book: selected.book, chapter: selected.chapter, verse: next })
   }, [selected, maxVerse, setSelected])
 
+  // Commentary loads on its own — its source (pack handle vs online) resolves
+  // asynchronously, and that must not re-run the cross-ref/early-text queries below.
   useEffect(() => {
-    if (!selected) {
-      setEntries([]); setCrossRefs([]); setEarlyCitations([]); setEarlyTextRefs([])
-      return
-    }
-
+    if (!selected) { setEntries([]); return }
+    let cancelled = false
     setLoadingFathers(true)
-    getCommentary(db, selected.book, selected.chapter, selected.verse, verseSource === 'all')
-      .then(rows => {
-        const sorted = [...rows].sort((a, b) => {
-          const aSort = getFatherInfo(a.father_name)?.sort ?? 9999
-          const bSort = getFatherInfo(b.father_name)?.sort ?? 9999
-          return aSort - bSort
-        })
-        setEntries(sorted)
+    commentaryLoader.load(selected.book, selected.chapter, selected.verse, verseSource)
+      .then(({ entries: rows, offline }) => {
+        if (cancelled) return
+        setCommentaryOffline(offline)
+        setEntries([...rows].sort((a, b) =>
+          (getFatherInfo(a.father_name)?.sort ?? 9999) - (getFatherInfo(b.father_name)?.sort ?? 9999)))
         setLoadingFathers(false)
       })
-      .catch(() => setLoadingFathers(false))
+      .catch(() => { if (!cancelled) setLoadingFathers(false) })
+    return () => { cancelled = true }
+  }, [selected?.book, selected?.chapter, selected?.verse, verseSource, commentaryLoader.load])
+
+  useEffect(() => {
+    if (!selected) {
+      setCrossRefs([]); setEarlyCitations([]); setEarlyTextRefs([])
+      return
+    }
 
     const isEarlyBook = !!EARLY_TEXT_MAP[selected.book]
     setLoadingRefs(true)
@@ -658,7 +670,7 @@ export default function StudyScreen() {
       })
       .catch(() => setLoadingRefs(false))
 
-  }, [selected?.book, selected?.chapter, selected?.verse, verseSource])
+  }, [selected?.book, selected?.chapter, selected?.verse])
 
   const verseRef = selected
     ? `${selected.book} ${selected.chapter}:${selected.verse}`
@@ -703,10 +715,10 @@ export default function StudyScreen() {
     </ScrollView>
   )
 
-  // Hand-picked (New Advent in-text citations, default) vs All (+ legacy HCF/e-Catena)
+  // Exclusive: Hand-picked (New Advent citations, default) OR Legacy (HCF/e-Catena)
   const renderSourceChips = () => (
     <View style={[styles.chipRowContent, { flexDirection: 'row' }]}>
-      {([['handpicked', 'Hand-picked'], ['all', 'All']] as const).map(([key, label]) => (
+      {([['fathers', 'Hand-picked'], ['legacy', 'Legacy']] as const).map(([key, label]) => (
         <TouchableOpacity
           key={key}
           style={[styles.traditionChip, verseSource === key && styles.traditionChipActive]}
@@ -919,12 +931,28 @@ export default function StudyScreen() {
                     ListEmptyComponent={
                       <View style={styles.center}>
                         <Ionicons name="search-outline" size={52} color={colors.border} />
-                        <Text style={styles.emptyTitle}>No results</Text>
-                        <Text style={styles.emptyText}>
-                          {activeTradition
-                            ? `No ${activeTradition} commentary matches "${commentaryInput}"`
-                            : `No commentary matches "${commentaryInput}"`}
-                        </Text>
+                        {/* Searching spans the whole corpus, so unlike per-verse
+                            commentary it cannot be served by the per-chapter online
+                            JSON — it needs the pack. Say so rather than "no results". */}
+                        {!commentaryLoader.hasFathers ? (
+                          <>
+                            <Text style={styles.emptyTitle}>Search needs the pack</Text>
+                            <Text style={styles.emptyText}>
+                              Searching across all commentary requires the Church Fathers
+                              Commentary pack (Library → Downloads). Reading commentary
+                              verse by verse works without it.
+                            </Text>
+                          </>
+                        ) : (
+                          <>
+                            <Text style={styles.emptyTitle}>No results</Text>
+                            <Text style={styles.emptyText}>
+                              {activeTradition
+                                ? `No ${activeTradition} commentary matches "${commentaryInput}"`
+                                : `No commentary matches "${commentaryInput}"`}
+                            </Text>
+                          </>
+                        )}
                       </View>
                     }
                     contentContainerStyle={styles.list}
@@ -1046,7 +1074,13 @@ export default function StudyScreen() {
                   <View style={styles.center}><ActivityIndicator color={colors.accent} /></View>
                 ) : browseEntries.length === 0 ? (
                   <View style={styles.center}>
-                    <Text style={styles.emptyText}>No commentary entries found for {browseFather}</Text>
+                    <Text style={styles.emptyText}>
+                      {commentaryLoader.hasFathers
+                        ? `No commentary entries found for ${browseFather}`
+                        : `Browsing the whole corpus of a father requires the Church `
+                          + `Fathers Commentary pack (Library → Downloads). `
+                          + `Verse-by-verse commentary works without it.`}
+                    </Text>
                   </View>
                 ) : (
                   <FlatList
@@ -1090,20 +1124,37 @@ export default function StudyScreen() {
                   {renderSourceChips()}
                   <View style={styles.center}>
                     <Ionicons name="chatbubble-ellipses-outline" size={52} color={colors.border} />
-                    <Text style={styles.emptyTitle}>No commentary found</Text>
-                    <Text style={styles.emptyText}>
-                      No {verseSource === 'handpicked' ? 'hand-picked' : 'patristic'} commentary recorded for {verseRef}
-                      {verseSource === 'handpicked' ? ' — try "All"' : ''}
-                    </Text>
+                    {/* Commentary reads online unless a pack is installed, so an
+                        empty list means either "no connection" or genuinely none —
+                        never "you haven't downloaded it". */}
+                    {commentaryOffline ? (
+                      <>
+                        <Text style={styles.emptyTitle}>Commentary unavailable offline</Text>
+                        <Text style={styles.emptyText}>
+                          Reconnect to read commentary for {verseRef}, or install the
+                          commentary packs from Library → Downloads to use it offline.
+                        </Text>
+                      </>
+                    ) : (
+                      <>
+                        <Text style={styles.emptyTitle}>No commentary found</Text>
+                        <Text style={styles.emptyText}>
+                          No {verseSource === 'fathers' ? 'hand-picked' : 'legacy'} commentary
+                          recorded for {verseRef} — try
+                          {verseSource === 'fathers' ? ' “Legacy”' : ' “Hand-picked”'}
+                        </Text>
+                      </>
+                    )}
                   </View>
                 </>
               ) : (() => {
                 const verseHeader = (
                   <>
                     {renderSourceChips()}
-                    {verseSource === 'all' && (
+                    {verseSource === 'legacy' && (
                       <Text style={styles.sourceNote}>
-                        “All” combines both collections — some fathers may appear twice for the same verse.
+                        Legacy collection (HCF and e-Catena) — a wider historical range,
+                        less tightly matched to each verse than the hand-picked set.
                       </Text>
                     )}
                     {renderConsensusBar()}

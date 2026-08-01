@@ -6,7 +6,13 @@ import { File, Directory, Paths } from 'expo-file-system'
 import { Colors } from '../theme/colors'
 
 // Bump this number whenever the bundled bible.db gains new tables/data
-const DB_SCHEMA_VERSION = 69
+// 70: commentary + commentary_legacy moved out into downloadable packs
+//     ('commentary-fathers' / 'commentary-legacy'), shrinking the bundled DB
+//     from 306.7 MB to 164.9 MB. Queries read from the packs — see queries.ts.
+const DB_SCHEMA_VERSION = 70
+
+/** Set on upgrade across v70; consumed (and deleted) by CommentaryUpgradeModal. */
+export const COMMENTARY_UPGRADE_MARKER = 'commentary_pack_upgrade.txt'
 
 async function checkAndResetIfNeeded(): Promise<void> {
   const versionFile = new File(Paths.document, 'db_schema_version.txt')
@@ -19,6 +25,14 @@ async function checkAndResetIfNeeded(): Promise<void> {
   }
 
   if (currentVersion >= DB_SCHEMA_VERSION) return
+
+  // v70 moved commentary out of the bundled DB into packs. An existing install
+  // upgrading across that line silently loses the commentary it already had, so
+  // leave a marker for CommentaryUpgradeModal to explain it and offer the download.
+  // currentVersion > 0 means "real upgrade", not a fresh install (which never had it).
+  if (currentVersion > 0 && currentVersion < 70) {
+    try { new File(Paths.document, COMMENTARY_UPGRADE_MARKER).write('1') } catch {}
+  }
 
   // Delete version file FIRST so a failed asset copy doesn't strand us at the new version
   try { if (versionFile.exists) versionFile.delete() } catch {}

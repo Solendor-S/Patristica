@@ -17,6 +17,7 @@ import { searchCommentaryByKeywords } from '../db/queries'
 import type { CommentaryEntryWithRef } from '../db/queries'
 import { getFatherInfo } from '../data/fatherDates'
 import { useTheme } from '../context/ThemeContext'
+import { useCommentaryDbs } from '../context/PackContext'
 import type { ThemeColors } from '../theme/themes'
 
 
@@ -132,6 +133,7 @@ export default function DoctrinePanel() {
   const { colors } = useTheme()
   const styles = useMemo(() => makeStyles(colors), [colors])
   const db = useSQLiteContext()
+  const commentary = useCommentaryDbs()
   const navigation = useNavigation<BottomTabNavigationProp<RootTabParamList>>()
   const { setSelected: setSelectedVerse } = useSelectedVerse()
 
@@ -158,12 +160,12 @@ export default function DoctrinePanel() {
     setSelected(doctrine)
     setLoading(true)
     try {
-      const rows = await searchCommentaryByKeywords(db, doctrine.keywords)
+      const rows = await searchCommentaryByKeywords(commentary.fathers, doctrine.keywords)
       setResults(rows)
     } finally {
       setLoading(false)
     }
-  }, [db, selected?.id])
+  }, [commentary.fathers, selected?.id])
 
   // Sort by father sort year, then group by era
   const listItems = useMemo((): ListItem[] => {

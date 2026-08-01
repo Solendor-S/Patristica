@@ -743,28 +743,34 @@ export async function deleteSearchHistory(db: SQLiteDatabase, query?: string): P
 
 // ── Commentary ────────────────────────────────────────────
 
-export async function getCommentary(
+// Commentary lives in two downloadable packs, not the core DB:
+//   'commentary-fathers' — hand-picked New Advent data, exposes the `commentary` view
+//   'commentary-legacy'  — the HCF/e-Catena archive, table `commentary_legacy`
+// Packs open as separate connections (PackManager uses useNewConnection), so the
+// two sources cannot be UNIONed in SQL — callers pass whichever DBs are installed
+// and the merge happens here. A null DB simply contributes no rows.
+
+/** Which commentary corpus a lookup targets — each lives in its own pack. */
+export type CommentarySource = 'fathers' | 'legacy'
+
+/**
+ * One verse of commentary from an installed pack DB.
+ * Source selection and the online fallback live in PackContext's useCommentary();
+ * this is only the SQL half. The two corpora are shown one at a time and never
+ * merged, so their ids share a range without colliding in any list.
+ */
+export async function getCommentaryFromDb(
   db: SQLiteDatabase,
+  source: CommentarySource,
   book: string,
   chapter: number,
   verse: number,
-  includeLegacy = false
 ): Promise<CommentaryEntry[]> {
-  const base = `SELECT id, father_name, father_era, excerpt, full_text, source, source_url
-     FROM commentary
-     WHERE book = ? AND chapter = ? AND verse = ?`
-  if (!includeLegacy) {
-    return db.getAllAsync<CommentaryEntry>(base, [book, chapter, verse])
-  }
-  // legacy ids offset so FlatList keys never collide with hand-picked rows
-  return db.getAllAsync<CommentaryEntry>(
-    `${base}
-     UNION ALL
-     SELECT id + 1000000 AS id, father_name, father_era, excerpt, full_text, source, source_url
-     FROM commentary_legacy
-     WHERE book = ? AND chapter = ? AND verse = ?`,
-    [book, chapter, verse, book, chapter, verse]
-  )
+  const rest = 'father_name, father_era, excerpt, full_text, source, source_url'
+  const where = 'WHERE book = ? AND chapter = ? AND verse = ?'
+  const args = [book, chapter, verse]
+  const table = source === 'fathers' ? 'commentary' : 'commentary_legacy'
+  return db.getAllAsync<CommentaryEntry>(`SELECT id, ${rest} FROM ${table} ${where}`, args)
 }
 
 export interface CommentaryEntryWithRef {
@@ -781,10 +787,11 @@ export interface CommentaryEntryWithRef {
 }
 
 export async function getAllCommentaryByFather(
-  db: SQLiteDatabase,
+  fathersDb: SQLiteDatabase | null,
   fatherName: string
 ): Promise<CommentaryEntryWithRef[]> {
-  return db.getAllAsync<CommentaryEntryWithRef>(
+  if (!fathersDb) return []
+  return fathersDb.getAllAsync<CommentaryEntryWithRef>(
     `SELECT id, father_name, father_era, excerpt, full_text, source, source_url,
             book, chapter, verse
      FROM commentary
@@ -795,11 +802,12 @@ export async function getAllCommentaryByFather(
 }
 
 export async function searchCommentary(
-  db: SQLiteDatabase,
+  fathersDb: SQLiteDatabase | null,
   query: string
 ): Promise<CommentaryEntryWithRef[]> {
+  if (!fathersDb) return []
   const like = `%${query.toLowerCase()}%`
-  return db.getAllAsync<CommentaryEntryWithRef>(
+  return fathersDb.getAllAsync<CommentaryEntryWithRef>(
     `SELECT id, father_name, father_era, excerpt, full_text, source, source_url,
             book, chapter, verse
      FROM commentary
@@ -811,15 +819,15 @@ export async function searchCommentary(
 }
 
 export async function searchCommentaryByKeywords(
-  db: SQLiteDatabase,
+  fathersDb: SQLiteDatabase | null,
   keywords: string[],
   limit = 300,
 ): Promise<CommentaryEntryWithRef[]> {
-  if (keywords.length === 0) return []
+  if (!fathersDb || keywords.length === 0) return []
   // Build: (LOWER(full_text) LIKE ? OR LOWER(excerpt) LIKE ?) OR ...
   const clause = keywords.map(() => `(LOWER(full_text) LIKE ? OR LOWER(excerpt) LIKE ?)`).join(' OR ')
   const params = keywords.flatMap(k => [`%${k}%`, `%${k}%`])
-  return db.getAllAsync<CommentaryEntryWithRef>(
+  return fathersDb.getAllAsync<CommentaryEntryWithRef>(
     `SELECT id, father_name, father_era, excerpt, full_text, source, source_url,
             book, chapter, verse
      FROM commentary

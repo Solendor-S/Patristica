@@ -22,6 +22,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fathers_config import FATHERS, CITATIONS_JSON as IN_JSON, record_key  # noqa: E402
+from parse_newadvent import load_book_chapters  # noqa: E402  (books.ts canon, shared)
 
 # full_text paragraphs are heavily shared (a 16-verse range = 16 rows, one
 # paragraph), so they live once in commentary_texts; the `commentary` VIEW
@@ -92,19 +93,29 @@ def migrate_schema(db: sqlite3.Connection) -> None:
     db.commit()
 
 
-def import_records(db: sqlite3.Connection, records: list[dict], dry_run: bool) -> tuple[int, int, int]:
+def import_records(db: sqlite3.Connection, records: list[dict], dry_run: bool) -> tuple[int, int, int, int]:
     cur = db.cursor()
     # New Advent tagging typos ("Mark 6:83") reference verses that don't exist —
     # guard against the actual target DB, not a hardcoded asset path
     verse_counts = {(b, c): v for b, c, v in cur.execute(
         'SELECT book, chapter, MAX(verse) FROM bible_verses GROUP BY book, chapter')}
+    # Chapter range is judged against books.ts, NOT bible_verses: the core DB ships
+    # without the deuterocanon, but those books are real to the app once an
+    # apocrypha translation pack is installed (Phase 1 imported 251 such rows).
+    # This drops only refs to chapters no canon has — e.g. Jerome cites Greek
+    # Esther 14, which exists in the Vulgate's 16-chapter Esther but not the app's.
+    book_chapters = load_book_chapters()
     existing: set[tuple] = set()
     if not dry_run:
         cur.execute('SELECT book, chapter, verse, father_name, source, excerpt FROM commentary')
         existing = set(cur.fetchall())
     text_ids: dict[str, int] = {}
-    inserted = skipped = bad_verse = 0
+    inserted = skipped = bad_verse = no_chapter = 0
     for r in records:
+        maxc = book_chapters.get(r['book'])
+        if maxc is None or not (1 <= r['chapter'] <= maxc):
+            no_chapter += 1
+            continue
         maxv = verse_counts.get((r['book'], r['chapter']))
         if maxv and r['verse'] > maxv:
             bad_verse += 1
@@ -133,7 +144,7 @@ def import_records(db: sqlite3.Connection, records: list[dict], dry_run: bool) -
         inserted += 1
     if not dry_run:
         db.commit()
-    return inserted, skipped, bad_verse
+    return inserted, skipped, bad_verse, no_chapter
 
 
 def main() -> None:
@@ -157,12 +168,13 @@ def main() -> None:
         return
 
     migrate_schema(db)
-    inserted, skipped, bad_verse = import_records(db, records, dry_run=False)
+    inserted, skipped, bad_verse, no_chapter = import_records(db, records, dry_run=False)
     n_new = db.execute('SELECT COUNT(*) FROM commentary').fetchone()[0]
     n_old = db.execute('SELECT COUNT(*) FROM commentary_legacy').fetchone()[0] \
         if db.execute("SELECT 1 FROM sqlite_master WHERE name='commentary_legacy'").fetchone() else 0
     db.close()
-    print(f'Inserted {inserted}, skipped {skipped} dupes, dropped {bad_verse} bad-verse rows. '
+    print(f'Inserted {inserted}, skipped {skipped} dupes, dropped {bad_verse} bad-verse '
+          f'and {no_chapter} no-such-chapter rows. '
           f'commentary={n_new} rows, commentary_legacy={n_old} rows.')
 
 

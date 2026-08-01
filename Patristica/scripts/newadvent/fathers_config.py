@@ -57,6 +57,63 @@ FATHERS: dict[str, dict] = {
     'Lactantius':              {'key': 'Lucius Caecilius Firmianus Lactantius', 'era': 'Early Church', 'era_order': 4},
     'Victorinus':              {'key': 'Victorinus of Pettau',                  'era': 'Early Church', 'era_order': 4},
     'Pamphilus':               {'key': 'Pamphilus of Caesarea',                 'era': 'Early Church', 'era_order': 4},
+
+    # Phase 2a — post-Nicene pilot (2026-08-01). Both keys already exist verbatim
+    # in fatherDates.ts. NPNF translations, so the psalm-numbering auto-detect in
+    # versification.convert_citation gets its first real workout here.
+    'Athanasius':              {'key': 'Athanasius',                            'era': 'Early Church', 'era_order': 4},
+    'Jerome':                  {'key': 'Jerome',                                'era': 'Early Church', 'era_order': 4},
+
+    # Phase 2b — remaining post-Nicene fathers (2026-08-01). Councils/Liturgies/
+    # Apocrypha/Miscellaneous sections are a SEPARATE later pass, per user.
+    'Augustine of Hippo':                    {'key': 'Augustine of Hippo',          'era': 'Early Church', 'era_order': 4},  # 48
+    'John Chrysostom':                       {'key': 'John Chrysostom',             'era': 'Early Church', 'era_order': 4},  # 36
+    'Gregory of Nyssa':                      {'key': 'Gregory of Nyssa',            'era': 'Early Church', 'era_order': 4},  # 15
+    'Ambrose (340-397)':                     {'key': 'Ambrose of Milan',            'era': 'Early Church', 'era_order': 4},  # 11
+    'Ephraim the Syrian (306-373)':          {'key': 'Ephrem The Syrian',           'era': 'Early Church', 'era_order': 4},  # 7
+    'Eusebius of Caesarea (c. 265-c. 340)':  {'key': 'Eusebius of Caesarea',        'era': 'Early Church', 'era_order': 4},  # 5
+    'Sulpitius Severus (c. 363-c. 420)':     {'key': 'Sulpicius Severus',           'era': 'Early Church', 'era_order': 4},  # 5
+    'Theodoret':                             {'key': 'Theodoret',                   'era': 'Early Church', 'era_order': 4},  # 5
+    'Basil the Great':                       {'key': 'Basil the Great',             'era': 'Early Church', 'era_order': 4},  # 3
+    'Hilary of Poitiers':                    {'key': 'Hilary of Poitiers',          'era': 'Early Church', 'era_order': 4},  # 3
+    'John Cassian (c. 360-c. 435)':          {'key': 'John Cassian',                'era': 'Early Church', 'era_order': 4},  # 3
+    'Mar Jacob (452-521)':                   {'key': 'Jacob of Serugh',             'era': 'Early Church', 'era_order': 4},  # 3
+    'Rufinus':                               {'key': 'Rufinus of Aquileia',         'era': 'Early Church', 'era_order': 4},  # 3
+    'Gregory the Great, Pope (c. 540-604)':  {'key': 'Gregory the Great',           'era': 'Early Church', 'era_order': 4},  # 2
+    'Gregory Nazianzen':                     {'key': 'Gregory the Theologian',      'era': 'Early Church', 'era_order': 4},  # 2
+    'Leo the Great, Pope (c. 395-461)':      {'key': 'Leo the Great',               'era': 'Early Church', 'era_order': 4},  # 2
+    'Alexander of Lycopolis':                {'key': 'Alexander of Lycopolis',      'era': 'Early Church', 'era_order': 4},  # 1
+    'Aphrahat/Aphraates (c. 280-367)':       {'key': 'Aphrahat the Persian Sage',   'era': 'Early Church', 'era_order': 4},  # 1
+    'Archelaus':                             {'key': 'Archelaus',                   'era': 'Early Church', 'era_order': 4},  # 1
+    'Bardesanes (154-222)':                  {'key': 'Bardesanes',                  'era': 'Early Church', 'era_order': 4},  # 1
+    'Cyril of Jerusalem':                    {'key': 'Cyril of Jerusalem',          'era': 'Early Church', 'era_order': 4},  # 1
+    'Gennadius of Marseilles':               {'key': 'Gennadius of Marseilles',     'era': 'Early Church', 'era_order': 4},  # 1
+    'John of Damascus':                      {'key': 'John of Damascus',            'era': 'Early Church', 'era_order': 4},  # 1
+    'Moses of Chorene (c. 400-c. 490)':      {'key': 'Moses of Chorene',            'era': 'Early Church', 'era_order': 4},  # 1
+    'Socrates Scholasticus (c. 379-c. 450)': {'key': 'Socrates Scholasticus',       'era': 'Early Church', 'era_order': 4},  # 1
+    'Sozomen (c. 375-c. 447)':               {'key': 'Sozomen',                     'era': 'Early Church', 'era_order': 4},  # 1
+    'Theodotus':                             {'key': 'Theodotus',                   'era': 'Early Church', 'era_order': 4},  # 1
+    'Vincent of Lérins (d. c. 450)':         {'key': 'Vincent of Lérins',           'era': 'Early Church', 'era_order': 4},  # 1
+    'Venantius':                             {'key': 'Venantius',                   'era': 'Early Church', 'era_order': 4},  # 1
+}
+
+# Works whose translation prints VULGATE psalm numbers, so psalm citations need
+# converting to the app's English versification. Whitelist, not auto-detection:
+# New Advent's psalm tagging is unreliable (it sometimes links the English page,
+# sometimes the Vulgate one, and Chrysostom mixes both inside a single homily
+# series), so the only safe signal is the work itself. Everything not listed here
+# is stored exactly as the source printed it — the Phase 1 convention.
+#
+# Evidence, from the in-band (psalms 9-147) display-vs-href tally:
+#   Enarrations  2359 Vulgate / 0 English — decisive, and it IS psalm commentary
+#   Pastoral Rule  21 / 13, but hand-sampling showed all 10 checked 'Vulgate' hits
+#     genuine AND at least one 'English' hit also Vulgate with a bad href
+#     (psa130 tagged 'Psalm 131:9' — English Ps 131 has only 3 verses)
+# Everything else totals 100 Vulgate / 419 English, scattered and mixed; converting
+# there would trade ~100 untouched-but-wrong rows for ~100 actively mis-shifted ones.
+VULGATE_PSALM_WORKS: set[str] = {
+    'The Enarrations, or Expositions, on the Psalms',
+    'Pastoral Rule',
 }
 
 # Works not listed under a father heading on the index (URL added manually).

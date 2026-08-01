@@ -370,6 +370,7 @@ function HistoryTab() {
 // ── Sub-tab: Downloads ────────────────────────────────────
 
 const PACK_TYPE_LABEL: Record<string, string> = {
+  commentary:     'Commentary',
   translation:    'Translations',
   greek_source:   'Greek NT Sources',
   hebrew_source:  'Hebrew OT Sources',

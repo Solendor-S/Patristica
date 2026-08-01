@@ -161,6 +161,19 @@ export const FATHER_DATES: Record<string, FatherInfo> = {
   'Dialogue of Justin':                        { dates: 'c. 100–165', sort: 100, role: 'Philosopher, Apologist, Martyr', location: 'Rome', keyWorks: 'Dialogue with Trypho, First Apology', tradition: 'Western' },
   'Fragments from the Lost Writings of Irenaeus': { dates: 'c. 130–202', sort: 130, role: 'Bishop of Lyon', location: 'Lyon, Gaul', keyWorks: 'Against Heresies, Proof of the Apostolic Preaching', tradition: 'Western' },
   'Address of Tatian to the Greeks':           { dates: 'c. 120–180', sort: 120, role: 'Apologist, Encratite', location: 'Assyria (via Rome)', keyWorks: 'Address to the Greeks, Diatessaron', tradition: 'Syrian' },
+
+  // Added 2026-08-01 for the New Advent Phase 2b commentary batch — these authors
+  // appear on the fathers index but had no entry here, so their commentary would
+  // have rendered with no dates and no tradition badge.
+  'Alexander of Lycopolis':         { dates: 'fl. c. 300',        sort: 300, role: 'Philosopher, writer against Manichaeism', location: 'Lycopolis, Egypt', keyWorks: 'Of the Manichaeans (Contra Manichaei opiniones)', tradition: 'Alexandrian' },
+  'Archelaus':                      { dates: 'fl. c. 277',        sort: 277, role: 'Bishop of Carchar', location: 'Carchar, Mesopotamia', keyWorks: 'Acts of the Disputation with the Heresiarch Manes (Acta Archelai)', tradition: 'Syrian' },
+  'Bardesanes':                     { dates: '154–222',           sort: 154, role: 'Syriac philosopher and hymn-writer (later judged heterodox)', location: 'Edessa, Syria', keyWorks: 'The Book of the Laws of Various Countries (Dialogue on Fate)', tradition: 'Syrian' },
+  'Gennadius of Marseilles':        { dates: 'd. c. 496',         sort: 470, role: 'Priest of Marseille, Historian', location: 'Marseille, Gaul', keyWorks: 'Illustrious Men (supplement to Jerome\'s De Viris Illustribus)', tradition: 'Western' },
+  'Moses of Chorene':               { dates: 'c. 410–490',        sort: 410, role: 'Armenian Historian', location: 'Armenia', keyWorks: 'History of Armenia', tradition: 'Eastern' },
+  'Socrates Scholasticus':          { dates: 'c. 380–after 439',  sort: 380, role: 'Lawyer, Church Historian', location: 'Constantinople', keyWorks: 'Ecclesiastical History (305–439, continuing Eusebius)', tradition: 'Eastern' },
+  'Sozomen':                        { dates: 'c. 400–450',        sort: 400, role: 'Lawyer, Church Historian', location: 'Constantinople (from Gaza)', keyWorks: 'Ecclesiastical History (324–425)', tradition: 'Eastern' },
+  'Theodotus':                      { dates: 'fl. c. 160–170',    sort: 160, role: 'Valentinian teacher (heterodox), excerpted by Clement of Alexandria', location: 'Alexandria, Egypt', keyWorks: 'Excerpts of Theodotus (Excerpta ex Theodoto)', tradition: 'Alexandrian' },
+  'Venantius':                      { dates: 'c. 530–609',        sort: 530, role: 'Poet, Bishop of Poitiers', location: 'Poitiers, Gaul', keyWorks: 'Poem on Easter, Vexilla Regis, Pange Lingua', tradition: 'Western' },
 }
 
 export function getFatherInfo(name: string): FatherInfo | null {

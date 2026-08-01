@@ -31,6 +31,7 @@ import { useCrossRefOrder } from '../context/CrossRefOrderContext'
 import { useNotifications } from '../context/NotificationContext'
 import { useEsvKey } from '../context/EsvKeyContext'
 import EsvSetupModal from '../components/EsvSetupModal'
+import ChangelogModal from '../components/ChangelogModal'
 import type { SearchMode } from '../context/SearchOrderContext'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
@@ -655,6 +656,7 @@ function AboutSection() {
   const s = useMemo(() => makeStyles(colors), [colors])
   const version = Constants.expoConfig?.version ?? '—'
   const [creditsVisible, setCreditsVisible] = useState(false)
+  const [changelogVisible, setChangelogVisible] = useState(false)
 
   return (
     <View style={s.section}>
@@ -675,14 +677,14 @@ function AboutSection() {
         <TouchableOpacity
           style={s.row}
           activeOpacity={0.6}
-          onPress={() => Linking.openURL('mailto:sargonshlimon1234@gmail.com')}
+          onPress={() => Linking.openURL('mailto:solendor.queries@gmail.com')}
         >
           <View style={s.iconWrap}>
             <Ionicons name="mail-outline" size={18} color={colors.accent} />
           </View>
           <Text style={s.rowLabel}>Email</Text>
           <View style={s.navRight}>
-            <Text style={s.navValue}>sargonshlimon1234@gmail.com</Text>
+            <Text style={s.navValue}>solendor.queries@gmail.com</Text>
           </View>
         </TouchableOpacity>
 
@@ -707,6 +709,22 @@ function AboutSection() {
         <TouchableOpacity
           style={s.row}
           activeOpacity={0.6}
+          onPress={() => setChangelogVisible(true)}
+        >
+          <View style={s.iconWrap}>
+            <Ionicons name="time-outline" size={18} color={colors.accent} />
+          </View>
+          <Text style={s.rowLabel}>Changelog</Text>
+          <View style={s.navRight}>
+            <Ionicons name="chevron-forward" size={16} color={colors.textMuted} />
+          </View>
+        </TouchableOpacity>
+
+        <View style={s.separator} />
+
+        <TouchableOpacity
+          style={s.row}
+          activeOpacity={0.6}
           onPress={() => setCreditsVisible(true)}
         >
           <View style={s.iconWrap}>
@@ -720,6 +738,7 @@ function AboutSection() {
       </View>
 
       <CreditsModal visible={creditsVisible} onClose={() => setCreditsVisible(false)} />
+      <ChangelogModal visible={changelogVisible} onClose={() => setChangelogVisible(false)} />
     </View>
   )
 }

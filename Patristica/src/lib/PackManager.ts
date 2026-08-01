@@ -9,7 +9,7 @@ export interface PackMeta {
   slug: string
   name: string
   description?: string
-  type: 'translation' | 'apocrypha' | 'early_text' | 'greek_source' | 'hebrew_source'
+  type: 'translation' | 'apocrypha' | 'early_text' | 'greek_source' | 'hebrew_source' | 'commentary'
   translations?: string[]
   book?: string
   group?: string
@@ -240,6 +240,19 @@ export function isWordSourcePack(slug: string): boolean {
 
 // ── Private fetch helper ──────────────────────────────────────────────────────
 
+/**
+ * Online JSON lives under the manifest's base URL, with the hardcoded master-branch
+ * URL as a fallback when the manifest points somewhere else. Every online fetcher
+ * needs the same pair, so build it once.
+ */
+function onlineUrls(path: string): { url: string; fallback?: string } {
+  const base = _manifest.onlineBaseUrl || ONLINE_FALLBACK_BASE
+  return {
+    url: base + path,
+    fallback: base !== ONLINE_FALLBACK_BASE ? ONLINE_FALLBACK_BASE + path : undefined,
+  }
+}
+
 async function fetchJson<T>(url: string, fallbackUrl?: string): Promise<T | null> {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), 8000)
@@ -278,11 +291,78 @@ export async function fetchOnlineWords(
   chapter: number,
   verse: number,
 ): Promise<OnlineWord[] | null> {
-  const base = _manifest.onlineBaseUrl || ONLINE_FALLBACK_BASE
-  const path = `/words/${source}/${encodeURIComponent(book)}/${chapter}.json`
-  const fallback = base !== ONLINE_FALLBACK_BASE ? ONLINE_FALLBACK_BASE + path : undefined
-  const data = await fetchJson<Record<string, OnlineWord[]>>(base + path, fallback)
+  const { url, fallback } = onlineUrls(`/words/${source}/${encodeURIComponent(book)}/${chapter}.json`)
+  const data = await fetchJson<Record<string, OnlineWord[]>>(url, fallback)
   return data?.[String(verse)] ?? null
+}
+
+// ── Online commentary fetch ───────────────────────────────────────────────────
+
+export type CommentaryFolder = 'commentary' | 'commentary-legacy'
+
+interface OnlineCommentaryChapter {
+  texts: string[]
+  entries: Array<{
+    v: number; f: string; era: string; e: string; ti: number; s: string; u: string
+  }>
+}
+
+export interface OnlineCommentaryEntry {
+  father_name: string
+  father_era: string
+  excerpt: string
+  full_text: string
+  source: string
+  source_url: string
+  verse: number
+}
+
+// Chapter payloads are reused verse-to-verse as the reader moves down a chapter,
+// so one fetch serves the whole chapter. Bounded to keep memory flat — the biggest
+// chapter (Matthew 5) is ~1.9 MB of JSON.
+const _commentaryCache = new Map<string, OnlineCommentaryChapter | null>()
+const COMMENTARY_CACHE_MAX = 6
+
+/**
+ * Commentary for ONE verse, from the cached chapter payload. Null when offline
+ * or the chapter has no file. Only the matching entries are expanded — callers
+ * want a single verse, and a big chapter holds hundreds of entries.
+ */
+export async function fetchOnlineCommentaryVerse(
+  folder: CommentaryFolder,
+  book: string,
+  chapter: number,
+  verse: number,
+): Promise<OnlineCommentaryEntry[] | null> {
+  const key = `${folder}|${book}|${chapter}`
+  if (!_commentaryCache.has(key)) {
+    const { url, fallback } = onlineUrls(`/${folder}/${encodeURIComponent(book)}/${chapter}.json`)
+    const data = await fetchJson<OnlineCommentaryChapter>(url, fallback)
+    if (_commentaryCache.size >= COMMENTARY_CACHE_MAX) {
+      const oldest = _commentaryCache.keys().next().value
+      if (oldest !== undefined) _commentaryCache.delete(oldest)
+    }
+    _commentaryCache.set(key, data)
+  } else {
+    // Re-insert on hit so eviction is least-recently-used: without this the
+    // chapter currently on screen can be evicted while stale ones survive.
+    const hit = _commentaryCache.get(key)!
+    _commentaryCache.delete(key)
+    _commentaryCache.set(key, hit)
+  }
+  const cached = _commentaryCache.get(key)
+  if (!cached) return null
+  return cached.entries
+    .filter(e => e.v === verse)
+    .map(e => ({
+      father_name: e.f,
+      father_era: e.era,
+      excerpt: e.e,
+      full_text: cached.texts[e.ti] ?? '',
+      source: e.s,
+      source_url: e.u,
+      verse: e.v,
+    }))
 }
 
 /**
@@ -296,10 +376,8 @@ export async function fetchOnlineWordsAsChapter(
   chapter: number,
   annotated = false,
 ): Promise<Array<{ book: string; chapter: number; verse: number; text: string }> | null> {
-  const base = _manifest.onlineBaseUrl || ONLINE_FALLBACK_BASE
-  const path = `/words/${packSlug}/${encodeURIComponent(book)}/${chapter}.json`
-  const fallback = base !== ONLINE_FALLBACK_BASE ? ONLINE_FALLBACK_BASE + path : undefined
-  const data = await fetchJson<Record<string, Array<{ t: string; s?: string }>>>(base + path, fallback)
+  const { url, fallback } = onlineUrls(`/words/${packSlug}/${encodeURIComponent(book)}/${chapter}.json`)
+  const data = await fetchJson<Record<string, Array<{ t: string; s?: string }>>>(url, fallback)
   return data ? reconstructVerses(data, book, chapter, annotated) : null
 }
 
@@ -332,8 +410,6 @@ export async function fetchOnlineChapter(
     : slug
   // BSB's online tree stores Psalms under "Psalm" (from its source VerseId); the app uses "Psalms".
   const bookForPath = slug === 'bsb' && book === 'Psalms' ? 'Psalm' : book
-  const base = _manifest.onlineBaseUrl || ONLINE_FALLBACK_BASE
-  const path = `/${folder}/${encodeURIComponent(bookForPath)}/${chapter}.json`
-  const fallback = base !== ONLINE_FALLBACK_BASE ? ONLINE_FALLBACK_BASE + path : undefined
-  return fetchJson<OnlineVerse[]>(base + path, fallback)
+  const { url, fallback } = onlineUrls(`/${folder}/${encodeURIComponent(bookForPath)}/${chapter}.json`)
+  return fetchJson<OnlineVerse[]>(url, fallback)
 }

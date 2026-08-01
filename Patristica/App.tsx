@@ -36,6 +36,8 @@ import { NotificationProvider } from './src/context/NotificationContext'
 import { EsvKeyProvider } from './src/context/EsvKeyContext'
 import { openPassage } from './src/navigation/navigationRef'
 import TutorialModal from './src/components/TutorialModal'
+import CommentaryUpgradeModal from './src/components/CommentaryUpgradeModal'
+import WhatsNewGate from './src/components/WhatsNewGate'
 import { Colors } from './src/theme/colors'
 
 // A notification tap opens the reader at the passage carried in its data.
@@ -73,6 +75,11 @@ function AppShell() {
         onComplete={onTourComplete}
         onDecline={onTourDecline}
       />
+      {/* One-time notice for installs upgrading across schema v70, where
+          commentary moved from the bundled DB into downloadable packs. */}
+      <CommentaryUpgradeModal />
+      {/* Release notes, once per new version (defers to the modal above) */}
+      <WhatsNewGate />
     </View>
   )
 }

@@ -45,6 +45,15 @@ BOOK_CODES: dict[str, str] = {
 
 SINGLE_CHAPTER_BOOKS = {'Obadiah', 'Philemon', '2 John', '3 John', 'Jude'}
 
+# Hand-verified citations where New Advent tagged the wrong reference outright.
+# Key is (href file code+number, display text); each was checked against the words
+# actually quoted in the surrounding prose.
+CITATION_OVERRIDES: dict[tuple[str, str], list[tuple[str, int, int]]] = {
+    # NPNF Jerome, Against Jovinianus II: 1 John has only 5 chapters. 'Christ is
+    # called the truth' quotes John 14:6 — New Advent tagged the wrong book code.
+    ('1jo014', '1 John 14:6'): [('John', 14, 6)],
+}
+
 # Non-Psalms chapter quirks; empty until the dangling-ref QA check surfaces a real one.
 # ponytail: verified live that New Advent uses English chapters for Malachi (mal004.htm
 # exists), so no pre-emptive entries.
@@ -147,12 +156,16 @@ def display_chapter(display: str) -> int | None:
     return int(m.group(1)) if m else None
 
 
-def convert_citation(href: str, display: str) -> list[tuple[str, int, int]] | None:
+def convert_citation(href: str, display: str,
+                     vulgate_psalms: bool = False) -> list[tuple[str, int, int]] | None:
     """One New Advent citation -> [(app_book, chapter, verse), ...].
 
     Returns None for unknown book codes (caller flags them — never guess).
     Chapter-only citations (no verse anywhere) return [(book, chapter, 0)],
     matching the existing HCF convention for chapter-level commentary.
+
+    `vulgate_psalms` is set by the caller for works in VULGATE_PSALM_WORKS, whose
+    translation prints Vulgate psalm numbers; every other work is stored verbatim.
     """
     parsed = parse_bible_href(href)
     if not parsed:
@@ -161,6 +174,11 @@ def convert_citation(href: str, display: str) -> list[tuple[str, int, int]] | No
     book = BOOK_CODES.get(code)
     if not book:
         return None
+
+    override = CITATION_OVERRIDES.get((f'{code}{file_ch:03d}',
+                                       display.replace('\xa0', ' ').strip()))
+    if override:
+        return list(override)
 
     ch = display_chapter(display)
     if ch is None:
@@ -172,20 +190,20 @@ def convert_citation(href: str, display: str) -> list[tuple[str, int, int]] | No
                 href_verse = int(m.group(1))
 
     verses = expand_display_range(display, href_verse)
+
+    # Psalms in a Vulgate-numbered work (see VULGATE_PSALM_WORKS for why this is a
+    # whitelist and not inferred per citation). Display text carries the Vulgate
+    # chapter AND verse, so both are converted; the title-verse offset comes from
+    # the psalm-offsets json.
+    if book == 'Psalms' and vulgate_psalms:
+        if not verses:
+            return [('Psalms', vulgate_to_english_psalm(ch, 1)[0], 0)]
+        return [('Psalms', *vulgate_to_english_psalm(ch, v)) for v in verses]
+
     if not verses:
         return [(book, ch, 0)]
-
-    out: list[tuple[str, int, int]] = []
-    for v in verses:
-        # ponytail: Psalm display text in the ANF translations is ALREADY English
-        # versification (verified: "Psalm 22:16" = dug my hands and feet,
-        # "Psalm 19:1-4", "Psalm 35:12"), even though the href file number is the
-        # Vulgate page. Use display as-is. vulgate_to_english_psalm stays for
-        # later batches (Augustine's Enarrations displays Vulgate numbers) — wire
-        # it to a per-work config flag when those works are added.
-        b, c = BOOK_CHAPTER_FIXUPS.get((book, ch), (book, ch))
-        out.append((b, c, v))
-    return out
+    b, c = BOOK_CHAPTER_FIXUPS.get((book, ch), (book, ch))
+    return [(b, c, v) for v in verses]
 
 
 # ── self-test ─────────────────────────────────────────────────────────────────
@@ -216,8 +234,32 @@ if __name__ == '__main__':
     assert vulgate_to_english_psalm(147, 12) == (147, 12)
 
     assert convert_citation('../bible/luk003.htm#verse23', 'Luke\xa03:23') == [('Luke', 3, 23)]
-    # ANF display text is already English numbering — stored verbatim
+
+    # ── psalm numbering: verbatim by default, converted only for whitelisted works ──
+    # default (ANF, Chrysostom, everything not in VULGATE_PSALM_WORKS) — verbatim,
+    # regardless of what the href file number happens to be
     assert convert_citation('../bible/psa021.htm#verse16', 'Psalm\xa022:16') == [('Psalms', 22, 16)]
+    assert convert_citation('../bible/psa018.htm#verse1-4', 'Psalm\xa019:1-4') == [
+        ('Psalms', 19, v) for v in range(1, 5)]
+    # the Clement of Rome false positive an auto-detect would have corrupted: href
+    # and display agree at 19, but the text ('the heavens declare') is English 19
+    assert convert_citation('../bible/psa019.htm#verse1', 'Psalm\xa019:1') == [('Psalms', 19, 1)]
+    # Athanasius 'lift up your heads, O ye gates' — English 24:7, left alone
+    assert convert_citation('../bible/psa024.htm#verse7', 'Psalm\xa024:7') == [('Psalms', 24, 7)]
+
+    # whitelisted work (Augustine's Enarrations, Gregory's Pastoral Rule)
+    assert convert_citation('../bible/psa022.htm#verse1', 'Psalm\xa022:1',
+                            vulgate_psalms=True) == [('Psalms', 23, 1)]
+    assert convert_citation('../bible/psa050.htm#verse3', 'Psalm\xa050:3',
+                            vulgate_psalms=True) == [('Psalms', 51, 1)]
+    # chapter-level Vulgate citation keeps verse 0, converts the chapter only
+    assert convert_citation('../bible/psa022.htm', 'Psalm\xa022',
+                            vulgate_psalms=True) == [('Psalms', 23, 0)]
+    # ponytail ceiling, asserted so it stays a known quantity: psalms 1-8 and
+    # 148-150 share a chapter number in both schemes, so a Vulgate work's title
+    # offset there is real but uncorrectable from the chapter alone
+    assert convert_citation('../bible/psa003.htm#verse2', 'Psalm\xa03:2',
+                            vulgate_psalms=True) == [('Psalms', 3, 1)]
     assert convert_citation('../bible/sir002.htm#verse1', 'Sirach\xa02:1') == [('Sirach', 2, 1)]
     assert convert_citation('../bible/jud001.htm#verse4', 'Jude\xa04') == [('Jude', 1, 4)]
     assert convert_citation('../bible/gen015.htm', 'Genesis\xa015') == [('Genesis', 15, 0)]

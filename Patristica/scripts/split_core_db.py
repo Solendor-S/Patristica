@@ -28,13 +28,14 @@ Core keeps:
   - overview_verses
   - biblehub_chapters
   - biblesummary_chapters
-  - commentary             (patristic commentary)
   - josephus
   - josephus_refs
   - historical_refs
   - historical_sources
 
 Optional (NOT in core — goes to packs):
+  - commentary / commentary_entries / commentary_texts  -> commentary-fathers pack
+  - commentary_legacy                                   -> commentary-legacy pack
   - bible_translations rows for ASV, WEB, BSB, E_LXX, A_LXX
   - dss_words
   - apocrypha_books
@@ -92,7 +93,21 @@ optional_tables = [
     'greek_words',         # SBLGNT — optional scholar pack (TR is default)
     'greek_words_tagnt',   # TAGNT  — optional scholar pack
     'hebrew_words',        # BHS/TAHOT — optional scholar pack (WLC is default)
+    # Commentary moved out of core 2026-08-01 (schema v70): 240 MB of the bundled
+    # DB. Built by scripts/build_commentary_packs.py into two packs; the app reads
+    # them through useCommentaryDbs(). The `commentary` VIEW must be dropped before
+    # its backing tables or a broken view is left behind.
+    'commentary_entries',
+    'commentary_texts',
+    'commentary_legacy',
 ]
+
+# Views have to be dropped with DROP VIEW, not DROP TABLE
+for view in ['commentary']:
+    if cur.execute("SELECT COUNT(*) FROM sqlite_master WHERE type='view' AND name=?",
+                   [view]).fetchone()[0]:
+        cur.execute(f"DROP VIEW {view}")
+        print(f"  Dropped view: {view}")
 for tbl in optional_tables:
     exists = cur.execute(
         "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?", [tbl]

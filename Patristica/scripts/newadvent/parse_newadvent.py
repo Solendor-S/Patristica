@@ -30,7 +30,8 @@ import sys
 from bs4 import BeautifulSoup, NavigableString
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from fathers_config import FATHERS, CACHE_DIR, MANIFEST, CITATIONS_JSON as OUT_JSON, record_key  # noqa: E402
+from fathers_config import (FATHERS, CACHE_DIR, MANIFEST, CITATIONS_JSON as OUT_JSON,  # noqa: E402
+                            record_key, VULGATE_PSALM_WORKS)
 import versification  # noqa: E402
 
 REPORT    = os.path.join('temp', 'newadvent_report.txt')
@@ -116,6 +117,7 @@ def parse_page(html: str, work: dict, page_url: str, records: list[dict],
     scope = soup.find(id='springfield2') or soup
     source_base = breadcrumb_source(soup, work['work_title'])
     meta = FATHERS[work['father']]
+    vulgate_psalms = work['work_title'] in VULGATE_PSALM_WORKS
 
     for span in scope.select('span.stiki'):
         a = span.find('a', href=True)
@@ -123,7 +125,7 @@ def parse_page(html: str, work: dict, page_url: str, records: list[dict],
             continue
         stats['spans'] += 1
         href, display = a['href'], clean_text(a.get_text())
-        refs = versification.convert_citation(href, display)
+        refs = versification.convert_citation(href, display, vulgate_psalms)
         if refs is None:
             stats['unknown_codes'].add(href)
             continue
