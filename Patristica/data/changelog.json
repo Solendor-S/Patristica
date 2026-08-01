@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "releases": [
+    {
+      "id": "1.0.7",
+      "version": "1.0.7",
+      "date": "2026-08-01",
+      "title": "Commentary everywhere, and ESV",
+      "changes": [
+        "Church Fathers commentary expanded to 60,376 entries from 55 fathers, drawn from their own scripture citations.",
+        "Commentary now loads without any download, and can be saved offline as a pack from Library → Downloads.",
+        "The app itself is much smaller: the bundled database dropped from 307 MB to 165 MB.",
+        "Hand-picked and Legacy commentary are now separate collections you switch between.",
+        "ESV translation support — bring your own free Crossway API key from Settings."
+      ]
+    },
+    {
+      "id": "1.0.6",
+      "version": "1.0.6",
+      "date": "2026-07-23",
+      "title": "Patristic commentary rebuilt",
+      "changes": [
+        "Verse-by-verse commentary rebuilt from the fathers' own citations, replacing the previous dataset.",
+        "Daily reading notifications.",
+        "Morphology parsing and display fixes, including Berean Standard Bible Psalms.",
+        "Fixed verses failing to load on a cold start."
+      ]
+    },
+    {
+      "id": "1.0.5",
+      "version": "1.0.5",
+      "date": "2026-07-06",
+      "title": "Reading plans and the home-screen widget",
+      "changes": [
+        "Reading plans with progress tracking.",
+        "Android home-screen widget.",
+        "Early church study features: councils, creeds, canon formation, persecutions, and a geographic map of the fathers.",
+        "Greek Old Testament word study now works without downloading a pack.",
+        "Startup translation setting, and search now routes correctly to downloaded packs."
+      ]
+    },
+    {
+      "id": "1.0.4",
+      "version": "1.0.4",
+      "date": "2026-06-22",
+      "title": "Downloadable content packs",
+      "changes": [
+        "Content pack system: 50+ optional downloads for translations, apocrypha, early Christian texts, and original-language sources.",
+        "Redesigned Downloads tab with grouping, bulk removal, and download-all.",
+        "Cross-references can now be sorted in biblical order.",
+        "KJV+ Strong's improvements and numerous fixes."
+      ]
+    },
+    {
+      "id": "1.0.3",
+      "version": "1.0.3",
+      "date": "2026-06-15",
+      "title": "Study tools",
+      "changes": [
+        "Split passage view and focus mode.",
+        "Space saver display option.",
+        "Strong's translation variants modal.",
+        "Schisms panel, improved search ranking, and a skippable onboarding tour.",
+        "Concordance accuracy improvements."
+      ]
+    },
+    {
+      "id": "1.0.2",
+      "version": "1.0.2",
+      "date": "2026-05-24",
+      "title": "Original languages and red letters",
+      "changes": [
+        "Red letter text for the words of Christ.",
+        "Greek and Hebrew search.",
+        "Parallel translations and parallel Strong's.",
+        "Font family picker and per-scope text settings.",
+        "Church fathers commentary with the map panel."
+      ]
+    },
+    {
+      "id": "1.0.1",
+      "version": "1.0.1",
+      "date": "2026-05-04",
+      "title": "Notes, cross-references and history",
+      "changes": [
+        "Per-verse notes, plus a Notes tab listing them in biblical order.",
+        "Cross-references tab and verse sharing.",
+        "Reading history.",
+        "Historical tab in the Study screen.",
+        "Performance improvements across the main screens."
+      ]
+    }
+  ]
+}
