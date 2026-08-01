@@ -29,6 +29,8 @@ import { useOtQuoteCaps } from '../context/OtQuoteCapsContext'
 import { useSearchOrder } from '../context/SearchOrderContext'
 import { useCrossRefOrder } from '../context/CrossRefOrderContext'
 import { useNotifications } from '../context/NotificationContext'
+import { useEsvKey } from '../context/EsvKeyContext'
+import EsvSetupModal from '../components/EsvSetupModal'
 import type { SearchMode } from '../context/SearchOrderContext'
 import DateTimePicker from '@react-native-community/datetimepicker'
 
@@ -559,6 +561,45 @@ function SearchSection() {
   )
 }
 
+// ── ESV section ──────────────────────────────────────────
+
+function EsvSection() {
+  const { colors } = useTheme()
+  const s = useMemo(() => makeStyles(colors), [colors])
+  const { esvKey } = useEsvKey()
+  const [setupVisible, setSetupVisible] = useState(false)
+
+  return (
+    <View style={s.section}>
+      <Text style={s.sectionTitle}>ESV Bible</Text>
+      <View style={s.card}>
+        <TouchableOpacity style={s.row} activeOpacity={0.6} onPress={() => setSetupVisible(true)}>
+          <View style={s.iconWrap}>
+            <Ionicons name="key-outline" size={18} color={colors.accent} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={s.rowLabel}>{esvKey ? 'ESV API key' : 'Set up the ESV'}</Text>
+            <Text style={[s.themeDesc, { marginTop: 1 }]}>
+              {esvKey
+                ? 'Key saved on this device — tap to change or remove'
+                : 'Free key from Crossway, needed to read the ESV'}
+            </Text>
+          </View>
+          <View style={s.navRight}>
+            <Ionicons
+              name={esvKey ? 'checkmark-circle' : 'chevron-forward'}
+              size={esvKey ? 18 : 16}
+              color={esvKey ? colors.accent : colors.textMuted}
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      <EsvSetupModal visible={setupVisible} onClose={() => setSetupVisible(false)} />
+    </View>
+  )
+}
+
 // ── Data section ─────────────────────────────────────────
 
 function DataSection() {
@@ -765,6 +806,7 @@ export default function SettingsScreen() {
         <RemindersSection />
         <ReadingSection />
         <SearchSection />
+        <EsvSection />
         <DataSection />
         <AboutSection />
       </ScrollView>

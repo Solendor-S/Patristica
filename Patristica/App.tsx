@@ -33,6 +33,7 @@ import { SpaceSaverProvider } from './src/context/SpaceSaverContext'
 import { SearchOrderProvider } from './src/context/SearchOrderContext'
 import { CrossRefOrderProvider } from './src/context/CrossRefOrderContext'
 import { NotificationProvider } from './src/context/NotificationContext'
+import { EsvKeyProvider } from './src/context/EsvKeyContext'
 import { openPassage } from './src/navigation/navigationRef'
 import TutorialModal from './src/components/TutorialModal'
 import { Colors } from './src/theme/colors'
@@ -113,11 +114,13 @@ export default function App() {
           <SpaceSaverProvider>
           <ReadingPlanProvider>
           <NotificationProvider>
+          <EsvKeyProvider>
           <OnboardingProvider>
             <DatabaseProvider>
               <AppShell />
             </DatabaseProvider>
           </OnboardingProvider>
+          </EsvKeyProvider>
           </NotificationProvider>
           </ReadingPlanProvider>
           </SpaceSaverProvider>

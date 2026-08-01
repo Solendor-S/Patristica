@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { searchVerses, searchVersesAll, searchVersesFuzzy, searchOriginalLanguage, detectQueryScript, normalizeForSearch, normalizeStrongsNumber, getSearchHistory, addSearchHistory, deleteSearchHistory, getStrongsEntry, getStrongsConcordance, searchStrongsByEnglishWord, searchAnnotatedByStrongs, SEARCH_STOP_WORDS, TRANSLATION_PACK_SLUG } from '../db/queries'
 import type { StrongsEntry, StrongsConcordanceResult, StrongsWordMatch } from '../db/queries'
 import { StrongsConcordanceModal, TranslationVariantsModal } from './WordStudyPanel'
-import { useTranslation, TRANSLATIONS, ANNOTATED_TRANSLATIONS } from '../context/TranslationContext'
+import { useTranslation, TRANSLATIONS, ANNOTATED_TRANSLATIONS, API_TRANSLATIONS } from '../context/TranslationContext'
 import { useStrongsInSearch } from '../context/StrongsInSearchContext'
 import { useSearchOrder } from '../context/SearchOrderContext'
 import type { SearchMode } from '../context/SearchOrderContext'
@@ -451,7 +451,10 @@ export default function SearchScreen() {
   const db = useSQLiteContext()
   const userDb = useUserDb()
   const navigation = useNavigation<NavProp>()
-  const { translation, setTranslation } = useTranslation()
+  const { translation: activeTranslation, setTranslation } = useTranslation()
+  // Search runs against the local FTS index. API-only translations (ESV) have no
+  // local text, so every read below falls back to the KJV rather than finding nothing.
+  const translation = API_TRANSLATIONS.has(activeTranslation) ? 'KJV' as const : activeTranslation
   const { getPackDb, isInstalled } = usePacks()
   const { strongsInSearch } = useStrongsInSearch()
   const { biblicalOrder, searchMode } = useSearchOrder()
@@ -803,7 +806,8 @@ export default function SearchScreen() {
           <View style={modal.sheet}>
             <Text style={modal.title}>Bible Translation</Text>
             <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40, gap: 4 }}>
-              {TRANSLATIONS.map(t => (
+              {/* apiOnly excluded: search runs against the local FTS index, and the ESV has no local text. */}
+              {TRANSLATIONS.filter(t => !t.apiOnly).map(t => (
                 <TouchableOpacity
                   key={t.key}
                   style={modal.row}

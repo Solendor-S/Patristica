@@ -2,7 +2,9 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import { useUserDb } from '../db/UserDbProvider'
 import { TRANSLATIONS, type Translation } from './TranslationContext'
 
-const VALID_TRANSLATIONS = new Set<string>(TRANSLATIONS.map(t => t.key))
+// apiOnly excluded: the parallel column reads local SQLite directly, so an API-only
+// translation restored from storage would silently render an empty column.
+const VALID_TRANSLATIONS = new Set<string>(TRANSLATIONS.filter(t => !t.apiOnly).map(t => t.key))
 
 interface ContextValue {
   compareTrans: Translation | null

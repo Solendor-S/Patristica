@@ -2,5 +2,8 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true
-  }
+  },
+  // Standalone self-check scripts, run directly by node's TypeScript stripper
+  // (which requires the .ts import extension tsc rejects). Not part of the app.
+  "exclude": ["**/*.selfcheck.ts"]
 }

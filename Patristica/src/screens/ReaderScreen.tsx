@@ -35,6 +35,9 @@ import { useOtQuoteCaps } from '../context/OtQuoteCapsContext'
 import { usePacks } from '../context/PackContext'
 import { TRANSLATION_PACK_SLUG, TRANSLATION_ONLINE_SOURCE } from '../db/queries'
 import { isWordSourcePack, fetchOnlineWordsAsChapter } from '../lib/PackManager'
+import { fetchEsvChapter, EsvError, ESV_COPYRIGHT } from '../lib/esv'
+import { useEsvKey } from '../context/EsvKeyContext'
+import EsvSetupModal from '../components/EsvSetupModal'
 import { useRedLetter } from '../context/RedLetterContext'
 import { useFocusMode } from '../context/FocusModeContext'
 import { useReadingMode } from '../context/ReadingModeContext'
@@ -993,9 +996,16 @@ function ShareModal({
     [rangeVerses, fromVerse, toVerse, translation, bsbFoldedOn],
   )
 
-  const doShare = async () => { onClose(); await Share.share({ message: `${refLabel} — ${body}` }) }
+  // Crossway only needs the short "(ESV)" at the end of a quotation in non-salable
+  // media (messages, notes, bulletins) — the full notice is for publications, and
+  // stays under the chapter in the reader. Share drops the translation label, so
+  // without this an ESV quote would leave the app with no attribution at all.
+  const isEsv = translation === 'ESV'
+  const esvNotice = isEsv ? ' (ESV)' : ''
+  const doShare = async () => { onClose(); await Share.share({ message: `${refLabel} — ${body}${esvNotice}` }) }
   const doCopy  = async () => {
-    await Clipboard.setStringAsync(`${refLabel} ${translation} — ${body}`)
+    // "(ESV)" already names the translation, so skip the usual label rather than repeat it.
+    await Clipboard.setStringAsync(`${refLabel}${isEsv ? '' : ` ${translation}`} — ${body}${esvNotice}`)
     onClose()
   }
 
@@ -1427,6 +1437,11 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const { readingMode } = useReadingMode()
   const { otQuoteCapsOn } = useOtQuoteCaps()
   const { isInstalled, installedReady, getPackDb, fetchOnline, packForContent } = usePacks()
+  const { esvKey, esvKeyReady } = useEsvKey()
+  // The key only affects the ESV, but esvKeyReady flips shortly after mount for everyone.
+  // Depending on it directly would re-run the chapter load — and re-query SQLite — once
+  // on every cold start for every reader. Collapsing to a constant off-ESV avoids that.
+  const esvDep = translation === 'ESV' ? `${esvKeyReady}:${esvKey}` : ''
   const packDbRef = useRef<import('expo-sqlite').SQLiteDatabase | null>(null)
   const [isOnlineMode, setIsOnlineMode] = useState(false)
   // Increments each time packDbRef is set — triggers chapter reload when pack DB becomes ready
@@ -1444,6 +1459,18 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [loading, setLoading] = useState(true)
   const [listKey, setListKey] = useState('verses')
   const [loadError, setLoadError] = useState<string | null>(null)
+  // A missing/rejected ESV key isn't really an error — it's an unfinished setup,
+  // so it gets a "set this up" panel rather than red error text.
+  const [esvNeedsSetup, setEsvNeedsSetup] = useState(false)
+  const [esvSetupOpen, setEsvSetupOpen] = useState(false)
+  const handleLoadError = useCallback((e: any) => {
+    if (e instanceof EsvError && e.needsKey) {
+      setEsvNeedsSetup(true)
+      setLoadError(null)
+    } else {
+      setLoadError(String(e?.message ?? e))
+    }
+  }, [])
   const [selectedVerse, setSelectedVerse] = useState<number | null>(null)
   const [bookmarked, setBookmarked] = useState(false)
   const [shareModalOpen, setShareModalOpen] = useState(false)
@@ -1635,6 +1662,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
     Animated.spring(actionBarAnim, { toValue: 0, useNativeDriver: false, bounciness: 0 }).start()
     Animated.spring(colorPickerAnim, { toValue: 0, useNativeDriver: false, bounciness: 0 }).start()
     setLoadError(null)
+    setEsvNeedsSetup(false)
     setActiveFn(null)
     setActiveBsbFn(null)
     setActiveElxxNote(null)
@@ -1678,22 +1706,31 @@ export default function ReaderScreen({ navigation, route }: Props) {
     const onlineSource   = onlineOverride?.source ?? packSlug
     const useOnline      = !!packSlug && !isInstalled(packSlug) && !!onlineSource
     const useWordSource  = onlineOverride ? onlineOverride.isWordSource : (!!packSlug && isWordSourcePack(packSlug))
-    setIsOnlineMode(useOnline)
+    // The ESV is licensed and can't be bundled or packed — it comes live from Crossway's API
+    // with the reader's own key. It never routes through the pack/CDN path above.
+    const useEsv = !packCType && translation === 'ESV'
+    if (useEsv && !esvKeyReady) return   // don't flash "no key" before the stored key loads
+    setIsOnlineMode(useOnline || useEsv)
+
+    // Both the translation-only fast path and the full load below need the same verse
+    // source, so route it once — otherwise every change to this chain has to be made twice.
+    const fetchFn = useEsv
+      ? fetchEsvChapter(book, chapter, esvKey)
+      : useOnline && useWordSource
+      ? fetchOnlineWordsAsChapter(onlineSource!, book, chapter, isAnnotatedTrans)
+          .then(vs => vs ?? [])
+      : useOnline
+      ? fetchOnline(onlineSource!, book, chapter)
+          .then(vs => (vs ?? []).map(v => ({ book, chapter, verse: v.verse, text: v.text })))
+      : isEarlyText ? getEarlyTextChapter(db, book, chapter, packDb)
+      : isApocrypha ? getApocryphaChapter(db, book, chapter, packDb)
+      :               getChapter(db, book, chapter, translation, packDb)
 
     if (isTranslationOnly) {
       // Only the translation changed — fetch new verse text and swap in place.
       // FlatList stays mounted. We resolve the restore index while rows are in scope,
       // then defer the scroll 100ms so native layout finishes before scrollToIndex fires.
       const topVerse = topVisibleVerseRef.current
-      const fetchFn = useOnline && useWordSource
-        ? fetchOnlineWordsAsChapter(onlineSource!, book, chapter, isAnnotatedTrans)
-            .then(vs => vs ?? [])
-        : useOnline
-        ? fetchOnline(onlineSource!, book, chapter)
-            .then(vs => (vs ?? []).map(v => ({ book, chapter, verse: v.verse, text: v.text })))
-        : isEarlyText ? getEarlyTextChapter(db, book, chapter, packDb)
-        : isApocrypha ? getApocryphaChapter(db, book, chapter, packDb)
-        :               getChapter(db, book, chapter, translation, packDb)
       const fetchBsbFns = (!isApocrypha && !isEarlyText && translation === 'BSB')
         ? getBsbChapterFootnotes(db, book, chapter, packDb).catch(() => [] as Awaited<ReturnType<typeof getBsbChapterFootnotes>>)
         : Promise.resolve([] as Awaited<ReturnType<typeof getBsbChapterFootnotes>>)
@@ -1718,7 +1755,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
           setListKey(`verses-${translation}`)
           setVerses(rows)
         })
-        .catch((e: any) => setLoadError(String(e?.message ?? e)))
+        .catch(handleLoadError)
       return
     }
 
@@ -1733,13 +1770,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
         .catch(() => { clearTimeout(tid); resolve([]) })
     })
     Promise.all([
-      useOnline && useWordSource
-        ? fetchOnlineWordsAsChapter(onlineSource!, book, chapter, isAnnotatedTrans).then(vs => vs ?? [])
-        : useOnline ? fetchOnline(onlineSource!, book, chapter)
-                         .then(vs => (vs ?? []).map(v => ({ book, chapter, verse: v.verse, text: v.text })))
-      : isEarlyText   ? getEarlyTextChapter(db, book, chapter, packDb)
-      : isApocrypha   ? getApocryphaChapter(db, book, chapter, packDb)
-      :                 getChapter(db, book, chapter, translation, packDb),
+      fetchFn,
       highlightsWithTimeout,
       shouldFetchFootnotes
         ? getChapterFootnotes(db, book, chapter).catch(() => [] as Awaited<ReturnType<typeof getChapterFootnotes>>)
@@ -1776,10 +1807,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
       setCrossRefsByVerse(crMap as Map<number, CrossRef[]>)
       setLoading(false)
     }).catch((e: any) => {
-      setLoadError(String(e?.message ?? e))
+      handleLoadError(e)
       setLoading(false)
     })
-  }, [book, chapter, translation, isApocrypha, isEarlyText, packDbVersion, isInstalled, installedReady])
+  }, [book, chapter, translation, isApocrypha, isEarlyText, packDbVersion, isInstalled, installedReady, esvDep])
 
   useEffect(() => {
     recordHistory(userDb, book, chapter)
@@ -2623,7 +2654,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
                   </TouchableOpacity>
                   <View style={modal.sectionDivider} />
                   <Text style={modal.sectionTitle}>Right Pane Translation</Text>
-                  {TRANSLATIONS.filter(t => !t.greekOnly && !t.otOriginal && !t.otOnly).map(t =>
+                  {/* apiOnly excluded: split reads straight from SQLite, and the ESV has no local text. */}
+                  {TRANSLATIONS.filter(t => !t.greekOnly && !t.otOriginal && !t.otOnly && !t.apiOnly).map(t =>
                     renderTransRow(t, splitTranslation === t.key, () => {
                       setSplitTranslation(t.key as Translation)
                       saveSplitSetting('split_translation', t.key)
@@ -2693,7 +2725,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
                   </TouchableOpacity>
                   <View style={modal.sectionDivider} />
                   <Text style={modal.sectionTitle}>English</Text>
-                  {TRANSLATIONS.filter(t => !t.greekOnly && !t.otOriginal && !t.otOnly && t.key !== translation).map(t =>
+                  {/* apiOnly excluded: parallel reads straight from SQLite, and the ESV has no local text. */}
+                  {TRANSLATIONS.filter(t => !t.greekOnly && !t.otOriginal && !t.otOnly && !t.apiOnly && t.key !== translation).map(t =>
                     renderTransRow(t, compareTrans === t.key, () => {
                       setCompareTrans(t.key); setParallelOn(true); setSplitOn(false); splitOnRef.current = false; saveSplitSetting('split_on', '0'); setTranslationPickerOpen(false)
                     })
@@ -2730,6 +2763,22 @@ export default function ReaderScreen({ navigation, route }: Props) {
       {loading ? (
         <View style={styles.center}>
           <ActivityIndicator color={colors.accent} size="large" />
+        </View>
+      ) : esvNeedsSetup ? (
+        <View style={styles.center}>
+          <Ionicons name="key-outline" size={42} color={colors.accent} style={{ marginBottom: 14 }} />
+          <Text style={styles.errorText}>The ESV needs a free key</Text>
+          <Text style={styles.errorSubText}>
+            The ESV is copyrighted, so Crossway serves it from their own system rather than letting
+            apps bundle it. A free personal key unlocks it — we'll walk you through it.
+          </Text>
+          <TouchableOpacity
+            style={styles.esvSetupBtn}
+            activeOpacity={0.8}
+            onPress={() => setEsvSetupOpen(true)}
+          >
+            <Text style={styles.esvSetupBtnText}>Show me how</Text>
+          </TouchableOpacity>
         </View>
       ) : loadError ? (
         <View style={styles.center}>
@@ -2903,6 +2952,9 @@ export default function ReaderScreen({ navigation, route }: Props) {
               colors={colors}
               onPress={onEarlyRefPress}
             />
+          ) : translation === 'ESV' ? (
+            // Crossway requires this notice wherever the ESV text is displayed. Do not remove.
+            <Text style={styles.esvCopyright}>{ESV_COPYRIGHT}</Text>
           ) : null}
         />
       )}
@@ -3290,6 +3342,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
           </View>
         </KeyboardAvoidingView>
       </Modal>
+
+      <EsvSetupModal visible={esvSetupOpen} onClose={() => setEsvSetupOpen(false)} />
     </View>
     </GestureDetector>
   )
@@ -3337,6 +3391,17 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
 
   errorText:    { color: c.textMuted, fontSize: 13, textAlign: 'center', paddingHorizontal: 24 },
   errorSubText: { color: c.textMuted, fontSize: 13, textAlign: 'center', paddingHorizontal: 24, marginTop: 8, opacity: 0.6 },
+
+  esvSetupBtn: {
+    marginTop: 20, paddingHorizontal: 24, paddingVertical: 12,
+    borderRadius: 12, backgroundColor: c.accent,
+  },
+  esvSetupBtnText: { fontSize: 15, fontWeight: '700', color: c.bgPrimary },
+  esvCopyright: {
+    fontSize: 10, lineHeight: 15, color: c.textMuted,
+    textAlign: 'center', paddingHorizontal: 24, paddingTop: 20, paddingBottom: 8,
+    opacity: 0.7,
+  },
 
   tourFab: {
     position: 'absolute', bottom: 72, right: 16,
