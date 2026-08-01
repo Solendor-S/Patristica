@@ -2,8 +2,8 @@
   "version": 1,
   "releases": [
     {
-      "id": "1.0.7",
-      "version": "1.0.7",
+      "id": "1.0.8",
+      "version": "1.0.8",
       "date": "2026-08-01",
       "title": "Commentary everywhere, and ESV",
       "changes": [
@@ -15,8 +15,8 @@
       ]
     },
     {
-      "id": "1.0.6",
-      "version": "1.0.6",
+      "id": "1.0.7",
+      "version": "1.0.7",
       "date": "2026-07-23",
       "title": "Patristic commentary rebuilt",
       "changes": [
