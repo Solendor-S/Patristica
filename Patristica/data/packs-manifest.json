@@ -3,6 +3,24 @@
   "onlineBaseUrl": "https://raw.githubusercontent.com/Solendor-S/Patristica/master/Patristica/data/online",
   "packs": [
     {
+      "slug": "commentary-fathers",
+      "name": "Church Fathers Commentary",
+      "description": "Hand-picked verse-by-verse commentary from 55 Church Fathers, drawn from their own scripture citations (60,376 entries)",
+      "type": "commentary",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/commentary-fathers.db",
+      "sizeMB": 125.9,
+      "version": 1
+    },
+    {
+      "slug": "commentary-legacy",
+      "name": "Extended Commentary Archive",
+      "description": "Broader historical commentary set (HCF and e-Catena, 80,404 entries) spanning the Fathers through the post-medieval era",
+      "type": "commentary",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/commentary-legacy.db",
+      "sizeMB": 115.8,
+      "version": 1
+    },
+    {
       "slug": "asv",
       "name": "American Standard Version",
       "description": "Classic 1901 revision of the KJV with improved accuracy",
