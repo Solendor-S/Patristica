@@ -1,4 +1,5 @@
 import type { SQLiteDatabase } from 'expo-sqlite'
+import { fetchWithTimeout } from './net'
 
 /**
  * Changelog is hosted on master rather than bundled, so release notes can be
@@ -63,8 +64,8 @@ export async function loadChangelog(db: SQLiteDatabase): Promise<Changelog | nul
   }
 
   try {
-    const res = await fetch(CHANGELOG_URL, { signal: AbortSignal.timeout(8000) })
-    if (res.ok) {
+    const res = await fetchWithTimeout(CHANGELOG_URL)
+    if (res?.ok) {
       const data = (await res.json()) as Changelog
       if (Array.isArray(data?.releases)) {
         await db.runAsync('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)',

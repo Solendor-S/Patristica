@@ -2,6 +2,7 @@ import { File, Paths, Directory } from 'expo-file-system'
 import { openDatabaseAsync } from 'expo-sqlite'
 import type { SQLiteDatabase } from 'expo-sqlite'
 import BUNDLED_MANIFEST from '../../assets/packs-manifest.json'
+import { fetchWithTimeout } from './net'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -57,8 +58,8 @@ export async function refreshManifest(userDb: SQLiteDatabase): Promise<void> {
 
     // Try fetch if stale or no cache
     if (cacheAge > ONE_DAY) {
-      const res = await fetch(REMOTE_MANIFEST_URL, { signal: AbortSignal.timeout(8000) })
-      if (res.ok) {
+      const res = await fetchWithTimeout(REMOTE_MANIFEST_URL)
+      if (res?.ok) {
         const remote: PackManifest = await res.json()
         // Merge: start with bundled, override with remote URLs/versions
         const mergedPacks = _manifest.packs.map(local => {
@@ -254,22 +255,16 @@ function onlineUrls(path: string): { url: string; fallback?: string } {
 }
 
 async function fetchJson<T>(url: string, fallbackUrl?: string): Promise<T | null> {
-  const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), 8000)
   try {
-    const res = await fetch(url, { signal: controller.signal })
-    clearTimeout(timer)
-    if (!res.ok) {
-      if (fallbackUrl) {
-        const res2 = await fetch(fallbackUrl)
-        if (!res2.ok) return null
-        return (await res2.json()) as T
-      }
-      return null
+    const res = await fetchWithTimeout(url)
+    if (!res?.ok) {
+      if (!fallbackUrl) return null
+      const res2 = await fetchWithTimeout(fallbackUrl)
+      if (!res2?.ok) return null
+      return (await res2.json()) as T
     }
     return (await res.json()) as T
   } catch {
-    clearTimeout(timer)
     return null
   }
 }
