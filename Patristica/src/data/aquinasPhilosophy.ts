@@ -239,4 +239,23 @@ export const AQUINAS_PHILOSOPHY: PhilosophySection[] = [
       '1 Corinthians 15:12-19 — if the dead rise not: the soul is made for its body',
     ],
   },
+  {
+    id: 'conclusion',
+    title: 'Conclusion',
+    summary: 'The whole in one breath, and why it is worth carrying',
+    paragraphs: [
+      'Step back and the twelve sections are one line of thought. Reason begins from truths it cannot deny (first principles). It notices that things change, and that change needs a distinction between what a thing is and what it can become (act and potency). It sees that bodily things are matter shaped by form (hylomorphism), that explaining anything means naming what it is made of, what makes it this, what brought it about and what it is for (the four causes), and that in everything we meet, what it is and that it is come apart (essence and existence).',
+      'From there the climb is short. Things that receive existence must receive it from what simply is (participation), and the world’s motion, causes, contingency, degrees and order all point the same way (the Five Ways) — to a God who is pure act, Being itself, one, true, good and beautiful without limit (the transcendentals). Because we are rational sharers in His order we can read His law in our own nature (natural law). And because the form that makes us human does something no organ can do, it does not die with the body, though it is made for the body and waits for it (substance and the soul).',
+      'Why carry all this? First, because it keeps faith from becoming vague. “God is love”, “I AM”, “in Him we live and move”, “this is My body”, “fear not them that kill the body” — each of these is a precise claim, and these categories are what let you say exactly what it claims and what it rules out. Most heresies were metaphysical mistakes before they were theological ones.',
+      'Second, because it makes Scripture bigger, not smaller. Once you can see act and potency in Malachi 3:6, participation in Acts 17:28, final causality in Matthew 6:26-30, or form and matter in Genesis 2:7, the text stops being a collection of sayings and starts reading as a single description of one reality — the same reality the mind can trace on its own from a falling stone or a growing seed.',
+      'Third, because it is how the Church has actually thought. Councils, catechisms and creeds speak this language: substance, nature, person, form, act. Learn the grammar and you can read the family documents. Refuse it and you are left trusting summaries.',
+      'Aquinas would add a last thing, and it is the thing he saw at the end: all of this is straw next to the vision of God. Metaphysics does not replace prayer or the sacraments; it clears the ground so that what is loved is the real God and not a picture. Reason walks to the edge of what can be known and hands you to faith — not as a stranger, but as the same Light you have been following all along (John 1:9).',
+    ],
+    scripture: [
+      'John 1:9 — the true Light which lighteth every man: reason and revelation from one source',
+      'Romans 1:20 — without excuse: what reason can reach, it is bound to reach',
+      '1 Peter 3:15 — be ready always to give a reason for the hope that is in you',
+      '1 Corinthians 13:12 — now through a glass darkly, then face to face: where metaphysics ends and vision begins',
+    ],
+  },
 ]
