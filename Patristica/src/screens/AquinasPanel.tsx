@@ -7,11 +7,12 @@ import { Ionicons } from '@expo/vector-icons'
 import { useAquinas } from '../context/PackContext'
 import type { AquinasIndex, AquinasArticle, AquinasWork } from '../lib/PackManager'
 import EntryCard from '../components/EntryCard'
+import AquinasPhilosophyView from './AquinasPhilosophyView'
 import { useTheme } from '../context/ThemeContext'
 import type { ThemeColors } from '../theme/themes'
 import type { CommentaryEntry } from '../types'
 
-type Mode = 'verse' | 'browse'
+type Mode = 'verse' | 'browse' | 'philosophy'
 const GOSPELS = new Set(['Matthew', 'Mark', 'Luke', 'John'])
 const WORKS: Array<{ key: AquinasWork; name: string; sub: string }> = [
   { key: 'summa', name: 'Summa Theologica', sub: 'Part → Question → Article · 1920 Dominican translation' },
@@ -79,16 +80,16 @@ export default function AquinasPanel({ selected }: Props) {
   }
 
   const modeToggle = (
-    <View style={styles.modeToggle}>
-      {(['verse', 'browse'] as Mode[]).map(m => (
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.modeToggleWrap} contentContainerStyle={styles.modeToggle}>
+      {(['verse', 'browse', 'philosophy'] as Mode[]).map(m => (
         <TouchableOpacity key={m} style={[styles.modeBtn, mode === m && styles.modeBtnActive]}
           onPress={() => setMode(m)} activeOpacity={0.7}>
           <Text style={[styles.modeBtnText, mode === m && styles.modeBtnTextActive]}>
-            {m === 'verse' ? 'This Verse' : 'Browse Works'}
+            {m === 'verse' ? 'This Verse' : m === 'browse' ? 'Browse Works' : 'Metaphysics/Philosophy'}
           </Text>
         </TouchableOpacity>
       ))}
-    </View>
+    </ScrollView>
   )
 
   const empty = (icon: keyof typeof Ionicons.glyphMap, title: string, text: string, retry?: () => void) => (
@@ -132,6 +133,16 @@ export default function AquinasPanel({ selected }: Props) {
             )}
           />
         )}
+      </View>
+    )
+  }
+
+  // ── philosophy mode render ──
+  if (mode === 'philosophy') {
+    return (
+      <View style={{ flex: 1 }}>
+        {modeToggle}
+        <AquinasPhilosophyView />
       </View>
     )
   }
@@ -285,10 +296,10 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
   list: { padding: 12, paddingBottom: 40, gap: 10 },
   note: { fontSize: 11, color: c.textMuted, fontStyle: 'italic', paddingHorizontal: 2 },
 
+  modeToggleWrap: { flexGrow: 0, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border },
   modeToggle: {
     flexDirection: 'row', gap: 6,
     paddingHorizontal: 12, paddingTop: 10, paddingBottom: 6,
-    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
   },
   modeBtn: { paddingHorizontal: 12, paddingVertical: 5, borderRadius: 14, borderWidth: 1.5, borderColor: c.border },
   modeBtnActive: { backgroundColor: c.accent, borderColor: c.accent },

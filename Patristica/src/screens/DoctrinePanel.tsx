@@ -26,11 +26,11 @@ import type { ThemeColors } from '../theme/themes'
 // Non-global source — a fresh regex is created per call via matchAll, no lastIndex state.
 const VERSE_RE_SRC = /\b((?:[1-4]\s+)?[A-Z][a-zA-Z]+(?:\s+of\s+[A-Za-z]+)?)\s+(\d+):(\d+)\b/
 
-type TextSegment =
+export type TextSegment =
   | { type: 'text'; content: string }
   | { type: 'ref'; raw: string; book: string; chapter: number; verse: number }
 
-function parseVerseRefs(text: string): TextSegment[] {
+export function parseVerseRefs(text: string): TextSegment[] {
   const segments: TextSegment[] = []
   let last = 0
   for (const m of text.matchAll(new RegExp(VERSE_RE_SRC.source, 'g'))) {
