@@ -388,6 +388,7 @@ export async function fetchOnlineAquinasQuestion(
   if (!_aquinasQ.has(key)) {
     const { url, fallback } = onlineUrls(`/aquinas/${work}/${encodeURIComponent(part)}/${question}.json`)
     const data = await fetchJson<AquinasArticle[]>(url, fallback)
+    if (!data) return null  // don't cache failures — Retry should refetch
     if (_aquinasQ.size >= AQUINAS_CACHE_MAX) {
       const oldest = _aquinasQ.keys().next().value
       if (oldest !== undefined) _aquinasQ.delete(oldest)

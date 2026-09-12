@@ -37,6 +37,7 @@ export default function AquinasPanel({ selected }: Props) {
   const [entries, setEntries] = useState<CommentaryEntry[]>([])
   const [offline, setOffline] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [tick, setTick] = useState(0)
   const isGospel = !!selected && GOSPELS.has(selected.book)
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export default function AquinasPanel({ selected }: Props) {
       setEntries(r.entries); setOffline(r.offline); setLoading(false)
     })
     return () => { cancelled = true }
-  }, [selected?.book, selected?.chapter, selected?.verse, isGospel, loadVerse])
+  }, [selected?.book, selected?.chapter, selected?.verse, isGospel, loadVerse, tick])
 
   // ── browse mode ──
   const [index, setIndex] = useState<AquinasIndex | null | undefined>(undefined)
@@ -90,11 +91,16 @@ export default function AquinasPanel({ selected }: Props) {
     </View>
   )
 
-  const empty = (icon: keyof typeof Ionicons.glyphMap, title: string, text: string) => (
+  const empty = (icon: keyof typeof Ionicons.glyphMap, title: string, text: string, retry?: () => void) => (
     <View style={styles.center}>
       <Ionicons name={icon} size={52} color={colors.border} />
       <Text style={styles.emptyTitle}>{title}</Text>
       <Text style={styles.emptyText}>{text}</Text>
+      {retry && (
+        <TouchableOpacity style={[styles.modeBtn, styles.modeBtnActive]} onPress={retry} activeOpacity={0.7}>
+          <Text style={[styles.modeBtnText, styles.modeBtnTextActive]}>Retry</Text>
+        </TouchableOpacity>
+      )}
     </View>
   )
 
@@ -109,7 +115,7 @@ export default function AquinasPanel({ selected }: Props) {
         : loading ? <View style={styles.center}><ActivityIndicator color={colors.accent} /></View>
         : entries.length === 0 ? (
           offline
-            ? empty('cloud-offline-outline', 'Catena unavailable offline', `Reconnect to read the Catena Aurea for ${ref}, or install the Aquinas pack from Library → Downloads.`)
+            ? empty('cloud-offline-outline', 'Catena unavailable offline', `Reconnect to read the Catena Aurea for ${ref}, or install the Aquinas pack from Library → Downloads.`, () => setTick(t => t + 1))
             : empty('chatbubble-ellipses-outline', 'No Catena entry', `Nothing recorded for ${ref}`)
         ) : (
           <FlatList
@@ -148,7 +154,7 @@ export default function AquinasPanel({ selected }: Props) {
   if (index === undefined) {
     body = <View style={styles.center}><ActivityIndicator color={colors.accent} /></View>
   } else if (index === null) {
-    body = empty('cloud-offline-outline', 'Unavailable offline', 'Reconnect to browse, or install the Aquinas pack from Library → Downloads.')
+    body = empty('cloud-offline-outline', 'Unavailable offline', 'Reconnect to browse, or install the Aquinas pack from Library → Downloads.', () => setIndex(undefined))
   } else if (!work) {
     body = (
       <View style={styles.list}>
@@ -223,7 +229,7 @@ export default function AquinasPanel({ selected }: Props) {
   } else if (articles === undefined) {
     body = <View style={styles.center}><ActivityIndicator color={colors.accent} /></View>
   } else if (articles === null) {
-    body = empty('cloud-offline-outline', 'Unavailable offline', 'Reconnect to read this section.')
+    body = empty('cloud-offline-outline', 'Unavailable offline', 'Reconnect to read this section.', () => { const q = question; setQuestion(null); setTimeout(() => setQuestion(q), 0) })
   } else {
     body = <ArticleList articles={articles} isScg={work === 'scg'} styles={styles} />
   }
