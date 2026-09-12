@@ -8,9 +8,12 @@ import {
   packsForTranslation, packForBook,
   loadInstalledVersionsFromDb, refreshManifest,
   fetchOnlineCommentaryVerse,
+  fetchOnlineAquinasIndex,
+  fetchOnlineAquinasQuestion,
 } from '../lib/PackManager'
-import { getCommentaryFromDb } from '../db/queries'
+import { getCommentaryFromDb, getAquinasIndex, getAquinasQuestion } from '../db/queries'
 import type { CommentarySource } from '../db/queries'
+import type { AquinasWork } from '../lib/PackManager'
 import type { CommentaryEntry } from '../types'
 
 // ── Context value ─────────────────────────────────────────────────────────────
@@ -171,6 +174,48 @@ export function useCommentaryDbs() {
   }, [hasFathers, hasLegacy, installedReady, getPackDb])
 
   return { ...dbs, hasFathers, hasLegacy }
+}
+
+// ── Aquinas pack (Catena Aurea verse entries + Summa/SCG topics) ─────────────
+
+export const AQUINAS_PACK = 'aquinas'
+
+/**
+ * Same pack-or-online arrangement as useCommentary(): Catena Aurea rows come from
+ * the pack's `commentary` view or the per-chapter aquinas-catena JSON; Summa and
+ * Contra Gentiles from aquinas_topics or the aquinas/ JSON tree.
+ */
+export function useAquinas() {
+  const { isInstalled, installedReady, getPackDb } = usePacks()
+  const [db, setDb] = useState<SQLiteDatabase | null>(null)
+  const hasPack = isInstalled(AQUINAS_PACK)
+
+  useEffect(() => {
+    if (!installedReady) return
+    let cancelled = false
+    ;(hasPack ? getPackDb(AQUINAS_PACK) : Promise.resolve(null))
+      .then(d => { if (!cancelled) setDb(d) })
+    return () => { cancelled = true }
+  }, [hasPack, installedReady, getPackDb])
+
+  const loadVerse = useCallback(async (
+    book: string, chapter: number, verse: number,
+  ): Promise<{ entries: CommentaryEntry[]; offline: boolean }> => {
+    if (db) return { entries: await getCommentaryFromDb(db, 'aquinas', book, chapter, verse), offline: false }
+    const rows = await fetchOnlineCommentaryVerse('aquinas-catena', book, chapter, verse)
+    if (rows === null) return { entries: [], offline: true }
+    return { entries: rows.map((r, i) => ({ id: i, ...r })), offline: false }
+  }, [db])
+
+  const loadIndex = useCallback(
+    () => db ? getAquinasIndex(db) : fetchOnlineAquinasIndex(), [db])
+
+  const loadQuestion = useCallback(
+    (work: AquinasWork, part: string, q: number) =>
+      db ? getAquinasQuestion(db, work, part, q) : fetchOnlineAquinasQuestion(work, part, q),
+    [db])
+
+  return { loadVerse, loadIndex, loadQuestion, hasPack }
 }
 
 /**

@@ -35,11 +35,12 @@ SOURCES = [
 ]
 
 
-def build(src_db: str, out_root: str, table: str, folder: str, clean: bool) -> None:
+def build(src_db: str, out_root: str, table: str, folder: str, clean: bool,
+          keep_order: bool = False) -> None:
     con = sqlite3.connect(src_db)
     rows = con.execute(
         f'''SELECT book, chapter, verse, father_name, father_era, excerpt,
-                   full_text, source, source_url
+                   full_text, source, source_url, id
             FROM {table}'''
     ).fetchall()
     con.close()
@@ -57,8 +58,9 @@ def build(src_db: str, out_root: str, table: str, folder: str, clean: bool) -> N
         texts: list[str] = []
         index: dict[str, int] = {}
         entries = []
-        # stable order — the app sorts by father date, but keep output deterministic
-        for r in sorted(rs, key=lambda x: (x[2], x[3], x[7] or '')):
+        # stable order — the app sorts by father date, but keep output deterministic.
+        # keep_order preserves source order (Catena Aurea is a deliberate chain).
+        for r in sorted(rs, key=(lambda x: (x[2], x[9])) if keep_order else (lambda x: (x[2], x[3], x[7] or ''))):
             full = r[6] or ''
             if full not in index:
                 index[full] = len(texts)
@@ -90,10 +92,13 @@ def main() -> None:
     ap.add_argument('--out', default='data/online', help='online JSON root')
     ap.add_argument('--keep', action='store_true',
                     help='do not wipe existing output folders first')
+    ap.add_argument('--only', metavar='TABLE:FOLDER',
+                    help='single source from another DB, e.g. commentary:aquinas-catena')
     args = ap.parse_args()
 
-    for table, folder in SOURCES:
-        build(args.src, args.out, table, folder, clean=not args.keep)
+    sources = [tuple(args.only.split(':', 1))] if args.only else SOURCES
+    for table, folder in sources:
+        build(args.src, args.out, table, folder, clean=not args.keep, keep_order=bool(args.only))
 
 
 if __name__ == '__main__':

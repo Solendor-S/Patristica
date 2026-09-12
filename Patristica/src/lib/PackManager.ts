@@ -293,7 +293,7 @@ export async function fetchOnlineWords(
 
 // ── Online commentary fetch ───────────────────────────────────────────────────
 
-export type CommentaryFolder = 'commentary' | 'commentary-legacy'
+export type CommentaryFolder = 'commentary' | 'commentary-legacy' | 'aquinas-catena'
 
 interface OnlineCommentaryChapter {
   texts: string[]
@@ -358,6 +358,43 @@ export async function fetchOnlineCommentaryVerse(
       source_url: e.u,
       verse: e.v,
     }))
+}
+
+// ── Online Aquinas topics (Summa / Contra Gentiles browse) ───────────────────
+
+export type AquinasWork = 'summa' | 'scg'
+export interface AquinasIndexQuestion { q: number; t: string; a?: Array<{ a: number; t: string }> }
+/** work -> part (or SCG book) -> questions (or chapters); `a` is Summa-only */
+export type AquinasIndex = Record<AquinasWork, Record<string, AquinasIndexQuestion[]>>
+export interface AquinasArticle { a: number; t: string; x: string }
+
+let _aquinasIndex: AquinasIndex | null = null
+const _aquinasQ = new Map<string, AquinasArticle[] | null>()
+const AQUINAS_CACHE_MAX = 6
+
+/** Titles-only index for browse mode (~300 KB, fetched once). Null when offline. */
+export async function fetchOnlineAquinasIndex(): Promise<AquinasIndex | null> {
+  if (_aquinasIndex) return _aquinasIndex
+  const { url, fallback } = onlineUrls('/aquinas/index.json')
+  _aquinasIndex = await fetchJson<AquinasIndex>(url, fallback)
+  return _aquinasIndex
+}
+
+/** All articles of one question (or one SCG chapter). Null when offline. */
+export async function fetchOnlineAquinasQuestion(
+  work: AquinasWork, part: string, question: number,
+): Promise<AquinasArticle[] | null> {
+  const key = `${work}|${part}|${question}`
+  if (!_aquinasQ.has(key)) {
+    const { url, fallback } = onlineUrls(`/aquinas/${work}/${encodeURIComponent(part)}/${question}.json`)
+    const data = await fetchJson<AquinasArticle[]>(url, fallback)
+    if (_aquinasQ.size >= AQUINAS_CACHE_MAX) {
+      const oldest = _aquinasQ.keys().next().value
+      if (oldest !== undefined) _aquinasQ.delete(oldest)
+    }
+    _aquinasQ.set(key, data)
+  }
+  return _aquinasQ.get(key) ?? null
 }
 
 /**

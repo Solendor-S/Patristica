@@ -21,6 +21,15 @@
       "version": 1
     },
     {
+      "slug": "aquinas",
+      "name": "Thomas Aquinas",
+      "description": "Catena Aurea on the four Gospels (70,085 verse entries), plus the Summa Theologica and Summa Contra Gentiles for browsing — all public-domain translations",
+      "type": "commentary",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/aquinas.db",
+      "sizeMB": 58.2,
+      "version": 1
+    },
+    {
       "slug": "asv",
       "name": "American Standard Version",
       "description": "Classic 1901 revision of the KJV with improved accuracy",

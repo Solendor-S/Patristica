@@ -751,7 +751,7 @@ export async function deleteSearchHistory(db: SQLiteDatabase, query?: string): P
 // and the merge happens here. A null DB simply contributes no rows.
 
 /** Which commentary corpus a lookup targets — each lives in its own pack. */
-export type CommentarySource = 'fathers' | 'legacy'
+export type CommentarySource = 'fathers' | 'legacy' | 'aquinas'
 
 /**
  * One verse of commentary from an installed pack DB.
@@ -769,7 +769,8 @@ export async function getCommentaryFromDb(
   const rest = 'father_name, father_era, excerpt, full_text, source, source_url'
   const where = 'WHERE book = ? AND chapter = ? AND verse = ?'
   const args = [book, chapter, verse]
-  const table = source === 'fathers' ? 'commentary' : 'commentary_legacy'
+  // The aquinas pack reuses the fathers schema (commentary view) for Catena Aurea
+  const table = source === 'legacy' ? 'commentary_legacy' : 'commentary'
   return db.getAllAsync<CommentaryEntry>(`SELECT id, ${rest} FROM ${table} ${where}`, args)
 }
 
@@ -1939,4 +1940,30 @@ export async function getStreak(db: SQLiteDatabase, planId: number): Promise<num
     if (row.done === row.total && row.total > 0) streak++
   }
   return streak
+}
+
+// ── Aquinas topics (pack half; online half is in PackManager) ────────────────
+
+import type { AquinasIndex, AquinasIndexQuestion, AquinasArticle, AquinasWork } from '../lib/PackManager'
+
+export async function getAquinasIndex(db: SQLiteDatabase): Promise<AquinasIndex> {
+  const rows = await db.getAllAsync<{ work: AquinasWork; part: string; question: number; article: number; title: string }>(
+    'SELECT work, part, question, article, title FROM aquinas_topics ORDER BY id')
+  const idx: AquinasIndex = { summa: {}, scg: {} }
+  for (const r of rows) {
+    const list = (idx[r.work][r.part] ??= [])
+    let q: AquinasIndexQuestion | undefined = list.find(x => x.q === r.question)
+    if (!q) { q = { q: r.question, t: r.title }; list.push(q) }
+    if (r.article === 0) q.t = r.title
+    else (q.a ??= []).push({ a: r.article, t: r.title })
+  }
+  return idx
+}
+
+export async function getAquinasQuestion(
+  db: SQLiteDatabase, work: AquinasWork, part: string, question: number,
+): Promise<AquinasArticle[]> {
+  return db.getAllAsync<AquinasArticle>(
+    'SELECT article AS a, title AS t, text AS x FROM aquinas_topics WHERE work = ? AND part = ? AND question = ? ORDER BY article',
+    [work, part, question])
 }
