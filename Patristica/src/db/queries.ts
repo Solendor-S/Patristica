@@ -752,6 +752,10 @@ export async function deleteSearchHistory(db: SQLiteDatabase, query?: string): P
 
 /** Which commentary corpus a lookup targets — each lives in its own pack. */
 export type CommentarySource = 'fathers' | 'legacy' | 'aquinas'
+// The aquinas pack reuses the fathers schema (commentary view) for Catena Aurea
+const COMMENTARY_TABLE: Record<CommentarySource, string> = {
+  fathers: 'commentary', aquinas: 'commentary', legacy: 'commentary_legacy',
+}
 
 /**
  * One verse of commentary from an installed pack DB.
@@ -769,8 +773,7 @@ export async function getCommentaryFromDb(
   const rest = 'father_name, father_era, excerpt, full_text, source, source_url'
   const where = 'WHERE book = ? AND chapter = ? AND verse = ?'
   const args = [book, chapter, verse]
-  // The aquinas pack reuses the fathers schema (commentary view) for Catena Aurea
-  const table = source === 'legacy' ? 'commentary_legacy' : 'commentary'
+  const table = COMMENTARY_TABLE[source]
   return db.getAllAsync<CommentaryEntry>(`SELECT id, ${rest} FROM ${table} ${where}`, args)
 }
 
@@ -1950,10 +1953,15 @@ export async function getAquinasIndex(db: SQLiteDatabase): Promise<AquinasIndex>
   const rows = await db.getAllAsync<{ work: AquinasWork; part: string; question: number; article: number; title: string }>(
     'SELECT work, part, question, article, title FROM aquinas_topics ORDER BY id')
   const idx: AquinasIndex = { summa: {}, scg: {} }
+  const byKey = new Map<string, AquinasIndexQuestion>()
   for (const r of rows) {
-    const list = (idx[r.work][r.part] ??= [])
-    let q: AquinasIndexQuestion | undefined = list.find(x => x.q === r.question)
-    if (!q) { q = { q: r.question, t: r.title }; list.push(q) }
+    const key = `${r.work}|${r.part}|${r.question}`
+    let q = byKey.get(key)
+    if (!q) {
+      q = { q: r.question, t: r.title }
+      byKey.set(key, q)
+      ;(idx[r.work][r.part] ??= []).push(q)
+    }
     if (r.article === 0) q.t = r.title
     else (q.a ??= []).push({ a: r.article, t: r.title })
   }

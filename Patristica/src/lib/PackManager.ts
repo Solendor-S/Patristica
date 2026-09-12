@@ -319,6 +319,33 @@ const _commentaryCache = new Map<string, OnlineCommentaryChapter | null>()
 const COMMENTARY_CACHE_MAX = 6
 
 /**
+ * Bounded LRU around fetchJson. Re-inserts on hit so eviction is least-recently-
+ * used: without this the payload currently on screen can be evicted while stale
+ * ones survive. `cacheNull` keeps a failed/missing fetch as null — right for
+ * per-chapter files where "no file" is the common answer and shouldn't be
+ * re-asked every verse; wrong for one-off fetches where Retry should refetch.
+ */
+async function cachedJson<T>(
+  cache: Map<string, T | null>, max: number, key: string, path: string, cacheNull: boolean,
+): Promise<T | null> {
+  if (cache.has(key)) {
+    const hit = cache.get(key) ?? null
+    cache.delete(key)
+    cache.set(key, hit)
+    return hit
+  }
+  const { url, fallback } = onlineUrls(path)
+  const data = await fetchJson<T>(url, fallback)
+  if (data === null && !cacheNull) return null
+  if (cache.size >= max) {
+    const oldest = cache.keys().next().value
+    if (oldest !== undefined) cache.delete(oldest)
+  }
+  cache.set(key, data)
+  return data
+}
+
+/**
  * Commentary for ONE verse, from the cached chapter payload. Null when offline
  * or the chapter has no file. Only the matching entries are expanded — callers
  * want a single verse, and a big chapter holds hundreds of entries.
@@ -329,23 +356,8 @@ export async function fetchOnlineCommentaryVerse(
   chapter: number,
   verse: number,
 ): Promise<OnlineCommentaryEntry[] | null> {
-  const key = `${folder}|${book}|${chapter}`
-  if (!_commentaryCache.has(key)) {
-    const { url, fallback } = onlineUrls(`/${folder}/${encodeURIComponent(book)}/${chapter}.json`)
-    const data = await fetchJson<OnlineCommentaryChapter>(url, fallback)
-    if (_commentaryCache.size >= COMMENTARY_CACHE_MAX) {
-      const oldest = _commentaryCache.keys().next().value
-      if (oldest !== undefined) _commentaryCache.delete(oldest)
-    }
-    _commentaryCache.set(key, data)
-  } else {
-    // Re-insert on hit so eviction is least-recently-used: without this the
-    // chapter currently on screen can be evicted while stale ones survive.
-    const hit = _commentaryCache.get(key)!
-    _commentaryCache.delete(key)
-    _commentaryCache.set(key, hit)
-  }
-  const cached = _commentaryCache.get(key)
+  const cached = await cachedJson(_commentaryCache, COMMENTARY_CACHE_MAX,
+    `${folder}|${book}|${chapter}`, `/${folder}/${encodeURIComponent(book)}/${chapter}.json`, true)
   if (!cached) return null
   return cached.entries
     .filter(e => e.v === verse)
@@ -384,18 +396,8 @@ export async function fetchOnlineAquinasIndex(): Promise<AquinasIndex | null> {
 export async function fetchOnlineAquinasQuestion(
   work: AquinasWork, part: string, question: number,
 ): Promise<AquinasArticle[] | null> {
-  const key = `${work}|${part}|${question}`
-  if (!_aquinasQ.has(key)) {
-    const { url, fallback } = onlineUrls(`/aquinas/${work}/${encodeURIComponent(part)}/${question}.json`)
-    const data = await fetchJson<AquinasArticle[]>(url, fallback)
-    if (!data) return null  // don't cache failures — Retry should refetch
-    if (_aquinasQ.size >= AQUINAS_CACHE_MAX) {
-      const oldest = _aquinasQ.keys().next().value
-      if (oldest !== undefined) _aquinasQ.delete(oldest)
-    }
-    _aquinasQ.set(key, data)
-  }
-  return _aquinasQ.get(key) ?? null
+  return cachedJson(_aquinasQ, AQUINAS_CACHE_MAX, `${work}|${part}|${question}`,
+    `/aquinas/${work}/${encodeURIComponent(part)}/${question}.json`, false)
 }
 
 /**

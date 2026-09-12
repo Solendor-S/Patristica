@@ -18,8 +18,14 @@ import glob
 import os
 import re
 import sqlite3
+import sys
 
 from bs4 import BeautifulSoup
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'newadvent'))
+from parse_newadvent import clean_text as clean  # noqa: E402
+from parse_early_text_refs import roman_to_int  # noqa: E402
 
 DB = 'temp/packs/aquinas.db'
 SUMMA_DIR = 'temp/aquinas-src/english/summa'
@@ -40,10 +46,6 @@ CREATE_SQL = [
 ]
 
 SMALL = {'of', 'the', 'and', 'or', 'in', 'on', 'to', 'a', 'an', 'by', 'for', 'with', 'as', 'at', 'from'}
-
-
-def clean(s: str) -> str:
-    return ' '.join(s.replace('\xa0', ' ').split()).strip()
 
 
 def titlecase(s: str) -> str:
@@ -98,18 +100,6 @@ def import_summa(cur: sqlite3.Cursor) -> int:
     return n
 
 
-_ROMAN = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100}
-
-
-def roman(s: str) -> int:
-    total, prev = 0, 0
-    for ch in reversed(s.upper()):
-        v = _ROMAN[ch]
-        total += -v if v < prev else v
-        prev = max(prev, v)
-    return total
-
-
 def import_scg(cur: sqlite3.Cursor) -> int:
     with open(SCG_XML, encoding='utf-8') as f:
         soup = BeautifulSoup(f.read(), 'xml')
@@ -118,7 +108,7 @@ def import_scg(cur: sqlite3.Cursor) -> int:
         m = re.match(r'Book ([IVX]+)\.', book.get('title', ''))
         if not m:
             continue
-        part = str(roman(m.group(1)))
+        part = str(roman_to_int(m.group(1)))
         for ch in book.find_all('div2'):
             cm = re.match(r'Chapter ([IVXLC]+)\.\s*(.*)', ch.get('title', ''))
             if not cm:
@@ -135,7 +125,7 @@ def import_scg(cur: sqlite3.Cursor) -> int:
             if not paras:
                 continue
             cur.execute('INSERT INTO aquinas_topics VALUES (NULL,?,?,?,?,?,?)',
-                        ('scg', part, roman(cm.group(1)), 0, clean(cm.group(2)), '\n\n'.join(paras)))
+                        ('scg', part, roman_to_int(cm.group(1)), 0, clean(cm.group(2)), '\n\n'.join(paras)))
             n += 1
     return n
 

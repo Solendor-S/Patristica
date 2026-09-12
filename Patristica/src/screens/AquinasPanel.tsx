@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useReducer, useState } from 'react'
 import {
   View, Text, FlatList, TouchableOpacity, ScrollView,
   StyleSheet, ActivityIndicator, TextInput,
@@ -38,7 +38,8 @@ export default function AquinasPanel({ selected }: Props) {
   const [entries, setEntries] = useState<CommentaryEntry[]>([])
   const [offline, setOffline] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [tick, setTick] = useState(0)
+  // Every fetch effect depends on `tick`; the Retry buttons bump it to refetch.
+  const [tick, retry] = useReducer((n: number) => n + 1, 0)
   const isGospel = !!selected && GOSPELS.has(selected.book)
 
   useEffect(() => {
@@ -61,9 +62,10 @@ export default function AquinasPanel({ selected }: Props) {
   const [filter, setFilter] = useState('')
 
   useEffect(() => {
-    if (mode !== 'browse' || index !== undefined) return
+    if (mode !== 'browse' || index) return
+    setIndex(undefined)
     loadIndex().then(setIndex)
-  }, [mode, index, loadIndex])
+  }, [mode, loadIndex, tick]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!work || !part || question === null) { setArticles(undefined); return }
@@ -71,7 +73,7 @@ export default function AquinasPanel({ selected }: Props) {
     setArticles(undefined)
     loadQuestion(work, part, question).then(a => { if (!cancelled) setArticles(a) })
     return () => { cancelled = true }
-  }, [work, part, question, loadQuestion])
+  }, [work, part, question, loadQuestion, tick])
 
   const back = () => {
     if (question !== null) setQuestion(null)
@@ -108,33 +110,35 @@ export default function AquinasPanel({ selected }: Props) {
   // ── verse mode render ──
   if (mode === 'verse') {
     const ref = selected ? `${selected.book} ${selected.chapter}:${selected.verse}` : ''
-    return (
-      <View style={{ flex: 1 }}>
-        {modeToggle}
-        {!selected ? empty('book-outline', 'No verse selected', 'Tap a verse in the Bible tab to see the Catena Aurea')
-        : !isGospel ? empty('link-outline', 'Gospels only', `Aquinas' Catena Aurea covers Matthew, Mark, Luke and John. Browse the Summa for ${selected.book} themes.`)
-        : loading ? <View style={styles.center}><ActivityIndicator color={colors.accent} /></View>
-        : entries.length === 0 ? (
-          offline
-            ? empty('cloud-offline-outline', 'Catena unavailable offline', `Reconnect to read the Catena Aurea for ${ref}, or install the Aquinas pack from Library → Downloads.`, () => setTick(t => t + 1))
-            : empty('chatbubble-ellipses-outline', 'No Catena entry', `Nothing recorded for ${ref}`)
-        ) : (
-          <FlatList
-            data={entries}
-            keyExtractor={e => e.id.toString()}
-            ListHeaderComponent={
-              <Text style={styles.note}>
-                Catena Aurea — the Fathers on {ref}, as compiled by Thomas Aquinas ({entries.length})
-              </Text>
-            }
-            contentContainerStyle={styles.list}
-            renderItem={({ item }) => (
-              <EntryCard entry={item} book={selected.book} chapter={selected.chapter} verse={selected.verse} />
-            )}
-          />
-        )}
-      </View>
-    )
+    let body: React.ReactNode
+    if (!selected) {
+      body = empty('book-outline', 'No verse selected', 'Tap a verse in the Bible tab to see the Catena Aurea')
+    } else if (!isGospel) {
+      body = empty('link-outline', 'Gospels only', `Aquinas' Catena Aurea covers Matthew, Mark, Luke and John. Browse the Summa for ${selected.book} themes.`)
+    } else if (loading) {
+      body = <View style={styles.center}><ActivityIndicator color={colors.accent} /></View>
+    } else if (entries.length === 0 && offline) {
+      body = empty('cloud-offline-outline', 'Catena unavailable offline', `Reconnect to read the Catena Aurea for ${ref}, or install the Aquinas pack from Library → Downloads.`, retry)
+    } else if (entries.length === 0) {
+      body = empty('chatbubble-ellipses-outline', 'No Catena entry', `Nothing recorded for ${ref}`)
+    } else {
+      body = (
+        <FlatList
+          data={entries}
+          keyExtractor={e => e.id.toString()}
+          ListHeaderComponent={
+            <Text style={styles.note}>
+              Catena Aurea — the Fathers on {ref}, as compiled by Thomas Aquinas ({entries.length})
+            </Text>
+          }
+          contentContainerStyle={styles.list}
+          renderItem={({ item }) => (
+            <EntryCard entry={item} book={selected.book} chapter={selected.chapter} verse={selected.verse} />
+          )}
+        />
+      )
+    }
+    return <View style={{ flex: 1 }}>{modeToggle}{body}</View>
   }
 
   // ── philosophy mode render ──
@@ -165,7 +169,7 @@ export default function AquinasPanel({ selected }: Props) {
   if (index === undefined) {
     body = <View style={styles.center}><ActivityIndicator color={colors.accent} /></View>
   } else if (index === null) {
-    body = empty('cloud-offline-outline', 'Unavailable offline', 'Reconnect to browse, or install the Aquinas pack from Library → Downloads.', () => setIndex(undefined))
+    body = empty('cloud-offline-outline', 'Unavailable offline', 'Reconnect to browse, or install the Aquinas pack from Library → Downloads.', retry)
   } else if (!work) {
     body = (
       <View style={styles.list}>
@@ -240,7 +244,7 @@ export default function AquinasPanel({ selected }: Props) {
   } else if (articles === undefined) {
     body = <View style={styles.center}><ActivityIndicator color={colors.accent} /></View>
   } else if (articles === null) {
-    body = empty('cloud-offline-outline', 'Unavailable offline', 'Reconnect to read this section.', () => { const q = question; setQuestion(null); setTimeout(() => setQuestion(q), 0) })
+    body = empty('cloud-offline-outline', 'Unavailable offline', 'Reconnect to read this section.', retry)
   } else {
     body = <ArticleList articles={articles} isScg={work === 'scg'} styles={styles} />
   }

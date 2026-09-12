@@ -29,9 +29,9 @@ import shutil
 import sqlite3
 
 SOURCES = [
-    # (table, output folder)
-    ('commentary', 'commentary'),
-    ('commentary_legacy', 'commentary-legacy'),
+    # (table, output folder, keep source order)
+    ('commentary', 'commentary', False),
+    ('commentary_legacy', 'commentary-legacy', False),
 ]
 
 
@@ -60,7 +60,8 @@ def build(src_db: str, out_root: str, table: str, folder: str, clean: bool,
         entries = []
         # stable order — the app sorts by father date, but keep output deterministic.
         # keep_order preserves source order (Catena Aurea is a deliberate chain).
-        for r in sorted(rs, key=(lambda x: (x[2], x[9])) if keep_order else (lambda x: (x[2], x[3], x[7] or ''))):
+        key_fn = (lambda x: (x[2], x[9])) if keep_order else (lambda x: (x[2], x[3], x[7] or ''))
+        for r in sorted(rs, key=key_fn):
             full = r[6] or ''
             if full not in index:
                 index[full] = len(texts)
@@ -92,13 +93,18 @@ def main() -> None:
     ap.add_argument('--out', default='data/online', help='online JSON root')
     ap.add_argument('--keep', action='store_true',
                     help='do not wipe existing output folders first')
-    ap.add_argument('--only', metavar='TABLE:FOLDER',
-                    help='single source from another DB, e.g. commentary:aquinas-catena')
+    ap.add_argument('--only', metavar='TABLE:FOLDER[:ordered]',
+                    help='single source from another DB, e.g. commentary:aquinas-catena:ordered '
+                         '(":ordered" keeps DB row order instead of sorting by father)')
     args = ap.parse_args()
 
-    sources = [tuple(args.only.split(':', 1))] if args.only else SOURCES
-    for table, folder in sources:
-        build(args.src, args.out, table, folder, clean=not args.keep, keep_order=bool(args.only))
+    if args.only:
+        table, folder, *flags = args.only.split(':')
+        sources = [(table, folder, 'ordered' in flags)]
+    else:
+        sources = SOURCES
+    for table, folder, keep_order in sources:
+        build(args.src, args.out, table, folder, clean=not args.keep, keep_order=keep_order)
 
 
 if __name__ == '__main__':

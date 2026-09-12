@@ -9,6 +9,7 @@ import { useTheme } from '../context/ThemeContext'
 import { AQUINAS_PHILOSOPHY } from '../data/aquinasPhilosophy'
 import type { PhilosophySection } from '../data/aquinasPhilosophy'
 import { parseVerseRefs } from './DoctrinePanel'
+import type { TextSegment } from './DoctrinePanel'
 import { ScripturePreviewModal } from './ScripturePreviewModal'
 import type { ThemeColors } from '../theme/themes'
 import type { RootTabParamList } from '../types'
@@ -34,9 +35,15 @@ export default function AquinasPhilosophyView() {
     })
   }, [navigation, setSelected])
 
-  const linked = (text: string, style: object) => (
+  // Parsed once per section, not on every preview open/close
+  const parsed = useMemo(() => section && {
+    paragraphs: section.paragraphs.map(parseVerseRefs),
+    scripture: section.scripture.map(parseVerseRefs),
+  }, [section])
+
+  const linked = (segs: TextSegment[], style: object) => (
     <Text style={style}>
-      {parseVerseRefs(text).map((seg, i) =>
+      {segs.map((seg, i) =>
         seg.type === 'text' ? seg.content : (
           <Text key={i} style={styles.ref}
             onPress={() => setPreview({ book: seg.book, chapter: seg.chapter, verse: seg.verse })}>
@@ -46,7 +53,7 @@ export default function AquinasPhilosophyView() {
     </Text>
   )
 
-  if (!section) {
+  if (!section || !parsed) {
     return (
       <ScrollView contentContainerStyle={styles.list}>
         <Text style={styles.intro}>
@@ -79,10 +86,10 @@ export default function AquinasPhilosophyView() {
       </View>
       <ScrollView contentContainerStyle={styles.list}>
         <Text style={styles.title}>{section.title}</Text>
-        {section.paragraphs.map((p, i) => <View key={i}>{linked(p, styles.para)}</View>)}
+        {parsed.paragraphs.map((p, i) => <View key={i}>{linked(p, styles.para)}</View>)}
         <View style={styles.scriptureBox}>
           <Text style={styles.scriptureLabel}>Where Scripture shows it</Text>
-          {section.scripture.map((s, i) => <View key={i}>{linked(s, styles.scriptureItem)}</View>)}
+          {parsed.scripture.map((s, i) => <View key={i}>{linked(s, styles.scriptureItem)}</View>)}
         </View>
         {next && (
           <TouchableOpacity style={styles.nextBtn} onPress={() => setSection(next)} activeOpacity={0.7}>

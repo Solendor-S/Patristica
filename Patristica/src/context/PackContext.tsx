@@ -151,29 +151,27 @@ export const COMMENTARY_LEGACY_PACK = 'commentary-legacy'
  * Commentary is no longer in the core DB, so every commentary query needs these.
  * A null handle is not an error — the caller falls back to the online JSON.
  */
-export function useCommentaryDbs() {
+/** Open handle for one pack, or null while opening / when it isn't installed. */
+export function usePackDb(slug: string): { db: SQLiteDatabase | null; installed: boolean } {
   const { isInstalled, installedReady, getPackDb } = usePacks()
-  const [dbs, setDbs] = useState<{
-    fathers: SQLiteDatabase | null
-    legacy: SQLiteDatabase | null
-  }>({ fathers: null, legacy: null })
-
-  const hasFathers = isInstalled(COMMENTARY_FATHERS_PACK)
-  const hasLegacy = isInstalled(COMMENTARY_LEGACY_PACK)
+  const [db, setDb] = useState<SQLiteDatabase | null>(null)
+  const installed = isInstalled(slug)
 
   useEffect(() => {
     if (!installedReady) return
     let cancelled = false
-    Promise.all([
-      hasFathers ? getPackDb(COMMENTARY_FATHERS_PACK) : Promise.resolve(null),
-      hasLegacy ? getPackDb(COMMENTARY_LEGACY_PACK) : Promise.resolve(null),
-    ]).then(([fathers, legacy]) => {
-      if (!cancelled) setDbs({ fathers, legacy })
-    })
+    ;(installed ? getPackDb(slug) : Promise.resolve(null))
+      .then(d => { if (!cancelled) setDb(d) })
     return () => { cancelled = true }
-  }, [hasFathers, hasLegacy, installedReady, getPackDb])
+  }, [slug, installed, installedReady, getPackDb])
 
-  return { ...dbs, hasFathers, hasLegacy }
+  return { db, installed }
+}
+
+export function useCommentaryDbs() {
+  const fathers = usePackDb(COMMENTARY_FATHERS_PACK)
+  const legacy = usePackDb(COMMENTARY_LEGACY_PACK)
+  return { fathers: fathers.db, legacy: legacy.db, hasFathers: fathers.installed, hasLegacy: legacy.installed }
 }
 
 // ── Aquinas pack (Catena Aurea verse entries + Summa/SCG topics) ─────────────
@@ -186,17 +184,7 @@ export const AQUINAS_PACK = 'aquinas'
  * Contra Gentiles from aquinas_topics or the aquinas/ JSON tree.
  */
 export function useAquinas() {
-  const { isInstalled, installedReady, getPackDb } = usePacks()
-  const [db, setDb] = useState<SQLiteDatabase | null>(null)
-  const hasPack = isInstalled(AQUINAS_PACK)
-
-  useEffect(() => {
-    if (!installedReady) return
-    let cancelled = false
-    ;(hasPack ? getPackDb(AQUINAS_PACK) : Promise.resolve(null))
-      .then(d => { if (!cancelled) setDb(d) })
-    return () => { cancelled = true }
-  }, [hasPack, installedReady, getPackDb])
+  const { db, installed: hasPack } = usePackDb(AQUINAS_PACK)
 
   const loadVerse = useCallback(async (
     book: string, chapter: number, verse: number,
