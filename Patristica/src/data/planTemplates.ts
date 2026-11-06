@@ -1,12 +1,10 @@
-import { BOOKS } from './books'
+import { CANON_OT_ORDER, chapterCount, type CanonKey } from './books'
 
 // All canonical chapter tuples [book, chapter] for a given book range
-export function chaptersForBooks(bookNames: string[]): [string, number][] {
+export function chaptersForBooks(bookNames: string[], canon: CanonKey): [string, number][] {
   const result: [string, number][] = []
   for (const name of bookNames) {
-    const meta = BOOKS.find(b => b.name === name)
-    if (!meta) continue
-    for (let c = 1; c <= meta.chapters; c++) result.push([name, c])
+    for (let c = 1; c <= chapterCount(name, '', canon); c++) result.push([name, c])
   }
   return result
 }
@@ -29,8 +27,6 @@ const NT_BOOKS = [
   'Hebrews','James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation',
 ]
 
-const OT_BOOKS = BOOKS.filter(b => b.testament === 'OT').map(b => b.name)
-const ALL_BOOKS = [...OT_BOOKS, ...NT_BOOKS]
 const GOSPELS_ACTS_BOOKS = ['Matthew', 'Mark', 'Luke', 'John', 'Acts']
 
 export interface PlanTemplate {
@@ -38,7 +34,7 @@ export interface PlanTemplate {
   label: string
   description: string
   days: number
-  getChapters: () => [string, number][]
+  getChapters: (canon: CanonKey) => [string, number][]
 }
 
 export const PLAN_TEMPLATES: PlanTemplate[] = [
@@ -47,27 +43,27 @@ export const PLAN_TEMPLATES: PlanTemplate[] = [
     label: 'NT in 90 Days',
     description: '~3 chapters per day through the entire New Testament',
     days: 90,
-    getChapters: () => chaptersForBooks(NT_BOOKS),
+    getChapters: canon => chaptersForBooks(NT_BOOKS, canon),
   },
   {
     key: 'psalms_30',
     label: 'Psalms in 30 Days',
     description: '5 psalms per day through the complete Psalter',
     days: 30,
-    getChapters: () => chaptersForBooks(['Psalms']),
+    getChapters: canon => chaptersForBooks(['Psalms'], canon),
   },
   {
     key: 'bible_365',
     label: 'Bible in a Year',
     description: '~3–4 chapters per day through the entire Bible',
     days: 365,
-    getChapters: () => chaptersForBooks(ALL_BOOKS),
+    getChapters: canon => chaptersForBooks([...CANON_OT_ORDER[canon], ...NT_BOOKS], canon),
   },
   {
     key: 'gospels_60',
     label: 'Gospels & Acts in 60 Days',
     description: 'A focused read through the four Gospels and Acts',
     days: 60,
-    getChapters: () => chaptersForBooks(GOSPELS_ACTS_BOOKS),
+    getChapters: canon => chaptersForBooks(GOSPELS_ACTS_BOOKS, canon),
   },
 ]

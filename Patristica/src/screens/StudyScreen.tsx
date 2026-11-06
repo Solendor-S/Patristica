@@ -10,6 +10,7 @@ import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
 import { useWordFocus } from '../context/WordFocusContext'
 import { useCommentary } from '../context/PackContext'
+import { useTranslation } from '../context/TranslationContext'
 import { getCrossRefs, getJosephusForVerse, getVariantsForVerse, getVerseText, getMaxVerse, getAllCommentaryByFather, getBibleVerseCitedByEarlyTexts, getEarlyTextRefs, searchCommentary } from '../db/queries'
 import type { JosephusEntry, CommentaryEntryWithRef, EarlyTextCitation, EarlyTextRef } from '../db/queries'
 import type { TextualVariant } from '../types'
@@ -19,7 +20,7 @@ import { TRADITION_COLORS } from '../data/traditionColors'
 import DoctrinePanel from './DoctrinePanel'
 import AquinasPanel from './AquinasPanel'
 import EntryCard from '../components/EntryCard'
-import { BOOKS, EARLY_TEXT_MAP } from '../data/books'
+import { BOOKS, EARLY_TEXT_MAP, kjvVerse } from '../data/books'
 import { useCrossRefOrder } from '../context/CrossRefOrderContext'
 import { stripUsfm } from '../data/redLetter'
 import { getHistoricalForVerse, HISTORICAL_SOURCES, CATEGORY_LABEL } from '../data/historicalData'
@@ -384,6 +385,10 @@ export default function StudyScreen() {
   // online JSON — same pack-or-online arrangement as translations
   const commentaryLoader = useCommentary()
   const { selected, setSelected } = useSelectedVerse()
+  const { translation } = useTranslation()
+  // Commentary and cross-refs are keyed on KJV numbering; 0 matches nothing, which is
+  // right for a verse with no KJV equivalent.
+  const studyVerse = selected ? kjvVerse(translation, selected.book, selected.chapter, selected.verse) ?? 0 : 0
   const navigation = useNavigation<NavProp>()
 
   const [activeTab, setActiveTab] = useState<StudyTab>('fathers')
@@ -474,13 +479,13 @@ export default function StudyScreen() {
   useEffect(() => {
     if (!selected) { setVerseText(null); return }
     Promise.all([
-      getVerseText(db, selected.book, selected.chapter, selected.verse),
+      getVerseText(db, selected.book, selected.chapter, studyVerse),
       getMaxVerse(db, selected.book, selected.chapter),
     ]).then(([text, max]) => {
       setVerseText(text ? stripUsfm(text).replace(/¶\s*/g, '') : text)
       setMaxVerse(max ?? 1)
     }).catch(() => {})
-  }, [selected?.book, selected?.chapter, selected?.verse])
+  }, [selected?.book, selected?.chapter, studyVerse])
 
   const stepVerse = useCallback((delta: number) => {
     if (!selected) return
@@ -495,7 +500,7 @@ export default function StudyScreen() {
     if (!selected) { setEntries([]); return }
     let cancelled = false
     setLoadingFathers(true)
-    commentaryLoader.load(selected.book, selected.chapter, selected.verse, verseSource)
+    commentaryLoader.load(selected.book, selected.chapter, studyVerse, verseSource)
       .then(({ entries: rows, offline }) => {
         if (cancelled) return
         setCommentaryOffline(offline)
@@ -505,7 +510,7 @@ export default function StudyScreen() {
       })
       .catch(() => { if (!cancelled) setLoadingFathers(false) })
     return () => { cancelled = true }
-  }, [selected?.book, selected?.chapter, selected?.verse, verseSource, commentaryLoader.load])
+  }, [selected?.book, selected?.chapter, studyVerse, verseSource, commentaryLoader.load])
 
   useEffect(() => {
     if (!selected) {
@@ -516,10 +521,10 @@ export default function StudyScreen() {
     const isEarlyBook = !!EARLY_TEXT_MAP[selected.book]
     setLoadingRefs(true)
     Promise.all([
-      getCrossRefs(db, selected.book, selected.chapter, selected.verse),
+      getCrossRefs(db, selected.book, selected.chapter, studyVerse),
       isEarlyBook
         ? getEarlyTextRefs(db, selected.book, selected.chapter)
-        : getBibleVerseCitedByEarlyTexts(db, selected.book, selected.chapter, selected.verse),
+        : getBibleVerseCitedByEarlyTexts(db, selected.book, selected.chapter, studyVerse),
     ])
       .then(([refs, earlyData]) => {
         setCrossRefs(refs)
@@ -536,7 +541,7 @@ export default function StudyScreen() {
       })
       .catch(() => setLoadingRefs(false))
 
-  }, [selected?.book, selected?.chapter, selected?.verse])
+  }, [selected?.book, selected?.chapter, studyVerse])
 
   const verseRef = selected
     ? `${selected.book} ${selected.chapter}:${selected.verse}`
@@ -1197,7 +1202,7 @@ export default function StudyScreen() {
         {/* Historical */}
         {activeTab === 'historical' && (
           <HistoricalPanel
-            selected={selected}
+            selected={selected && { ...selected, verse: studyVerse }}
             mode={histMode}
             onModeChange={setHistMode}
           />

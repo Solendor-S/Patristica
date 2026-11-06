@@ -1,6 +1,8 @@
-import { BOOKS } from '../data/books'
+import { BOOK_MAP, CANON_BADGE, canonBookNames, chapterCount } from '../data/books'
 
-const CANONICAL_BOOKS = BOOKS.map(b => b.name)
+// Every book any supported canon lists (Catholic is the superset), canonical ones first
+// so they win prefix/fuzzy ties. The Reader routes deuterocanonical names to the packs.
+const CANONICAL_BOOKS = [...Object.keys(BOOK_MAP), ...canonBookNames('catholic').filter(n => !BOOK_MAP[n]), ...Object.keys(CANON_BADGE)]
 
 const NORM_BOOKS: Record<string, string> = {}
 for (const b of CANONICAL_BOOKS) {
@@ -138,8 +140,7 @@ export function matchBookRefs(input: string): BookRef[] {
     const book = resolveBook(pm[1].trim())
     if (book && CANONICAL_BOOKS.includes(book)) {
       const chapter = parseInt(pm[2], 10)
-      const bookData = BOOKS.find(b => b.name === book)
-      if (bookData && chapter >= 1 && chapter <= bookData.chapters) {
+      if (chapter >= 1 && chapter <= chapterCount(book, '', 'catholic')) {
         const verse    = pm[3] ? parseInt(pm[3], 10) : undefined
         const verseEnd = pm[4] ? parseInt(pm[4], 10) : undefined
         return [{ book, chapter, chapterSpecified: true, verse, verseEnd }]

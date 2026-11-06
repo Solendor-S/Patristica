@@ -15,6 +15,7 @@ import { LineSpacingProvider } from './src/context/LineSpacingContext'
 import { FontSizeProvider } from './src/context/FontSizeContext'
 import { FontFamilyProvider } from './src/context/FontFamilyContext'
 import { NavDepthProvider } from './src/context/NavDepthContext'
+import { CanonProvider } from './src/context/CanonContext'
 import { StartupModeProvider } from './src/context/StartupModeContext'
 import { SelectedVerseProvider } from './src/context/SelectedVerseContext'
 import { TranslationProvider } from './src/context/TranslationContext'
@@ -104,6 +105,7 @@ export default function App() {
           <FontSizeProvider>
           <FontFamilyProvider>
           <NavDepthProvider>
+          <CanonProvider>
           <StartupModeProvider>
           <SelectedVerseProvider>
           <TranslationProvider>
@@ -145,6 +147,7 @@ export default function App() {
           </TranslationProvider>
           </SelectedVerseProvider>
           </StartupModeProvider>
+          </CanonProvider>
           </NavDepthProvider>
           </FontFamilyProvider>
           </FontSizeProvider>

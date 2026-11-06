@@ -6,11 +6,15 @@ import {
 import { Ionicons } from '@expo/vector-icons'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { RouteProp } from '@react-navigation/native'
-import { BOOKS, APOCRYPHA_BOOKS, APOCRYPHA_BOOK_NAMES, EARLY_TEXTS, EARLY_TEXT_NAMES } from '../data/books'
+import {
+  BOOKS, APOCRYPHA_BOOKS, APOCRYPHA_BOOK_NAMES, EARLY_TEXTS, EARLY_TEXT_NAMES,
+  CANON_BADGE, canonOtBooks, inCanon,
+} from '../data/books'
 import { StackActions } from '@react-navigation/native'
 import { pendingNav } from '../navigation/pendingNav'
 import { useTheme } from '../context/ThemeContext'
 import { useNavDepth } from '../context/NavDepthContext'
+import { useCanon } from '../context/CanonContext'
 import { usePacks } from '../context/PackContext'
 import type { ThemeColors } from '../theme/themes'
 import type { BibleStackParamList } from '../types'
@@ -22,15 +26,7 @@ type Props = {
 
 type Tab = 'OT' | 'NT' | 'APOC' | 'EARLY'
 
-const OT_BOOKS = BOOKS.filter(b => b.testament === 'OT')
 const NT_BOOKS = BOOKS.filter(b => b.testament === 'NT')
-
-const TABS: { key: Tab; label: string; count: number }[] = [
-  { key: 'OT',    label: 'Old Testament', count: OT_BOOKS.length },
-  { key: 'NT',    label: 'New Testament', count: NT_BOOKS.length },
-  { key: 'APOC',  label: 'Apocrypha',     count: APOCRYPHA_BOOKS.length },
-  { key: 'EARLY', label: 'Early Texts',   count: EARLY_TEXTS.length },
-]
 
 type BookEntry = typeof APOCRYPHA_BOOKS[number] | typeof EARLY_TEXTS[number]
 type BookPair  = [BookEntry, BookEntry | null]
@@ -48,11 +44,11 @@ function buildSectionPairs<T extends { group?: string }>(
   })
 }
 
-const APOC_SECTIONS = buildSectionPairs(APOCRYPHA_BOOKS, [
+const APOC_SECTION_DEFS = [
   { title: 'Deuterocanon',    subtitle: 'Catholic & Orthodox churches' },
   { title: 'Broader Canon',   subtitle: 'Some Orthodox traditions' },
   { title: 'Ethiopian Canon', subtitle: 'Ethiopian Orthodox church' },
-])
+]
 
 const EARLY_SECTIONS = buildSectionPairs(EARLY_TEXTS, [
   { title: 'Early Church Writings', subtitle: 'Pre-canon Christian texts' },
@@ -125,6 +121,25 @@ export default function BookPickerScreen({ navigation, route }: Props) {
   const [tab, setTab]     = useState<Tab>(route.params?.initialTab ?? 'OT')
   const { navDepth } = useNavDepth()
   const { isInstalled, isDownloading, download, packForContent } = usePacks()
+  const { canon } = useCanon()
+
+  // The canon decides which deuterocanonical books sit inside the OT tab;
+  // the Apocrypha tab keeps only what's left over.
+  const { otBooks, apocBooks, apocSections } = useMemo(() => {
+    const apocBooks = APOCRYPHA_BOOKS.filter(b => !inCanon(canon, b.name))
+    return {
+      otBooks: canonOtBooks(canon),
+      apocBooks,
+      apocSections: buildSectionPairs(apocBooks, APOC_SECTION_DEFS).filter(sec => sec.data.length > 0),
+    }
+  }, [canon])
+
+  const tabs: { key: Tab; label: string; count: number }[] = [
+    { key: 'OT',    label: 'Old Testament', count: otBooks.length },
+    { key: 'NT',    label: 'New Testament', count: NT_BOOKS.length },
+    { key: 'APOC',  label: 'Apocrypha',     count: apocBooks.length },
+    { key: 'EARLY', label: 'Early Texts',   count: EARLY_TEXTS.length },
+  ]
 
   const isSearching = query.trim().length > 0
 
@@ -153,7 +168,7 @@ export default function BookPickerScreen({ navigation, route }: Props) {
     }
   }
 
-  const tabBooks = tab === 'OT' ? OT_BOOKS : NT_BOOKS
+  const tabBooks = tab === 'OT' ? otBooks : NT_BOOKS
 
   return (
     <View style={s.container}>
@@ -180,7 +195,7 @@ export default function BookPickerScreen({ navigation, route }: Props) {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={s.tabBarContent}
           >
-            {TABS.map(t => (
+            {tabs.map(t => (
               <TouchableOpacity
                 key={t.key}
                 style={[s.tab, tab === t.key && s.tabActive]}
@@ -209,12 +224,13 @@ export default function BookPickerScreen({ navigation, route }: Props) {
           columnWrapperStyle={s.row}
           contentContainerStyle={s.grid}
           renderItem={({ item }) => {
-            const cardStyle = item.testament === 'APOC'  ? [s.card, s.cardApoc]
+            const outsideCanon = item.testament === 'APOC' && !inCanon(canon, item.name)
+            const cardStyle = outsideCanon               ? [s.card, s.cardApoc]
                             : item.testament === 'EARLY' ? [s.card, s.cardEarly]
                             : s.card
-            const badge = item.testament === 'APOC'  ? 'Apocrypha'
+            const badge = outsideCanon               ? 'Apocrypha'
                         : item.testament === 'EARLY' ? 'Early Text'
-                        : undefined
+                        : CANON_BADGE[item.name]
             return <BookCard entry={item} cardStyle={cardStyle} badge={badge} onPress={navigateToBook} s={s} />
           }}
         />
@@ -228,16 +244,15 @@ export default function BookPickerScreen({ navigation, route }: Props) {
           numColumns={3}
           columnWrapperStyle={s.row}
           contentContainerStyle={s.grid}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={s.card}
-              activeOpacity={0.7}
-              onPress={() => navigateToBook(item.name)}
-            >
-              <Text style={s.bookName} numberOfLines={2}>{item.name}</Text>
-              <Text style={s.chapterCount}>{item.chapters} ch</Text>
-            </TouchableOpacity>
-          )}
+          renderItem={({ item }) => {
+            // Deuterocanonical books in the OT still come from the apocrypha packs
+            const slug = item.testament === 'APOC' ? packForContent('apocrypha', item.name)?.slug : undefined
+            return (
+              <BookCard entry={item} cardStyle={s.card} onPress={navigateToBook} s={s}
+                packSlug={slug} packInstalled={!slug || isInstalled(slug)}
+                packDownloading={!!slug && isDownloading(slug)} onDownload={download} />
+            )
+          }}
         />
       )}
 
@@ -283,7 +298,7 @@ export default function BookPickerScreen({ navigation, route }: Props) {
 
       {!isSearching && tab === 'APOC' && (
         <SectionList
-          sections={APOC_SECTIONS}
+          sections={apocSections}
           keyExtractor={([a]) => a.name}
           contentContainerStyle={s.grid}
           stickySectionHeadersEnabled={false}
@@ -291,7 +306,7 @@ export default function BookPickerScreen({ navigation, route }: Props) {
             <View style={s.disclaimer}>
               <Ionicons name="information-circle-outline" size={16} color={colors.textMuted} />
               <Text style={s.disclaimerText}>
-                These writings are not part of the Protestant canon. Shown for historical and devotional study only.
+                These writings are outside the canon selected in Settings. Shown for historical and devotional study.
               </Text>
             </View>
           }

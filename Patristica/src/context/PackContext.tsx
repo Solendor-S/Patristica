@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
-import type { SQLiteDatabase } from 'expo-sqlite'
+import { useSQLiteContext, type SQLiteDatabase } from 'expo-sqlite'
 import { useUserDb } from '../db/UserDbProvider'
 import {
   getAllPacks, packBySlug, PackMeta, DownloadProgress,
@@ -10,11 +10,18 @@ import {
   fetchOnlineCommentaryVerse,
   fetchOnlineAquinasIndex,
   fetchOnlineAquinasQuestion,
+  fetchOnlineWordsAsChapter, isWordSourcePack,
 } from '../lib/PackManager'
-import { getCommentaryFromDb, getAquinasIndex, getAquinasQuestion } from '../db/queries'
+import {
+  getCommentaryFromDb, getAquinasIndex, getAquinasQuestion,
+  getChapter, getApocryphaChapter, getEarlyTextChapter,
+  TRANSLATION_PACK_SLUG, TRANSLATION_ONLINE_SOURCE,
+} from '../db/queries'
+import { APOCRYPHA_BOOK_NAMES, DANIEL_GREEK_CHAPTERS, EARLY_TEXT_NAMES, WEBC_DEUTERO } from '../data/books'
+import { ANNOTATED_TRANSLATIONS, type Translation } from './TranslationContext'
 import type { CommentarySource } from '../db/queries'
 import type { AquinasWork } from '../lib/PackManager'
-import type { CommentaryEntry } from '../types'
+import type { BibleVerse, CommentaryEntry } from '../types'
 
 // ── Context value ─────────────────────────────────────────────────────────────
 
@@ -204,6 +211,50 @@ export function useAquinas() {
     [db])
 
   return { loadVerse, loadIndex, loadQuestion, hasPack }
+}
+
+/**
+ * A chapter of any book in any translation, from wherever it lives: core DB, installed
+ * pack, or online JSON. Translations mostly live in packs, so anything that reads one
+ * without going through here gets an empty result from the core DB.
+ */
+export function useChapterText() {
+  const db = useSQLiteContext()
+  const { isInstalled, packForContent } = usePacks()
+
+  return useCallback(async (book: string, chapter: number, translation: string): Promise<BibleVerse[]> => {
+    const webc = translation === 'WEBC' ? WEBC_DEUTERO[book] : undefined
+    const greekDaniel = book === 'Daniel' && translation !== 'WEBC' ? DANIEL_GREEK_CHAPTERS[chapter] : undefined
+    const srcBook = greekDaniel ?? webc?.book ?? book
+    const srcChapter = greekDaniel ? 1 : webc?.chapter ?? chapter
+    const isApocrypha = !webc && APOCRYPHA_BOOK_NAMES.has(srcBook)
+    const isEarlyText = EARLY_TEXT_NAMES.has(book)
+    const slug = isApocrypha ? packForContent('apocrypha', srcBook)?.slug
+      : isEarlyText ? packForContent('early_text', book)?.slug
+      : TRANSLATION_PACK_SLUG[translation]
+    const packDb = slug && isInstalled(slug) ? (await openPackDb(slug)) ?? undefined : undefined
+
+    let rows: { verse: number; text: string }[]
+    if (slug && !packDb) {
+      const override = isApocrypha || isEarlyText ? undefined : TRANSLATION_ONLINE_SOURCE[translation]
+      const source = override?.source ?? slug
+      const isWords = override ? override.isWordSource : isWordSourcePack(slug)
+      rows = (isWords
+        ? await fetchOnlineWordsAsChapter(source, srcBook, srcChapter, ANNOTATED_TRANSLATIONS.has(translation as Translation))
+        : await fetchOnlineChapter(source, srcBook, srcChapter)) ?? []
+    } else if (isApocrypha) {
+      rows = await getApocryphaChapter(db, srcBook, srcChapter, packDb)
+    } else if (isEarlyText) {
+      rows = await getEarlyTextChapter(db, book, chapter, packDb)
+    } else {
+      rows = await getChapter(db, srcBook, srcChapter, translation, packDb)
+    }
+
+    const range = webc?.verses
+    return rows
+      .filter(v => !range || (v.verse >= range[0] && v.verse <= range[1]))
+      .map(v => ({ book, chapter, verse: v.verse, text: v.text }))
+  }, [db, isInstalled, packForContent])
 }
 
 /**

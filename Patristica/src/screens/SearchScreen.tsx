@@ -17,7 +17,8 @@ import { useTranslation, TRANSLATIONS, ANNOTATED_TRANSLATIONS, API_TRANSLATIONS 
 import { useStrongsInSearch } from '../context/StrongsInSearchContext'
 import { useSearchOrder } from '../context/SearchOrderContext'
 import type { SearchMode } from '../context/SearchOrderContext'
-import { BOOKS, BOOK_ORDER } from '../data/books'
+import { BOOKS, CANON_OT_ORDER, canonBookNames, canonBookOrder, type CanonKey } from '../data/books'
+import { useCanon } from '../context/CanonContext'
 import { matchBookRefs, type BookRef } from '../lib/parsePassage'
 import { useTheme } from '../context/ThemeContext'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
@@ -53,6 +54,10 @@ interface BookBreakdown {
   verseCount: number
   matchCount: number
 }
+
+// ponytail: one order for both canons. Protestant is a subsequence of Catholic,
+// so the Catholic order sorts both correctly.
+const BOOK_ORDER = canonBookOrder('catholic')
 
 function computeBreakdown(results: SearchResult[], queryWords: string[]): BookBreakdown[] {
   const map = new Map<string, { verseCount: number; matchCount: number }>()
@@ -240,7 +245,6 @@ import type { SearchResult, RootTabParamList } from '../types'
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Search'>
 type Testament = 'all' | 'OT' | 'NT'
 
-const OT_BOOKS = BOOKS.filter(b => b.testament === 'OT').map(b => b.name)
 const NT_BOOKS = BOOKS.filter(b => b.testament === 'NT').map(b => b.name)
 
 function filterLabel(testament: Testament, selectedBooks: Set<string>): string {
@@ -254,11 +258,12 @@ function filterLabel(testament: Testament, selectedBooks: Set<string>): string {
   return 'All Books'
 }
 
-function booksForSearch(testament: Testament, selectedBooks: Set<string>): string[] {
+function booksForSearch(testament: Testament, selectedBooks: Set<string>, canon: CanonKey): string[] {
   if (selectedBooks.size > 0) return Array.from(selectedBooks)
-  if (testament === 'OT') return OT_BOOKS
+  if (testament === 'OT') return CANON_OT_ORDER[canon]
   if (testament === 'NT') return NT_BOOKS
-  return []
+  // The WEBC holds the deuterocanon in the same table, so Protestant needs an explicit list
+  return canon === 'protestant' ? canonBookNames(canon) : []
 }
 
 function extractKjvWord(kjvPlusText: string | null, num: string): string | null {
@@ -452,6 +457,7 @@ export default function SearchScreen() {
   const userDb = useUserDb()
   const navigation = useNavigation<NavProp>()
   const { translation: activeTranslation, setTranslation } = useTranslation()
+  const { canon } = useCanon()
   // Search runs against the local FTS index. API-only translations (ESV) have no
   // local text, so every read below falls back to the KJV rather than finding nothing.
   const translation = API_TRANSLATIONS.has(activeTranslation) ? 'KJV' as const : activeTranslation
@@ -585,7 +591,7 @@ export default function SearchScreen() {
     setCorrectedTerms([])
     addSearchHistory(userDb, trimmed).catch(() => {})
     setHistory(prev => [trimmed, ...prev.filter(h => h !== trimmed)].slice(0, 20))
-    const books = booksForSearch(test, selBooks)
+    const books = booksForSearch(test, selBooks, canon)
 
     // Open pack DB for translations that live in pack files (ASV, WEB, BSB, etc.)
     const packSlug = TRANSLATION_PACK_SLUG[trans]
@@ -660,7 +666,7 @@ export default function SearchScreen() {
       setResults(rows)
     }
     setLoading(false)
-  }, [db, translation, testament, selectedBooks, searchMode, getPackDb, isInstalled])
+  }, [db, translation, testament, selectedBooks, searchMode, getPackDb, isInstalled, canon])
 
   const navigateToVerse = (result: SearchResult) => {
     navigation.navigate('Bible' as any, {
@@ -724,7 +730,7 @@ export default function SearchScreen() {
     setBreakdownVisible(true)
     setBreakdownLoading(true)
     try {
-      const books = booksForSearch(testament, selectedBooks)
+      const books = booksForSearch(testament, selectedBooks, canon)
       const isWordBoundary = searchMode === 'exact_words' || searchMode === 'exact_all_words'
       const bkSlug = TRANSLATION_PACK_SLUG[translation]
       const bkPackDb = (bkSlug && isInstalled(bkSlug)) ? (await getPackDb(bkSlug) ?? undefined) : undefined
@@ -742,7 +748,7 @@ export default function SearchScreen() {
     } finally {
       setBreakdownLoading(false)
     }
-  }, [db, translation, testament, selectedBooks, searchMode, getPackDb, isInstalled])
+  }, [db, translation, testament, selectedBooks, searchMode, getPackDb, isInstalled, canon])
 
   const handleOpenStrongsMap = useCallback(async () => {
     setStrongsMapVisible(true)
@@ -768,7 +774,7 @@ export default function SearchScreen() {
     setDraftBooks(new Set())
   }
 
-  const visibleBooks = draftTestament === 'OT' ? OT_BOOKS
+  const visibleBooks = draftTestament === 'OT' ? CANON_OT_ORDER[canon]
     : draftTestament === 'NT' ? NT_BOOKS
     : null  // null = no book chips (all selected)
 

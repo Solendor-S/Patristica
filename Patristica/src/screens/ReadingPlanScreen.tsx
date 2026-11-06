@@ -21,7 +21,8 @@ import type { PlanEntry, PlanWithProgress } from '../db/queries'
 
 const planPct = (p: PlanWithProgress) =>
   p.total_days > 0 ? Math.round((p.completed_entries / p.total_days) * 100) : 0
-import { BOOKS } from '../data/books'
+import { BOOKS, canonOtBooks } from '../data/books'
+import { useCanon } from '../context/CanonContext'
 import { chaptersForBooks } from '../data/planTemplates'
 
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Library'>
@@ -437,6 +438,8 @@ function CreatePlanView({ colors, onDone, onCancel }: {
 }) {
   const s = useMemo(() => makeStyles(colors), [colors])
   const db = useUserDb()
+  const { canon } = useCanon()
+  const planBooks = useMemo(() => [...canonOtBooks(canon), ...BOOKS.filter(b => b.testament === 'NT')], [canon])
   const [step, setStep] = useState<CreateStep>('pick')
   const [busy, setBusy] = useState(false)
 
@@ -448,7 +451,7 @@ function CreatePlanView({ colors, onDone, onCancel }: {
   const pickTemplate = async (key: string) => {
     setBusy(true)
     try {
-      await createPlanFromTemplate(db, key)
+      await createPlanFromTemplate(db, key, canon)
       onDone()
     } catch (e) {
       Alert.alert('Error', String(e))
@@ -461,7 +464,7 @@ function CreatePlanView({ colors, onDone, onCancel }: {
     if (!days || days < 1) { Alert.alert('Invalid', 'Enter a valid number of days'); return }
     if (selectedBooks.size === 0) { Alert.alert('Invalid', 'Select at least one book'); return }
     const name = customName.trim() || 'Custom Plan'
-    const chapters = chaptersForBooks([...selectedBooks])
+    const chapters = chaptersForBooks([...selectedBooks], canon)
     setBusy(true)
     try {
       await createCustomPlan(db, name, chapters, days)
@@ -506,7 +509,7 @@ function CreatePlanView({ colors, onDone, onCancel }: {
         onChangeText={setCustomName}
       />
       <FlatList
-        data={BOOKS}
+        data={planBooks}
         keyExtractor={b => b.name}
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -533,7 +536,7 @@ function CreatePlanView({ colors, onDone, onCancel }: {
       </View>
       <View style={s.daysWrap}>
         <Text style={s.daysLabel}>
-          {chaptersForBooks([...selectedBooks]).length} chapters selected
+          {chaptersForBooks([...selectedBooks], canon).length} chapters selected
         </Text>
         <TextInput
           style={s.daysInput}
@@ -545,7 +548,7 @@ function CreatePlanView({ colors, onDone, onCancel }: {
         />
         {customDays && parseInt(customDays, 10) > 0 && (
           <Text style={s.daysHint}>
-            ≈ {Math.ceil(chaptersForBooks([...selectedBooks]).length / parseInt(customDays, 10))} chapters/day
+            ≈ {Math.ceil(chaptersForBooks([...selectedBooks], canon).length / parseInt(customDays, 10))} chapters/day
           </Text>
         )}
         <TouchableOpacity style={s.createBtn} onPress={createCustom} activeOpacity={0.8}>

@@ -16,6 +16,8 @@ import type { Translation, StartupTranslation } from '../context/TranslationCont
 import { useFontSize, FONT_SIZE_DEFAULT } from '../context/FontSizeContext'
 import { useNavDepth, NAV_DEPTH_OPTIONS } from '../context/NavDepthContext'
 import type { NavDepthKey } from '../context/NavDepthContext'
+import { useCanon, CANON_OPTIONS } from '../context/CanonContext'
+import type { CanonKey } from '../context/CanonContext'
 import { useStartupMode, STARTUP_MODE_OPTIONS } from '../context/StartupModeContext'
 import type { StartupModeKey } from '../context/StartupModeContext'
 import { useReaderFont, FONT_FAMILY_OPTIONS, FONT_SCOPE_OPTIONS, FAMILY_MAP } from '../context/FontFamilyContext'
@@ -117,7 +119,7 @@ function AppearanceSection() {
 
 // ── Reading section ───────────────────────────────────────
 
-type ExpandedRow = 'lineSpacing' | 'translation' | 'startupTranslation' | 'navDepth' | 'startupMode' | 'fontFamily' | 'fontScope' | 'tabletLayout' | 'searchMode' | null
+type ExpandedRow = 'lineSpacing' | 'translation' | 'startupTranslation' | 'navDepth' | 'canon' | 'startupMode' | 'fontFamily' | 'fontScope' | 'tabletLayout' | 'searchMode' | null
 type PickerOption = { key: string; label: string; description: string }
 
 function PickerRow({
@@ -281,6 +283,7 @@ function ReadingSection() {
   const { translation, setTranslation, startupTranslation, setStartupTranslation } = useTranslation()
   const { setFontSize } = useFontSize()
   const { navDepth, setNavDepth } = useNavDepth()
+  const { canon, setCanon } = useCanon()
   const { startupMode, setStartupMode } = useStartupMode()
   const { familyKey, fontScope, setFontFamily, setFontScope } = useReaderFont()
   const { tabletLayout, setTabletLayout } = useTabletLayout()
@@ -441,6 +444,21 @@ function ReadingSection() {
           options={NAV_DEPTH_OPTIONS}
           selectedKey={navDepth}
           onSelect={key => { setNavDepth(key as NavDepthKey); setExpanded(null) }}
+          s={s}
+          colors={colors}
+        />
+
+        <View style={s.separator} />
+
+        <PickerRow
+          icon="library-outline"
+          rowLabel="Canon"
+          valueLabel={CANON_OPTIONS.find(o => o.key === canon)!.label}
+          expanded={expanded === 'canon'}
+          onToggle={() => toggle('canon')}
+          options={CANON_OPTIONS}
+          selectedKey={canon}
+          onSelect={key => { setCanon(key as CanonKey); setExpanded(null) }}
           s={s}
           colors={colors}
         />
@@ -611,6 +629,7 @@ function DataSection() {
   const { setTranslation } = useTranslation()
   const { setFontSize } = useFontSize()
   const { setFontFamily, setFontScope } = useReaderFont()
+  const { setCanon } = useCanon()
 
   const handleReset = () => {
     Alert.alert(
@@ -628,6 +647,7 @@ function DataSection() {
             setFontSize(FONT_SIZE_DEFAULT)
             setFontFamily('system')
             setFontScope('verses')
+            setCanon('catholic')
           },
         },
       ],

@@ -1,7 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useUserDb } from '../db/UserDbProvider'
 
-export type Translation = 'KJV' | 'ASV' | 'WEB' | 'BSB' | 'ESV' | 'SBLGNT' | 'TAGNT' | 'TR' | 'TR+' | 'KJV+' | 'I_KJV+' | 'TAHOT' | 'WLC' | 'WLC+' | 'DSS' | 'LXX' | 'LXX+' | 'E_LXX' | 'A_LXX'
+export type Translation = 'KJV' | 'ASV' | 'WEB' | 'WEBC' | 'BSB' | 'ESV' | 'SBLGNT' | 'TAGNT' | 'TR' | 'TR+' | 'KJV+' | 'I_KJV+' | 'TAHOT' | 'WLC' | 'WLC+' | 'DSS' | 'LXX' | 'LXX+' | 'E_LXX' | 'A_LXX'
 
 // `apiOnly` marks a translation with no local text at all — fetched live from a
 // third-party API, so it works only in the main reader. Parallel, split, and
@@ -12,6 +12,7 @@ export const TRANSLATIONS: { key: Translation; label: string; full: string; gree
   { key: 'I_KJV+', label: 'I_KJV+', full: "Interlinear KJV+ (Greek/Hebrew word order)" },
   { key: 'ASV',    label: 'ASV',    full: 'American Standard Version' },
   { key: 'WEB',    label: 'WEB',    full: 'World English Bible' },
+  { key: 'WEBC',   label: 'WEBC',   full: 'World English Bible Catholic (73 books)' },
   { key: 'BSB',    label: 'BSB',    full: 'Berean Standard Bible' },
   { key: 'ESV',    label: 'ESV',    full: 'English Standard Version (needs a free API key)', apiOnly: true },
   { key: 'SBLGNT', label: 'SBLGNT', full: 'SBL Greek New Testament',              greekOnly: true },

@@ -5,7 +5,8 @@ import {
 } from 'react-native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { RouteProp } from '@react-navigation/native'
-import { useSQLiteContext } from 'expo-sqlite'
+import { useChapterText } from '../context/PackContext'
+import { useTranslation } from '../context/TranslationContext'
 import { useTheme } from '../context/ThemeContext'
 import type { ThemeColors } from '../theme/themes'
 import type { BibleStackParamList } from '../types'
@@ -22,17 +23,19 @@ const COLS = 5
 export default function VersePickerScreen({ navigation, route }: Props) {
   const { colors } = useTheme()
   const s = useMemo(() => makeStyles(colors), [colors])
-  const db = useSQLiteContext()
+  const loadChapter = useChapterText()
+  const { translation } = useTranslation()
 
   const { book, chapter, apocrypha } = route.params
   const [verseCount, setVerseCount] = useState<number | null>(null)
 
   useEffect(() => {
-    db.getFirstAsync<{ count: number }>(
-      'SELECT MAX(verse) AS count FROM bible_verses WHERE book = ? AND chapter = ?',
-      [book, chapter]
-    ).then(row => setVerseCount(row?.count ?? 0)).catch(console.error)
-  }, [db, book, chapter])
+    let cancelled = false
+    loadChapter(book, chapter, translation)
+      .then(rows => { if (!cancelled) setVerseCount(rows.reduce((max, v) => Math.max(max, v.verse), 0)) })
+      .catch(console.error)
+    return () => { cancelled = true }
+  }, [loadChapter, book, chapter, translation])
 
   const verses = verseCount ? Array.from({ length: verseCount }, (_, i) => i + 1) : []
   const remainder = verses.length % COLS

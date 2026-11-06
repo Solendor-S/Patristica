@@ -5,7 +5,9 @@ import {
 } from 'react-native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { RouteProp } from '@react-navigation/native'
-import { BOOK_MAP, APOCRYPHA_BOOK_MAP, EARLY_TEXT_MAP } from '../data/books'
+import { chapterCount } from '../data/books'
+import { useTranslation } from '../context/TranslationContext'
+import { useCanon } from '../context/CanonContext'
 import { StackActions } from '@react-navigation/native'
 import { pendingNav } from '../navigation/pendingNav'
 import { useTheme } from '../context/ThemeContext'
@@ -26,10 +28,9 @@ export default function ChapterPickerScreen({ navigation, route }: Props) {
   const { navDepth } = useNavDepth()
 
   const { book, apocrypha, earlyText } = route.params
-  const chapterCount = earlyText  ? (EARLY_TEXT_MAP[book]?.chapters    ?? 1)
-                     : apocrypha  ? (APOCRYPHA_BOOK_MAP[book]?.chapters ?? 1)
-                     :              (BOOK_MAP[book]?.chapters            ?? 1)
-  const chapters = Array.from({ length: chapterCount }, (_, i) => i + 1)
+  const { translation } = useTranslation()
+  const { canon } = useCanon()
+  const chapters = Array.from({ length: chapterCount(book, translation, canon) }, (_, i) => i + 1)
   const remainder = chapters.length % COLS
   const data: (number | null)[] = remainder === 0
     ? chapters

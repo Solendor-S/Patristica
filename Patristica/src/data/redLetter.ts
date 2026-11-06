@@ -218,14 +218,38 @@ export function isRedLetter(book: string, chapter: number, verse: number): boole
 
 export interface Segment { t: string; red: boolean; italic?: boolean; caps?: boolean }
 
+// USFM \nd ...\nd* = "name of Deity": the divine name, which KJV typesets in
+// caps (LORD / GOD). Honour the marker by uppercasing what it wraps rather than
+// discarding it. Nested markers inside the span are left as-is — uppercasing
+// them (\+w → \+W) would break the strip rules below, which are case-sensitive.
+const ND_SPAN_RE = /\\\+?nd(?![a-z*])([\s\S]*?)\\\+?nd\*/g
+const MARKER_SPLIT_RE = /(\\\+?[a-z]{1,5}\*?)/g
+
+function honourNd(_m: string, inner: string): string {
+  return inner
+    .replace(/^\s+/, '') // opener's trailing space, as the generic strip rule used to eat
+    .split(MARKER_SPLIT_RE)
+    .map((p, i) => (i % 2 ? p : p.toUpperCase()))
+    .join('')
+}
+
 export function stripUsfm(t: string): string {
   return t
+    .replace(ND_SPAN_RE, honourNd)
+    // KJV+ lost the \nd closer when Strongs numbers were merged in, leaving a bare
+    // "{\+nd} {Lord}" — the name is the brace group right after the opener.
+    .replace(/\{\s*\\\+?nd\s*\}\s*\{([^}]*)\}/g, (_m, name: string) => `{${name.toUpperCase()}}`)
     .replace(/\\\+?add\*/g, '}')
     .replace(/\\\+?add\s*/g, '{')
     .replace(/\\\+?w\*/g, '')
     .replace(/\\\+?w\s*/g, '')
     .replace(/\\\+?[a-z]{1,5}\*/g, '')
-    .replace(/\\\+?[a-z]{1,5}\s+/g, '')
+    // \s* not \s+ — a marker can be closed by '}' instead of a space (data has
+    // "{\+nd}" / "{\+w}"), and \s+ left those openers rendering as literal text.
+    .replace(/\\\+?[a-z]{1,5}\s*/g, '')
+    // marker-only \add span collapses to an empty italic group; drop it whole so
+    // it doesn't leave a double space between the surrounding words.
+    .replace(/\{\s*\}\s*/g, '')
 }
 
 // Narrator speech-attribution verbs in KJV ("And Jesus said unto them,")
@@ -250,6 +274,23 @@ const wordCount = (s: string) => s.trim().split(/\s+/).filter(Boolean).length
 // WEB uses \+w on most words in speech verses (Strong's concordance tagging).
 // Gaps > this threshold are untranslated loanwords/compounds, not narrator text.
 const W_DENSITY_THRESHOLD = 0.7
+
+/**
+ * Parses \jw...\jw* into red/black segments: exact, so nothing has to be inferred about
+ * who is speaking. Returns null if the verse has no such marks. It's USFM's "words of Jesus"
+ * marker \wj, renamed at import because released apps strip \w as a prefix and would show
+ * a stray "j". The generic rules in stripUsfm remove \jw on every version.
+ */
+export function splitByWj(text: string): Segment[] | null {
+  if (!text.includes('\\jw')) return null
+  const segs: Segment[] = []
+  text.split(/\\jw\*/).forEach((piece, i, all) => {
+    const [before, inside] = piece.split(/\\jw\s*/)
+    if (before) segs.push({ t: stripUsfm(before), red: false })
+    if (i < all.length - 1 && inside) segs.push({ t: stripUsfm(inside), red: true })
+  })
+  return segs
+}
 
 /**
  * Parses \+w...\+w* markers into red/black segments, stripping USFM tags from

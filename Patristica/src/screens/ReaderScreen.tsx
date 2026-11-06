@@ -32,7 +32,7 @@ import { useParallelTranslation } from '../context/ParallelTranslationContext'
 import type { Translation } from '../context/TranslationContext'
 import { useOnboarding } from '../context/OnboardingContext'
 import { useOtQuoteCaps } from '../context/OtQuoteCapsContext'
-import { usePacks } from '../context/PackContext'
+import { usePacks, useChapterText } from '../context/PackContext'
 import { TRANSLATION_PACK_SLUG, TRANSLATION_ONLINE_SOURCE } from '../db/queries'
 import { isWordSourcePack, fetchOnlineWordsAsChapter } from '../lib/PackManager'
 import { fetchEsvChapter, EsvError, ESV_COPYRIGHT } from '../lib/esv'
@@ -42,7 +42,7 @@ import { useRedLetter } from '../context/RedLetterContext'
 import { useFocusMode } from '../context/FocusModeContext'
 import { useReadingMode } from '../context/ReadingModeContext'
 import { useSpaceSaver } from '../context/SpaceSaverContext'
-import { isRedLetter, splitRedLetterVerse, splitByWMarkers, stripUsfm } from '../data/redLetter'
+import { isRedLetter, splitRedLetterVerse, splitByWMarkers, splitByWj, stripUsfm } from '../data/redLetter'
 import type { Segment } from '../data/redLetter'
 import { useTheme } from '../context/ThemeContext'
 import { useLineSpacing } from '../context/LineSpacingContext'
@@ -50,7 +50,8 @@ import { useFontSize, FONT_SIZE_MIN, FONT_SIZE_MAX } from '../context/FontSizeCo
 import { useReaderFont } from '../context/FontFamilyContext'
 import type { FontScopeKey } from '../context/FontFamilyContext'
 import type { ThemeColors } from '../theme/themes'
-import { BOOKS, BOOK_MAP, APOCRYPHA_BOOK_MAP, EARLY_TEXT_MAP, shortBookName } from '../data/books'
+import { BOOKS, BOOK_MAP, APOCRYPHA_BOOK_MAP, APOCRYPHA_BOOK_NAMES, EARLY_TEXT_MAP, shortBookName, DANIEL_GREEK_CHAPTERS, WEBC_DEUTERO, chapterCount, inCanon, kjvVerse } from '../data/books'
+import { useCanon } from '../context/CanonContext'
 import { getRawBookPreface } from '../data/bookPrefaces'
 import type { BookPreface } from '../data/bookPrefaces'
 import { CanonicalPrefaceView, EarlyTextPrefaceView } from './PrefaceView'
@@ -531,7 +532,7 @@ const VerseRow = memo(function VerseRow({
   // segments and fnByWord are only used in the non-annotated, non-DSS, non-earlyText paths
   const segments = useMemo<Segment[]>(() => {
     if (isAnnotated || isDss || isEarlyText) return []
-    const markerSegs = redLetterOn ? splitByWMarkers(text) : null
+    const markerSegs = redLetterOn ? (splitByWj(text) ?? splitByWMarkers(text)) : null
     const isRL = redLetterOn && isRedLetter(book, chapter, verse)
     const base = markerSegs
       ?? (isRL && useHeuristicRedLetter ? splitRedLetterVerse(cleanText) : [{ t: cleanText, red: false }])
@@ -1431,12 +1432,14 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const userDb = useUserDb()
   const { setSelected } = useSelectedVerse()
   const { translation, setTranslation } = useTranslation()
+  const { canon } = useCanon()
   const { showFab, openTutorial } = useOnboarding()
   const { redLetterOn, toggleRedLetter } = useRedLetter()
   const { focusMode } = useFocusMode()
   const { readingMode } = useReadingMode()
   const { otQuoteCapsOn } = useOtQuoteCaps()
   const { isInstalled, installedReady, getPackDb, fetchOnline, packForContent } = usePacks()
+  const loadChapter = useChapterText()
   const { esvKey, esvKeyReady } = useEsvKey()
   // The key only affects the ESV, but esvKeyReady flips shortly after mount for everyone.
   // Depending on it directly would re-run the chapter load — and re-query SQLite — once
@@ -1625,7 +1628,13 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
   const book        = route.params?.book      ?? 'Genesis'
   const chapter     = route.params?.chapter   ?? 1
-  const isApocrypha = route.params?.apocrypha ?? false
+  // Derived from the name, not the route param: plans, notifications and cross-refs
+  // navigate without the flag, and would otherwise look for Tobit in bible_verses.
+  const isApocrypha = APOCRYPHA_BOOK_NAMES.has(book)
+  const webcDeutero = translation === 'WEBC' ? WEBC_DEUTERO[book] : undefined
+  // Daniel 13-14 in a translation without them: the reader stays in Daniel, the text is Susanna/Bel
+  const isGreekDaniel = book === 'Daniel' && chapter > 12
+  const greekDaniel = isGreekDaniel && translation !== 'WEBC'
   const isEarlyText = route.params?.earlyText ?? false
   const listRef = useRef<FlatList>(null)
   const pendingScrollIdxRef = useRef<number | null>(null)
@@ -1670,6 +1679,9 @@ export default function ReaderScreen({ navigation, route }: Props) {
     setScripturePreview(null)
 
     if (!isTranslationOnly) {
+      // A book change re-runs this effect once the pack resolves, and that second run looks
+      // like a translation swap. Forget the old place so it can't scroll the new chapter there.
+      topVisibleVerseRef.current = null
       setLoading(true)
       setFootnotesByVerse(new Map())
       setBsbFnsByVerse(new Map())
@@ -1696,7 +1708,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
     // Compute pack routing once — used in both the isTranslationOnly and main paths
     const packDb = packDbRef.current ?? undefined
-    const packCType = isApocrypha ? 'apocrypha' as const : isEarlyText ? 'early_text' as const : null
+    const packCType = isApocrypha && !webcDeutero ? 'apocrypha' as const : isEarlyText ? 'early_text' as const : null
     const packSlug  = packCType ? packForContent(packCType, book)?.slug : TRANSLATION_PACK_SLUG[translation]
     // Pack install state hydrates asynchronously on cold start. Deciding online-vs-pack before
     // it lands treats an installed pack as missing, briefly showing "No verses found" until the
@@ -1714,7 +1726,10 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
     // Both the translation-only fast path and the full load below need the same verse
     // source, so route it once — otherwise every change to this chain has to be made twice.
-    const fetchFn = useEsv
+    if (greekDaniel && !installedReady) return
+    const fetchFn = webcDeutero || greekDaniel
+      ? loadChapter(book, chapter, translation)
+      : useEsv
       ? fetchEsvChapter(book, chapter, esvKey)
       : useOnline && useWordSource
       ? fetchOnlineWordsAsChapter(onlineSource!, book, chapter, isAnnotatedTrans)
@@ -1830,7 +1845,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   // Resolve pack DB (or online mode) whenever book/translation changes
   useEffect(() => {
     // Apocrypha and early texts use per-book packs
-    const contentType = isApocrypha ? 'apocrypha' : isEarlyText ? 'early_text' : null
+    const contentType = isApocrypha && !webcDeutero ? 'apocrypha' : isEarlyText ? 'early_text' : null
     const slug = contentType
       ? packForContent(contentType, book)?.slug
       : TRANSLATION_PACK_SLUG[translation]
@@ -1899,16 +1914,26 @@ export default function ReaderScreen({ navigation, route }: Props) {
   }, [book, chapter, isEarlyText, isApocrypha])
 
   useEffect(() => {
-    if (!compareTrans) {
+    // Outside the 66 books a column only makes sense if the two sides are different texts:
+    // every translation but the WEBC shares the one apocrypha text. The Prayer of Azariah
+    // is out because its two sources number their verses differently.
+    const differentApocText = (!!WEBC_DEUTERO[book] || isGreekDaniel) && (translation === 'WEBC') !== (compareTrans === 'WEBC')
+    if (!compareTrans || isEarlyText || book === 'Prayer of Azariah' || ((isApocrypha || isGreekDaniel) && !differentApocText)) {
       setCompareMap(prev => prev.size > 0 ? new Map() : prev)
       setCompareBsbFnsByVerse(new Map())
       return
     }
-    getChapter(db, book, chapter, compareTrans).then(rows => {
+    if (!installedReady) return
+    let cancelled = false
+    loadChapter(book, chapter, compareTrans).then(rows => {
+      if (cancelled) return
       const m = new Map<number, string>()
-      rows.forEach(v => m.set(v.verse, v.text))
+      rows.forEach(v => {
+        const key = kjvVerse(compareTrans, book, chapter, v.verse)
+        if (key !== null) m.set(key, v.text)
+      })
       setCompareMap(m)
-    }).catch(() => setCompareMap(prev => prev.size > 0 ? new Map() : prev))
+    }).catch(() => { if (!cancelled) setCompareMap(prev => prev.size > 0 ? new Map() : prev) })
     if (compareTrans === 'BSB') {
       getPackDb('bsb').then(bsbDb =>
         getBsbChapterFootnotes(db, book, chapter, bsbDb)
@@ -1918,7 +1943,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
     } else {
       setCompareBsbFnsByVerse(new Map())
     }
-  }, [compareTrans, book, chapter])
+    return () => { cancelled = true }
+  }, [compareTrans, book, chapter, translation, isApocrypha, isGreekDaniel, isEarlyText, loadChapter, installedReady])
 
   // Load persisted split state
   useEffect(() => {
@@ -1944,11 +1970,13 @@ export default function ReaderScreen({ navigation, route }: Props) {
   // Fetch right pane verses when split is on
   useEffect(() => {
     if (!splitOn) { setSplitVerses(prev => prev.length > 0 ? [] : prev); return }
-    const fetchFn = splitIsEarlyText ? getEarlyTextChapter(db, splitBook, splitChapter)
-      : splitIsApocrypha             ? getApocryphaChapter(db, splitBook, splitChapter)
-      :                                getChapter(db, splitBook, splitChapter, splitTranslation)
-    fetchFn.then(setSplitVerses).catch(() => setSplitVerses([]))
-  }, [splitOn, splitBook, splitChapter, splitTranslation, splitIsEarlyText, splitIsApocrypha, db])
+    if (!installedReady) return
+    let cancelled = false
+    loadChapter(splitBook, splitChapter, splitTranslation)
+      .then(rows => { if (!cancelled) setSplitVerses(rows) })
+      .catch(() => { if (!cancelled) setSplitVerses([]) })
+    return () => { cancelled = true }
+  }, [splitOn, splitBook, splitChapter, splitTranslation, loadChapter, installedReady])
 
   // Fetch cross-ref markers for split pane (NT only)
   useEffect(() => {
@@ -2104,6 +2132,9 @@ export default function ReaderScreen({ navigation, route }: Props) {
   }
 
   const isOutsideCanon = isApocrypha || isEarlyText
+  const isDeuterocanon = isApocrypha && inCanon(canon, book)
+  // Whatever translation is selected, the apocrypha text is the KJV Apocrypha, so say so.
+  const shownTranslation = greekDaniel || (isDeuterocanon && !webcDeutero) ? 'KJVA' : translation
   const bookIndex    = useMemo(() => isOutsideCanon ? -1 : BOOKS.findIndex(b => b.name === book), [book, isOutsideCanon])
   const isNT         = useMemo(() => !isOutsideCanon && BOOK_MAP[book]?.testament === 'NT', [book, isOutsideCanon])
   const isGreekTrans    = useMemo(() => GREEK_TRANSLATIONS.has(translation as any), [translation])
@@ -2114,7 +2145,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
   const goChapter = useCallback((delta: number) => {
     if (isApocrypha) {
-      const total = APOCRYPHA_BOOK_MAP[book]?.chapters ?? 1
+      const total = chapterCount(book, translation, canon)
       const next  = chapter + delta
       if (next < 1 || next > total) return
       navigation.setParams({ book, chapter: next, verse: undefined, apocrypha: true })
@@ -2127,31 +2158,38 @@ export default function ReaderScreen({ navigation, route }: Props) {
       navigation.setParams({ book, chapter: next, verse: undefined, earlyText: true })
       return
     }
-    const totalChapters = BOOK_MAP[book]?.chapters ?? 1
+    const totalChapters = chapterCount(book, translation, canon)
 
     if (delta > 0 && chapter >= totalChapters) {
       const nextBook = BOOKS[bookIndex + 1]
       if (nextBook) navigation.setParams({ book: nextBook.name, chapter: 1, verse: undefined, apocrypha: false })
     } else if (delta < 0 && chapter <= 0) {
       const prevBook = BOOKS[bookIndex - 1]
-      if (prevBook) navigation.setParams({ book: prevBook.name, chapter: prevBook.chapters, verse: undefined, apocrypha: false })
+      if (prevBook) navigation.setParams({ book: prevBook.name, chapter: chapterCount(prevBook.name, translation, canon), verse: undefined, apocrypha: false })
     } else {
       navigation.setParams({ book, chapter: chapter + delta, verse: undefined, apocrypha: isApocrypha })
     }
-  }, [book, chapter, isApocrypha, isEarlyText, bookIndex])
-  const totalChaptersForBook = useMemo(
-    () => isEarlyText  ? (EARLY_TEXT_MAP[book]?.chapters    ?? 1)
-        : isApocrypha  ? (APOCRYPHA_BOOK_MAP[book]?.chapters ?? 1)
-        :                (BOOK_MAP[book]?.chapters            ?? 1),
-    [isEarlyText, isApocrypha, book]
-  )
+  }, [book, chapter, translation, isApocrypha, isEarlyText, bookIndex])
+
+  // Keep Daniel's Greek portions wherever this canon and translation put them. Old bookmarks,
+  // plans and book searches can still arrive at the separate books, and vice versa.
+  useEffect(() => {
+    const danielHasThem = chapterCount('Daniel', translation, canon) > 12
+    if (isGreekDaniel && !danielHasThem) {
+      navigation.setParams({ book: DANIEL_GREEK_CHAPTERS[chapter], chapter: 1, verse: undefined })
+    } else if (danielHasThem && (book === 'Susanna' || book === 'Bel and the Dragon')) {
+      navigation.setParams({ book: 'Daniel', chapter: book === 'Susanna' ? 13 : 14, verse: undefined })
+    } else if (book === 'Prayer of Azariah' && translation === 'WEBC' && canon === 'catholic') {
+      navigation.setParams({ book: 'Daniel', chapter: 3, verse: 24 })
+    }
+  }, [book, chapter, translation, canon, isGreekDaniel])
+
+  const totalChaptersForBook = useMemo(() => chapterCount(book, translation, canon), [book, translation])
   const canGoPrev = chapter > (isApocrypha ? 1 : 0) || (!isOutsideCanon && bookIndex > 0)
   const canGoNext = chapter < totalChaptersForBook || (!isOutsideCanon && bookIndex < BOOKS.length - 1)
 
   const splitBookIndex     = useMemo(() => BOOKS.findIndex(b => b.name === splitBook), [splitBook])
-  const splitTotalChapters = useMemo(() =>
-    EARLY_TEXT_MAP[splitBook]?.chapters ?? APOCRYPHA_BOOK_MAP[splitBook]?.chapters ?? BOOK_MAP[splitBook]?.chapters ?? 1,
-  [splitBook])
+  const splitTotalChapters = useMemo(() => chapterCount(splitBook, splitTranslation, canon), [splitBook, splitTranslation])
   const canSplitGoPrev = splitChapter > 1 || (!splitIsEarlyText && !splitIsApocrypha && splitBookIndex > 0)
   const canSplitGoNext = splitChapter < splitTotalChapters || (!splitIsEarlyText && !splitIsApocrypha && splitBookIndex < BOOKS.length - 1)
 
@@ -2171,15 +2209,16 @@ export default function ReaderScreen({ navigation, route }: Props) {
     } else if (delta < 0 && splitChapter <= 1) {
       const prev = BOOKS[splitBookIndex - 1]
       if (prev) {
-        setSplitBook(prev.name); setSplitChapter(prev.chapters)
-        saveSplitSetting('split_book', prev.name); saveSplitSetting('split_chapter', String(prev.chapters))
+        const last = chapterCount(prev.name, splitTranslation, canon)
+        setSplitBook(prev.name); setSplitChapter(last)
+        saveSplitSetting('split_book', prev.name); saveSplitSetting('split_chapter', String(last))
       }
     } else {
       const next = splitChapter + delta
       setSplitChapter(next)
       saveSplitSetting('split_chapter', String(next))
     }
-  }, [splitBook, splitChapter, splitBookIndex, splitTotalChapters, saveSplitSetting])
+  }, [splitBook, splitChapter, splitTranslation, splitBookIndex, splitTotalChapters, saveSplitSetting])
 
   const toggleSplit = useCallback(() => {
     const next = !splitOn
@@ -2326,7 +2365,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       footnotes={footnotesByVerse.get(item.verse)}
       bsbFootnotes={bsbFnsByVerse.get(item.verse)}
       elxxNotes={elxxNotesByVerse.get(item.verse)}
-      compareText={parallelOn && compareTrans ? compareMap.get(item.verse) : undefined}
+      compareText={parallelOn && compareTrans ? compareMap.get(kjvVerse(translation, book, chapter, item.verse) ?? -1) : undefined}
       compareLabel={undefined}
       isAnnotated={isAnnotatedTrans}
       lazyAnnotation={translation === 'KJV+'}
@@ -2350,6 +2389,22 @@ export default function ReaderScreen({ navigation, route }: Props) {
       otQuoteSpans={otQuoteCapsOn ? otQuoteSpansByVerse.get(item.verse) : undefined}
     />
   ), [selectedVerse, highlights, selectVerse, splitOn, activeSplitPane, openConcordance, redLetterOn, book, chapter, footnotesByVerse, bsbFnsByVerse, elxxNotesByVerse, otQuoteSpansByVerse, compareTrans, parallelOn, compareMap, compareBsbFnsByVerse, isAnnotatedTrans, openStrongs, isDss, dssAllReadings, isHebrew, translation, isEarlyText, openEarlyFn, onEarlyRefPress, focusMode, crossRefsByVerse, otQuoteCapsOn, bsbFoldedOn])
+  // The Prayer of Azariah belongs after Daniel 3:23. The WEBC has it inline; any other
+  // translation has no such verses, so point to it from the place it would be.
+  const azariahLink = canon === 'catholic' && book === 'Daniel' && chapter === 3 && translation !== 'WEBC'
+  const renderReaderRow = useCallback((row: { item: BibleVerse }) => azariahLink && row.item.verse === 23 ? (
+    <>
+      {renderVerseRow(row)}
+      <TouchableOpacity
+        style={styles.psalmHeadingRow}
+        onPress={() => navigation.setParams({ book: 'Prayer of Azariah', chapter: 1, verse: undefined })}
+        activeOpacity={0.7}
+      >
+        <Text style={styles.psalmHeadingText}>Prayer of Azariah and Song of the Three ›</Text>
+      </TouchableOpacity>
+    </>
+  ) : renderVerseRow(row), [azariahLink, renderVerseRow, styles])
+
   const renderSplitVerseRow = useCallback(({ item }: { item: BibleVerse }) => (
     <VerseRow
       verse={item.verse}
@@ -2452,18 +2507,28 @@ export default function ReaderScreen({ navigation, route }: Props) {
           onPress={() => {
             if (splitOn) { setActiveSplitPane('left'); activeSplitPaneRef.current = 'left' }
             navigation.navigate('BookPicker', {
-              initialTab: isEarlyText ? 'EARLY' : isApocrypha ? 'APOC' : (BOOK_MAP[book]?.testament ?? 'OT') as 'OT' | 'NT',
+              initialTab: isEarlyText ? 'EARLY' : isDeuterocanon ? 'OT' : isApocrypha ? 'APOC' : (BOOK_MAP[book]?.testament ?? 'OT') as 'OT' | 'NT',
             })
           }}
           activeOpacity={0.7}
         >
-          <Text style={styles.bookName}>{book}</Text>
+          {/* One line, always: the controls beside it can leave little room, and a wrapping
+              title breaks mid-word down the side of the header. */}
+          <Text style={[styles.bookName, { flexShrink: 1 }]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75}>
+            {shortBookName(book)}
+          </Text>
           <Ionicons name="chevron-down" size={14} color={colors.textMuted} style={{ marginLeft: 4, marginTop: 2 }} />
         </TouchableOpacity>
-        {isOutsideCanon ? (
-          <View style={styles.apocBadge}>
-            <Text style={styles.apocBadgeText}>{isEarlyText ? 'Early Text' : 'Apocrypha'}</Text>
-          </View>
+        {isOutsideCanon && !webcDeutero ? (
+          <TouchableOpacity
+            style={[styles.apocBadge, { flexDirection: 'row', alignItems: 'center', gap: 3 }]}
+            disabled={!WEBC_DEUTERO[book]}
+            onPress={() => { setTransPickerTab(splitOn ? 'split' : 'primary'); setTranslationPickerOpen(true) }}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.apocBadgeText}>{isEarlyText ? 'Early Text' : isDeuterocanon ? 'KJVA' : 'Apocrypha'}</Text>
+            {!!WEBC_DEUTERO[book] && <Ionicons name="chevron-down" size={11} color={colors.textMuted} />}
+          </TouchableOpacity>
         ) : (
           <TouchableOpacity
             style={styles.translationBtn}
@@ -2472,13 +2537,13 @@ export default function ReaderScreen({ navigation, route }: Props) {
           >
             <Text style={styles.translationLabel} numberOfLines={1}>
               {splitOn
-                ? `${translation} ∥ ${splitTranslation}`
-                : parallelOn && compareTrans ? `${translation} ∥ ${compareTrans}` : translation}
+                ? `${shownTranslation} ∥ ${splitTranslation}`
+                : parallelOn && compareTrans ? `${shownTranslation} ∥ ${compareTrans}` : shownTranslation}
             </Text>
             <Ionicons name="chevron-down" size={11} color={colors.textMuted} />
           </TouchableOpacity>
         )}
-        {!isOutsideCanon && (
+        {(!isOutsideCanon || isDeuterocanon) && (
           <TouchableOpacity
             style={[styles.splitBtn, splitOn && styles.splitBtnActive]}
             onPress={toggleSplit}
@@ -2508,7 +2573,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
         )}
         {isOnlineMode && (
           <View style={{ paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4, borderWidth: 1, borderColor: colors.textMuted, marginRight: 4 }}>
-            <Text style={{ fontSize: 10, color: colors.textMuted, fontWeight: '600' }}>🌐 Online</Text>
+            <Text style={{ fontSize: 10, color: colors.textMuted, fontWeight: '600' }}>{isOutsideCanon ? '🌐' : '🌐 Online'}</Text>
           </View>
         )}
         {/* Back / chapter number / forward */}
@@ -2725,7 +2790,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
                   </TouchableOpacity>
                   <View style={modal.sectionDivider} />
                   <Text style={modal.sectionTitle}>English</Text>
-                  {/* apiOnly excluded: parallel reads straight from SQLite, and the ESV has no local text. */}
+                  {/* apiOnly excluded: the ESV can't be loaded without the reader's key and a live request. */}
                   {TRANSLATIONS.filter(t => !t.greekOnly && !t.otOriginal && !t.otOnly && !t.apiOnly && t.key !== translation).map(t =>
                     renderTransRow(t, compareTrans === t.key, () => {
                       setCompareTrans(t.key); setParallelOn(true); setSplitOn(false); splitOnRef.current = false; saveSplitSetting('split_on', '0'); setTranslationPickerOpen(false)
@@ -2841,7 +2906,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
                     listRef.current?.scrollToIndex({ index, animated: true, viewPosition: 0.2 })
                 }, 100)
               }}
-              renderItem={renderVerseRow}
+              renderItem={renderReaderRow}
               extraData={flatListExtraData}
               windowSize={isAnnotatedTrans ? 3 : 5}
               maxToRenderPerBatch={isAnnotatedTrans ? 4 : 8}
@@ -2929,7 +2994,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
                 listRef.current?.scrollToIndex({ index, animated: true, viewPosition: 0.2 })
             }, 100)
           }}
-          renderItem={renderVerseRow}
+          renderItem={renderReaderRow}
           extraData={flatListExtraData}
           onViewableItemsChanged={onViewableItemsChanged}
           viewabilityConfig={viewabilityConfig}
@@ -3233,7 +3298,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
           chapter={chapter}
           verses={verses}
           anchorVerse={selectedVerse}
-          translation={translation}
+          translation={shownTranslation}
           bsbFoldedOn={bsbFoldedOn}
         />
       )}
