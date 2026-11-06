@@ -631,6 +631,8 @@ export default function WordStudyPanel({ selected }: Props) {
   const navigation = useNavigation<BottomTabNavigationProp<RootTabParamList>>()
   const isNT = NT_BOOKS.has(selected.book)
   const { translation } = useTranslation()
+  const [wordsFailed, setWordsFailed] = useState(false)
+  const [retryTick, setRetryTick] = useState(0)
   // The deuterocanon and Daniel's Greek portions have no Hebrew: Swete's Greek, no source picker.
   const greekRef = greekWordRef(translation, selected.book, selected.chapter, selected.verse ?? 0)
   const isDeutero = !!greekRef
@@ -696,6 +698,7 @@ export default function WordStudyPanel({ selected }: Props) {
     setDef(null)
     setLexicon(null)
     setConcordanceResults([])
+    setWordsFailed(false)
     setLoading(true)
     const { book, chapter, verse } = greekRef ?? {
       book: selected.book,
@@ -721,6 +724,7 @@ export default function WordStudyPanel({ selected }: Props) {
       if (onlineSource) {
         fetchOnlineWords(onlineSource, book, chapter, verse)
           .then(onlineWords => {
+            setWordsFailed(onlineWords === null)
             if (onlineWords && onlineWords.length > 0) {
               // Map online word format to GreekWord/HebrewWord shape
               const wordField = (isNT || isLxx) ? 'greek' : 'hebrew'
@@ -736,7 +740,7 @@ export default function WordStudyPanel({ selected }: Props) {
             }
             setLoading(false)
           })
-          .catch(() => setLoading(false))
+          .catch(() => { setWordsFailed(true); setLoading(false) })
       } else {
         activePackDbRef.current = null
         fetchWords(null)
@@ -745,7 +749,7 @@ export default function WordStudyPanel({ selected }: Props) {
       activePackDbRef.current = null
       fetchWords(null)
     }
-  }, [selected.book, selected.chapter, selected.verse, source, wordSource, translation, isInstalled, getPackDb])
+  }, [selected.book, selected.chapter, selected.verse, source, wordSource, translation, isInstalled, getPackDb, retryTick])
 
   useEffect(() => {
     if (!wordFocus || loading || !words.length) return
@@ -1049,12 +1053,18 @@ export default function WordStudyPanel({ selected }: Props) {
       {!words.length ? (
         <View style={s.center}>
           <Ionicons name="language-outline" size={52} color={colors.border} />
-          <Text style={s.emptyTitle}>No words found</Text>
+          <Text style={s.emptyTitle}>{wordsFailed ? "Couldn't load these words" : 'No words found'}</Text>
           <Text style={s.emptyText}>
-            {noSource ? 'No original-language text for this book yet'
+            {wordsFailed ? 'Check your connection and try again'
+              : noSource ? 'No original-language text for this book yet'
               : isDeutero ? 'This verse is missing from the Greek edition used here'
               : `No ${isNT ? 'Greek' : isLxx ? 'LXX Greek' : 'Hebrew'} data for this verse`}
           </Text>
+          {wordsFailed && (
+            <TouchableOpacity style={[s.allUsesBtn, { marginTop: 14 }]} onPress={() => setRetryTick(t => t + 1)} activeOpacity={0.7}>
+              <Text style={s.allUsesBtnLabel}>Retry</Text>
+            </TouchableOpacity>
+          )}
         </View>
       ) : (
       <>

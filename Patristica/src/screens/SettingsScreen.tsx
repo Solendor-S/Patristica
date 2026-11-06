@@ -782,7 +782,7 @@ const CREDITS: { title: string; body: string; url?: string }[] = [
   },
   {
     title: 'Greek Deuterocanon',
-    body: "Swete's Septuagint with Morpheus lemmas and grammar, QuantForgeSoftware/lxx, CC BY-SA 4.0. Strong's numbers and glosses added for this app; the word data is shared under the same licence.",
+    body: "Swete's Septuagint text via STEPBible, with Morpheus lemmas and grammar from QuantForgeSoftware/lxx (CC BY-SA 4.0). Baruch 6 and Bel from Brenton's Greek Septuagint (public domain, eBible.org). Strong's numbers and glosses added for this app; the word data is shared under the same licence.",
     url: 'https://github.com/QuantForgeSoftware/lxx',
   },
   {

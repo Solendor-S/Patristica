@@ -17,7 +17,7 @@ import { useTranslation, TRANSLATIONS, ANNOTATED_TRANSLATIONS, API_TRANSLATIONS 
 import { useStrongsInSearch } from '../context/StrongsInSearchContext'
 import { useSearchOrder } from '../context/SearchOrderContext'
 import type { SearchMode } from '../context/SearchOrderContext'
-import { BOOKS, CANON_OT_ORDER, canonBookNames, canonBookOrder, type CanonKey } from '../data/books'
+import { BOOKS, BOOK_ORDER, CANON_OT_ORDER, canonBookNames, type CanonKey } from '../data/books'
 import { useCanon } from '../context/CanonContext'
 import { matchBookRefs, type BookRef } from '../lib/parsePassage'
 import { useTheme } from '../context/ThemeContext'
@@ -54,10 +54,6 @@ interface BookBreakdown {
   verseCount: number
   matchCount: number
 }
-
-// ponytail: one order for both canons. Protestant is a subsequence of Catholic,
-// so the Catholic order sorts both correctly.
-const BOOK_ORDER = canonBookOrder('catholic')
 
 function computeBreakdown(results: SearchResult[], queryWords: string[]): BookBreakdown[] {
   const map = new Map<string, { verseCount: number; matchCount: number }>()

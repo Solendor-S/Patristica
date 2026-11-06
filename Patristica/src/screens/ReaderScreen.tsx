@@ -14,7 +14,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import {
-  getChapter, getApocryphaChapter, getEarlyTextChapter, getEarlyTextFootnotes, isBookmarked, addBookmark, removeBookmark, recordHistory,
+  getChapter, getEarlyTextFootnotes, isBookmarked, addBookmark, removeBookmark, recordHistory,
   getChapterHighlights, setHighlight, removeHighlight,
   getNote, saveNote, deleteNote, getConcordance, getChapterFootnotes, getStrongsEntry, getEarlyTextRefs, getChapterCrossRefMarkers,
   getBsbChapterFootnotes,
@@ -33,8 +33,7 @@ import type { Translation } from '../context/TranslationContext'
 import { useOnboarding } from '../context/OnboardingContext'
 import { useOtQuoteCaps } from '../context/OtQuoteCapsContext'
 import { usePacks, useChapterText } from '../context/PackContext'
-import { TRANSLATION_PACK_SLUG, TRANSLATION_ONLINE_SOURCE } from '../db/queries'
-import { isWordSourcePack, fetchOnlineWordsAsChapter } from '../lib/PackManager'
+import { TRANSLATION_PACK_SLUG } from '../db/queries'
 import { fetchEsvChapter, EsvError, ESV_COPYRIGHT } from '../lib/esv'
 import { useEsvKey } from '../context/EsvKeyContext'
 import EsvSetupModal from '../components/EsvSetupModal'
@@ -1438,7 +1437,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const { focusMode } = useFocusMode()
   const { readingMode } = useReadingMode()
   const { otQuoteCapsOn } = useOtQuoteCaps()
-  const { isInstalled, installedReady, getPackDb, fetchOnline, packForContent } = usePacks()
+  const { isInstalled, installedReady, getPackDb, packForContent } = usePacks()
   const loadChapter = useChapterText()
   const { esvKey, esvKeyReady } = useEsvKey()
   // The key only affects the ESV, but esvKeyReady flips shortly after mount for everyone.
@@ -1713,33 +1712,16 @@ export default function ReaderScreen({ navigation, route }: Props) {
     // Pack install state hydrates asynchronously on cold start. Deciding online-vs-pack before
     // it lands treats an installed pack as missing, briefly showing "No verses found" until the
     // effect re-runs. Wait for hydration whenever the routing depends on it (`loading` stays true).
-    if (packSlug && !installedReady) return
-    const onlineOverride = !packCType ? TRANSLATION_ONLINE_SOURCE[translation] : undefined
-    const onlineSource   = onlineOverride?.source ?? packSlug
-    const useOnline      = !!packSlug && !isInstalled(packSlug) && !!onlineSource
-    const useWordSource  = onlineOverride ? onlineOverride.isWordSource : (!!packSlug && isWordSourcePack(packSlug))
+    if ((packSlug || greekDaniel) && !installedReady) return
+    const useOnline = !!packSlug && !isInstalled(packSlug)
     // The ESV is licensed and can't be bundled or packed — it comes live from Crossway's API
     // with the reader's own key. It never routes through the pack/CDN path above.
     const useEsv = !packCType && translation === 'ESV'
     if (useEsv && !esvKeyReady) return   // don't flash "no key" before the stored key loads
     setIsOnlineMode(useOnline || useEsv)
 
-    // Both the translation-only fast path and the full load below need the same verse
-    // source, so route it once — otherwise every change to this chain has to be made twice.
-    if (greekDaniel && !installedReady) return
-    const fetchFn = webcDeutero || greekDaniel
-      ? loadChapter(book, chapter, translation)
-      : useEsv
-      ? fetchEsvChapter(book, chapter, esvKey)
-      : useOnline && useWordSource
-      ? fetchOnlineWordsAsChapter(onlineSource!, book, chapter, isAnnotatedTrans)
-          .then(vs => vs ?? [])
-      : useOnline
-      ? fetchOnline(onlineSource!, book, chapter)
-          .then(vs => (vs ?? []).map(v => ({ book, chapter, verse: v.verse, text: v.text })))
-      : isEarlyText ? getEarlyTextChapter(db, book, chapter, packDb)
-      : isApocrypha ? getApocryphaChapter(db, book, chapter, packDb)
-      :               getChapter(db, book, chapter, translation, packDb)
+    // Both the translation-only fast path and the full load below need the same verse source.
+    const fetchFn = useEsv ? fetchEsvChapter(book, chapter, esvKey) : loadChapter(book, chapter, translation)
 
     if (isTranslationOnly) {
       // Only the translation changed — fetch new verse text and swap in place.
@@ -1913,12 +1895,14 @@ export default function ReaderScreen({ navigation, route }: Props) {
     setCanGoForward(navIndexRef.current < navHistoryRef.current.length - 1)
   }, [book, chapter, isEarlyText, isApocrypha])
 
+  // Outside the 66 books a column only makes sense if the two sides are different texts:
+  // every translation but the WEBC shares the one apocrypha text. The Prayer of Azariah
+  // is out because its two sources number their verses differently.
+  const differentApocText = (!!WEBC_DEUTERO[book] || isGreekDaniel) && (translation === 'WEBC') !== (compareTrans === 'WEBC')
+  const skipCompare = isEarlyText || book === 'Prayer of Azariah' || ((isApocrypha || isGreekDaniel) && !differentApocText)
+
   useEffect(() => {
-    // Outside the 66 books a column only makes sense if the two sides are different texts:
-    // every translation but the WEBC shares the one apocrypha text. The Prayer of Azariah
-    // is out because its two sources number their verses differently.
-    const differentApocText = (!!WEBC_DEUTERO[book] || isGreekDaniel) && (translation === 'WEBC') !== (compareTrans === 'WEBC')
-    if (!compareTrans || isEarlyText || book === 'Prayer of Azariah' || ((isApocrypha || isGreekDaniel) && !differentApocText)) {
+    if (!compareTrans || skipCompare) {
       setCompareMap(prev => prev.size > 0 ? new Map() : prev)
       setCompareBsbFnsByVerse(new Map())
       return
@@ -1944,7 +1928,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       setCompareBsbFnsByVerse(new Map())
     }
     return () => { cancelled = true }
-  }, [compareTrans, book, chapter, translation, isApocrypha, isGreekDaniel, isEarlyText, loadChapter, installedReady])
+  }, [compareTrans, book, chapter, skipCompare, loadChapter, installedReady])
 
   // Load persisted split state
   useEffect(() => {
@@ -2152,7 +2136,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       return
     }
     if (isEarlyText) {
-      const total = EARLY_TEXT_MAP[book]?.chapters ?? 1
+      const total = chapterCount(book, translation, canon)
       const next  = chapter + delta
       if (next < 0 || next > total) return   // 0 = preface, allowed
       navigation.setParams({ book, chapter: next, verse: undefined, earlyText: true })
@@ -2169,7 +2153,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
     } else {
       navigation.setParams({ book, chapter: chapter + delta, verse: undefined, apocrypha: isApocrypha })
     }
-  }, [book, chapter, translation, isApocrypha, isEarlyText, bookIndex])
+  }, [book, chapter, translation, canon, isApocrypha, isEarlyText, bookIndex])
 
   // Keep Daniel's Greek portions wherever this canon and translation put them. Old bookmarks,
   // plans and book searches can still arrive at the separate books, and vice versa.
@@ -2184,12 +2168,12 @@ export default function ReaderScreen({ navigation, route }: Props) {
     }
   }, [book, chapter, translation, canon, isGreekDaniel])
 
-  const totalChaptersForBook = useMemo(() => chapterCount(book, translation, canon), [book, translation])
+  const totalChaptersForBook = chapterCount(book, translation, canon)
   const canGoPrev = chapter > (isApocrypha ? 1 : 0) || (!isOutsideCanon && bookIndex > 0)
   const canGoNext = chapter < totalChaptersForBook || (!isOutsideCanon && bookIndex < BOOKS.length - 1)
 
   const splitBookIndex     = useMemo(() => BOOKS.findIndex(b => b.name === splitBook), [splitBook])
-  const splitTotalChapters = useMemo(() => chapterCount(splitBook, splitTranslation, canon), [splitBook, splitTranslation])
+  const splitTotalChapters = chapterCount(splitBook, splitTranslation, canon)
   const canSplitGoPrev = splitChapter > 1 || (!splitIsEarlyText && !splitIsApocrypha && splitBookIndex > 0)
   const canSplitGoNext = splitChapter < splitTotalChapters || (!splitIsEarlyText && !splitIsApocrypha && splitBookIndex < BOOKS.length - 1)
 

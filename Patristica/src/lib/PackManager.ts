@@ -288,7 +288,8 @@ export async function fetchOnlineWords(
 ): Promise<OnlineWord[] | null> {
   const { url, fallback } = onlineUrls(`/words/${source}/${encodeURIComponent(book)}/${chapter}.json`)
   const data = await fetchJson<Record<string, OnlineWord[]>>(url, fallback)
-  return data?.[String(verse)] ?? null
+  // null means the fetch failed, a different thing from "this verse has no words".
+  return data ? data[String(verse)] ?? [] : null
 }
 
 // ── Online commentary fetch ───────────────────────────────────────────────────

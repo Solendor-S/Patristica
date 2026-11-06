@@ -247,13 +247,7 @@ def main():
     shutil.rmtree(json_dir, ignore_errors=True)
     files = 0
     for book, verses in books.items():
-        for chapter in sorted({c for c, _ in verses}):
-            rows = [{"verse": v, "text": t} for (c, v), t in sorted(verses.items()) if c == chapter]
-            path = f"{json_dir}/{book}/{chapter}.json"
-            os.makedirs(os.path.dirname(path), exist_ok=True)
-            with open(path, "w", encoding="utf-8") as f:
-                json.dump(rows, f, ensure_ascii=False, separators=(",", ":"))
-            files += 1
+        files += write_chapters(f"{json_dir}/{book}", verses)
 
     total = sum(len(v) for v in books.values())
     print(f"{len(books)} books, {total} verses, {files} chapter files")

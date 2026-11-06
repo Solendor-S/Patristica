@@ -72,7 +72,6 @@ export const BOOKS: Book[] = [
 ]
 
 export const BOOK_MAP   = Object.fromEntries(BOOKS.map(b => [b.name, b]))
-export const BOOK_ORDER = new Map(BOOKS.map((b, i) => [b.name, i]))
 
 export const APOCRYPHA_BOOKS: Book[] = [
   // Deuterocanon (accepted by Catholic & Orthodox churches)
@@ -113,30 +112,17 @@ export type CanonKey = 'protestant' | 'catholic'
 const OT_NAMES = BOOKS.filter(b => b.testament === 'OT').map(b => b.name)
 const NT_NAMES = BOOKS.filter(b => b.testament === 'NT').map(b => b.name)
 
-// Insert `extra` immediately after `after` in `list`.
-function insertAfter(list: string[], after: string, ...extra: string[]): string[] {
-  const i = list.indexOf(after)
-  return [...list.slice(0, i + 1), ...extra, ...list.slice(i + 1)]
+const CATHOLIC_INSERTS: Record<string, string[]> = {
+  'Nehemiah':        ['Tobit', 'Judith'],
+  'Esther':          ['1 Maccabees', '2 Maccabees'],
+  'Song of Solomon': ['Wisdom of Solomon', 'Sirach'],
+  'Lamentations':    ['Baruch'],
 }
-
-const CATHOLIC_OT = [
-  ['Nehemiah',        ['Tobit', 'Judith']],
-  ['Esther',          ['1 Maccabees', '2 Maccabees']],
-  ['Song of Solomon', ['Wisdom of Solomon', 'Sirach']],
-  ['Lamentations',    ['Baruch']],
-].reduce<string[]>((l, [after, extra]) => insertAfter(l, after as string, ...(extra as string[])), OT_NAMES)
+const CATHOLIC_OT = OT_NAMES.flatMap(name => [name, ...(CATHOLIC_INSERTS[name] ?? [])])
 
 export const CANON_OT_ORDER: Record<CanonKey, string[]> = {
   protestant: OT_NAMES,
   catholic:   CATHOLIC_OT,
-}
-
-// In the Catholic canon these are part of Daniel, not books of their own: the picker lists
-// only Daniel, and these labels show where they went when one turns up in a book search.
-export const CANON_BADGE: Record<string, string> = {
-  'Prayer of Azariah':  'Daniel 3',
-  'Susanna':            'Daniel 13',
-  'Bel and the Dragon': 'Daniel 14',
 }
 
 // The WEBC carries the deuterocanon itself, so while it's the active translation these
@@ -155,8 +141,18 @@ export const WEBC_DEUTERO: Record<string, { book: string; chapter?: number; vers
   'Bel and the Dragon': { book: 'Daniel', chapter: 14 },
 }
 
+const DANIEL_PORTIONS = Object.entries(WEBC_DEUTERO).filter(([, source]) => source.book === 'Daniel')
+
+// In the Catholic canon these are part of Daniel, not books of their own: the picker lists
+// only Daniel, and these labels show where they went when one turns up in a book search.
+export const CANON_BADGE: Record<string, string> = Object.fromEntries(
+  DANIEL_PORTIONS.map(([name, source]) => [name, `Daniel ${source.chapter}`]),
+)
+
 // Chapters of Daniel that other translations don't have; they read from the apocrypha text.
-export const DANIEL_GREEK_CHAPTERS: Record<number, string> = { 13: 'Susanna', 14: 'Bel and the Dragon' }
+export const DANIEL_GREEK_CHAPTERS: Record<number, string> = Object.fromEntries(
+  DANIEL_PORTIONS.filter(([, source]) => !source.verses).map(([name, source]) => [source.chapter, name]),
+)
 
 export function chapterCount(book: string, translation: string, canon: CanonKey): number {
   if (book === 'Daniel' && (translation === 'WEBC' || canon === 'catholic')) return 14
@@ -211,16 +207,20 @@ export function canonOtBooks(canon: CanonKey): Book[] {
 
 // Daniel's Greek portions count as in the canon even though they aren't listed separately.
 export function inCanon(canon: CanonKey, name: string): boolean {
-  return canonBookNames(canon).includes(name) || (canon === 'catholic' && name in CANON_BADGE)
+  return CANON_NAME_SETS[canon].has(name) || (canon === 'catholic' && name in CANON_BADGE)
 }
 
 export function canonBookNames(canon: CanonKey): string[] {
   return [...CANON_OT_ORDER[canon], ...NT_NAMES]
 }
 
-export function canonBookOrder(canon: CanonKey): Map<string, number> {
-  return new Map(canonBookNames(canon).map((n, i) => [n, i]))
+const CANON_NAME_SETS: Record<CanonKey, Set<string>> = {
+  protestant: new Set(canonBookNames('protestant')),
+  catholic:   new Set(canonBookNames('catholic')),
 }
+
+// One sort order serves both canons: Protestant is a subsequence of Catholic.
+export const BOOK_ORDER = new Map(canonBookNames('catholic').map((n, i) => [n, i]))
 
 export const EARLY_TEXTS: Array<{ name: string; chapters: number; testament: 'EARLY'; group: string; date: string }> = [
   { name: 'Didache',   chapters: 16, testament: 'EARLY', group: 'Early Church Writings', date: 'c. 50–120 AD' },
