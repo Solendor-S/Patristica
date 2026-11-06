@@ -2,6 +2,21 @@
   "version": 1,
   "releases": [
     {
+      "id": "1.0.9",
+      "version": "1.0.9",
+      "date": "2026-11-06",
+      "title": "Catholic canon and the Greek deuterocanon",
+      "changes": [
+        "New Canon setting: choose Catholic (73 books) or Protestant. The Catholic canon places the deuterocanon in the Old Testament, with Susanna and Bel as Daniel 13 and 14.",
+        "World English Bible Catholic added, a public domain translation with all 73 books.",
+        "Word study now shows Septuagint Greek for the deuterocanon, and labels Aramaic passages.",
+        "Parallel and split view now work with downloaded translations.",
+        "World English Bible repaired: 147 missing verses restored, and the words of Christ now appear in red.",
+        "3 and 4 Maccabees are now in English.",
+        "New Aquinas tab: the Catena Aurea verse by verse, the Summa and Contra Gentiles, and a Thomist primer."
+      ]
+    },
+    {
       "id": "1.0.8",
       "version": "1.0.8",
       "date": "2026-08-01",
