@@ -17,13 +17,13 @@ import type { GreekWord, HebrewWord, StrongsEntry, LexiconEntry, StrongsConcorda
 import { decodeMorphology, compactMorph, TAG_DEFINITIONS, GREEK_TAG_EXAMPLES, HEBREW_TAG_EXAMPLES } from '../utils/morphology'
 import { stripUsfm } from '../data/redLetter'
 import type { SelectedVerse, RootTabParamList } from '../types'
-import { BOOKS } from '../data/books'
+import { APOCRYPHA_BOOK_NAMES, BOOKS, greekWordRef, isAramaic, kjvVerse } from '../data/books'
 import { useTheme } from '../context/ThemeContext'
 import { useWordFocus } from '../context/WordFocusContext'
 import { useReaderFont } from '../context/FontFamilyContext'
 import type { FontScopeKey } from '../context/FontFamilyContext'
 import type { ThemeColors } from '../theme/themes'
-import { TRANSLATIONS } from '../context/TranslationContext'
+import { TRANSLATIONS, useTranslation } from '../context/TranslationContext'
 import { usePacks } from '../context/PackContext'
 import { TRANSLATION_PACK_SLUG } from '../db/queries'
 import { fetchOnlineWords } from '../lib/PackManager'
@@ -46,6 +46,7 @@ const OT_SOURCE_PACK: Partial<Record<string, string>> = {
   tahot: 'tahot',
   lxx:   'elxx',
   lxx_a: 'elxx',
+  swete: 'lxx-deutero',
 }
 
 type OtSource = HebrewSource | LxxSource
@@ -56,6 +57,17 @@ const OT_SOURCES: { key: OtSource; label: string; desc: string }[] = [
   { key: 'lxx',   label: 'LXX',    desc: 'Septuagint (Rahlfs/CCAT via STEPBible)' },
   { key: 'lxx_a', label: 'LXX-A',  desc: 'Apostolic Bible LXX (Poole)' },
 ]
+
+// Shown above the words. Sirach 35-36 are the only chapters the Greek can't be lined up
+// with: Greek and English order this part of the book differently.
+function greekNote(book: string, chapter: number): string | null {
+  if (book === 'Sirach' && (chapter === 35 || chapter === 36)) {
+    return 'Greek and English number this chapter differently, so these words may not match the verse you selected.'
+  }
+  if (book === 'Sirach') return 'About two-thirds of Sirach survives in Hebrew, but the Greek is the only complete text.'
+  if (book === 'Tobit') return 'Fragments of Tobit survive in Hebrew and Aramaic, but the Greek is the only complete text.'
+  return null
+}
 
 // ── Helpers ───────────────────────────────────────────────
 
@@ -618,6 +630,11 @@ export default function WordStudyPanel({ selected }: Props) {
   const userDb = useUserDb()
   const navigation = useNavigation<BottomTabNavigationProp<RootTabParamList>>()
   const isNT = NT_BOOKS.has(selected.book)
+  const { translation } = useTranslation()
+  // The deuterocanon and Daniel's Greek portions have no Hebrew: Swete's Greek, no source picker.
+  const greekRef = greekWordRef(translation, selected.book, selected.chapter, selected.verse ?? 0)
+  const isDeutero = !!greekRef
+  const noSource = !greekRef && APOCRYPHA_BOOK_NAMES.has(selected.book)
 
   const { wordFocus, setWordFocus } = useWordFocus()
 
@@ -668,7 +685,8 @@ export default function WordStudyPanel({ selected }: Props) {
   useLayoutEffect(() => { activeKeyRef.current = activeKey })
   const activePackDbRef = useRef<import('expo-sqlite').SQLiteDatabase | null>(null)
 
-  const isLxx = !isNT && (otSource === 'lxx' || otSource === 'lxx_a')
+  const wordSource: OtSource = isDeutero ? 'swete' : otSource
+  const isLxx = !isNT && (wordSource === 'swete' || wordSource === 'lxx' || wordSource === 'lxx_a')
   const isHebrew = !isNT && !isLxx
 
   useEffect(() => {
@@ -679,25 +697,29 @@ export default function WordStudyPanel({ selected }: Props) {
     setLexicon(null)
     setConcordanceResults([])
     setLoading(true)
-    const verse = selected.verse ?? 0
+    const { book, chapter, verse } = greekRef ?? {
+      book: selected.book,
+      chapter: selected.chapter,
+      verse: kjvVerse(translation, selected.book, selected.chapter, selected.verse ?? 0) ?? 0,
+    }
     // Resolve pack DB for optional sources (SBLGNT/TAGNT/TAHOT/LXX)
-    const packSlug = isNT ? TRANSLATION_PACK_SLUG[source.toUpperCase()] : OT_SOURCE_PACK[otSource]
+    const packSlug = isNT ? TRANSLATION_PACK_SLUG[source.toUpperCase()] : OT_SOURCE_PACK[wordSource]
     const fetchWords = (packDb?: import('expo-sqlite').SQLiteDatabase | null) => {
       const pdb = packDb ?? undefined
       const fetch = isNT
-        ? getGreekWords(db, selected.book, selected.chapter, verse, source, pdb)
+        ? getGreekWords(db, book, chapter, verse, source, pdb)
         : isLxx
-          ? getLxxWords(db, selected.book, selected.chapter, verse, otSource as LxxSource, pdb)
-          : getHebrewWords(db, selected.book, selected.chapter, verse, otSource as HebrewSource, pdb)
+          ? getLxxWords(db, book, chapter, verse, wordSource as LxxSource, pdb)
+          : getHebrewWords(db, book, chapter, verse, wordSource as HebrewSource, pdb)
       fetch.then(w => { setWords(w); setLoading(false) }).catch(() => setLoading(false))
     }
     if (packSlug && isInstalled(packSlug)) {
       getPackDb(packSlug).then(packDb => { activePackDbRef.current = packDb; fetchWords(packDb) })
     } else if (packSlug && !isInstalled(packSlug)) {
       // Source not downloaded — fetch word data from online API
-      const onlineSource = isNT ? source : (otSource === 'tahot' || otSource === 'lxx' || otSource === 'lxx_a') ? otSource : null
+      const onlineSource = isNT ? source : wordSource !== 'wlc' ? wordSource : null
       if (onlineSource) {
-        fetchOnlineWords(onlineSource, selected.book, selected.chapter, verse)
+        fetchOnlineWords(onlineSource, book, chapter, verse)
           .then(onlineWords => {
             if (onlineWords && onlineWords.length > 0) {
               // Map online word format to GreekWord/HebrewWord shape
@@ -723,7 +745,7 @@ export default function WordStudyPanel({ selected }: Props) {
       activePackDbRef.current = null
       fetchWords(null)
     }
-  }, [selected.book, selected.chapter, selected.verse, source, otSource, isInstalled, getPackDb])
+  }, [selected.book, selected.chapter, selected.verse, source, wordSource, translation, isInstalled, getPackDb])
 
   useEffect(() => {
     if (!wordFocus || loading || !words.length) return
@@ -766,10 +788,10 @@ export default function WordStudyPanel({ selected }: Props) {
     setConcordanceLoading(true)
     getStrongsConcordance(
       db,
-      isNT ? 'greek' : isLxx ? (otSource as LxxSource) : 'hebrew',
+      isNT || isDeutero ? 'greek' : isLxx ? (otSource as 'lxx' | 'lxx_a') : 'hebrew',
       activeKey!.strongs,
       source,
-      isLxx ? activePackDbRef.current ?? undefined : undefined,
+      isLxx && !isDeutero ? activePackDbRef.current ?? undefined : undefined,
     )
       .then(rows => { setConcordanceResults(rows); setConcordanceLoading(false) })
       .catch(() => setConcordanceLoading(false))
@@ -785,6 +807,7 @@ export default function WordStudyPanel({ selected }: Props) {
     setClickedRef(null)
     setConcordanceOpen(false)
     setConcordanceResults([])
+    if (!strongs) { setDef(null); setLexicon(null); return }   // grammar only, no lexicon entry
     setDefLoading(true)
     const lang = (isNT || isLxx) ? 'greek' : 'hebrew'
     Promise.all([
@@ -876,11 +899,15 @@ export default function WordStudyPanel({ selected }: Props) {
     <ScrollView ref={scrollViewRef} contentContainerStyle={s.container} keyboardShouldPersistTaps="handled">
       <View style={s.langRow}>
         <Text style={s.langLabel}>
-          {isNT ? 'Interlinear · Greek NT' : isLxx ? 'Interlinear · LXX' : 'Interlinear · Hebrew OT'}
+          {isNT ? 'Interlinear · Greek NT'
+            : isDeutero ? 'Interlinear · Septuagint'
+            : isLxx ? 'Interlinear · LXX'
+            : isAramaic(selected.book, selected.chapter, selected.verse ?? 0) ? 'Interlinear · Aramaic OT'
+            : 'Interlinear · Hebrew OT'}
         </Text>
-        {!isNT && (
+        {!isNT && !noSource && (
           <View style={s.textBadge}>
-            <Text style={s.textBadgeLabel}>{OT_SOURCES.find(o => o.key === otSource)?.label ?? otSource.toUpperCase()}</Text>
+            <Text style={s.textBadgeLabel}>{isDeutero ? 'Swete' : OT_SOURCES.find(o => o.key === otSource)?.label ?? otSource.toUpperCase()}</Text>
           </View>
         )}
       </View>
@@ -947,7 +974,7 @@ export default function WordStudyPanel({ selected }: Props) {
             )
           })}
         </ScrollView>
-      ) : (
+      ) : isDeutero || noSource ? null : (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.sourcePicker}>
           {OT_SOURCES.map(opt => {
             const active   = opt.key === otSource
@@ -1015,11 +1042,19 @@ export default function WordStudyPanel({ selected }: Props) {
         </Text>
       )}
 
+      {isDeutero && !!greekNote(selected.book, selected.chapter) && (
+        <Text style={s.psalmDisclaimer}>{greekNote(selected.book, selected.chapter)}</Text>
+      )}
+
       {!words.length ? (
         <View style={s.center}>
           <Ionicons name="language-outline" size={52} color={colors.border} />
           <Text style={s.emptyTitle}>No words found</Text>
-          <Text style={s.emptyText}>{`No ${isNT ? 'Greek' : isLxx ? 'LXX Greek' : 'Hebrew'} data for this verse`}</Text>
+          <Text style={s.emptyText}>
+            {noSource ? 'No original-language text for this book yet'
+              : isDeutero ? 'This verse is missing from the Greek edition used here'
+              : `No ${isNT ? 'Greek' : isLxx ? 'LXX Greek' : 'Hebrew'} data for this verse`}
+          </Text>
         </View>
       ) : (
       <>
@@ -1066,7 +1101,7 @@ export default function WordStudyPanel({ selected }: Props) {
         visible={concordanceOpen}
         lemma={def?.lemma ?? activeKey?.strongs ?? ''}
         translit={def?.translit ?? ''}
-        lang={isNT ? 'greek' : 'hebrew'}
+        lang={isNT || isLxx ? 'greek' : 'hebrew'}
         results={concordanceResults}
         loading={concordanceLoading}
         onClose={() => setConcordanceOpen(false)}
@@ -1081,7 +1116,11 @@ export default function WordStudyPanel({ selected }: Props) {
           {defLoading && <ActivityIndicator color={colors.accent} style={{ padding: 12 }} />}
 
           {!defLoading && !def && (
-            <Text style={s.defEmpty}>No definition found for {activeKey.strongs}</Text>
+            <Text style={s.defEmpty}>
+              {activeKey.strongs
+                ? `No definition found for ${activeKey.strongs}`
+                : [morph?.partOfSpeech, ...(morph?.tags ?? [])].filter(Boolean).concat('No lexicon entry for this word').join(' · ')}
+            </Text>
           )}
 
           {!defLoading && def && (
@@ -1137,10 +1176,10 @@ export default function WordStudyPanel({ selected }: Props) {
                       <View style={s.morphDefCard}>
                         <Text style={s.morphDefTag}>{activeTag}</Text>
                         <Text style={s.morphDefText}>{TAG_DEFINITIONS[activeTag]}</Text>
-                        {(isNT ? GREEK_TAG_EXAMPLES : HEBREW_TAG_EXAMPLES)[activeTag] && (
+                        {(isNT || isLxx ? GREEK_TAG_EXAMPLES : HEBREW_TAG_EXAMPLES)[activeTag] && (
                           <View style={s.morphDefExampleRow}>
                             <Text style={s.morphDefExampleLabel}>Example  </Text>
-                            <Text style={s.morphDefExample}>{(isNT ? GREEK_TAG_EXAMPLES : HEBREW_TAG_EXAMPLES)[activeTag]}</Text>
+                            <Text style={s.morphDefExample}>{(isNT || isLxx ? GREEK_TAG_EXAMPLES : HEBREW_TAG_EXAMPLES)[activeTag]}</Text>
                           </View>
                         )}
                       </View>
@@ -1167,7 +1206,7 @@ export default function WordStudyPanel({ selected }: Props) {
                     {/* Label + jump button */}
                     <View style={s.lexiconHeader}>
                       <Text style={s.lexiconLabel}>
-                        {isNT ? "Thayer's Greek Lexicon" : 'Brown-Driver-Briggs'}
+                        {isNT || isLxx ? "Thayer's Greek Lexicon" : 'Brown-Driver-Briggs'}
                       </Text>
                       {splitResult.match ? (
                         <TouchableOpacity

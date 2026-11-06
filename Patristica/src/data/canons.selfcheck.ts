@@ -9,7 +9,7 @@
 import assert from 'node:assert/strict'
 import {
   CANON_OT_ORDER, CANON_BADGE, WEBC_DEUTERO, APOCRYPHA_BOOK_NAMES,
-  canonOtBooks, canonBookNames, chapterCount, inCanon, kjvVerse, type CanonKey,
+  canonOtBooks, canonBookNames, chapterCount, greekWordRef, inCanon, isAramaic, kjvVerse, type CanonKey,
 } from './books.ts'
 
 const canons: CanonKey[] = ['protestant', 'catholic']
@@ -57,5 +57,27 @@ assert.equal(kjvVerse('WEBC', 'Daniel', 3, 91), 24)
 assert.equal(kjvVerse('WEBC', 'Daniel', 3, 97), 30)
 assert.equal(kjvVerse('KJV', 'Daniel', 3, 24), 24)
 assert.equal(kjvVerse('WEBC', 'Daniel', 4, 24), 24)
+
+assert.deepEqual(greekWordRef('KJV', 'Tobit', 2, 3), { book: 'Tobit', chapter: 2, verse: 3 })
+assert.deepEqual(greekWordRef('KJV', 'Baruch', 6, 2), { book: 'Baruch', chapter: 6, verse: 2 })
+assert.deepEqual(greekWordRef('KJV', 'Daniel', 13, 5), { book: 'Susanna', chapter: 1, verse: 5 })
+assert.deepEqual(greekWordRef('WEBC', 'Daniel', 14, 5), { book: 'Bel and the Dragon', chapter: 1, verse: 5 })
+assert.equal(greekWordRef('KJV', 'Daniel', 12, 1), null)
+assert.deepEqual(greekWordRef('WEBC', 'Daniel', 3, 24), { book: 'Prayer of Azariah', chapter: 1, verse: 1 })
+assert.deepEqual(greekWordRef('WEBC', 'Prayer of Azariah', 1, 30), { book: 'Prayer of Azariah', chapter: 1, verse: 7 })
+assert.deepEqual(greekWordRef('KJV', 'Prayer of Azariah', 1, 7), { book: 'Prayer of Azariah', chapter: 1, verse: 7 })
+assert.equal(greekWordRef('KJV', 'Daniel', 3, 24), null)
+assert.equal(greekWordRef('WEBC', 'Daniel', 3, 91), null)
+assert.equal(greekWordRef('KJV', '3 Maccabees', 1, 1), null)
+
+assert.equal(isAramaic('Daniel', 2, 3), false)
+assert.equal(isAramaic('Daniel', 2, 4), true)
+assert.equal(isAramaic('Daniel', 7, 28), true)
+assert.equal(isAramaic('Daniel', 8, 1), false)
+assert.equal(isAramaic('Ezra', 6, 18), true)
+assert.equal(isAramaic('Ezra', 6, 19), false)
+assert.equal(isAramaic('Ezra', 7, 12), true)
+assert.equal(isAramaic('Jeremiah', 10, 11), true)
+assert.equal(isAramaic('Jeremiah', 10, 12), false)
 
 console.log('canons selfcheck OK')

@@ -123,6 +123,16 @@
       "version": 1
     },
     {
+      "slug": "lxx-deutero",
+      "name": "Greek Deuterocanon",
+      "description": "Word-by-word Septuagint Greek for the deuterocanonical books (Swete)",
+      "type": "greek_source",
+      "translations": [],
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/lxx-deutero.db",
+      "sizeMB": 6.3,
+      "version": 1
+    },
+    {
       "slug": "tahot",
       "name": "TAHOT",
       "description": "Translators Amalgamated Hebrew OT — morphological word-level data",

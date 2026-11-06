@@ -781,6 +781,11 @@ const CREDITS: { title: string; body: string; url?: string }[] = [
     url: 'https://stepbible.org',
   },
   {
+    title: 'Greek Deuterocanon',
+    body: "Swete's Septuagint with Morpheus lemmas and grammar, QuantForgeSoftware/lxx, CC BY-SA 4.0. Strong's numbers and glosses added for this app; the word data is shared under the same licence.",
+    url: 'https://github.com/QuantForgeSoftware/lxx',
+  },
+  {
     title: "Lexicons & Strong's",
     body: "Thayer's Greek Lexicon and the Brown-Driver-Briggs Hebrew Lexicon (public domain), with Strong's Concordance numbering.",
   },

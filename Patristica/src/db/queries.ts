@@ -1337,9 +1337,10 @@ export async function getPsalmHeading(
   return row?.heading ?? null
 }
 
-export type LxxSource = 'lxx' | 'lxx_a'
+export type LxxSource = 'lxx' | 'lxx_a' | 'swete'
 
 const LXX_WORD_TABLE: Record<LxxSource, string> = {
+  swete: 'lxx_deutero_words',
   lxx:   'lxx_words',
   lxx_a: 'lxx_apostolic_words',
 }

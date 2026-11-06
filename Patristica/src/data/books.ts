@@ -174,6 +174,35 @@ export function kjvVerse(translation: string, book: string, chapter: number, ver
   return verse
 }
 
+// Where a verse's Greek word data lives, for books with no Hebrew in the panel: the
+// deuterocanon, and the Greek portions of Daniel. Null means use the normal OT sources.
+export function greekWordRef(
+  translation: string, book: string, chapter: number, verse: number,
+): { book: string; chapter: number; verse: number } | null {
+  if (book === 'Daniel') {
+    if (DANIEL_GREEK_CHAPTERS[chapter]) return { book: DANIEL_GREEK_CHAPTERS[chapter], chapter: 1, verse }
+    return translation === 'WEBC' && chapter === 3 && verse >= 24 && verse <= 90
+      ? { book: 'Prayer of Azariah', chapter: 1, verse: verse - 23 }
+      : null
+  }
+  if (book === 'Prayer of Azariah' && translation === 'WEBC') return { book, chapter, verse: verse - 23 }
+  return WEBC_DEUTERO[book] ? { book, chapter, verse } : null
+}
+
+// [book, from chapter, from verse, to chapter, to verse]. Daniel's Aramaic starts partway
+// through 2:4; verse-level is close enough for a label.
+const ARAMAIC_RANGES: [string, number, number, number, number][] = [
+  ['Daniel', 2, 4, 7, 28],
+  ['Ezra', 4, 8, 6, 18],
+  ['Ezra', 7, 12, 7, 26],
+  ['Jeremiah', 10, 11, 10, 11],
+]
+
+export function isAramaic(book: string, chapter: number, verse: number): boolean {
+  const at = chapter * 1000 + verse
+  return ARAMAIC_RANGES.some(([b, c1, v1, c2, v2]) => b === book && at >= c1 * 1000 + v1 && at <= c2 * 1000 + v2)
+}
+
 const resolveBook = (name: string): Book => BOOK_MAP[name] ?? APOCRYPHA_BOOK_MAP[name]
 
 export function canonOtBooks(canon: CanonKey): Book[] {
