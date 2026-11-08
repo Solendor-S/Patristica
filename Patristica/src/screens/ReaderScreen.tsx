@@ -1718,7 +1718,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
     const useOnline = !!packSlug && !isInstalled(packSlug)
     // The ESV is licensed and can't be bundled or packed — it comes live from Crossway's API
     // with the reader's own key. It never routes through the pack/CDN path above.
-    const useEsv = !packCType && translation === 'ESV'
+    const useEsv = !packCType && source === 'ESV'   // not on books the ESV lacks: those use their own text
     if (useEsv && !esvKeyReady) return   // don't flash "no key" before the stored key loads
     setIsOnlineMode(useOnline || useEsv)
 
@@ -3004,7 +3004,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
               colors={colors}
               onPress={onEarlyRefPress}
             />
-          ) : translation === 'ESV' ? (
+          ) : source === 'ESV' ? (
             // Crossway requires this notice wherever the ESV text is displayed. Do not remove.
             <Text style={styles.esvCopyright}>{ESV_COPYRIGHT}</Text>
           ) : null}
