@@ -7,6 +7,8 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { RouteProp } from '@react-navigation/native'
 import { useChapterText } from '../context/PackContext'
 import { useTranslation } from '../context/TranslationContext'
+import { useCanon } from '../context/CanonContext'
+import { textSource } from '../data/books'
 import { useTheme } from '../context/ThemeContext'
 import type { ThemeColors } from '../theme/themes'
 import type { BibleStackParamList } from '../types'
@@ -25,17 +27,18 @@ export default function VersePickerScreen({ navigation, route }: Props) {
   const s = useMemo(() => makeStyles(colors), [colors])
   const loadChapter = useChapterText()
   const { translation } = useTranslation()
+  const { deuteroText } = useCanon()
 
   const { book, chapter, apocrypha } = route.params
   const [verseCount, setVerseCount] = useState<number | null>(null)
 
   useEffect(() => {
     let cancelled = false
-    loadChapter(book, chapter, translation)
+    loadChapter(book, chapter, textSource(translation, book, chapter, deuteroText))
       .then(rows => { if (!cancelled) setVerseCount(rows.reduce((max, v) => Math.max(max, v.verse), 0)) })
       .catch(console.error)
     return () => { cancelled = true }
-  }, [loadChapter, book, chapter, translation])
+  }, [loadChapter, book, chapter, translation, deuteroText])
 
   const verses = verseCount ? Array.from({ length: verseCount }, (_, i) => i + 1) : []
   const remainder = verses.length % COLS

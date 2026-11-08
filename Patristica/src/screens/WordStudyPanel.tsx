@@ -17,7 +17,8 @@ import type { GreekWord, HebrewWord, StrongsEntry, LexiconEntry, StrongsConcorda
 import { decodeMorphology, compactMorph, TAG_DEFINITIONS, GREEK_TAG_EXAMPLES, HEBREW_TAG_EXAMPLES } from '../utils/morphology'
 import { stripUsfm } from '../data/redLetter'
 import type { SelectedVerse, RootTabParamList } from '../types'
-import { APOCRYPHA_BOOK_NAMES, BOOKS, greekWordRef, isAramaic, kjvVerse } from '../data/books'
+import { APOCRYPHA_BOOK_NAMES, BOOKS, greekWordRef, isAramaic, kjvVerse, textSource } from '../data/books'
+import { useCanon } from '../context/CanonContext'
 import { useTheme } from '../context/ThemeContext'
 import { useWordFocus } from '../context/WordFocusContext'
 import { useReaderFont } from '../context/FontFamilyContext'
@@ -634,7 +635,11 @@ export default function WordStudyPanel({ selected }: Props) {
   const [wordsFailed, setWordsFailed] = useState(false)
   const [retryTick, setRetryTick] = useState(0)
   // The deuterocanon and Daniel's Greek portions have no Hebrew: Swete's Greek, no source picker.
-  const greekRef = greekWordRef(translation, selected.book, selected.chapter, selected.verse ?? 0)
+  const { deuteroText } = useCanon()
+  const greekRef = greekWordRef(
+    textSource(translation, selected.book, selected.chapter, deuteroText),
+    selected.book, selected.chapter, selected.verse ?? 0,
+  )
   const isDeutero = !!greekRef
   const noSource = !greekRef && APOCRYPHA_BOOK_NAMES.has(selected.book)
 

@@ -170,6 +170,16 @@ export function kjvVerse(translation: string, book: string, chapter: number, ver
   return verse
 }
 
+export type DeuteroText = 'WEBC' | 'KJVA'
+
+// The translation a chapter's text actually comes from. The deuterocanon (with Daniel 13-14)
+// exists only in the WEBC and the KJV Apocrypha, so in any other translation those books show
+// whichever of the two the reader picked in Settings.
+export function textSource(translation: string, book: string, chapter: number, deutero: DeuteroText): string {
+  const isDeutero = !!WEBC_DEUTERO[book] || (book === 'Daniel' && chapter > 12)
+  return isDeutero && translation !== 'WEBC' ? deutero : translation
+}
+
 // Where a verse's Greek word data lives, for books with no Hebrew in the panel: the
 // deuterocanon, and the Greek portions of Daniel. Null means use the normal OT sources.
 export function greekWordRef(

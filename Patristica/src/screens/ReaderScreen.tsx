@@ -49,7 +49,7 @@ import { useFontSize, FONT_SIZE_MIN, FONT_SIZE_MAX } from '../context/FontSizeCo
 import { useReaderFont } from '../context/FontFamilyContext'
 import type { FontScopeKey } from '../context/FontFamilyContext'
 import type { ThemeColors } from '../theme/themes'
-import { BOOKS, BOOK_MAP, APOCRYPHA_BOOK_MAP, APOCRYPHA_BOOK_NAMES, EARLY_TEXT_MAP, shortBookName, DANIEL_GREEK_CHAPTERS, WEBC_DEUTERO, chapterCount, inCanon, kjvVerse } from '../data/books'
+import { BOOKS, BOOK_MAP, APOCRYPHA_BOOK_MAP, APOCRYPHA_BOOK_NAMES, EARLY_TEXT_MAP, shortBookName, DANIEL_GREEK_CHAPTERS, WEBC_DEUTERO, chapterCount, inCanon, kjvVerse, textSource } from '../data/books'
 import { useCanon } from '../context/CanonContext'
 import { getRawBookPreface } from '../data/bookPrefaces'
 import type { BookPreface } from '../data/bookPrefaces'
@@ -1431,7 +1431,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const userDb = useUserDb()
   const { setSelected } = useSelectedVerse()
   const { translation, setTranslation } = useTranslation()
-  const { canon } = useCanon()
+  const { canon, deuteroText } = useCanon()
   const { showFab, openTutorial } = useOnboarding()
   const { redLetterOn, toggleRedLetter } = useRedLetter()
   const { focusMode } = useFocusMode()
@@ -1630,10 +1630,12 @@ export default function ReaderScreen({ navigation, route }: Props) {
   // Derived from the name, not the route param: plans, notifications and cross-refs
   // navigate without the flag, and would otherwise look for Tobit in bible_verses.
   const isApocrypha = APOCRYPHA_BOOK_NAMES.has(book)
-  const webcDeutero = translation === 'WEBC' ? WEBC_DEUTERO[book] : undefined
+  // What this chapter's text is really in: the deuterocanon follows the Settings choice
+  const source = textSource(translation, book, chapter, deuteroText)
+  const webcDeutero = source === 'WEBC' ? WEBC_DEUTERO[book] : undefined
   // Daniel 13-14 in a translation without them: the reader stays in Daniel, the text is Susanna/Bel
   const isGreekDaniel = book === 'Daniel' && chapter > 12
-  const greekDaniel = isGreekDaniel && translation !== 'WEBC'
+  const greekDaniel = isGreekDaniel && source !== 'WEBC'
   const isEarlyText = route.params?.earlyText ?? false
   const listRef = useRef<FlatList>(null)
   const pendingScrollIdxRef = useRef<number | null>(null)
@@ -1721,7 +1723,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
     setIsOnlineMode(useOnline || useEsv)
 
     // Both the translation-only fast path and the full load below need the same verse source.
-    const fetchFn = useEsv ? fetchEsvChapter(book, chapter, esvKey) : loadChapter(book, chapter, translation)
+    const fetchFn = useEsv ? fetchEsvChapter(book, chapter, esvKey) : loadChapter(book, chapter, source)
 
     if (isTranslationOnly) {
       // Only the translation changed — fetch new verse text and swap in place.
@@ -1807,7 +1809,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       handleLoadError(e)
       setLoading(false)
     })
-  }, [book, chapter, translation, isApocrypha, isEarlyText, packDbVersion, isInstalled, installedReady, esvDep])
+  }, [book, chapter, translation, source, isApocrypha, isEarlyText, packDbVersion, isInstalled, installedReady, esvDep])
 
   useEffect(() => {
     recordHistory(userDb, book, chapter)
@@ -1898,7 +1900,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
   // Outside the 66 books a column only makes sense if the two sides are different texts:
   // every translation but the WEBC shares the one apocrypha text. The Prayer of Azariah
   // is out because its two sources number their verses differently.
-  const differentApocText = (!!WEBC_DEUTERO[book] || isGreekDaniel) && (translation === 'WEBC') !== (compareTrans === 'WEBC')
+  const compareSource = compareTrans ? textSource(compareTrans, book, chapter, deuteroText) : null
+  const differentApocText = (!!WEBC_DEUTERO[book] || isGreekDaniel) && source !== compareSource
   const skipCompare = isEarlyText || book === 'Prayer of Azariah' || ((isApocrypha || isGreekDaniel) && !differentApocText)
 
   useEffect(() => {
@@ -1909,7 +1912,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
     }
     if (!installedReady) return
     let cancelled = false
-    loadChapter(book, chapter, compareTrans).then(rows => {
+    loadChapter(book, chapter, compareSource!).then(rows => {
       if (cancelled) return
       const m = new Map<number, string>()
       rows.forEach(v => {
@@ -1928,7 +1931,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       setCompareBsbFnsByVerse(new Map())
     }
     return () => { cancelled = true }
-  }, [compareTrans, book, chapter, skipCompare, loadChapter, installedReady])
+  }, [compareTrans, compareSource, book, chapter, skipCompare, loadChapter, installedReady])
 
   // Load persisted split state
   useEffect(() => {
@@ -1956,11 +1959,11 @@ export default function ReaderScreen({ navigation, route }: Props) {
     if (!splitOn) { setSplitVerses(prev => prev.length > 0 ? [] : prev); return }
     if (!installedReady) return
     let cancelled = false
-    loadChapter(splitBook, splitChapter, splitTranslation)
+    loadChapter(splitBook, splitChapter, textSource(splitTranslation, splitBook, splitChapter, deuteroText))
       .then(rows => { if (!cancelled) setSplitVerses(rows) })
       .catch(() => { if (!cancelled) setSplitVerses([]) })
     return () => { cancelled = true }
-  }, [splitOn, splitBook, splitChapter, splitTranslation, loadChapter, installedReady])
+  }, [splitOn, splitBook, splitChapter, splitTranslation, deuteroText, loadChapter, installedReady])
 
   // Fetch cross-ref markers for split pane (NT only)
   useEffect(() => {
@@ -2118,7 +2121,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const isOutsideCanon = isApocrypha || isEarlyText
   const isDeuterocanon = isApocrypha && inCanon(canon, book)
   // Whatever translation is selected, the apocrypha text is the KJV Apocrypha, so say so.
-  const shownTranslation = greekDaniel || (isDeuterocanon && !webcDeutero) ? 'KJVA' : translation
+  const shownTranslation = source
   const bookIndex    = useMemo(() => isOutsideCanon ? -1 : BOOKS.findIndex(b => b.name === book), [book, isOutsideCanon])
   const isNT         = useMemo(() => !isOutsideCanon && BOOK_MAP[book]?.testament === 'NT', [book, isOutsideCanon])
   const isGreekTrans    = useMemo(() => GREEK_TRANSLATIONS.has(translation as any), [translation])
@@ -2510,7 +2513,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
             onPress={() => { setTransPickerTab(splitOn ? 'split' : 'primary'); setTranslationPickerOpen(true) }}
             activeOpacity={0.7}
           >
-            <Text style={styles.apocBadgeText}>{isEarlyText ? 'Early Text' : isDeuterocanon ? 'KJVA' : 'Apocrypha'}</Text>
+            <Text style={styles.apocBadgeText}>{isEarlyText ? 'Early Text' : source === 'KJVA' ? 'KJVA' : 'Apocrypha'}</Text>
             {!!WEBC_DEUTERO[book] && <Ionicons name="chevron-down" size={11} color={colors.textMuted} />}
           </TouchableOpacity>
         ) : (

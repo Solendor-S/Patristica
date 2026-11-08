@@ -9,7 +9,7 @@
 import assert from 'node:assert/strict'
 import {
   CANON_OT_ORDER, CANON_BADGE, WEBC_DEUTERO, APOCRYPHA_BOOK_NAMES,
-  canonOtBooks, canonBookNames, chapterCount, greekWordRef, inCanon, isAramaic, kjvVerse, type CanonKey,
+  canonOtBooks, canonBookNames, chapterCount, greekWordRef, inCanon, isAramaic, kjvVerse, textSource, type CanonKey,
 } from './books.ts'
 
 const canons: CanonKey[] = ['protestant', 'catholic']
@@ -79,5 +79,13 @@ assert.equal(isAramaic('Ezra', 6, 19), false)
 assert.equal(isAramaic('Ezra', 7, 12), true)
 assert.equal(isAramaic('Jeremiah', 10, 11), true)
 assert.equal(isAramaic('Jeremiah', 10, 12), false)
+
+assert.equal(textSource('KJV', 'Tobit', 1, 'WEBC'), 'WEBC')
+assert.equal(textSource('KJV', 'Tobit', 1, 'KJVA'), 'KJVA')
+assert.equal(textSource('WEBC', 'Tobit', 1, 'KJVA'), 'WEBC')    // WEBC always has its own
+assert.equal(textSource('ASV', 'Daniel', 13, 'WEBC'), 'WEBC')
+assert.equal(textSource('ASV', 'Daniel', 12, 'WEBC'), 'ASV')
+assert.equal(textSource('KJV', 'Genesis', 1, 'WEBC'), 'KJV')
+assert.equal(textSource('KJV', '1 Esdras', 1, 'WEBC'), 'KJV')  // not in the WEBC: Apocrypha text
 
 console.log('canons selfcheck OK')

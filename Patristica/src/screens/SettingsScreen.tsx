@@ -16,8 +16,8 @@ import type { Translation, StartupTranslation } from '../context/TranslationCont
 import { useFontSize, FONT_SIZE_DEFAULT } from '../context/FontSizeContext'
 import { useNavDepth, NAV_DEPTH_OPTIONS } from '../context/NavDepthContext'
 import type { NavDepthKey } from '../context/NavDepthContext'
-import { useCanon, CANON_OPTIONS } from '../context/CanonContext'
-import type { CanonKey } from '../context/CanonContext'
+import { useCanon, CANON_OPTIONS, DEUTERO_TEXT_OPTIONS } from '../context/CanonContext'
+import type { CanonKey, DeuteroText } from '../context/CanonContext'
 import { useStartupMode, STARTUP_MODE_OPTIONS } from '../context/StartupModeContext'
 import type { StartupModeKey } from '../context/StartupModeContext'
 import { useReaderFont, FONT_FAMILY_OPTIONS, FONT_SCOPE_OPTIONS, FAMILY_MAP } from '../context/FontFamilyContext'
@@ -119,7 +119,7 @@ function AppearanceSection() {
 
 // ── Reading section ───────────────────────────────────────
 
-type ExpandedRow = 'lineSpacing' | 'translation' | 'startupTranslation' | 'navDepth' | 'canon' | 'startupMode' | 'fontFamily' | 'fontScope' | 'tabletLayout' | 'searchMode' | null
+type ExpandedRow = 'lineSpacing' | 'translation' | 'startupTranslation' | 'navDepth' | 'canon' | 'deuteroText' | 'startupMode' | 'fontFamily' | 'fontScope' | 'tabletLayout' | 'searchMode' | null
 type PickerOption = { key: string; label: string; description: string }
 
 function PickerRow({
@@ -283,7 +283,7 @@ function ReadingSection() {
   const { translation, setTranslation, startupTranslation, setStartupTranslation } = useTranslation()
   const { setFontSize } = useFontSize()
   const { navDepth, setNavDepth } = useNavDepth()
-  const { canon, setCanon } = useCanon()
+  const { canon, setCanon, deuteroText, setDeuteroText } = useCanon()
   const { startupMode, setStartupMode } = useStartupMode()
   const { familyKey, fontScope, setFontFamily, setFontScope } = useReaderFont()
   const { tabletLayout, setTabletLayout } = useTabletLayout()
@@ -466,6 +466,21 @@ function ReadingSection() {
         <View style={s.separator} />
 
         <PickerRow
+          icon="book-outline"
+          rowLabel="Deuterocanon Text"
+          valueLabel={deuteroText}
+          expanded={expanded === 'deuteroText'}
+          onToggle={() => toggle('deuteroText')}
+          options={DEUTERO_TEXT_OPTIONS}
+          selectedKey={deuteroText}
+          onSelect={key => { setDeuteroText(key as DeuteroText); setExpanded(null) }}
+          s={s}
+          colors={colors}
+        />
+
+        <View style={s.separator} />
+
+        <PickerRow
           icon="bookmark-outline"
           rowLabel="Startup position"
           valueLabel={STARTUP_MODE_OPTIONS.find(o => o.key === startupMode)!.label}
@@ -629,7 +644,7 @@ function DataSection() {
   const { setTranslation } = useTranslation()
   const { setFontSize } = useFontSize()
   const { setFontFamily, setFontScope } = useReaderFont()
-  const { setCanon } = useCanon()
+  const { setCanon, setDeuteroText } = useCanon()
 
   const handleReset = () => {
     Alert.alert(
@@ -648,6 +663,7 @@ function DataSection() {
             setFontFamily('system')
             setFontScope('verses')
             setCanon('catholic')
+            setDeuteroText('WEBC')
           },
         },
       ],
