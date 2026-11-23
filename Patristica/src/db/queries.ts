@@ -824,25 +824,6 @@ export async function searchCommentary(
   )
 }
 
-export async function searchCommentaryByKeywords(
-  fathersDb: SQLiteDatabase | null,
-  keywords: string[],
-  limit = 300,
-): Promise<CommentaryEntryWithRef[]> {
-  if (!fathersDb || keywords.length === 0) return []
-  // Build: (LOWER(full_text) LIKE ? OR LOWER(excerpt) LIKE ?) OR ...
-  const clause = keywords.map(() => `(LOWER(full_text) LIKE ? OR LOWER(excerpt) LIKE ?)`).join(' OR ')
-  const params = keywords.flatMap(k => [`%${k}%`, `%${k}%`])
-  return fathersDb.getAllAsync<CommentaryEntryWithRef>(
-    `SELECT id, father_name, father_era, excerpt, full_text, source, source_url,
-            book, chapter, verse
-     FROM commentary
-     WHERE ${clause}
-     LIMIT ${limit}`,
-    params,
-  )
-}
-
 // ── Cross references ──────────────────────────────────────
 
 export async function getCrossRefs(

@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import {
   View, Text, FlatList, TouchableOpacity, ScrollView,
-  StyleSheet, ActivityIndicator, LayoutAnimation,
+  StyleSheet, LayoutAnimation, Linking,
 } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
 import { Ionicons } from '@expo/vector-icons'
@@ -13,11 +13,10 @@ import { ScripturePreviewModal } from './ScripturePreviewModal'
 import { TRADITION_COLORS } from '../data/traditionColors'
 import { DOCTRINES, DOCTRINE_ERAS } from '../data/doctrines'
 import type { Doctrine } from '../data/doctrines'
-import { searchCommentaryByKeywords } from '../db/queries'
-import type { CommentaryEntryWithRef } from '../db/queries'
+import { DOCTRINE_ENTRIES } from '../data/doctrineEntries'
+import type { DoctrineEntry } from '../data/doctrineEntries'
 import { getFatherInfo } from '../data/fatherDates'
 import { useTheme } from '../context/ThemeContext'
-import { useCommentaryDbs } from '../context/PackContext'
 import type { ThemeColors } from '../theme/themes'
 
 
@@ -41,6 +40,8 @@ export function parseVerseRefs(text: string): TextSegment[] {
   if (last < text.length) segments.push({ type: 'text', content: text.slice(last) })
   return segments
 }
+
+type VerseRef = { book: string; chapter: number; verse: number }
 
 // ── Overview card ─────────────────────────────────────────
 
@@ -73,40 +74,74 @@ function OverviewCard({ doctrine, onVerseRef }: {
 
 // ── Entry card ────────────────────────────────────────────
 
-function DoctrineEntryCard({ entry }: { entry: CommentaryEntryWithRef }) {
+function parseVerse(v?: string): VerseRef | null {
+  const m = v?.match(/^(.+) (\d+):(\d+)$/)
+  return m ? { book: m[1], chapter: +m[2], verse: +m[3] } : null
+}
+
+function DoctrineEntryCard({ entry, onVerseRef }: {
+  entry: DoctrineEntry
+  onVerseRef: (book: string, chapter: number, verse: number) => void
+}) {
   const { colors } = useTheme()
   const styles = useMemo(() => makeStyles(colors), [colors])
   const [expanded, setExpanded] = useState(false)
-
-  const info = useMemo(() => getFatherInfo(entry.father_name), [entry.father_name])
-  const hasMore = entry.full_text.length > entry.excerpt.length
-  const body = expanded ? entry.full_text : entry.excerpt
+  const info = useMemo(() => getFatherInfo(entry.father), [entry.father])
+  const verse = useMemo(() => parseVerse(entry.verse), [entry.verse])
 
   const toggle = useCallback(() => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
     setExpanded(e => !e)
   }, [])
 
+  // Expanded: the context paragraph with the key quote highlighted inside it.
+  const body = useMemo(() => {
+    if (!expanded || !entry.context) return <Text style={styles.quote}>{entry.quote}</Text>
+    const at = entry.context.indexOf(entry.quote)
+    if (at < 0) return <Text style={styles.contextText}>{entry.context}</Text>
+    return (
+      <Text style={styles.contextText}>
+        {entry.context.slice(0, at)}
+        <Text style={styles.quoteInContext}>{entry.quote}</Text>
+        {entry.context.slice(at + entry.quote.length)}
+      </Text>
+    )
+  }, [expanded, entry.context, entry.quote, styles])
+
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
         <View style={[styles.traditionDot, { backgroundColor: TRADITION_COLORS[info?.tradition ?? ''] ?? '#94a3b8' }]} />
         <View style={{ flex: 1 }}>
-          <Text style={styles.fatherName}>{entry.father_name}</Text>
-          {!!info?.dates && <Text style={styles.fatherDates}>{info.dates}{info.tradition ? ` · ${info.tradition}` : ''}</Text>}
+          <Text style={styles.fatherName}>{entry.father}</Text>
+          <Text style={styles.workLine}>
+            {entry.work}{entry.ref ? `, ${entry.ref}` : ''} · c. {entry.year}
+          </Text>
         </View>
-        {!!entry.book && (
-          <Text style={styles.verseRef}>{entry.book} {entry.chapter}:{entry.verse}</Text>
-        )}
+        {!!entry.tag && <Text style={styles.tag}>{entry.tag}</Text>}
       </View>
-      <Text style={styles.excerpt}>{body}</Text>
-      {!!entry.source && <Text style={styles.source}>{entry.source}</Text>}
-      {hasMore && (
-        <TouchableOpacity style={styles.expandBtn} onPress={toggle} activeOpacity={0.7}>
-          <Text style={styles.expandLabel}>{expanded ? 'Show less' : 'Show more'}</Text>
-          <Ionicons name={expanded ? 'chevron-up' : 'chevron-down'} size={14} color={colors.accent} />
+
+      {body}
+      {!!entry.note && <Text style={styles.note}>{entry.note}</Text>}
+
+      <View style={styles.actions}>
+        {!!entry.context && (
+          <TouchableOpacity style={styles.action} onPress={toggle} activeOpacity={0.7}>
+            <Ionicons name={expanded ? 'chevron-up' : 'chevron-down'} size={13} color={colors.accent} />
+            <Text style={styles.actionLabel}>{expanded ? 'Hide context' : 'Show context'}</Text>
+          </TouchableOpacity>
+        )}
+        {verse && (
+          <TouchableOpacity style={styles.action} onPress={() => onVerseRef(verse.book, verse.chapter, verse.verse)} activeOpacity={0.7}>
+            <Ionicons name="book-outline" size={13} color={colors.accent} />
+            <Text style={styles.actionLabel}>{entry.verse}</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity style={styles.action} onPress={() => Linking.openURL(entry.url)} activeOpacity={0.7}>
+          <Ionicons name="open-outline" size={13} color={colors.accent} />
+          <Text style={styles.actionLabel}>Read in full</Text>
         </TouchableOpacity>
-      )}
+      </View>
     </View>
   )
 }
@@ -127,18 +162,17 @@ function EraHeader({ label }: { label: string }) {
 
 type ListItem =
   | { type: 'era'; label: string }
-  | { type: 'entry'; entry: CommentaryEntryWithRef }
+  | { type: 'entry'; entry: DoctrineEntry }
 
 export default function DoctrinePanel() {
   const { colors } = useTheme()
   const styles = useMemo(() => makeStyles(colors), [colors])
   const db = useSQLiteContext()
-  const commentary = useCommentaryDbs()
   const navigation = useNavigation<BottomTabNavigationProp<RootTabParamList>>()
   const { setSelected: setSelectedVerse } = useSelectedVerse()
 
   const [selected, setSelected] = useState<Doctrine | null>(null)
-  const [previewVerse, setPreviewVerse] = useState<{ book: string; chapter: number; verse: number } | null>(null)
+  const [previewVerse, setPreviewVerse] = useState<VerseRef | null>(null)
 
   const handleVerseRef = useCallback((book: string, chapter: number, verse: number) => {
     setPreviewVerse({ book, chapter, verse })
@@ -152,36 +186,14 @@ export default function DoctrinePanel() {
       params: { book, chapter, verse, earlyText: false, apocrypha: false },
     })
   }, [navigation, setSelectedVerse])
-  const [loading, setLoading] = useState(false)
-  const [results, setResults] = useState<CommentaryEntryWithRef[]>([])
 
-  const selectDoctrine = useCallback(async (doctrine: Doctrine) => {
-    if (selected?.id === doctrine.id) { setSelected(null); setResults([]); return }
-    setSelected(doctrine)
-    setLoading(true)
-    try {
-      const rows = await searchCommentaryByKeywords(commentary.fathers, doctrine.keywords)
-      setResults(rows)
-    } finally {
-      setLoading(false)
-    }
-  }, [commentary.fathers, selected?.id])
-
-  // Sort by father sort year, then group by era
+  // Curated entries arrive sorted by year; group them by era.
   const listItems = useMemo((): ListItem[] => {
-    if (results.length === 0) return []
-
-    const sorted = [...results].sort((a, b) => {
-      const sortA = getFatherInfo(a.father_name)?.sort ?? 9999
-      const sortB = getFatherInfo(b.father_name)?.sort ?? 9999
-      return sortA - sortB
-    })
-
+    if (!selected) return []
     const items: ListItem[] = []
     let currentEra = ''
-    for (const entry of sorted) {
-      const fSort = getFatherInfo(entry.father_name)?.sort ?? 9999
-      const era = DOCTRINE_ERAS.find(e => fSort <= e.maxSort)?.label ?? 'Medieval'
+    for (const entry of DOCTRINE_ENTRIES[selected.id] ?? []) {
+      const era = DOCTRINE_ERAS.find(e => entry.year <= e.maxYear)?.label ?? 'Medieval'
       if (era !== currentEra) {
         items.push({ type: 'era', label: era })
         currentEra = era
@@ -189,7 +201,7 @@ export default function DoctrinePanel() {
       items.push({ type: 'entry', entry })
     }
     return items
-  }, [results])
+  }, [selected])
 
   return (
     <View style={{ flex: 1 }}>
@@ -206,7 +218,7 @@ export default function DoctrinePanel() {
             <TouchableOpacity
               key={d.id}
               style={[styles.doctrineChip, active && styles.doctrineChipActive]}
-              onPress={() => selectDoctrine(d)}
+              onPress={() => setSelected(active ? null : d)}
               activeOpacity={0.7}
             >
               <Text style={[styles.doctrineChipText, active && styles.doctrineChipTextActive]}>
@@ -221,37 +233,27 @@ export default function DoctrinePanel() {
         Views expressed by Church Fathers may not reflect biblical teachings. Cross-reference with Scripture.
       </Text>
 
-      {/* Results */}
       {!selected ? (
         <View style={styles.empty}>
           <Ionicons name="library-outline" size={52} color={colors.border} />
           <Text style={styles.emptyTitle}>Select a doctrine</Text>
           <Text style={styles.emptyText}>See how the church fathers developed their teaching over the centuries</Text>
         </View>
-      ) : loading ? (
-        <>
-          <OverviewCard doctrine={selected} onVerseRef={handleVerseRef} />
-          <View style={styles.empty}><ActivityIndicator color={colors.accent} size="large" /></View>
-        </>
-      ) : listItems.length === 0 ? (
-        <>
-          <OverviewCard doctrine={selected} onVerseRef={handleVerseRef} />
-          <View style={styles.empty}>
-            <Ionicons name="search-outline" size={52} color={colors.border} />
-            <Text style={styles.emptyTitle}>No results</Text>
-            <Text style={styles.emptyText}>No commentary found for {selected.label}</Text>
-          </View>
-        </>
       ) : (
         <FlatList
           data={listItems}
-          keyExtractor={(item, i) => item.type === 'era' ? `era-${item.label}` : `${item.entry.id}-${i}`}
+          keyExtractor={(item, i) => item.type === 'era' ? `era-${item.label}` : `${item.entry.father}-${item.entry.ref}-${i}`}
           contentContainerStyle={styles.list}
           ListHeaderComponent={<OverviewCard doctrine={selected} onVerseRef={handleVerseRef} />}
+          ListFooterComponent={
+            <Text style={styles.footer}>
+              Translations: Ante-Nicene and Nicene & Post-Nicene Fathers (public domain), via New Advent.
+            </Text>
+          }
           renderItem={({ item }) =>
             item.type === 'era'
               ? <EraHeader label={item.label} />
-              : <DoctrineEntryCard entry={item.entry} />
+              : <DoctrineEntryCard entry={item.entry} onVerseRef={handleVerseRef} />
           }
         />
       )}
@@ -289,12 +291,6 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     lineHeight: 16, marginHorizontal: 14, marginBottom: 6, opacity: 0.8,
   },
 
-  descRow: {
-    paddingHorizontal: 14, paddingBottom: 8,
-    borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: c.border,
-  },
-  descText: { fontSize: 12, color: c.textSecondary, lineHeight: 17 },
-
   eraHeader: {
     paddingHorizontal: 14, paddingTop: 14, paddingBottom: 4,
   },
@@ -305,17 +301,24 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
 
   card: {
     backgroundColor: c.bgCard, borderRadius: 12,
-    padding: 13, marginHorizontal: 12, marginBottom: 8, gap: 6,
+    padding: 13, marginHorizontal: 12, marginBottom: 8, gap: 8,
   },
   cardHeader: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
-  traditionDot: { width: 9, height: 9, borderRadius: 5, marginTop: 3, flexShrink: 0 },
-  fatherName: { fontSize: 13, fontWeight: '700', color: c.textPrimary },
-  fatherDates: { fontSize: 11, color: c.textMuted },
-  verseRef: { fontSize: 11, color: c.accent, fontWeight: '600', flexShrink: 0 },
-  excerpt: { fontSize: 13, color: c.textSecondary, lineHeight: 19 },
-  source: { fontSize: 11, color: c.textMuted, fontStyle: 'italic' },
-  expandBtn: { flexDirection: 'row', alignItems: 'center', gap: 4, alignSelf: 'flex-start' },
-  expandLabel: { fontSize: 12, color: c.accent, fontWeight: '500' },
+  traditionDot: { width: 9, height: 9, borderRadius: 5, marginTop: 4, flexShrink: 0 },
+  fatherName: { fontSize: 14, fontWeight: '700', color: c.textPrimary },
+  workLine: { fontSize: 11, color: c.textMuted, marginTop: 1 },
+  tag: {
+    fontSize: 10, fontWeight: '700', color: c.textMuted, textTransform: 'uppercase', letterSpacing: 0.4,
+    paddingHorizontal: 7, paddingVertical: 2, borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: c.textMuted, overflow: 'hidden',
+  },
+  quote: { fontSize: 14, color: c.textPrimary, lineHeight: 22 },
+  contextText: { fontSize: 13, color: c.textSecondary, lineHeight: 20 },
+  quoteInContext: { color: c.textPrimary, fontWeight: '600' },
+  note: { fontSize: 12, color: c.textMuted, fontStyle: 'italic', lineHeight: 17 },
+  actions: { flexDirection: 'row', flexWrap: 'wrap', gap: 16 },
+  action: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  actionLabel: { fontSize: 12, color: c.accent, fontWeight: '600' },
 
   overviewCard: {
     marginHorizontal: 12, marginTop: 10, marginBottom: 4,
@@ -330,6 +333,7 @@ const makeStyles = (c: ThemeColors) => StyleSheet.create({
     fontSize: 13, color: c.textSecondary, lineHeight: 20,
   },
 
+  footer: { fontSize: 11, color: c.textMuted, fontStyle: 'italic', textAlign: 'center', padding: 16 },
   list: { paddingBottom: 24 },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8, padding: 32 },
   emptyTitle: { fontSize: 16, fontWeight: '700', color: c.textSecondary },
