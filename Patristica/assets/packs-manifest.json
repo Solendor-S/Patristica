@@ -30,6 +30,15 @@
       "version": 1
     },
     {
+      "slug": "lexicons",
+      "name": "Lexicons & Semantic Domains",
+      "description": "Abbott-Smith's Manual Greek Lexicon (1922) and the UBS Greek and Hebrew semantic dictionaries (word senses, Louw-Nida domains, related words) for offline word study",
+      "type": "lexicon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/lexicons.db",
+      "sizeMB": 41.6,
+      "version": 1
+    },
+    {
       "slug": "asv",
       "name": "American Standard Version",
       "description": "Classic 1901 revision of the KJV with improved accuracy",

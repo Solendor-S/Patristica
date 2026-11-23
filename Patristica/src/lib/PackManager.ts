@@ -10,7 +10,7 @@ export interface PackMeta {
   slug: string
   name: string
   description?: string
-  type: 'translation' | 'apocrypha' | 'early_text' | 'greek_source' | 'hebrew_source' | 'commentary'
+  type: 'translation' | 'apocrypha' | 'early_text' | 'greek_source' | 'hebrew_source' | 'commentary' | 'lexicon'
   translations?: string[]
   book?: string
   group?: string
@@ -371,6 +371,82 @@ export async function fetchOnlineCommentaryVerse(
       source_url: e.u,
       verse: e.v,
     }))
+}
+
+// ── Lexicons (Abbott-Smith + UBS semantic domains) ───────────────────────────
+// Shared shapes: queries.ts builds the same objects from the `lexicons` pack.
+
+export interface AbbottSmithEntry {
+  lemma: string
+  ntCount: number | null
+  body: string                  // light markup, see components/LexiconMarkup.tsx
+  abbrevs: [string, string][]   // abbreviations that occur in body, with expansions
+}
+export interface SemSense {
+  lexId: string
+  pos: string
+  domainKey: string | null      // related words share this key
+  domainPath: string            // "Attitudes and Emotions › Love, Affection, Compassion"
+  ln: string | null             // Louw-Nida number (Greek)
+  definition: string
+  glosses: string
+  comments: string
+  aiGenerated: boolean          // flagged by UBS itself in its data
+}
+export interface SemEntry { lemma: string; senses: SemSense[] }
+export interface DomainMember { strongs: string; lemma: string; gloss: string; definition: string }
+
+type OnlineSense = { id: string; p: string; k: string | null; dp: string; ln: string | null; d: string; g: string; c: string; ai: number }
+const _lexShards = new Map<string, Record<string, unknown[]> | null>()
+const _verseSenses = new Map<string, Record<string, Record<string, string[]>> | null>()
+const _domains = new Map<string, Array<{ s: string; l: string; g: string; d: string }> | null>()
+const LEX_CACHE_MAX = 12
+
+function strongsShard(strongs: string): { lang: string; n: number } | null {
+  const m = strongs.match(/^([GH])(\d+)/)
+  return m ? { lang: m[1], n: Math.floor(parseInt(m[2], 10) / 100) } : null
+}
+
+/** Abbott-Smith entries for a Strong's number ("G26"). Null when offline. */
+export async function fetchOnlineAbbottSmith(strongs: string): Promise<AbbottSmithEntry[] | null> {
+  const sh = strongsShard(strongs)
+  if (!sh || sh.lang !== 'G') return []
+  const data = await cachedJson(_lexShards, LEX_CACHE_MAX, `as|${sh.n}`, `/lexicons/as/${sh.n}.json`, false)
+  if (!data) return null
+  return ((data[strongs] ?? []) as Array<{ l: string; n: number | null; b: string; a: [string, string][] }>)
+    .map(e => ({ lemma: e.l, ntCount: e.n, body: e.b, abbrevs: e.a }))
+}
+
+/** UBS semantic-dictionary entries for a Strong's number. Null when offline. */
+export async function fetchOnlineSemEntries(strongs: string): Promise<SemEntry[] | null> {
+  const sh = strongsShard(strongs)
+  if (!sh) return []
+  const data = await cachedJson(_lexShards, LEX_CACHE_MAX, `sem|${sh.lang}|${sh.n}`,
+    `/lexicons/sem/${sh.lang}/${sh.n}.json`, false)
+  if (!data) return null
+  return ((data[strongs] ?? []) as Array<{ l: string; s: OnlineSense[] }>).map(e => ({
+    lemma: e.l,
+    senses: e.s.map(s => ({
+      lexId: s.id, pos: s.p, domainKey: s.k, domainPath: s.dp, ln: s.ln,
+      definition: s.d, glosses: s.g, comments: s.c, aiGenerated: !!s.ai,
+    })),
+  }))
+}
+
+/** Strong's number -> UBS sense ids used in one verse. Null when offline. */
+export async function fetchOnlineVerseSenses(
+  book: string, chapter: number, verse: number,
+): Promise<Record<string, string[]> | null> {
+  const data = await cachedJson(_verseSenses, LEX_CACHE_MAX, `${book}|${chapter}`,
+    `/lexicons/sem-verse/${encodeURIComponent(book)}/${chapter}.json`, true)
+  return data ? data[String(verse)] ?? {} : null
+}
+
+/** Every word in a semantic domain. Null when offline. */
+export async function fetchOnlineDomain(lang: 'G' | 'H', key: string): Promise<DomainMember[] | null> {
+  const data = await cachedJson(_domains, LEX_CACHE_MAX, `${lang}|${key}`,
+    `/lexicons/domains/${lang}/${key}.json`, false)
+  return data ? data.map(m => ({ strongs: m.s, lemma: m.l, gloss: m.g, definition: m.d })) : null
 }
 
 // ── Online Aquinas topics (Summa / Contra Gentiles browse) ───────────────────

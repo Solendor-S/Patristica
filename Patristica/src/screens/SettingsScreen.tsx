@@ -805,6 +805,21 @@ const CREDITS: { title: string; body: string; url?: string }[] = [
     title: "Lexicons & Strong's",
     body: "Thayer's Greek Lexicon and the Brown-Driver-Briggs Hebrew Lexicon (public domain), with Strong's Concordance numbering.",
   },
+  {
+    title: 'Abbott-Smith Greek Lexicon',
+    body: "G. Abbott-Smith, A Manual Greek Lexicon of the New Testament (1922), public domain. Digital edition marked up by the translatable-exegetical-tools project (public domain).",
+    url: 'https://github.com/translatable-exegetical-tools/Abbott-Smith',
+  },
+  {
+    title: 'Semantic Domains',
+    body: 'UBS Dictionary of New Testament Greek, © United Bible Societies, 2023. Adapted from Semantic Dictionary of Biblical Greek: © United Bible Societies 2018-2023, which is adapted from Greek-English Lexicon of the New Testament: Based on Semantic Domains, Eds. J P Louw, Eugene Albert Nida © United Bible Societies 1988, 1989.\n\nUBS Dictionary of Biblical Hebrew © United Bible Societies, 2023. Adapted from Semantic Dictionary of Biblical Hebrew © 2000-2023 United Bible Societies.\n\nBoth licensed CC BY-SA 4.0. Reformatted and keyed to Strong\'s numbers for this app; the derived data is shared under the same licence.',
+    url: 'https://github.com/ubsicap/ubs-open-license',
+  },
+  {
+    title: 'Eusebian Canons',
+    body: "Eusebian section numbers and canon tables from the INTF, via the CrossWire Eusebian modules (public domain). Eusebius' Letter to Carpianus translated by Mark DelCogliano (public domain).",
+    url: 'https://www.tertullian.org/fathers/eusebius_letter_to_carpianus.htm',
+  },
 ]
 
 function CreditsModal({ visible, onClose }: { visible: boolean; onClose: () => void }) {

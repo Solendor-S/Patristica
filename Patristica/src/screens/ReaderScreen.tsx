@@ -1516,8 +1516,12 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const activeSplitPaneRef      = useRef<'left' | 'right'>('left')
   const splitFlatListRef        = useRef<FlatList>(null)
   const parallelOnBeforeSplitRef = useRef(false)
+  const parallelOnRef           = useRef(false)
+  // Right-pane verse to scroll to once its chapter has loaded (Gospel parallels "Side by side")
+  const splitScrollVerseRef     = useRef<{ book: string; chapter: number; verse: number } | null>(null)
   splitOnRef.current = splitOn
   activeSplitPaneRef.current = activeSplitPane
+  parallelOnRef.current = parallelOn
 
   const [concordanceWord, setConcordanceWord]       = useState('')
   const [concordanceResults, setConcordanceResults] = useState<ConcordanceResult[]>([])
@@ -1548,7 +1552,26 @@ export default function ReaderScreen({ navigation, route }: Props) {
       const pending = pendingNav.current
       if (!pending) return
       pendingNav.current = null
-      if (splitOnRef.current && activeSplitPaneRef.current === 'right') {
+      if (pending.split) {
+        // Gospel parallels "Side by side": left pane stays on the study verse, the
+        // parallel opens on the right. Same state changes as the split toggle.
+        if (!splitOnRef.current) {
+          parallelOnBeforeSplitRef.current = parallelOnRef.current
+          setParallelOn(false)
+        }
+        setSplitOn(true); splitOnRef.current = true
+        setActiveSplitPane('left'); activeSplitPaneRef.current = 'left'
+        setSplitBook(pending.split.book)
+        setSplitChapter(pending.split.chapter)
+        splitScrollVerseRef.current = pending.split
+        saveSplitSetting('split_on', '1')
+        saveSplitSetting('split_book', pending.split.book)
+        saveSplitSetting('split_chapter', String(pending.split.chapter))
+        navigation.setParams({
+          book: pending.book, chapter: pending.chapter, verse: pending.verse,
+          apocrypha: false, earlyText: false,
+        })
+      } else if (splitOnRef.current && activeSplitPaneRef.current === 'right') {
         setSplitBook(pending.book)
         setSplitChapter(pending.chapter)
         saveSplitSetting('split_book', pending.book)
@@ -2933,6 +2956,20 @@ export default function ReaderScreen({ navigation, route }: Props) {
               <FlatList
                 ref={splitFlatListRef}
                 data={splitVerses}
+                onContentSizeChange={() => {
+                  const target = splitScrollVerseRef.current
+                  // Ignore the previous chapter's list still on screen while the new one loads.
+                  if (!target || splitVerses[0]?.book !== target.book || splitVerses[0]?.chapter !== target.chapter) return
+                  const idx = splitVerses.findIndex(v => v.verse === target.verse)
+                  if (idx < 0) return
+                  splitScrollVerseRef.current = null
+                  if (idx > 0) splitFlatListRef.current?.scrollToIndex({ index: idx, animated: true, viewPosition: 0.1 })
+                }}
+                onScrollToIndexFailed={({ index, averageItemLength }) => {
+                  // Row not rendered yet (windowed list): jump near it, then retry.
+                  splitFlatListRef.current?.scrollToOffset({ offset: index * averageItemLength, animated: false })
+                  setTimeout(() => splitFlatListRef.current?.scrollToIndex({ index, animated: true, viewPosition: 0.1 }), 120)
+                }}
                 keyExtractor={v => `sp_${v.verse}`}
                 contentContainerStyle={styles.splitList}
                 renderItem={renderSplitVerseRow}

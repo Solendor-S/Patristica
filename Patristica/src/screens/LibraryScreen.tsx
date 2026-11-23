@@ -371,6 +371,7 @@ function HistoryTab() {
 
 const PACK_TYPE_LABEL: Record<string, string> = {
   commentary:     'Commentary',
+  lexicon:        'Reference',
   translation:    'Translations',
   greek_source:   'Greek NT Sources',
   hebrew_source:  'Hebrew OT Sources',

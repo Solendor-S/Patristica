@@ -16,6 +16,8 @@ export type PendingNav = {
   verse?:    number
   apocrypha: boolean
   earlyText: boolean
+  /** Also open split view with this passage in the right pane (Gospel parallels). */
+  split?:    { book: string; chapter: number; verse: number }
 }
 
 export const pendingNav: { current: PendingNav | null } = { current: null }

@@ -25,9 +25,14 @@ import { useReaderFont } from '../context/FontFamilyContext'
 import type { FontScopeKey } from '../context/FontFamilyContext'
 import type { ThemeColors } from '../theme/themes'
 import { TRANSLATIONS, useTranslation } from '../context/TranslationContext'
-import { usePacks } from '../context/PackContext'
+import { usePacks, useLexicons } from '../context/PackContext'
 import { TRANSLATION_PACK_SLUG } from '../db/queries'
 import { fetchOnlineWords } from '../lib/PackManager'
+import type { AbbottSmithEntry, SemEntry, SemSense, DomainMember } from '../lib/PackManager'
+import LexiconMarkup, { markupMentions } from '../components/LexiconMarkup'
+
+type GreekLexicon = 'thayer' | 'abbott'
+const RELATED_CAP = 24
 
 const NT_BOOKS = new Set(BOOKS.filter(b => b.testament === 'NT').map(b => b.name))
 const OT_BOOKS_LIST = BOOKS.filter(b => b.testament === 'OT').map(b => b.name)
@@ -670,7 +675,15 @@ export default function WordStudyPanel({ selected }: Props) {
         setOtSource(val)
       }
     }).catch(() => {})
+    userDb.getFirstAsync<{ value: string }>(
+      "SELECT value FROM settings WHERE key = 'lexicon_greek'"
+    ).then(row => { if (row?.value === 'abbott' || row?.value === 'thayer') setGreekLex(row.value) }).catch(() => {})
   }, [userDb])
+
+  function chooseGreekLex(lex: GreekLexicon) {
+    setGreekLex(lex)
+    userDb.runAsync("INSERT OR REPLACE INTO settings (key, value) VALUES ('lexicon_greek', ?)", [lex]).catch(() => {})
+  }
   const [words, setWords]           = useState<(GreekWord | HebrewWord)[]>([])
   const [loading, setLoading]       = useState(false)
   const [activeKey, setActiveKey]   = useState<ActiveKey | null>(null)
@@ -683,6 +696,18 @@ export default function WordStudyPanel({ selected }: Props) {
   const [concordanceOpen, setConcordanceOpen]       = useState(false)
   const [concordanceResults, setConcordanceResults] = useState<StrongsConcordanceResult[]>([])
   const [concordanceLoading, setConcordanceLoading] = useState(false)
+  const [concordanceFor, setConcordanceFor]         = useState<string | null>(null)   // Strong's the results belong to
+  // Lexicons pack: undefined = loading, null = offline without the pack
+  const { loadAbbottSmith, loadSem, loadVerseSenses, loadDomain } = useLexicons()
+  const [greekLex, setGreekLex]         = useState<GreekLexicon>('thayer')
+  const [abbott, setAbbott]             = useState<AbbottSmithEntry[] | null | undefined>(undefined)
+  const [sem, setSem]                   = useState<SemEntry[] | null | undefined>(undefined)
+  const [verseSenses, setVerseSenses]   = useState<Record<string, string[]> | null>({})
+  const [otherSensesOpen, setOtherSensesOpen] = useState(false)
+  const [notesOpen, setNotesOpen]       = useState<string | null>(null)              // lexId
+  const [related, setRelated]           = useState<DomainMember[] | null | undefined>(undefined)
+  const [relatedAll, setRelatedAll]     = useState(false)
+  const [relatedOpen, setRelatedOpen]   = useState<string | null>(null)              // strongs
   const verseCache        = useRef<Map<string, string>>(new Map())
   const scrollViewRef     = useRef<ScrollView>(null)
   const firstMentionRef   = useRef<View>(null)
@@ -756,6 +781,20 @@ export default function WordStudyPanel({ selected }: Props) {
     }
   }, [selected.book, selected.chapter, selected.verse, source, wordSource, translation, isInstalled, getPackDb, retryTick])
 
+  // Which UBS sense each word has in this verse. Keyed exactly as the word fetch above
+  // (the pack's sem_verse table is aligned to the core word tables' numbering).
+  useEffect(() => {
+    if (selected.verse == null) return
+    let cancelled = false
+    const { book, chapter, verse } = greekRef ?? {
+      book: selected.book, chapter: selected.chapter,
+      verse: kjvVerse(translation, selected.book, selected.chapter, selected.verse ?? 0) ?? 0,
+    }
+    setVerseSenses({})
+    loadVerseSenses(book, chapter, verse).then(v => { if (!cancelled) setVerseSenses(v) })
+    return () => { cancelled = true }
+  }, [selected.book, selected.chapter, selected.verse, translation, loadVerseSenses, retryTick]) // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     if (!wordFocus || loading || !words.length) return
     const canonical = STRONGS_REDIRECTS[wordFocus] ?? wordFocus
@@ -791,16 +830,22 @@ export default function WordStudyPanel({ selected }: Props) {
       .catch(() => setVersePreview({ text: 'Error loading verse', loading: false }))
   }, [clickedRef])
 
-  function openConcordance() {
+  /** All uses of the active word, or of `target` (a related word from the same domain). */
+  function openConcordance(target?: string) {
+    const strongs = target ?? activeKey!.strongs
     setConcordanceOpen(true)
-    if (concordanceResults.length > 0) return
+    if (concordanceFor === strongs && concordanceResults.length > 0) return
+    setConcordanceResults([])
+    setConcordanceFor(strongs)
     setConcordanceLoading(true)
+    // Related words come from the UBS NT (Greek) or OT (Hebrew) dictionary, so search
+    // that testament; the active word keeps its current source (incl. LXX).
+    const lang = target
+      ? (strongs.startsWith('H') ? 'hebrew' : 'greek')
+      : isNT || isDeutero ? 'greek' : isLxx ? (otSource as 'lxx' | 'lxx_a') : 'hebrew'
     getStrongsConcordance(
-      db,
-      isNT || isDeutero ? 'greek' : isLxx ? (otSource as 'lxx' | 'lxx_a') : 'hebrew',
-      activeKey!.strongs,
-      source,
-      isLxx && !isDeutero ? activePackDbRef.current ?? undefined : undefined,
+      db, lang, strongs, source,
+      !target && isLxx && !isDeutero ? activePackDbRef.current ?? undefined : undefined,
     )
       .then(rows => { setConcordanceResults(rows); setConcordanceLoading(false) })
       .catch(() => setConcordanceLoading(false))
@@ -816,7 +861,16 @@ export default function WordStudyPanel({ selected }: Props) {
     setClickedRef(null)
     setConcordanceOpen(false)
     setConcordanceResults([])
-    if (!strongs) { setDef(null); setLexicon(null); return }   // grammar only, no lexicon entry
+    setConcordanceFor(null)
+    setOtherSensesOpen(false); setNotesOpen(null)
+    setRelated(undefined); setRelatedAll(false); setRelatedOpen(null)
+    if (!strongs) { setDef(null); setLexicon(null); setSem([]); setAbbott([]); return }   // grammar only, no lexicon entry
+    const norm = normalizeStrongsNumber(strongs)
+    setSem(undefined)
+    loadSem(norm).then(r => { if (activeKeyRef.current?.strongs === strongs) setSem(r) })
+    setAbbott(undefined)
+    if (norm.startsWith('G')) loadAbbottSmith(norm).then(r => { if (activeKeyRef.current?.strongs === strongs) setAbbott(r) })
+    else setAbbott([])
     setDefLoading(true)
     const lang = (isNT || isLxx) ? 'greek' : 'hebrew'
     Promise.all([
@@ -868,6 +922,35 @@ export default function WordStudyPanel({ selected }: Props) {
     [splitResult.after, selected.book, selected.chapter, selected.verse, s],
   )
 
+  // ── Semantic domains (UBS) ──
+  const activeNorm = activeKey?.strongs ? normalizeStrongsNumber(activeKey.strongs) : null
+  const allSenses: SemSense[] = useMemo(() => (sem ?? []).flatMap(e => e.senses), [sem])
+  const usedHere = useMemo(
+    () => new Set(activeNorm && verseSenses ? verseSenses[activeNorm] ?? [] : []),
+    [activeNorm, verseSenses],
+  )
+  const primarySense = allSenses.find(x => usedHere.has(x.lexId)) ?? allSenses[0]
+  useEffect(() => {
+    const key = primarySense?.domainKey
+    if (!key || !activeNorm) { setRelated(undefined); return }
+    let cancelled = false
+    setRelated(undefined)
+    loadDomain(activeNorm[0] as 'G' | 'H', key).then(r => {
+      if (!cancelled) setRelated(r ? r.filter(m => m.strongs !== activeNorm) : null)
+    })
+    return () => { cancelled = true }
+  }, [primarySense?.lexId, primarySense?.domainKey, activeNorm, loadDomain])
+
+  // ── Which lexicon body to show ──
+  const isGreekLex = isNT || isLxx
+  const asBody = isGreekLex && abbott ? abbott.map(e => e.body).join('\n') : ''
+  const asAbbrevs = isGreekLex && abbott ? abbott.flatMap(e => e.abbrevs) : []
+  const asCount = isGreekLex && abbott ? abbott.find(e => e.ntCount != null)?.ntCount ?? null : null
+  // Abbott-Smith when chosen, or when Thayer has nothing for this word.
+  const useAbbott = !!asBody && (greekLex === 'abbott' || !mainText)
+  const currentRef = { book: selected.book, chapter: selected.chapter, verse: selected.verse ?? 1 }
+  const lexMentions = useAbbott ? markupMentions(asBody, currentRef) : !!splitResult.match
+
   const activeWord = activeKey
     ? words.find(w => w.strongs === activeKey.strongs && w.position === activeKey.position)
     : undefined
@@ -879,6 +962,115 @@ export default function WordStudyPanel({ selected }: Props) {
       scrollViewRef.current as any,
       (_x, y) => scrollViewRef.current?.scrollTo({ y: y - 16, animated: true }),
       () => {},
+    )
+  }
+
+  // ── Meaning section (UBS semantic dictionary) ─────────────
+  const markupStyles = { body: s.meaningNotes, bold: s.lexBold, link: s.lexLink, current: s.verseHighlight, selected: s.lexLinkSelected }
+
+  function renderSense(x: SemSense) {
+    const here = usedHere.has(x.lexId)
+    return (
+      <View key={x.lexId} style={[s.senseCard, here && s.senseCardHere]}>
+        <View style={s.senseTop}>
+          <Text style={s.sensePath}>
+            {x.domainPath || 'Unclassified'}{x.ln ? ` · L&N ${x.ln}` : ''}
+          </Text>
+          {here && <Text style={s.hereBadge}>used here</Text>}
+        </View>
+        {!!x.definition && <Text style={s.senseDef}>{x.definition}</Text>}
+        {!!x.glosses && <Text style={s.senseGloss}>{x.glosses}</Text>}
+        {x.aiGenerated && <Text style={s.aiTag}>Flagged AI-generated by UBS</Text>}
+        {!!x.comments && (
+          notesOpen === x.lexId ? (
+            <LexiconMarkup
+              text={x.comments}
+              styles={markupStyles}
+              current={currentRef}
+              selected={clickedRef}
+              onRefPress={r => handleRefPress(r.book, r)}
+            />
+          ) : (
+            <TouchableOpacity onPress={() => setNotesOpen(x.lexId)} activeOpacity={0.7}>
+              <Text style={s.lexLink}>Notes</Text>
+            </TouchableOpacity>
+          )
+        )}
+      </View>
+    )
+  }
+
+  function renderMeaning() {
+    if (!activeNorm) return null
+    if (sem === undefined) return <ActivityIndicator color={colors.accent} style={{ alignSelf: 'flex-start' }} />
+    if (sem === null) {
+      return (
+        <Text style={s.lexNote}>
+          Semantic domains need a connection, or install the Lexicons pack from Library → Downloads.
+        </Text>
+      )
+    }
+    if (allSenses.length === 0) return null
+    const hasHere = allSenses.some(x => usedHere.has(x.lexId))
+    const shown = hasHere ? allSenses.filter(x => usedHere.has(x.lexId)) : allSenses
+    const others = hasHere ? allSenses.filter(x => !usedHere.has(x.lexId)) : []
+    const relatedShown = related ? (relatedAll ? related : related.slice(0, RELATED_CAP)) : []
+    return (
+      <View style={s.lexiconSection}>
+        <Text style={s.lexiconLabel}>Meaning · UBS Semantic Dictionary</Text>
+        {shown.map(renderSense)}
+        {others.length > 0 && (
+          otherSensesOpen ? others.map(renderSense) : (
+            <TouchableOpacity onPress={() => setOtherSensesOpen(true)} activeOpacity={0.7}>
+              <Text style={s.lexLink}>Other senses ({others.length})</Text>
+            </TouchableOpacity>
+          )
+        )}
+
+        {!!primarySense?.domainKey && related !== undefined && (related === null ? (
+          <Text style={s.lexNote}>Related words need a connection or the Lexicons pack.</Text>
+        ) : related.length > 0 && (
+          <View style={s.relatedWrap}>
+            <Text style={s.siLabel}>Related words · {primarySense.domainPath.split(' › ').pop()}</Text>
+            <View style={s.relatedChips}>
+              {relatedShown.map(m => (
+                <TouchableOpacity
+                  key={m.strongs}
+                  style={[s.morphChip, relatedOpen === m.strongs && s.morphChipActive]}
+                  onPress={() => setRelatedOpen(o => o === m.strongs ? null : m.strongs)}
+                  activeOpacity={0.7}
+                >
+                  <Text style={[s.morphChipText, relatedOpen === m.strongs && s.morphChipTextActive]}>
+                    {m.lemma}{m.gloss ? ` · ${m.gloss}` : ''}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+              {!relatedAll && related.length > RELATED_CAP && (
+                <TouchableOpacity style={s.morphChip} onPress={() => setRelatedAll(true)} activeOpacity={0.7}>
+                  <Text style={s.morphChipText}>Show all {related.length}</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+            {(() => {
+              const m = related.find(r => r.strongs === relatedOpen)
+              if (!m) return null
+              return (
+                <View style={s.senseCard}>
+                  <Text style={s.senseTop}>
+                    <Text style={s.lexBold}>{m.lemma}</Text>
+                    <Text style={s.sensePath}>  {m.strongs}</Text>
+                  </Text>
+                  {!!m.definition && <Text style={s.senseDef}>{m.definition}</Text>}
+                  {!!m.gloss && <Text style={s.senseGloss}>{m.gloss}</Text>}
+                  <TouchableOpacity onPress={() => openConcordance(m.strongs)} activeOpacity={0.7}>
+                    <Text style={s.lexLink}>See all uses →</Text>
+                  </TouchableOpacity>
+                </View>
+              )
+            })()}
+          </View>
+        ))}
+      </View>
     )
   }
 
@@ -1150,9 +1342,9 @@ export default function WordStudyPanel({ selected }: Props) {
                         {def.translit}{def.pronunciation ? ` · ${def.pronunciation}` : ''}
                       </Text>
                     </View>
-                    <TouchableOpacity style={s.allUsesBtn} onPress={openConcordance} activeOpacity={0.7}>
+                    <TouchableOpacity style={s.allUsesBtn} onPress={() => openConcordance()} activeOpacity={0.7}>
                       <Text style={s.allUsesBtnLabel}>
-                        {concordanceResults.length > 0
+                        {concordanceResults.length > 0 && concordanceFor === activeKey.strongs
                           ? `${concordanceResults.length} verse${concordanceResults.length !== 1 ? 's' : ''} · ${concordanceResults.reduce((sum, r) => sum + r.word_count, 0)} matches`
                           : 'See all uses'} →
                       </Text>
@@ -1215,15 +1407,30 @@ export default function WordStudyPanel({ selected }: Props) {
                   </View>
                 )}
 
-                {/* BDB / Thayer's lexicon section */}
-                {!!mainText && (
+                {/* UBS semantic dictionary: senses, domains, related words */}
+                {renderMeaning()}
+
+                {/* BDB / Thayer's / Abbott-Smith lexicon section */}
+                {(!!mainText || !!asBody) && (
                   <View style={s.lexiconSection}>
-                    {/* Label + jump button */}
+                    {/* Label (or Greek lexicon switcher) + jump button */}
                     <View style={s.lexiconHeader}>
-                      <Text style={s.lexiconLabel}>
-                        {isNT || isLxx ? "Thayer's Greek Lexicon" : 'Brown-Driver-Briggs'}
-                      </Text>
-                      {splitResult.match ? (
+                      {isGreekLex ? (
+                        <View style={s.lexChips}>
+                          {([['thayer', "Thayer"], ['abbott', 'Abbott-Smith']] as [GreekLexicon, string][]).map(([key, label]) => {
+                            const on = key === 'abbott' ? useAbbott : !useAbbott
+                            return (
+                              <TouchableOpacity key={key} style={[s.morphChip, on && s.morphChipActive]}
+                                onPress={() => chooseGreekLex(key)} activeOpacity={0.7}>
+                                <Text style={[s.morphChipText, on && s.morphChipTextActive]}>{label}</Text>
+                              </TouchableOpacity>
+                            )
+                          })}
+                        </View>
+                      ) : (
+                        <Text style={s.lexiconLabel}>Brown-Driver-Briggs</Text>
+                      )}
+                      {lexMentions ? (
                         <TouchableOpacity
                           style={s.jumpBtn}
                           onPress={jumpToFirstMention}
@@ -1239,6 +1446,50 @@ export default function WordStudyPanel({ selected }: Props) {
                       )}
                     </View>
 
+                    {isGreekLex && greekLex === 'abbott' && !useAbbott && (
+                      <Text style={s.lexNote}>
+                        {abbott === undefined ? 'Loading Abbott-Smith…'
+                          : abbott === null ? 'Abbott-Smith needs a connection, or install the Lexicons pack from Library → Downloads. Showing Thayer.'
+                          : "No Abbott-Smith entry for this word. Showing Thayer."}
+                      </Text>
+                    )}
+                    {isGreekLex && greekLex === 'thayer' && useAbbott && (
+                      <Text style={s.lexNote}>No Thayer entry for this word. Showing Abbott-Smith.</Text>
+                    )}
+
+                    {useAbbott ? (
+                      <>
+                        {asCount != null && <Text style={s.lexNote}>{asCount} occurrence{asCount !== 1 ? 's' : ''} in the NT</Text>}
+                        <LexiconMarkup
+                          text={asBody}
+                          styles={{ body: s.lexiconBody, bold: s.lexBold, link: s.lexLink, current: s.verseHighlight, selected: s.lexLinkSelected }}
+                          current={currentRef}
+                          selected={clickedRef}
+                          onRefPress={r => handleRefPress(r.book, r)}
+                          firstMatchRef={firstMentionRef}
+                        />
+                        <View style={s.siSection}>
+                          <Text style={s.siLabel}>Symbols & abbreviations</Text>
+                          {/* Symbol meanings from Abbott-Smith's own preface */}
+                          {/^\*\*/.test(asBody) ? (
+                            <Text style={s.lexNote}>** at the start: found in the Apocrypha or later Greek versions, but not in the LXX of the Hebrew canonical books.</Text>
+                          ) : /^\*/.test(asBody) && (
+                            <Text style={s.lexNote}>* at the start: not found in the LXX or other Greek versions of the OT and Apocrypha.</Text>
+                          )}
+                          {/^\**†/.test(asBody) && (
+                            <Text style={s.lexNote}>† at the start: not found in Greek writers of the classical period.</Text>
+                          )}
+                          {/†\s*$/m.test(asBody) && (
+                            <Text style={s.lexNote}>† at the end: all NT occurrences of the word are cited.</Text>
+                          )}
+                          {asAbbrevs.map(([a, e]) => (
+                            <Text key={a} style={s.lexNote}><Text style={s.lexBold}>{a}</Text> = {e}</Text>
+                          ))}
+                          <Text style={s.lexNote}>G. Abbott-Smith, A Manual Greek Lexicon of the New Testament (1922), public domain.</Text>
+                        </View>
+                      </>
+                    ) : (
+                      <>
                     {/* Outline */}
                     {!!lexicon?.outline && lexicon.outline.split('•').filter(s => s.trim()).map((item, i) => (
                       <Text key={i} style={s.lexiconOutlineItem}>• {item.trim()}</Text>
@@ -1301,6 +1552,9 @@ export default function WordStudyPanel({ selected }: Props) {
                           </View>
                         ))}
                       </View>
+                    )}
+
+                      </>
                     )}
 
                     {/* Verse preview */}
@@ -1566,6 +1820,30 @@ const makeStyles = (c: ThemeColors, fontFamily?: string, fontScope: FontScopeKey
   verseHighlight: {
     color: c.accent, fontWeight: '700',
   },
+  lexChips: { flexDirection: 'row', gap: 6 },
+  lexNote: { fontSize: 12, lineHeight: 18, color: c.textMuted, fontStyle: 'italic' },
+  lexBold: { fontWeight: '700', color: c.textPrimary },
+  lexLink: { color: c.accent, fontWeight: '600', fontSize: 13 },
+  lexLinkSelected: { textDecorationLine: 'underline' },
+
+  // ── Meaning (UBS semantic domains) ────────────────────────
+  senseCard: {
+    gap: 4, padding: 10, borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth, borderColor: c.border, backgroundColor: c.bgCard,
+  },
+  senseCardHere: { borderColor: c.accent, backgroundColor: c.accentDim },
+  senseTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
+  sensePath: { flex: 1, fontSize: 11, fontWeight: '600', color: c.textMuted, letterSpacing: 0.2 },
+  hereBadge: {
+    fontSize: 10, fontWeight: '700', color: c.accent, textTransform: 'uppercase', letterSpacing: 0.5,
+    paddingHorizontal: 6, paddingVertical: 2, borderRadius: 8, borderWidth: 1, borderColor: c.accent,
+  },
+  senseDef: { fontSize: 14, lineHeight: 21, color: c.textPrimary, fontFamily: allFont },
+  senseGloss: { fontSize: 13, color: c.textSecondary, fontStyle: 'italic' },
+  aiTag: { fontSize: 11, color: c.textMuted, fontStyle: 'italic' },
+  meaningNotes: { fontSize: 13, lineHeight: 20, color: c.textSecondary, fontFamily: allFont },
+  relatedWrap: { gap: 6, paddingTop: 4 },
+  relatedChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
 
   // ── Scripture Index ───────────────────────────────────────
 

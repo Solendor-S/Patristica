@@ -1979,3 +1979,63 @@ export async function getAquinasQuestion(
     'SELECT article AS a, title AS t, text AS x FROM aquinas_topics WHERE work = ? AND part = ? AND question = ? ORDER BY article',
     [work, part, question])
 }
+
+// ── Lexicons pack (Abbott-Smith + UBS semantic domains) ───────────────────
+// Same shapes as the online fetchers in lib/PackManager.ts. Strong's numbers are
+// stored unpadded ("G26", "H157") — pass them through normalizeStrongsNumber first.
+
+import type { AbbottSmithEntry, SemEntry, SemSense, DomainMember } from '../lib/PackManager'
+
+export async function getAbbottSmith(db: SQLiteDatabase, strongs: string): Promise<AbbottSmithEntry[]> {
+  const rows = await db.getAllAsync<{ lemma: string; nt_count: number | null; body: string; abbrevs: string }>(
+    'SELECT lemma, nt_count, body, abbrevs FROM abbott_smith WHERE strongs = ? ORDER BY rowid', [strongs])
+  return rows.map(r => ({ lemma: r.lemma, ntCount: r.nt_count, body: r.body, abbrevs: JSON.parse(r.abbrevs) }))
+}
+
+export async function getSemEntries(db: SQLiteDatabase, strongs: string): Promise<SemEntry[]> {
+  const rows = await db.getAllAsync<{
+    entry_id: string; lemma: string; lex_id: string; pos: string; domain_key: string | null
+    domain_path: string; ln_code: string | null; definition: string; glosses: string; comments: string; ai_generated: number
+  }>(
+    `SELECT e.entry_id, e.lemma, s.lex_id, s.pos, s.domain_key, s.domain_path, s.ln_code,
+            s.definition, s.glosses, s.comments, s.ai_generated
+     FROM sem_entries e JOIN sem_senses s ON s.entry_id = e.entry_id
+     WHERE e.strongs = ? ORDER BY e.rowid, s.idx`, [strongs])
+  const byEntry = new Map<string, SemEntry>()
+  for (const r of rows) {
+    const sense: SemSense = {
+      lexId: r.lex_id, pos: r.pos, domainKey: r.domain_key, domainPath: r.domain_path, ln: r.ln_code,
+      definition: r.definition, glosses: r.glosses, comments: r.comments, aiGenerated: !!r.ai_generated,
+    }
+    const e = byEntry.get(r.entry_id)
+    if (e) e.senses.push(sense)
+    else byEntry.set(r.entry_id, { lemma: r.lemma, senses: [sense] })
+  }
+  return [...byEntry.values()]
+}
+
+/** Strong's number -> UBS sense ids used in this verse. */
+export async function getVerseSenses(
+  db: SQLiteDatabase, book: string, chapter: number, verse: number,
+): Promise<Record<string, string[]>> {
+  const rows = await db.getAllAsync<{ strongs: string; lex_id: string }>(
+    'SELECT strongs, lex_id FROM sem_verse WHERE book = ? AND chapter = ? AND verse = ?', [book, chapter, verse])
+  const out: Record<string, string[]> = {}
+  for (const r of rows) (out[r.strongs] ??= []).push(r.lex_id)
+  return out
+}
+
+export async function getDomainMembers(db: SQLiteDatabase, lang: 'G' | 'H', key: string): Promise<DomainMember[]> {
+  const rows = await db.getAllAsync<{ strongs: string; lemma: string; glosses: string; definition: string }>(
+    `SELECT e.strongs, e.lemma, s.glosses, s.definition
+     FROM sem_senses s JOIN sem_entries e ON e.entry_id = s.entry_id
+     WHERE e.lang = ? AND s.domain_key = ? ORDER BY e.strongs, s.idx`, [lang, key])
+  const seen = new Set<string>()
+  const out: DomainMember[] = []
+  for (const r of rows) {
+    if (seen.has(r.strongs)) continue
+    seen.add(r.strongs)
+    out.push({ strongs: r.strongs, lemma: r.lemma, gloss: r.glosses.split('; ')[0], definition: r.definition })
+  }
+  return out
+}

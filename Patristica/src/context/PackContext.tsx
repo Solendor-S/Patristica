@@ -11,9 +11,12 @@ import {
   fetchOnlineAquinasIndex,
   fetchOnlineAquinasQuestion,
   fetchOnlineWordsAsChapter, isWordSourcePack,
+  fetchOnlineAbbottSmith, fetchOnlineSemEntries, fetchOnlineVerseSenses, fetchOnlineDomain,
+  type AbbottSmithEntry, type SemEntry, type DomainMember,
 } from '../lib/PackManager'
 import {
   getCommentaryFromDb, getAquinasIndex, getAquinasQuestion,
+  getAbbottSmith, getSemEntries, getVerseSenses, getDomainMembers,
   getChapter, getApocryphaChapter, getEarlyTextChapter,
   TRANSLATION_PACK_SLUG, TRANSLATION_ONLINE_SOURCE,
 } from '../db/queries'
@@ -211,6 +214,33 @@ export function useAquinas() {
     [db])
 
   return { loadVerse, loadIndex, loadQuestion, hasPack }
+}
+
+// ── Lexicons pack (Abbott-Smith + UBS semantic domains) ──────────────────────
+
+export const LEXICONS_PACK = 'lexicons'
+
+/**
+ * Pack-or-online, like useAquinas(). Each loader resolves to null when the pack isn't
+ * installed and the online JSON can't be reached — callers show the offline hint.
+ * Strong's numbers must already be normalised ("G26", "H157").
+ */
+export function useLexicons() {
+  const { db, installed: hasPack } = usePackDb(LEXICONS_PACK)
+
+  const loadAbbottSmith = useCallback(async (strongs: string): Promise<AbbottSmithEntry[] | null> =>
+    db ? getAbbottSmith(db, strongs).catch(() => []) : fetchOnlineAbbottSmith(strongs), [db])
+
+  const loadSem = useCallback(async (strongs: string): Promise<SemEntry[] | null> =>
+    db ? getSemEntries(db, strongs).catch(() => []) : fetchOnlineSemEntries(strongs), [db])
+
+  const loadVerseSenses = useCallback(async (book: string, chapter: number, verse: number): Promise<Record<string, string[]> | null> =>
+    db ? getVerseSenses(db, book, chapter, verse).catch(() => ({})) : fetchOnlineVerseSenses(book, chapter, verse), [db])
+
+  const loadDomain = useCallback(async (lang: 'G' | 'H', key: string): Promise<DomainMember[] | null> =>
+    db ? getDomainMembers(db, lang, key).catch(() => []) : fetchOnlineDomain(lang, key), [db])
+
+  return { loadAbbottSmith, loadSem, loadVerseSenses, loadDomain, hasPack }
 }
 
 /**

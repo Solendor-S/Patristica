@@ -19,6 +19,8 @@ import { getFatherInfluences } from '../data/fatherInfluences'
 import { TRADITION_COLORS } from '../data/traditionColors'
 import DoctrinePanel from './DoctrinePanel'
 import AquinasPanel from './AquinasPanel'
+import ParallelsPanel from './ParallelsPanel'
+import { parallelsForVerse } from '../data/eusebianCanons'
 import EntryCard from '../components/EntryCard'
 import { BOOKS, EARLY_TEXT_MAP, kjvVerse } from '../data/books'
 import { useCrossRefOrder } from '../context/CrossRefOrderContext'
@@ -39,7 +41,7 @@ import { useTheme } from '../context/ThemeContext'
 import type { ThemeColors } from '../theme/themes'
 import type { CommentaryEntry, CrossRef, Note, RootTabParamList } from '../types'
 
-export type StudyTab = 'fathers' | 'crossrefs' | 'historical' | 'councils' | 'heresies' | 'schisms' | 'creeds' | 'persecution' | 'canon' | 'timeline' | 'words' | 'overview' | 'map' | 'doctrine' | 'aquinas'
+export type StudyTab = 'fathers' | 'crossrefs' | 'parallels' | 'historical' | 'councils' | 'heresies' | 'schisms' | 'creeds' | 'persecution' | 'canon' | 'timeline' | 'words' | 'overview' | 'map' | 'doctrine' | 'aquinas'
 type HistMode = 'verse' | 'browse'
 type FatherMode = 'verse' | 'browse'
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Study'>
@@ -559,6 +561,10 @@ export default function StudyScreen() {
     } catch {}
   }, [navigation, setSelected])
 
+  const parallelCount = useMemo(() => selected
+    ? parallelsForVerse(selected.book, selected.chapter, selected.verse).reduce((n, b) => n + b.parallels.length, 0)
+    : 0, [selected?.book, selected?.chapter, selected?.verse])
+
   const sortedCrossRefs = useMemo(() => {
     if (!crossRefBiblicalOrder) return crossRefs
     return [...crossRefs].sort((a, b) => {
@@ -737,6 +743,7 @@ export default function StudyScreen() {
             { key: 'overview',   label: 'Overview' },
             { key: 'fathers',    label: 'Church Fathers', badge: filteredEntries.length || undefined },
             { key: 'crossrefs',  label: 'Cross-Refs',    badge: crossRefs.length || undefined },
+            { key: 'parallels',  label: 'Parallels',     badge: parallelCount || undefined },
             { key: 'aquinas',    label: 'Aquinas' },
             { key: 'doctrine',   label: 'Doctrine' },
             { key: 'historical', label: 'Historical' },
@@ -1261,6 +1268,13 @@ export default function StudyScreen() {
         {activeTab === 'doctrine' && <DoctrinePanel />}
 
         {activeTab === 'aquinas' && <AquinasPanel selected={selected} />}
+        {activeTab === 'parallels' && (
+          <ParallelsPanel
+            selected={selected}
+            translation={translation}
+            onGoTo={(book, chapter, verse) => goToVerse({ ref_book: book, ref_chapter: chapter, ref_verse: verse } as CrossRef)}
+          />
+        )}
 
         {/* Map */}
         {activeTab === 'map' && (
