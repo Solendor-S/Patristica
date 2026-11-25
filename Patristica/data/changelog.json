@@ -2,6 +2,21 @@
   "version": 1,
   "releases": [
     {
+      "id": "1.0.9-1",
+      "version": "1.0.9",
+      "label": "Update",
+      "date": "2026-11-25",
+      "title": "Gospel parallels, deeper word study, and the ESV for everyone",
+      "changes": [
+        "The ESV no longer needs your own API key. Without one, chapters are requested through Patristica's own server, which counts requests by IP address in temporary memory to stay within Crossway's limits and keeps no record of what you read. See the updated privacy policy for details.",
+        "New Parallels tab in Study: see where the other Gospels tell the same passage, using the ancient Eusebian Canons.",
+        "Word study now shows meanings from the UBS Greek and Hebrew dictionaries, marks the sense used in the verse where known, and suggests related words.",
+        "Abbott-Smith's Greek lexicon added alongside Thayer. Both additions work online, or offline with the Lexicons pack.",
+        "Doctrine tab rebuilt with 133 hand-picked passages from the Church Fathers, with dissenting voices labelled and a revised history of icons.",
+        "New Deuterocanon Text setting, with the World English Bible Catholic as the default."
+      ]
+    },
+    {
       "id": "1.0.9",
       "version": "1.0.9",
       "date": "2026-11-06",
