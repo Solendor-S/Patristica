@@ -32,6 +32,7 @@ import { useSearchOrder } from '../context/SearchOrderContext'
 import { useCrossRefOrder } from '../context/CrossRefOrderContext'
 import { useNotifications } from '../context/NotificationContext'
 import { useEsvKey } from '../context/EsvKeyContext'
+import { ESV_PROXY_URL } from '../lib/esv'
 import EsvSetupModal from '../components/EsvSetupModal'
 import ChangelogModal from '../components/ChangelogModal'
 import type { SearchMode } from '../context/SearchOrderContext'
@@ -612,11 +613,13 @@ function EsvSection() {
             <Ionicons name="key-outline" size={18} color={colors.accent} />
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={s.rowLabel}>{esvKey ? 'ESV API key' : 'Set up the ESV'}</Text>
+            <Text style={s.rowLabel}>{esvKey ? 'ESV API key' : ESV_PROXY_URL ? 'Use your own ESV key' : 'Set up the ESV'}</Text>
             <Text style={[s.themeDesc, { marginTop: 1 }]}>
               {esvKey
                 ? 'Key saved on this device — tap to change or remove'
-                : 'Free key from Crossway, needed to read the ESV'}
+                : ESV_PROXY_URL
+                  ? 'Optional. The ESV already works without one'
+                  : 'Free key from Crossway, needed to read the ESV'}
             </Text>
           </View>
           <View style={s.navRight}>

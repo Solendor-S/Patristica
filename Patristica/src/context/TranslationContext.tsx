@@ -1,5 +1,6 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useUserDb } from '../db/UserDbProvider'
+import { ESV_PROXY_URL } from '../lib/esv'
 
 export type Translation = 'KJV' | 'ASV' | 'WEB' | 'WEBC' | 'BSB' | 'ESV' | 'SBLGNT' | 'TAGNT' | 'TR' | 'TR+' | 'KJV+' | 'I_KJV+' | 'TAHOT' | 'WLC' | 'WLC+' | 'DSS' | 'LXX' | 'LXX+' | 'E_LXX' | 'A_LXX'
 
@@ -14,7 +15,7 @@ export const TRANSLATIONS: { key: Translation; label: string; full: string; gree
   { key: 'WEB',    label: 'WEB',    full: 'World English Bible' },
   { key: 'WEBC',   label: 'WEBC',   full: 'World English Bible Catholic (73 books)' },
   { key: 'BSB',    label: 'BSB',    full: 'Berean Standard Bible' },
-  { key: 'ESV',    label: 'ESV',    full: 'English Standard Version (needs a free API key)', apiOnly: true },
+  { key: 'ESV',    label: 'ESV',    full: ESV_PROXY_URL ? 'English Standard Version (online only)' : 'English Standard Version (needs a free API key)', apiOnly: true },
   { key: 'SBLGNT', label: 'SBLGNT', full: 'SBL Greek New Testament',              greekOnly: true },
   { key: 'TAGNT',  label: 'TAGNT',  full: 'Translators Amalgamated GNT (NA28)',   greekOnly: true },
   { key: 'TR',     label: 'TR',     full: 'Textus Receptus (Scrivener 1894)',      greekOnly: true },

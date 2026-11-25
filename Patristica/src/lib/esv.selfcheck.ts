@@ -3,11 +3,11 @@
  *
  *   node --experimental-strip-types src/lib/esv.selfcheck.ts
  *
- * The parser is the only non-trivial logic in esv.ts — the fetch around it is
- * plumbing, but a bad split silently mangles Scripture, so it gets a check.
+ * A bad split silently mangles Scripture, and a bad route leaks a reader's own key
+ * to our server, so both get a check.
  */
 import assert from 'node:assert/strict'
-import { parseEsvPassage } from './esv.ts'
+import { parseEsvPassage, fetchEsvChapter, EsvError, clearEsvCache } from './esv.ts'
 
 // Shape the API actually returns: leading indent, inline [n] markers, wrapped lines.
 const sample =
@@ -40,4 +40,46 @@ assert.deepEqual(parseEsvPassage('', 'John', 3), [], 'empty passage yields no ve
 assert.deepEqual(parseEsvPassage('no markers here', 'John', 3), [], 'unmarked text yields no verses')
 assert.deepEqual(parseEsvPassage('[7]   ', 'John', 3), [], 'marker with no text is dropped')
 
-console.log('esv parser: all checks passed')
+// ── Routing ──
+const PROXY = 'https://proxy.test'
+let calls: { url: string; auth?: string }[] = []
+let status = 200
+globalThis.fetch = (async (url: string, opts?: { headers?: Record<string, string> }) => {
+  calls.push({ url, auth: opts?.headers?.Authorization })
+  return new Response('{"passages":["[1] Text."]}', { status })
+}) as typeof fetch
+const failure = async (key: string, proxy: string): Promise<EsvError> => {
+  clearEsvCache()
+  try { await fetchEsvChapter('John', 3, key, proxy) } catch (e) { return e as EsvError }
+  throw new Error('expected a failure')
+}
+
+// No key: through the server, with no credentials attached.
+await fetchEsvChapter('1 John', 3, '', PROXY)
+assert.equal(calls[0].url, `${PROXY}/chapter?book=1%20John&chapter=3`)
+assert.equal(calls[0].auth, undefined)
+
+// Own key: straight to Crossway; the server never sees it.
+clearEsvCache(); calls = []
+await fetchEsvChapter('John', 3, 'mine', PROXY)
+assert.ok(calls[0].url.startsWith('https://api.esv.org/'))
+assert.equal(calls[0].auth, 'Token mine')
+
+// One-chapter books by name alone, or Crossway returns a single verse.
+clearEsvCache(); calls = []
+await fetchEsvChapter('Jude', 1, 'mine', PROXY)
+assert.ok(calls[0].url.includes('?q=Jude&'))
+
+// Server out of quota or down: fall back, never ask for a key.
+for (status of [429, 502]) {
+  const e = await failure('', PROXY)
+  assert.ok(e.unavailable && !e.needsKey, `proxy ${status}`)
+}
+// Own key failing keeps its own messages.
+status = 401
+const rejected = await failure('mine', PROXY)
+assert.ok(rejected.needsKey && !rejected.unavailable)
+// Neither configured: setup panel.
+assert.ok((await failure('', '')).needsKey)
+
+console.log('esv: all checks passed')

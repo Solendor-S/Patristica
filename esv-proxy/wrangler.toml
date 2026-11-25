@@ -1,0 +1,16 @@
+name = "patristica-esv"
+main = "src/index.js"
+compatibility_date = "2026-06-01"
+
+# No request logs: the privacy policy says we collect nothing.
+[observability]
+enabled = false
+
+[[durable_objects.bindings]]
+name = "QUOTA"
+class_name = "Quota"
+
+# SQLite-backed is the only Durable Object kind on the free plan.
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Quota"]

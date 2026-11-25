@@ -6,8 +6,10 @@
  * shape this whole module:
  *
  *   1. "You may not sell, share, or publish your access key." An APK is
- *      decompilable, so a bundled key is a published key. Each user therefore
- *      brings their own free key (Settings → ESV Bible).
+ *      decompilable, so a bundled key is a published key. The app's key lives on
+ *      our own server instead (esv-proxy/ at the repo root), an arrangement
+ *      Crossway Permissions approved by email on 2026-11-25. Readers can still
+ *      use their own free key (Settings → ESV Bible), which skips the server.
  *   2. Local storage is capped at "500 verses or one-half of any book, whichever
  *      is less". Hence the memory-only cache below — nothing ever touches SQLite.
  *   3. Non-commercial use only. If Patristica ever takes ads, sponsorships, or
@@ -15,8 +17,12 @@
  *      written licence.
  *
  * Rate limits are per key: 5,000/day, 1,000/hour, 60/minute. One chapter view =
- * one request, so a normal reader never comes close.
+ * one request. The server enforces them for the shared key; when it has no quota
+ * left the reader falls back to the KJV (EsvError.unavailable).
  */
+
+/** Deployed esv-proxy URL, no trailing slash. Empty = readers must use their own key. */
+export const ESV_PROXY_URL: string = 'https://patristica-esv.solendor.workers.dev'
 
 const API_BASE = 'https://api.esv.org/v3/passage/text/'
 
@@ -46,13 +52,19 @@ export const ESV_COPYRIGHT =
 
 export const ESV_SIGNUP_URL = 'https://api.esv.org/account/create-application/'
 
+// Crossway reads "Jude 1" as verse 1, so one-chapter books are asked for by name alone.
+const ONE_CHAPTER = new Set(['Obadiah', 'Philemon', '2 John', '3 John', 'Jude'])
+
 export interface EsvVerse { book: string; chapter: number; verse: number; text: string }
 
 export class EsvError extends Error {
   needsKey: boolean
-  constructor(message: string, needsKey = false) {
+  /** The shared server can't serve the ESV right now: show another translation. */
+  unavailable: boolean
+  constructor(message: string, needsKey = false, unavailable = false) {
     super(message)
     this.needsKey = needsKey
+    this.unavailable = unavailable
   }
 }
 
@@ -109,19 +121,26 @@ export async function fetchEsvChapter(
   book: string,
   chapter: number,
   apiKey: string,
+  proxyUrl: string = ESV_PROXY_URL,
 ): Promise<EsvVerse[]> {
-  if (!apiKey) throw new EsvError('No ESV API key set.', true)
+  if (!apiKey && !proxyUrl) throw new EsvError('No ESV API key set.', true)
 
   const cacheKey = `${book}:${chapter}`
   const hit = cache.get(cacheKey)
   if (hit) return hit
 
-  const url = `${API_BASE}?q=${encodeURIComponent(`${book} ${chapter}`)}&${PARAMS}`
   let res: Response
   try {
-    res = await fetch(url, { headers: { Authorization: `Token ${apiKey}` } })
+    res = apiKey
+      ? await fetch(`${API_BASE}?q=${encodeURIComponent(ONE_CHAPTER.has(book) ? book : `${book} ${chapter}`)}&${PARAMS}`,
+          { headers: { Authorization: `Token ${apiKey}` } })
+      : await fetch(`${proxyUrl}/chapter?book=${encodeURIComponent(book)}&chapter=${chapter}`)
   } catch {
     throw new EsvError('Could not reach the ESV service. Check your connection.')
+  }
+
+  if (!apiKey && !res.ok) {
+    throw new EsvError('The ESV is busy right now. Try again later.', false, true)
   }
 
   if (res.status === 401 || res.status === 403) {

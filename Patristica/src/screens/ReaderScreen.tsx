@@ -35,6 +35,10 @@ import { useOtQuoteCaps } from '../context/OtQuoteCapsContext'
 import { usePacks, useChapterText } from '../context/PackContext'
 import { TRANSLATION_PACK_SLUG } from '../db/queries'
 import { fetchEsvChapter, EsvError, ESV_COPYRIGHT } from '../lib/esv'
+
+// Chapter arrays that are KJV text standing in for an unavailable ESV. Keyed on the
+// array itself so the label can never drift from the text actually on screen.
+const esvFallbacks = new WeakSet<object>()
 import { useEsvKey } from '../context/EsvKeyContext'
 import EsvSetupModal from '../components/EsvSetupModal'
 import { useRedLetter } from '../context/RedLetterContext'
@@ -1352,6 +1356,7 @@ function ProseChapter({
   fontFamily,
   colors,
   bottomInset,
+  footer,
 }: {
   verses: BibleVerse[]
   fontSize: number
@@ -1359,6 +1364,7 @@ function ProseChapter({
   fontFamily?: string
   colors: ThemeColors
   bottomInset: number
+  footer?: React.ReactNode
 }) {
   // Build paragraph groups and pre-clean text once per verses change
   type ProseVerse = { verse: number; segs: { t: string; italic: boolean }[] }
@@ -1395,6 +1401,7 @@ function ProseChapter({
           ))}
         </Text>
       ))}
+      {footer}
     </ScrollView>
   )
 }
@@ -1746,7 +1753,14 @@ export default function ReaderScreen({ navigation, route }: Props) {
     setIsOnlineMode(useOnline || useEsv)
 
     // Both the translation-only fast path and the full load below need the same verse source.
-    const fetchFn = useEsv ? fetchEsvChapter(book, chapter, esvKey) : loadChapter(book, chapter, source)
+    const fetchFn: Promise<BibleVerse[]> = !useEsv
+      ? loadChapter(book, chapter, source)
+      : fetchEsvChapter(book, chapter, esvKey).catch(async e => {
+          if (!(e instanceof EsvError && e.unavailable)) throw e
+          const rows = await loadChapter(book, chapter, 'KJV')
+          esvFallbacks.add(rows)
+          return rows
+        })
 
     if (isTranslationOnly) {
       // Only the translation changed — fetch new verse text and swap in place.
@@ -2144,7 +2158,11 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const isOutsideCanon = isApocrypha || isEarlyText
   const isDeuterocanon = isApocrypha && inCanon(canon, book)
   // Whatever translation is selected, the apocrypha text is the KJV Apocrypha, so say so.
-  const shownTranslation = source
+  const esvFallback = source === 'ESV' && esvFallbacks.has(verses)
+  const shownTranslation = esvFallback ? 'KJV' : source
+  // Crossway requires this notice wherever the ESV text is displayed. Do not remove.
+  const esvNotice = source === 'ESV' && !esvFallback
+    ? <Text style={styles.esvCopyright}>{ESV_COPYRIGHT}</Text> : null
   const bookIndex    = useMemo(() => isOutsideCanon ? -1 : BOOKS.findIndex(b => b.name === book), [book, isOutsideCanon])
   const isNT         = useMemo(() => !isOutsideCanon && BOOK_MAP[book]?.testament === 'NT', [book, isOutsideCanon])
   const isGreekTrans    = useMemo(() => GREEK_TRANSLATIONS.has(translation as any), [translation])
@@ -2385,7 +2403,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       isDss={isDss}
       dssAllReadings={dssAllReadings}
       isHebrew={isHebrew}
-      useHeuristicRedLetter={translation !== 'KJV' && translation !== 'WEB'}
+      useHeuristicRedLetter={!esvFallback && translation !== 'KJV' && translation !== 'WEB'}
       isEarlyText={isEarlyText}
       onEarlyFnPress={openEarlyFn}
       onInlineRefPress={onEarlyRefPress}
@@ -2398,7 +2416,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       bsbFoldedOn={bsbFoldedOn}
       otQuoteSpans={otQuoteCapsOn ? otQuoteSpansByVerse.get(item.verse) : undefined}
     />
-  ), [selectedVerse, highlights, selectVerse, splitOn, activeSplitPane, openConcordance, redLetterOn, book, chapter, footnotesByVerse, bsbFnsByVerse, elxxNotesByVerse, otQuoteSpansByVerse, compareTrans, parallelOn, compareMap, compareBsbFnsByVerse, isAnnotatedTrans, openStrongs, isDss, dssAllReadings, isHebrew, translation, isEarlyText, openEarlyFn, onEarlyRefPress, focusMode, crossRefsByVerse, otQuoteCapsOn, bsbFoldedOn])
+  ), [selectedVerse, highlights, selectVerse, splitOn, activeSplitPane, openConcordance, redLetterOn, book, chapter, footnotesByVerse, bsbFnsByVerse, elxxNotesByVerse, otQuoteSpansByVerse, compareTrans, parallelOn, compareMap, compareBsbFnsByVerse, isAnnotatedTrans, openStrongs, isDss, dssAllReadings, isHebrew, translation, isEarlyText, openEarlyFn, onEarlyRefPress, focusMode, crossRefsByVerse, otQuoteCapsOn, bsbFoldedOn, esvFallback])
   // The Prayer of Azariah belongs after Daniel 3:23. The WEBC has it inline; any other
   // translation has no such verses, so point to it from the place it would be.
   const azariahLink = canon === 'catholic' && book === 'Daniel' && chapter === 3 && translation !== 'WEBC'
@@ -2835,6 +2853,9 @@ export default function ReaderScreen({ navigation, route }: Props) {
       </Modal>
 
       {/* Verses */}
+      {esvFallback && !loading && (
+        <Text style={styles.esvFallbackNote}>The ESV is busy right now, so this chapter is shown in the KJV.</Text>
+      )}
       {loading ? (
         <View style={styles.center}>
           <ActivityIndicator color={colors.accent} size="large" />
@@ -2917,6 +2938,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
                 }, 100)
               }}
               renderItem={renderReaderRow}
+              ListFooterComponent={esvNotice}
               extraData={flatListExtraData}
               windowSize={isAnnotatedTrans ? 3 : 5}
               maxToRenderPerBatch={isAnnotatedTrans ? 4 : 8}
@@ -2994,6 +3016,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
           fontFamily={fontFamily}
           colors={colors}
           bottomInset={bottomInset}
+          footer={esvNotice}
         />
       ) : (
         <FlatList
@@ -3041,10 +3064,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
               colors={colors}
               onPress={onEarlyRefPress}
             />
-          ) : source === 'ESV' ? (
-            // Crossway requires this notice wherever the ESV text is displayed. Do not remove.
-            <Text style={styles.esvCopyright}>{ESV_COPYRIGHT}</Text>
-          ) : null}
+          ) : esvNotice}
         />
       )}
 
@@ -3486,6 +3506,10 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
     borderRadius: 12, backgroundColor: c.accent,
   },
   esvSetupBtnText: { fontSize: 15, fontWeight: '700', color: c.bgPrimary },
+  esvFallbackNote: {
+    fontSize: 12, color: c.textMuted, fontStyle: 'italic', textAlign: 'center',
+    paddingHorizontal: 16, paddingVertical: 6,
+  },
   esvCopyright: {
     fontSize: 10, lineHeight: 15, color: c.textMuted,
     textAlign: 'center', paddingHorizontal: 24, paddingTop: 20, paddingBottom: 8,

@@ -6,7 +6,7 @@ import {
 import { Ionicons } from '@expo/vector-icons'
 import { useTheme } from '../context/ThemeContext'
 import { useEsvKey } from '../context/EsvKeyContext'
-import { validateEsvKey, EsvError, ESV_COPYRIGHT, ESV_SIGNUP_URL } from '../lib/esv'
+import { validateEsvKey, EsvError, ESV_COPYRIGHT, ESV_PROXY_URL, ESV_SIGNUP_URL } from '../lib/esv'
 import type { ThemeColors } from '../theme/themes'
 
 const ACCOUNT_URL = 'https://www.esv.org/create-account/'
@@ -82,7 +82,7 @@ export default function EsvSetupModal({ visible, onClose }: Props) {
       <View style={s.overlay}>
         <View style={s.sheet}>
           <View style={s.header}>
-            <Text style={s.headerTitle}>Set up the ESV</Text>
+            <Text style={s.headerTitle}>{ESV_PROXY_URL ? 'Use your own ESV key' : 'Set up the ESV'}</Text>
             <TouchableOpacity onPress={onClose} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
               <Ionicons name="close" size={22} color={colors.textMuted} />
             </TouchableOpacity>
@@ -95,9 +95,9 @@ export default function EsvSetupModal({ visible, onClose }: Props) {
             keyboardShouldPersistTaps="handled"
           >
             <Text style={s.intro}>
-              The ESV is copyrighted, so unlike the other translations it can't be bundled into
-              Patristica. Crossway lets you read it through their own service using a free personal
-              key. Three steps, done once.
+              {ESV_PROXY_URL
+                ? 'The ESV already works in Patristica without a key. Adding your own free key from Crossway is optional: it gives you your own daily allowance, so the ESV stays available to you when Patristica’s shared one runs out.'
+                : 'The ESV is copyrighted, so unlike the other translations it can’t be bundled into Patristica. Crossway lets you read it through their own service using a free personal key. Three steps, done once.'}
             </Text>
 
             {STEPS.map((step, i) => (
