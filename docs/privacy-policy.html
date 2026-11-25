@@ -119,52 +119,63 @@
     </div>
 
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: May 4, 2026</p>
+    <p class="updated">Last updated: November 25, 2026</p>
 
     <div class="highlight">
-      <strong>Short version:</strong> Patristica collects no data whatsoever. Everything you do in the app stays on your device. Nothing is sent anywhere.
+      <strong>Short version:</strong> Patristica has no accounts, no ads and no analytics, and we do not build any record of what you read. Your notes, highlights and history are kept on your device. Some features load content from the internet, and the services they contact can see your IP address, as with any website.
     </div>
 
     <h2>Overview</h2>
-    <p>Patristica ("the app") is a Bible study application developed by Solendor. This Privacy Policy explains our data practices. In short: we do not collect, transmit, store, or share any personal information or usage data.</p>
+    <p>Patristica ("the app") is a free Bible study application developed by Solendor. This policy explains what stays on your device, what is sent over the internet, and who receives it.</p>
 
-    <h2>Data Collection</h2>
-    <p>We collect <strong>no data</strong> of any kind. This includes:</p>
+    <h2>What We Do Not Collect</h2>
     <ul>
-      <li>No personal information (name, email, phone number, etc.)</li>
+      <li>No names, email addresses, phone numbers or accounts</li>
       <li>No usage analytics or statistics</li>
-      <li>No crash reports or diagnostic data</li>
       <li>No location data</li>
-      <li>No device identifiers</li>
       <li>No advertising identifiers</li>
     </ul>
+    <p>We do not sell data or share it for advertising.</p>
 
-    <h2>Local Storage</h2>
-    <p>The app stores the following data <strong>locally on your device only</strong>:</p>
+    <h2>Stored on Your Device</h2>
+    <p>The app keeps the following in its private storage on your device. We never receive it:</p>
     <ul>
-      <li>Bookmarks you create</li>
-      <li>Notes you write on verses</li>
-      <li>Highlights you apply to verses</li>
-      <li>Your reading history</li>
-      <li>Your selected Bible translation preference</li>
+      <li>Bookmarks, notes and highlights</li>
+      <li>Reading history, search history and reading plans</li>
+      <li>Your settings, including reminder times</li>
+      <li>Your own ESV API key, if you choose to add one</li>
+      <li>Any content packs you download</li>
     </ul>
-    <p>This data never leaves your device. It is stored in a local SQLite database and is only accessible to the app. It is deleted if you uninstall the app.</p>
+    <p>It is removed from the device when you uninstall the app. If Android backup is turned on for your device, Google may include app data in your own Google backup; that is controlled by your device settings. Daily reminders are scheduled on the device itself.</p>
 
     <h2>Internet Access</h2>
-    <p>Patristica functions entirely offline. The app does not make any network requests during normal use. All Bible text, Church Father commentary, Greek and Hebrew word data, and historical sources are bundled with the app.</p>
-    <p>The only exception is app updates delivered through the Google Play Store, which are handled entirely by Google and not by us.</p>
+    <p>The King James Version and much of the study material work offline. The features below use the internet. Whoever receives a request can see your IP address and what was requested, and handles it under its own privacy policy:</p>
+    <ul>
+      <li><strong>Online texts, commentary, lexicons, release notes and pack downloads</strong> are loaded from GitHub.</li>
+      <li><strong>App updates</strong> are checked for and delivered by Expo, which receives basic technical details such as your platform and app version and a random installation ID. Google Play also delivers updates.</li>
+      <li><strong>Maps</strong> load map images from CARTO and map software from unpkg.</li>
+      <li><strong>The ESV Bible</strong> is loaded as described in the next section.</li>
+      <li><strong>Links you tap</strong>, such as "Read in full", open the website you chose.</li>
+    </ul>
+
+    <h2>The ESV Bible</h2>
+    <p>The ESV is provided by Crossway and is only contacted if you choose to read it.</p>
+    <ul>
+      <li><strong>Without your own key:</strong> the app asks our server, hosted on Cloudflare, for the chapter. Our server requests it from Crossway using our key and passes it back. Crossway sees our server's request, not yours. To prevent abuse, the server counts requests by IP address. Those counts are held in temporary memory, reset daily, and are not written to storage. We keep no log of which chapters are requested, and the server stores no ESV text. Cloudflare processes the connection as our hosting provider.</li>
+      <li><strong>With your own key:</strong> the app sends your key and the chapter request directly to Crossway, and our server is not involved.</li>
+    </ul>
 
     <h2>Third-Party Services</h2>
-    <p>Patristica does not integrate any third-party SDKs, analytics services, advertising networks, or social login providers. There are no third parties receiving any data through this app.</p>
+    <p>The app contains no advertising networks, analytics services or social logins. The services it may contact are GitHub, Expo, CARTO, unpkg, Cloudflare, Crossway and Google Play, for the purposes described above.</p>
 
     <h2>Children's Privacy</h2>
-    <p>Because we collect no data from anyone, there are no special concerns regarding children's privacy. The app contains no content harmful to minors.</p>
+    <p>The app does not ask anyone for personal information and has no accounts, messaging or advertising. The app contains no content harmful to minors.</p>
 
     <h2>Changes to This Policy</h2>
-    <p>If we ever change our data practices, we will update this page and revise the "Last updated" date above. Any future version that collects data will require explicit notice and consent.</p>
+    <p>If our data practices change, we will update this page and revise the "Last updated" date above. Any future version that collects personal data will require explicit notice and consent.</p>
 
     <h2>Contact</h2>
-    <p>If you have any questions about this privacy policy, you can contact us at: <a href="mailto:sargonshlimon123@gmail.com">sargonshlimon123@gmail.com</a></p>
+    <p>If you have any questions about this privacy policy, you can contact us at: <a href="mailto:solendor.queries@gmail.com">solendor.queries@gmail.com</a></p>
 
     <footer>
       &copy; 2026 Solendor · Patristica · All rights reserved
