@@ -9,7 +9,8 @@
 ## Features
 
 ### 📖 Bible Reader
-- KJV with Strong's numbers bundled; ASV, WEB, BSB, Septuagint (LXX), Dead Sea Scrolls and SBL Greek NT available as free downloadable packs
+- KJV with Strong's numbers bundled; ASV, WEB, WEB Catholic, BSB, Septuagint (LXX), Dead Sea Scrolls and SBL Greek NT available as free downloadable packs
+- ESV, NASB (1995 and 2020) and NKJV read online, served through our own licensed proxies
 - Full Deuterocanon and broader canon (Tobit through 4 Maccabees, 1 Enoch, Jubilees, Meqabyan) as optional packs
 - Cross-references, textual variants, chapter overviews, psalm headings, footnotes
 - Bookmarks, notes, reading history, full-text search, reading plans with a home-screen widget and daily notifications
@@ -51,7 +52,9 @@
 │   │   └── newadvent/       # Church-father citation scraping pipeline
 │   ├── data/online/         # Per-chapter JSON served via raw.githubusercontent
 │   └── package.json
-├── docs/                    # Documentation
+├── esv-proxy/               # Cloudflare Worker: ESV via Crossway's API (key stays server-side)
+├── apibible-proxy/          # Cloudflare Worker: NASB/NKJV via API.Bible, 29-day chapter cache
+├── docs/                    # Privacy policy (GitHub Pages)
 └── README.md
 ```
 
@@ -62,6 +65,7 @@ Patristica is offline-first with a three-tier content model:
 1. **Core database** (bundled): KJV+ text, commentary, cross-references, lexicons, historical data — works with no network at all.
 2. **Content packs** (~50, hosted on the [`packs-v1` GitHub Release](https://github.com/Solendor-S/Patristica/releases/tag/packs-v1)): extra translations, deuterocanon, early-church texts, and scholarly tagged texts. Installed from the Library tab; a remote manifest keeps the catalog current without app updates.
 3. **Online preview**: per-chapter JSON lets uninstalled content be read on demand before downloading the pack.
+4. **Licensed translations** (ESV, NASB, NKJV): never bundled or packed. The app fetches each chapter live through a small Cloudflare Worker that holds our API key, so no key ships in the APK. These read in the main reader only, and fall back to the KJV if the service is unavailable.
 
 The patristic commentary is built by our own pipeline (`Patristica/scripts/newadvent/`): it crawls each father's works, extracts the in-text scripture citations, normalizes versification (including Vulgate→Hebrew psalm numbering), validates every reference against the canon, and links each excerpt back to its source page.
 
@@ -81,7 +85,8 @@ A schema/database change requires a new EAS build (the database is baked into th
 
 Patristica stands on the shoulders of many public-domain and openly licensed projects:
 
-- **Bible texts**: King James Version, American Standard Version, World English Bible (public domain); [Berean Standard Bible](https://berean.bible) (public domain); SBL Greek New Testament; Septuagint
+- **Bible texts**: King James Version, American Standard Version, World English Bible and World English Bible Catholic (public domain); [Berean Standard Bible](https://berean.bible) (public domain); SBL Greek New Testament; Septuagint
+- **Licensed texts** (non-commercial, used by permission): ESV® © 2001 Crossway, via the [ESV API](https://api.esv.org); NASB® © The Lockman Foundation and NKJV® © 1982 Thomas Nelson, via [API.Bible](https://api.bible). All rights reserved.
 - **Tagged texts**: TAGNT / TAHOT from [STEPBible](https://github.com/STEPBible/STEPBible-Data) (CC BY 4.0)
 - **Church Fathers**: the Ante-Nicene Fathers translations (Roberts–Donaldson, public domain), accessed via [New Advent](https://www.newadvent.org/fathers/); every commentary entry links to its source page
 - **Additional commentary**: [e-Catena](https://www.earlychristianwritings.com/e-catena/) and the [HistoricalChristianFaith Commentaries Database](https://github.com/HistoricalChristianFaith/Commentaries-Database)
