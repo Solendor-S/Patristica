@@ -796,6 +796,11 @@ const CREDITS: { title: string; body: string; url?: string }[] = [
     url: 'https://github.com/STEPBible/STEPBible-Data',
   },
   {
+    title: 'Dead Sea Scrolls',
+    body: "Biblical Dead Sea Scrolls transcription by Martin G. Abegg, Jr., via the ETCBC/dss dataset (CC BY-NC 4.0).",
+    url: 'https://github.com/ETCBC/dss',
+  },
+  {
     title: 'Greek New Testament',
     body: 'SBL Greek New Testament (SBLGNT), Translators Amalgamated GNT (TAGNT), and the Textus Receptus (Scrivener 1894).',
   },

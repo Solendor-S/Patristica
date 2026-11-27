@@ -12,6 +12,8 @@
 - KJV with Strong's numbers bundled; ASV, WEB, WEB Catholic, BSB, Septuagint (LXX), Dead Sea Scrolls and SBL Greek NT available as free downloadable packs
 - ESV, NASB (1995 and 2020) and NKJV read online, served through our own licensed proxies
 - Full Deuterocanon and broader canon (Tobit through 4 Maccabees, 1 Enoch, Jubilees, Meqabyan) as optional packs
+- Canon setting: Catholic (73 books, deuterocanon in the Old Testament, Susanna and Bel as Daniel 13–14) or Protestant, with a choice of WEB Catholic or KJV Apocrypha for deuterocanonical text
+- Parallel translation columns and split view (two passages side by side)
 - Cross-references, textual variants, chapter overviews, psalm headings, footnotes
 - Bookmarks, notes, reading history, full-text search, reading plans with a home-screen widget and daily notifications
 
@@ -19,18 +21,23 @@
 - **Verse-by-verse patristic commentary**: tap any verse and read what Irenaeus, Justin Martyr, Tertullian, Origen, Cyprian, Clement of Alexandria and dozens more said about it
 - Two collections: **Hand-picked** (citations extracted directly from each father's works, with links to the full source text) and **All** (adds a broader aggregated set)
 - Filter by tradition (Eastern, Western, Alexandrian, Syrian, North African), browse by father, chronological ordering with dates and biographies
+- Consensus view: how each tradition's fathers read a verse, at a glance
+- Influence network and correspondence: who shaped whom, and who wrote to whom
+- **Aquinas**: the Catena Aurea verse by verse, plus the Summa Theologica and Summa Contra Gentiles to browse
 - Full early-church texts readable in-app: the Didache, 1–2 Clement, the seven letters of Ignatius, Epistle of Barnabas, Shepherd-era writings, Justin Martyr, Against Heresies, and more (as packs)
 
 ### 🏛️ Early Church Study
 - Interactive timeline of the early church with category filters
-- Councils, creeds (tappable from councils), heresies, schisms, and doctrine development panels
+- Councils, creeds (tappable from councils), heresies and schisms
+- **Doctrine** tab: 133 hand-picked, verbatim-checked passages from the fathers tracing how each doctrine developed, with dissenting voices labelled
+- **Gospel Parallels**: where the other Gospels tell the same passage, via the ancient Eusebian Canons
 - Roman persecutions and canon-formation history
 - Geographic map of the Church Fathers
 - Josephus cross-references and other historical sources tied to relevant verses
 
 ### 🔤 Original Languages
-- Word study panel: tap a word for Strong's, Thayer's, and Brown-Driver-Briggs definitions
-- Greek NT (SBLGNT), tagged Greek and Hebrew texts (TAGNT / TAHOT via packs), LXX with online fallback
+- Word study panel: tap a word for Strong's, Thayer's, Abbott-Smith and Brown-Driver-Briggs definitions, plus UBS semantic domains marking the sense used in the verse
+- Greek NT (SBLGNT, Textus Receptus), tagged Greek and Hebrew texts (TAGNT / TAHOT / WLC via packs), LXX with online fallback, and the biblical Dead Sea Scrolls in Hebrew
 - Morphology decoding with plain-English explanations of tenses, stems, cases, and moods
 - Interlinear KJV+ with per-word Strong's tags
 
@@ -87,10 +94,13 @@ Patristica stands on the shoulders of many public-domain and openly licensed pro
 
 - **Bible texts**: King James Version, American Standard Version, World English Bible and World English Bible Catholic (public domain); [Berean Standard Bible](https://berean.bible) (public domain); SBL Greek New Testament; Septuagint
 - **Licensed texts** (non-commercial, used by permission): ESV® © 2001 Crossway, via the [ESV API](https://api.esv.org); NASB® © The Lockman Foundation and NKJV® © 1982 Thomas Nelson, via [API.Bible](https://api.bible). All rights reserved.
-- **Tagged texts**: TAGNT / TAHOT from [STEPBible](https://github.com/STEPBible/STEPBible-Data) (CC BY 4.0)
+- **Tagged texts**: TAGNT / TAHOT / WLC and the tagged LXX from [STEPBible](https://github.com/STEPBible/STEPBible-Data) (CC BY 4.0)
+- **Dead Sea Scrolls**: Martin G. Abegg's biblical scrolls transcription via [ETCBC/dss](https://github.com/ETCBC/dss) (CC BY-NC 4.0)
 - **Church Fathers**: the Ante-Nicene Fathers translations (Roberts–Donaldson, public domain), accessed via [New Advent](https://www.newadvent.org/fathers/); every commentary entry links to its source page
 - **Additional commentary**: [e-Catena](https://www.earlychristianwritings.com/e-catena/) and the [HistoricalChristianFaith Commentaries Database](https://github.com/HistoricalChristianFaith/Commentaries-Database)
-- **Lexicons**: Strong's Concordance, Thayer's Greek Lexicon, Brown-Driver-Briggs (public domain)
+- **Lexicons**: Strong's Concordance, Thayer's Greek Lexicon, Brown-Driver-Briggs, Abbott-Smith (public domain); [UBS dictionaries](https://github.com/ubsicap/ubs-open-license) of Greek and Hebrew semantic domains (CC BY-SA 4.0)
+- **Aquinas**: Catena Aurea (Newman edition, 1841), Summa Theologica (Dominican translation, 1920), Summa Contra Gentiles (Rickaby, 1905), all public domain
+- **Eusebian Canons**: INTF data via the CrossWire modules (public domain)
 - **Historical sources**: Josephus (Whiston translation, public domain)
 
 If you are a rights holder and have a concern about any content in this app, please open an issue.
