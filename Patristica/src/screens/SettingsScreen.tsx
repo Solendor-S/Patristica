@@ -786,6 +786,11 @@ function AboutSection() {
 
 const CREDITS: { title: string; body: string; url?: string }[] = [
   {
+    title: 'NASB 1995, NASB 2020 & NKJV',
+    body: 'New American Standard Bible® © The Lockman Foundation, and New King James Version® © Thomas Nelson. Used by permission. All rights reserved. Provided by API.Bible; each chapter shows its full copyright notice. These texts may not be quoted in any publication made available under a Creative Commons licence, or translated into any other language.',
+    url: 'https://api.bible',
+  },
+  {
     title: 'Hebrew Old Testament',
     body: 'TAHOT (Translators Amalgamated Hebrew Old Testament) and the Westminster Leningrad Codex (WLC), via the STEPBible Tyndale datasets (CC BY 4.0).',
     url: 'https://github.com/STEPBible/STEPBible-Data',

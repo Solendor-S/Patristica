@@ -3,7 +3,7 @@ import * as Clipboard from 'expo-clipboard'
 import {
   View, Text, FlatList, TouchableOpacity, Share, Modal, ScrollView,
   StyleSheet, ActivityIndicator, StatusBar, Animated, TextInput,
-  KeyboardAvoidingView, Platform, Alert,
+  KeyboardAvoidingView, Platform, Alert, Linking,
 } from 'react-native'
 import type { TextStyle } from 'react-native'
 import { useSQLiteContext } from 'expo-sqlite'
@@ -26,7 +26,7 @@ import { getStrongsConcordance, getPsalmHeading } from '../db/queries'
 import { maybeRequestReview } from '../lib/review'
 import { StrongsConcordanceModal, TranslationVariantsModal } from './WordStudyPanel'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
-import { useTranslation, TRANSLATIONS, GREEK_TRANSLATIONS, OT_ORIGINAL_TRANSLATIONS, OT_ONLY_TRANSLATIONS, OT_TRANSLATIONS, ANNOTATED_TRANSLATIONS } from '../context/TranslationContext'
+import { useTranslation, TRANSLATIONS, GREEK_TRANSLATIONS, OT_ORIGINAL_TRANSLATIONS, OT_ONLY_TRANSLATIONS, OT_TRANSLATIONS, ANNOTATED_TRANSLATIONS, API_TRANSLATIONS } from '../context/TranslationContext'
 import { useWordFocus } from '../context/WordFocusContext'
 import { useParallelTranslation } from '../context/ParallelTranslationContext'
 import type { Translation } from '../context/TranslationContext'
@@ -35,8 +35,9 @@ import { useOtQuoteCaps } from '../context/OtQuoteCapsContext'
 import { usePacks, useChapterText } from '../context/PackContext'
 import { TRANSLATION_PACK_SLUG } from '../db/queries'
 import { fetchEsvChapter, EsvError, ESV_COPYRIGHT } from '../lib/esv'
+import { fetchApiBibleChapter, ApiBibleError, apiBibleCopyright, APIBIBLE_TRANSLATIONS, APIBIBLE_URL } from '../lib/apibible'
 
-// Chapter arrays that are KJV text standing in for an unavailable ESV. Keyed on the
+// Chapter arrays that are KJV text standing in for an unavailable online translation. Keyed on the
 // array itself so the label can never drift from the text actually on screen.
 const esvFallbacks = new WeakSet<object>()
 import { useEsvKey } from '../context/EsvKeyContext'
@@ -1004,12 +1005,13 @@ function ShareModal({
   // media (messages, notes, bulletins) — the full notice is for publications, and
   // stays under the chapter in the reader. Share drops the translation label, so
   // without this an ESV quote would leave the app with no attribution at all.
-  const isEsv = translation === 'ESV'
-  const esvNotice = isEsv ? ' (ESV)' : ''
+  // Same short-form attribution for the API.Bible translations (NASB, NKJV).
+  const isApi = API_TRANSLATIONS.has(translation as Translation)
+  const esvNotice = isApi ? ` (${translation})` : ''
   const doShare = async () => { onClose(); await Share.share({ message: `${refLabel} — ${body}${esvNotice}` }) }
   const doCopy  = async () => {
     // "(ESV)" already names the translation, so skip the usual label rather than repeat it.
-    await Clipboard.setStringAsync(`${refLabel}${isEsv ? '' : ` ${translation}`} — ${body}${esvNotice}`)
+    await Clipboard.setStringAsync(`${refLabel}${isApi ? '' : ` ${translation}`} — ${body}${esvNotice}`)
     onClose()
   }
 
@@ -1750,17 +1752,22 @@ export default function ReaderScreen({ navigation, route }: Props) {
     // with the reader's own key. It never routes through the pack/CDN path above.
     const useEsv = !packCType && source === 'ESV'   // not on books the ESV lacks: those use their own text
     if (useEsv && !esvKeyReady) return   // don't flash "no key" before the stored key loads
-    setIsOnlineMode(useOnline || useEsv)
+    // NASB/NKJV: licensed like the ESV, served by our API.Bible proxy. Same rules: never packed.
+    const useApiBible = !packCType && APIBIBLE_TRANSLATIONS.has(source)
+    setIsOnlineMode(useOnline || useEsv || useApiBible)
 
+    const kjvIfUnavailable = async (e: unknown) => {
+      if (!((e instanceof EsvError || e instanceof ApiBibleError) && e.unavailable)) throw e
+      const rows = await loadChapter(book, chapter, 'KJV')
+      esvFallbacks.add(rows)
+      return rows
+    }
     // Both the translation-only fast path and the full load below need the same verse source.
-    const fetchFn: Promise<BibleVerse[]> = !useEsv
-      ? loadChapter(book, chapter, source)
-      : fetchEsvChapter(book, chapter, esvKey).catch(async e => {
-          if (!(e instanceof EsvError && e.unavailable)) throw e
-          const rows = await loadChapter(book, chapter, 'KJV')
-          esvFallbacks.add(rows)
-          return rows
-        })
+    const fetchFn: Promise<BibleVerse[]> = useApiBible
+      ? fetchApiBibleChapter(source, book, chapter).catch(kjvIfUnavailable)
+      : useEsv
+        ? fetchEsvChapter(book, chapter, esvKey).catch(kjvIfUnavailable)
+        : loadChapter(book, chapter, source)
 
     if (isTranslationOnly) {
       // Only the translation changed — fetch new verse text and swap in place.
@@ -2158,11 +2165,20 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const isOutsideCanon = isApocrypha || isEarlyText
   const isDeuterocanon = isApocrypha && inCanon(canon, book)
   // Whatever translation is selected, the apocrypha text is the KJV Apocrypha, so say so.
-  const esvFallback = source === 'ESV' && esvFallbacks.has(verses)
+  const esvFallback = API_TRANSLATIONS.has(source as Translation) && esvFallbacks.has(verses)
   const shownTranslation = esvFallback ? 'KJV' : source
-  // Crossway requires this notice wherever the ESV text is displayed. Do not remove.
-  const esvNotice = source === 'ESV' && !esvFallback
-    ? <Text style={styles.esvCopyright}>{ESV_COPYRIGHT}</Text> : null
+  // Crossway requires this notice wherever the ESV text is displayed, and API.Bible requires its
+  // copyright line plus a visible api.bible link under the NASB/NKJV. Do not remove either.
+  const esvNotice = esvFallback ? null
+    : source === 'ESV' ? <Text style={styles.esvCopyright}>{ESV_COPYRIGHT}</Text>
+    : APIBIBLE_TRANSLATIONS.has(source) ? (
+      <Text style={styles.esvCopyright}>
+        {apiBibleCopyright(source)}{'\n'}
+        <Text style={{ textDecorationLine: 'underline' }} onPress={() => Linking.openURL(APIBIBLE_URL)}>
+          Provided by API.Bible
+        </Text>
+      </Text>
+    ) : null
   const bookIndex    = useMemo(() => isOutsideCanon ? -1 : BOOKS.findIndex(b => b.name === book), [book, isOutsideCanon])
   const isNT         = useMemo(() => !isOutsideCanon && BOOK_MAP[book]?.testament === 'NT', [book, isOutsideCanon])
   const isGreekTrans    = useMemo(() => GREEK_TRANSLATIONS.has(translation as any), [translation])
@@ -2854,7 +2870,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
 
       {/* Verses */}
       {esvFallback && !loading && (
-        <Text style={styles.esvFallbackNote}>The ESV is busy right now, so this chapter is shown in the KJV.</Text>
+        <Text style={styles.esvFallbackNote}>The {source} is busy right now, so this chapter is shown in the KJV.</Text>
       )}
       {loading ? (
         <View style={styles.center}>

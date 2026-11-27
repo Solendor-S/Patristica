@@ -2,6 +2,18 @@
   "version": 1,
   "releases": [
     {
+      "id": "1.0.9-2",
+      "version": "1.0.9",
+      "label": "Update",
+      "date": "2026-11-27",
+      "title": "NASB and NKJV",
+      "changes": [
+        "Three new translations: the New American Standard Bible (1995 and 2020 editions) and the New King James Version, provided by API.Bible.",
+        "They load online through Patristica's own server, like the ESV, and work in the main reader. If the server is busy, the chapter is shown in the KJV instead.",
+        "See the updated privacy policy for how these chapters are fetched."
+      ]
+    },
+    {
       "id": "1.0.9-1",
       "version": "1.0.9",
       "label": "Update",

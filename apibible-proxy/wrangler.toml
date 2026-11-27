@@ -1,0 +1,15 @@
+name = "patristica-apibible"
+main = "src/index.js"
+compatibility_date = "2026-06-01"
+workers_dev = true      # the app calls patristica-apibible.solendor.workers.dev
+preview_urls = false
+
+# No request logs: the privacy policy says we collect nothing.
+[observability]
+enabled = false
+
+# Chapter cache, 29-day TTL (API.Bible: refresh cached text at least every 30 days).
+# Create once with `npx wrangler kv namespace create CACHE` and paste the id here.
+[[kv_namespaces]]
+binding = "CACHE"
+id = "38a4680fd4be46a599ef2bdb3f94db66"

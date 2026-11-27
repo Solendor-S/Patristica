@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 import { useUserDb } from '../db/UserDbProvider'
 import { ESV_PROXY_URL } from '../lib/esv'
 
-export type Translation = 'KJV' | 'ASV' | 'WEB' | 'WEBC' | 'BSB' | 'ESV' | 'SBLGNT' | 'TAGNT' | 'TR' | 'TR+' | 'KJV+' | 'I_KJV+' | 'TAHOT' | 'WLC' | 'WLC+' | 'DSS' | 'LXX' | 'LXX+' | 'E_LXX' | 'A_LXX'
+export type Translation = 'KJV' | 'ASV' | 'WEB' | 'WEBC' | 'BSB' | 'ESV' | 'NASB95' | 'NASB20' | 'NKJV' | 'SBLGNT' | 'TAGNT' | 'TR' | 'TR+' | 'KJV+' | 'I_KJV+' | 'TAHOT' | 'WLC' | 'WLC+' | 'DSS' | 'LXX' | 'LXX+' | 'E_LXX' | 'A_LXX'
 
 // `apiOnly` marks a translation with no local text at all — fetched live from a
 // third-party API, so it works only in the main reader. Parallel, split, and
@@ -16,6 +16,9 @@ export const TRANSLATIONS: { key: Translation; label: string; full: string; gree
   { key: 'WEBC',   label: 'WEBC',   full: 'World English Bible Catholic (73 books)' },
   { key: 'BSB',    label: 'BSB',    full: 'Berean Standard Bible' },
   { key: 'ESV',    label: 'ESV',    full: ESV_PROXY_URL ? 'English Standard Version (online only)' : 'English Standard Version (needs a free API key)', apiOnly: true },
+  { key: 'NASB95', label: 'NASB95', full: 'New American Standard Bible 1995 (online only)', apiOnly: true },
+  { key: 'NASB20', label: 'NASB20', full: 'New American Standard Bible 2020 (online only)', apiOnly: true },
+  { key: 'NKJV',   label: 'NKJV',   full: 'New King James Version (online only)',           apiOnly: true },
   { key: 'SBLGNT', label: 'SBLGNT', full: 'SBL Greek New Testament',              greekOnly: true },
   { key: 'TAGNT',  label: 'TAGNT',  full: 'Translators Amalgamated GNT (NA28)',   greekOnly: true },
   { key: 'TR',     label: 'TR',     full: 'Textus Receptus (Scrivener 1894)',      greekOnly: true },
