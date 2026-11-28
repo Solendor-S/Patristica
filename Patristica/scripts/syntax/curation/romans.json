@@ -1,2233 +1,2233 @@
 [
- {
-  "id": "rom-1-4-en-dynamei",
-  "book": "Romans",
-  "chapter": 1,
-  "verse": 4,
-  "words": [
-   "ROM 1:4!2",
-   "ROM 1:4!3",
-   "ROM 1:4!5",
-   "ROM 1:4!6"
-  ],
-  "title": "en dynamei: \"Son of God in power\" or \"declared ... with power\"?",
-  "category": "attachment",
-  "summary": "The prepositional phrase en dynamei sits between huiou theou and the verb horisthentos, so it can qualify either the title (\"Son-of-God-in-power\") or the act of designation (\"designated Son of God by/with power\").",
-  "readings": [
-   {
-    "label": "Qualifies \"Son of God\": \"Son of God in power\"",
-    "rendering": "who was designated Son-of-God-in-power by the resurrection",
-    "grammar": "ἐν δυνάμει as an adjectival modifier of υἱοῦ θεοῦ (a new, enthroned status of the Son)",
-    "modern": "NIV, NET (\"Son-of-God in power\"); Cranfield, Moo",
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "On the Predestination of the Saints",
-      "ref": "ch. 31",
-      "year": 428,
-      "url": "https://www.newadvent.org/fathers/15121.htm",
-      "quote": "Therefore Jesus was predestinated, so that He who was to be the Son of David according to the flesh should yet be in power the Son of God, according to the Spirit of sanctification, because He was born of the Holy Spirit and of the Virgin Mary.",
-      "page": "15121"
-     }
+  {
+    "id": "rom-1-4-en-dynamei",
+    "book": "Romans",
+    "chapter": 1,
+    "verse": 4,
+    "words": [
+      "ROM 1:4!2",
+      "ROM 1:4!3",
+      "ROM 1:4!5",
+      "ROM 1:4!6"
+    ],
+    "title": "en dynamei: \"Son of God in power\" or \"declared ... with power\"?",
+    "category": "attachment",
+    "summary": "The prepositional phrase en dynamei sits between huiou theou and the verb horisthentos, so it can qualify either the title (\"Son-of-God-in-power\") or the act of designation (\"designated Son of God by/with power\").",
+    "readings": [
+      {
+        "label": "Qualifies \"Son of God\": \"Son of God in power\"",
+        "rendering": "who was designated Son-of-God-in-power by the resurrection",
+        "grammar": "ἐν δυνάμει as an adjectival modifier of υἱοῦ θεοῦ (a new, enthroned status of the Son)",
+        "modern": "NIV, NET (\"Son-of-God in power\"); Cranfield, Moo",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Predestination of the Saints",
+            "ref": "ch. 31",
+            "year": 428,
+            "url": "https://www.newadvent.org/fathers/15121.htm",
+            "quote": "Therefore Jesus was predestinated, so that He who was to be the Son of David according to the flesh should yet be in power the Son of God, according to the Spirit of sanctification, because He was born of the Holy Spirit and of the Virgin Mary.",
+            "page": "15121"
+          }
+        ]
+      },
+      {
+        "label": "Qualifies the verb: \"declared Son of God with power\"",
+        "rendering": "who was powerfully declared to be the Son of God",
+        "grammar": "ἐν δυνάμει adverbial, with ὁρισθέντος (manner or means of the declaration)",
+        "modern": "KJV, NRSV (\"declared to be Son of God with power\")",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 1",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210201.htm",
+            "quote": "Thirdly, from the miracles which He did, yielding a demonstration of much power, for in power means this.",
+            "page": "210201"
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gloss \"declared son God with power\" lists en dynamei after the participle phrase in a flat clause; the parse does not commit to either attachment.",
+    "sources": [
+      "NET note on Rom 1:4",
+      "Cranfield, Romans (ICC)",
+      "Wallace, GGBB"
     ]
-   },
-   {
-    "label": "Qualifies the verb: \"declared Son of God with power\"",
-    "rendering": "who was powerfully declared to be the Son of God",
-    "grammar": "ἐν δυνάμει adverbial, with ὁρισθέντος (manner or means of the declaration)",
-    "modern": "KJV, NRSV (\"declared to be Son of God with power\")",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 1",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210201.htm",
-      "quote": "Thirdly, from the miracles which He did, yielding a demonstration of much power, for in power means this.",
-      "page": "210201"
-     }
+  },
+  {
+    "id": "rom-1-4-pneuma-hagiosynes",
+    "book": "Romans",
+    "chapter": 1,
+    "verse": 4,
+    "words": [
+      "ROM 1:4!7",
+      "ROM 1:4!8",
+      "ROM 1:4!9"
+    ],
+    "title": "kata pneuma hagiosynes: the Holy Spirit or Christ's own spirit?",
+    "category": "referent",
+    "summary": "Paul sets \"according to the flesh\" (v. 3) against \"according to the Spirit of holiness\". The unusual phrase pneuma hagiosynes can refer to the Holy Spirit as agent of the resurrection or to the divine/spiritual sphere of Christ's own being.",
+    "readings": [
+      {
+        "label": "The Holy Spirit",
+        "rendering": "designated Son by the resurrection, according to (or through) the Holy Spirit",
+        "grammar": "πνεῦμα ἁγιωσύνης as a periphrasis for τὸ ἅγιον πνεῦμα (Semitic \"spirit of holiness\")",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 1",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210201.htm",
+            "quote": "Fourthly, from the Spirit which He gave to them that believe upon Him, and through which He made them all holy, wherefore he says, according to the Spirit of holiness. For it was of God only to grant such gifts.",
+            "page": "210201"
+          }
+        ]
+      },
+      {
+        "label": "Christ's own divine nature",
+        "rendering": "designated Son of God as to his divine, spiritual nature (parallel to \"flesh\")",
+        "grammar": "κατὰ σάρκα / κατὰ πνεῦμα as a contrast of two spheres or natures of the one Christ",
+        "modern": "Commentators who stress the flesh/spirit contrast read it as two spheres of the one Christ",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA parses κατὰ πνεῦμα ἁγιωσύνης inside the ὁρισθέντος phrase, as a flat genitive phrase with no sign of which referent is meant.",
+    "sources": [
+      "NET note on Rom 1:4",
+      "Cranfield, Romans (ICC)"
     ]
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA gloss \"declared son God with power\" lists en dynamei after the participle phrase in a flat clause; the parse does not commit to either attachment.",
-  "sources": [
-   "NET note on Rom 1:4",
-   "Cranfield, Romans (ICC)",
-   "Wallace, GGBB"
-  ]
- },
- {
-  "id": "rom-1-4-pneuma-hagiosynes",
-  "book": "Romans",
-  "chapter": 1,
-  "verse": 4,
-  "words": [
-   "ROM 1:4!7",
-   "ROM 1:4!8",
-   "ROM 1:4!9"
-  ],
-  "title": "kata pneuma hagiosynes: the Holy Spirit or Christ's own spirit?",
-  "category": "referent",
-  "summary": "Paul sets \"according to the flesh\" (v. 3) against \"according to the Spirit of holiness\". The unusual phrase pneuma hagiosynes can refer to the Holy Spirit as agent of the resurrection or to the divine/spiritual sphere of Christ's own being.",
-  "readings": [
-   {
-    "label": "The Holy Spirit",
-    "rendering": "designated Son by the resurrection, according to (or through) the Holy Spirit",
-    "grammar": "πνεῦμα ἁγιωσύνης as a periphrasis for τὸ ἅγιον πνεῦμα (Semitic \"spirit of holiness\")",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 1",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210201.htm",
-      "quote": "Fourthly, from the Spirit which He gave to them that believe upon Him, and through which He made them all holy, wherefore he says, according to the Spirit of holiness. For it was of God only to grant such gifts.",
-      "page": "210201"
-     }
+  },
+  {
+    "id": "rom-1-5-hypakoe-pisteos",
+    "book": "Romans",
+    "chapter": 1,
+    "verse": 5,
+    "words": [
+      "ROM 1:5!8",
+      "ROM 1:5!9"
+    ],
+    "title": "hypakoen pisteos: \"obedience to the faith\" or \"obedience that is faith\"?",
+    "category": "case",
+    "summary": "The genitive pisteos after hypakoen (also 16:26) can be objective (obedience to the faith/gospel), epexegetic (the obedience which is faith), source (obedience that springs from faith), or subjective.",
+    "readings": [
+      {
+        "label": "Objective: \"obedience to the faith\"",
+        "rendering": "to bring about obedience to the faith (the gospel message)",
+        "grammar": "genitive of the object of obedience (ὑπακοή + objective genitive)",
+        "modern": "KJV (\"obedience to the faith\")",
+        "fathers": []
+      },
+      {
+        "label": "Epexegetic/source: \"the obedience of faith\"",
+        "rendering": "to bring about the obedience which is faith (or comes from faith)",
+        "grammar": "epexegetic genitive or genitive of source; faith itself is the obedience",
+        "modern": "RSV, ESV, NAB (\"the obedience of faith\"); NIV 1984 (\"obedience that comes from faith\")",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gloss \"to bring about obedience faith\" notes the two nouns in sequence without labelling the genitive.",
+    "sources": [
+      "NET note on Rom 1:5",
+      "Wallace, GGBB",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "Christ's own divine nature",
-    "rendering": "designated Son of God as to his divine, spiritual nature (parallel to \"flesh\")",
-    "grammar": "κατὰ σάρκα / κατὰ πνεῦμα as a contrast of two spheres or natures of the one Christ",
-    "modern": "Commentators who stress the flesh/spirit contrast read it as two spheres of the one Christ",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA parses κατὰ πνεῦμα ἁγιωσύνης inside the ὁρισθέντος phrase, as a flat genitive phrase with no sign of which referent is meant.",
-  "sources": [
-   "NET note on Rom 1:4",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-1-5-hypakoe-pisteos",
-  "book": "Romans",
-  "chapter": 1,
-  "verse": 5,
-  "words": [
-   "ROM 1:5!8",
-   "ROM 1:5!9"
-  ],
-  "title": "hypakoen pisteos: \"obedience to the faith\" or \"obedience that is faith\"?",
-  "category": "case",
-  "summary": "The genitive pisteos after hypakoen (also 16:26) can be objective (obedience to the faith/gospel), epexegetic (the obedience which is faith), source (obedience that springs from faith), or subjective.",
-  "readings": [
-   {
-    "label": "Objective: \"obedience to the faith\"",
-    "rendering": "to bring about obedience to the faith (the gospel message)",
-    "grammar": "genitive of the object of obedience (ὑπακοή + objective genitive)",
-    "modern": "KJV (\"obedience to the faith\")",
-    "fathers": []
-   },
-   {
-    "label": "Epexegetic/source: \"the obedience of faith\"",
-    "rendering": "to bring about the obedience which is faith (or comes from faith)",
-    "grammar": "epexegetic genitive or genitive of source; faith itself is the obedience",
-    "modern": "RSV, ESV, NAB (\"the obedience of faith\"); NIV 1984 (\"obedience that comes from faith\")",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA gloss \"to bring about obedience faith\" notes the two nouns in sequence without labelling the genitive.",
-  "sources": [
-   "NET note on Rom 1:5",
-   "Wallace, GGBB",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-1-17-ek-pisteos-eis-pistin",
-  "book": "Romans",
-  "chapter": 1,
-  "verse": 17,
-  "words": [
-   "ROM 1:17!7",
-   "ROM 1:17!8",
-   "ROM 1:17!9",
-   "ROM 1:17!10"
-  ],
-  "title": "\"from faith to faith\"",
-  "category": "construction",
-  "summary": "The two prepositional phrases ek pisteos eis pistin have no stated referent for either \"faith\", so the phrase has been read as a sequence of persons, of covenants, or of stages of growth.",
-  "readings": [
-   {
-    "label": "From the faith of the preacher to the faith of the hearer",
-    "rendering": "the righteousness of God is revealed from the faith of those who preach it to the faith of those who obey it",
-    "grammar": "ἐκ/εἰς marking source and goal of faith between two parties",
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "On the Spirit and the Letter",
-      "ref": "ch. 18",
-      "year": 412,
-      "url": "https://www.newadvent.org/fathers/1502.htm",
-      "quote": "from the faith of them who preach it, to the faith of those who obey it.",
-      "page": "1502"
-     }
+  },
+  {
+    "id": "rom-1-17-ek-pisteos-eis-pistin",
+    "book": "Romans",
+    "chapter": 1,
+    "verse": 17,
+    "words": [
+      "ROM 1:17!7",
+      "ROM 1:17!8",
+      "ROM 1:17!9",
+      "ROM 1:17!10"
+    ],
+    "title": "\"from faith to faith\"",
+    "category": "construction",
+    "summary": "The two prepositional phrases ek pisteos eis pistin have no stated referent for either \"faith\", so the phrase has been read as a sequence of persons, of covenants, or of stages of growth.",
+    "readings": [
+      {
+        "label": "From the faith of the preacher to the faith of the hearer",
+        "rendering": "the righteousness of God is revealed from the faith of those who preach it to the faith of those who obey it",
+        "grammar": "ἐκ/εἰς marking source and goal of faith between two parties",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Spirit and the Letter",
+            "ref": "ch. 18",
+            "year": 412,
+            "url": "https://www.newadvent.org/fathers/1502.htm",
+            "quote": "from the faith of them who preach it, to the faith of those who obey it.",
+            "page": "1502"
+          }
+        ]
+      },
+      {
+        "label": "From Old Testament faith to New Testament faith",
+        "rendering": "revealed from the faith of the old covenant to the faith of the new",
+        "grammar": "ἐκ…εἰς as a progression from one dispensation to the next",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 2",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210202.htm",
+            "quote": "For after having said, from faith to faith, he sends the hearer back to the dispensations of God, which took place thus in the Old Testament, which, when writing to the Hebrews, he explains with his usual great wisdom, showing that both the just and the sinners were justified in that way even then,",
+            "page": "210202"
+          }
+        ]
+      },
+      {
+        "label": "From God's faithfulness to human faith, or a growth in faith",
+        "rendering": "from God's faithfulness to human faith (or from one degree of faith to another)",
+        "grammar": "ἐκ πίστεως = God's fidelity; εἰς πίστιν = the believer's response (or intensive: \"by faith alone\")",
+        "modern": "Barth, Hays (faithfulness reading); NIV \"by faith from first to last\"",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA treats ἐκ πίστεως εἰς πίστιν as two flat prepositional phrases modifying ἀποκαλύπτεται; no semantic link between them is encoded.",
+    "sources": [
+      "NET note on Rom 1:17",
+      "Cranfield, Romans (ICC)",
+      "Moo, Romans (NICNT)"
     ]
-   },
-   {
-    "label": "From Old Testament faith to New Testament faith",
-    "rendering": "revealed from the faith of the old covenant to the faith of the new",
-    "grammar": "ἐκ…εἰς as a progression from one dispensation to the next",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 2",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210202.htm",
-      "quote": "For after having said, from faith to faith, he sends the hearer back to the dispensations of God, which took place thus in the Old Testament, which, when writing to the Hebrews, he explains with his usual great wisdom, showing that both the just and the sinners were justified in that way even then,",
-      "page": "210202"
-     }
+  },
+  {
+    "id": "rom-1-17-ho-dikaios-ek-pisteos-zesetai",
+    "book": "Romans",
+    "chapter": 1,
+    "verse": 17,
+    "words": [
+      "ROM 1:17!15",
+      "ROM 1:17!16",
+      "ROM 1:17!17",
+      "ROM 1:17!18"
+    ],
+    "title": "\"The righteous by faith shall live\" or \"the righteous shall live by faith\"?",
+    "category": "attachment",
+    "summary": "In the quotation of Habakkuk 2:4, ek pisteos stands between subject and verb and can modify either ho dikaios (\"the one righteous by faith\") or zesetai (\"shall live by faith\").",
+    "readings": [
+      {
+        "label": "Modifies the verb: \"The righteous shall live by faith\"",
+        "rendering": "the righteous person will live by means of faith",
+        "grammar": "ἐκ πίστεως adverbial with ζήσεται",
+        "modern": "KJV, NIV, RSV, ESV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 2",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210202.htm",
+            "quote": "that it is not in the nature of things for him who is to live, to live otherwise save by faith; for the just, he says, shall live by faith, speaking about the life to come.",
+            "page": "210202"
+          }
+        ]
+      },
+      {
+        "label": "Modifies the subject: \"The one who is righteous by faith shall live\"",
+        "rendering": "the person who is righteous through faith will live",
+        "grammar": "ἐκ πίστεως adjectival with ὁ δίκαιος (the theme of Rom 1-4 is justification by faith)",
+        "modern": "NET text, NRSV margin; Cranfield",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gloss \"the righteous by faith live\" attaches ἐκ πίστεως next to ὁ δίκαιος inside a flat clause; the parse does not commit.",
+    "sources": [
+      "NET note on Rom 1:17",
+      "Cranfield, Romans (ICC)",
+      "Wallace, GGBB"
     ]
-   },
-   {
-    "label": "From God's faithfulness to human faith, or a growth in faith",
-    "rendering": "from God's faithfulness to human faith (or from one degree of faith to another)",
-    "grammar": "ἐκ πίστεως = God's fidelity; εἰς πίστιν = the believer's response (or intensive: \"by faith alone\")",
-    "modern": "Barth, Hays (faithfulness reading); NIV \"by faith from first to last\"",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA treats ἐκ πίστεως εἰς πίστιν as two flat prepositional phrases modifying ἀποκαλύπτεται; no semantic link between them is encoded.",
-  "sources": [
-   "NET note on Rom 1:17",
-   "Cranfield, Romans (ICC)",
-   "Moo, Romans (NICNT)"
-  ]
- },
- {
-  "id": "rom-1-17-ho-dikaios-ek-pisteos-zesetai",
-  "book": "Romans",
-  "chapter": 1,
-  "verse": 17,
-  "words": [
-   "ROM 1:17!15",
-   "ROM 1:17!16",
-   "ROM 1:17!17",
-   "ROM 1:17!18"
-  ],
-  "title": "\"The righteous by faith shall live\" or \"the righteous shall live by faith\"?",
-  "category": "attachment",
-  "summary": "In the quotation of Habakkuk 2:4, ek pisteos stands between subject and verb and can modify either ho dikaios (\"the one righteous by faith\") or zesetai (\"shall live by faith\").",
-  "readings": [
-   {
-    "label": "Modifies the verb: \"The righteous shall live by faith\"",
-    "rendering": "the righteous person will live by means of faith",
-    "grammar": "ἐκ πίστεως adverbial with ζήσεται",
-    "modern": "KJV, NIV, RSV, ESV",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 2",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210202.htm",
-      "quote": "that it is not in the nature of things for him who is to live, to live otherwise save by faith; for the just, he says, shall live by faith, speaking about the life to come.",
-      "page": "210202"
-     }
+  },
+  {
+    "id": "rom-1-17-dikaiosyne-theou",
+    "book": "Romans",
+    "chapter": 1,
+    "verse": 17,
+    "words": [
+      "ROM 1:17!1",
+      "ROM 1:17!3"
+    ],
+    "title": "dikaiosyne theou: the righteousness God has, gives, or requires?",
+    "category": "case",
+    "summary": "The genitive theou after dikaiosyne (1:17; 3:21-22; 10:3) can be possessive/subjective (God's own righteous character or saving covenant faithfulness), source (the righteousness God bestows on the believer), or objective (a status approved by God).",
+    "readings": [
+      {
+        "label": "Source: the righteousness which God gives",
+        "rendering": "a righteousness from God, given to the believer",
+        "grammar": "genitive of source/origin",
+        "traditions": {
+          "catholic": "Augustine's \"righteousness by which He makes us righteous\" underlies the Catholic doctrine of infused righteousness (Trent, session 6)",
+          "protestant": "Luther: a righteousness from God received by faith"
+        },
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Spirit and the Letter",
+            "ref": "ch. 18",
+            "year": 412,
+            "url": "https://www.newadvent.org/fathers/1502.htm",
+            "quote": "This is the righteousness of God, which was veiled in the Old Testament, and is revealed in the New; and it is called the righteousness of God, because by His bestowal of it He makes us righteous, just as we read that salvation is the Lord's, because He makes us safe.",
+            "page": "1502"
+          }
+        ]
+      },
+      {
+        "label": "Possessive/subjective: God's own righteousness",
+        "rendering": "God's own saving righteousness (covenant faithfulness) revealed in the gospel",
+        "grammar": "genitive of possession or subject; a divine attribute in action",
+        "modern": "Käsemann, N. T. Wright, Cranfield (partly)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA parses θεοῦ as an unlabelled genitive modifying δικαιοσύνη.",
+    "sources": [
+      "NET note on Rom 1:17",
+      "Cranfield, Romans (ICC)",
+      "Moo, Romans (NICNT)"
     ]
-   },
-   {
-    "label": "Modifies the subject: \"The one who is righteous by faith shall live\"",
-    "rendering": "the person who is righteous through faith will live",
-    "grammar": "ἐκ πίστεως adjectival with ὁ δίκαιος (the theme of Rom 1-4 is justification by faith)",
-    "modern": "NET text, NRSV margin; Cranfield",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA gloss \"the righteous by faith live\" attaches ἐκ πίστεως next to ὁ δίκαιος inside a flat clause; the parse does not commit.",
-  "sources": [
-   "NET note on Rom 1:17",
-   "Cranfield, Romans (ICC)",
-   "Wallace, GGBB"
-  ]
- },
- {
-  "id": "rom-1-17-dikaiosyne-theou",
-  "book": "Romans",
-  "chapter": 1,
-  "verse": 17,
-  "words": [
-   "ROM 1:17!1",
-   "ROM 1:17!3"
-  ],
-  "title": "dikaiosyne theou: the righteousness God has, gives, or requires?",
-  "category": "case",
-  "summary": "The genitive theou after dikaiosyne (1:17; 3:21-22; 10:3) can be possessive/subjective (God's own righteous character or saving covenant faithfulness), source (the righteousness God bestows on the believer), or objective (a status approved by God).",
-  "readings": [
-   {
-    "label": "Source: the righteousness which God gives",
-    "rendering": "a righteousness from God, given to the believer",
-    "grammar": "genitive of source/origin",
-    "traditions": {
-     "catholic": "Augustine's \"righteousness by which He makes us righteous\" underlies the Catholic doctrine of infused righteousness (Trent, session 6)",
-     "protestant": "Luther: a righteousness from God received by faith"
-    },
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "On the Spirit and the Letter",
-      "ref": "ch. 18",
-      "year": 412,
-      "url": "https://www.newadvent.org/fathers/1502.htm",
-      "quote": "This is the righteousness of God, which was veiled in the Old Testament, and is revealed in the New; and it is called the righteousness of God, because by His bestowal of it He makes us righteous, just as we read that salvation is the Lord's, because He makes us safe.",
-      "page": "1502"
-     }
+  },
+  {
+    "id": "rom-1-20-eis-to-einai",
+    "book": "Romans",
+    "chapter": 1,
+    "verse": 20,
+    "words": [
+      "ROM 1:20!19",
+      "ROM 1:20!20",
+      "ROM 1:20!21",
+      "ROM 1:20!22",
+      "ROM 1:20!23"
+    ],
+    "title": "eis to einai autous anapologetous: purpose or result?",
+    "category": "construction",
+    "summary": "εἰς τὸ + infinitive can express purpose (\"in order that they be without excuse\") or result (\"so that they are without excuse\"), which changes whether leaving humanity without excuse was God's intention in revealing himself.",
+    "readings": [
+      {
+        "label": "Result: \"so that they are without excuse\"",
+        "rendering": "so that they are left without excuse",
+        "grammar": "εἰς τὸ + infinitive of result (consecutive)",
+        "modern": "NET, NIV 1984 (\"so that ... without excuse\")",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 3",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210203.htm",
+            "quote": "And yet it is not for this God has made these things, even if this came of it. For it was not to bereave them of all excuse, that He set before them so great a system of teaching, but that they might come to know Him.",
+            "page": "210203"
+          }
+        ]
+      },
+      {
+        "label": "Purpose: \"in order that they be without excuse\"",
+        "rendering": "in order that they should be without excuse",
+        "grammar": "εἰς τὸ + infinitive of purpose",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives εἰς τὸ εἶναι as a flat infinitive phrase with no distinction of purpose/result.",
+    "sources": [
+      "NET note on Rom 1:20",
+      "Wallace, GGBB",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "Possessive/subjective: God's own righteousness",
-    "rendering": "God's own saving righteousness (covenant faithfulness) revealed in the gospel",
-    "grammar": "genitive of possession or subject; a divine attribute in action",
-    "modern": "Käsemann, N. T. Wright, Cranfield (partly)",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA parses θεοῦ as an unlabelled genitive modifying δικαιοσύνη.",
-  "sources": [
-   "NET note on Rom 1:17",
-   "Cranfield, Romans (ICC)",
-   "Moo, Romans (NICNT)"
-  ]
- },
- {
-  "id": "rom-1-20-eis-to-einai",
-  "book": "Romans",
-  "chapter": 1,
-  "verse": 20,
-  "words": [
-   "ROM 1:20!19",
-   "ROM 1:20!20",
-   "ROM 1:20!21",
-   "ROM 1:20!22",
-   "ROM 1:20!23"
-  ],
-  "title": "eis to einai autous anapologetous: purpose or result?",
-  "category": "construction",
-  "summary": "εἰς τὸ + infinitive can express purpose (\"in order that they be without excuse\") or result (\"so that they are without excuse\"), which changes whether leaving humanity without excuse was God's intention in revealing himself.",
-  "readings": [
-   {
-    "label": "Result: \"so that they are without excuse\"",
-    "rendering": "so that they are left without excuse",
-    "grammar": "εἰς τὸ + infinitive of result (consecutive)",
-    "modern": "NET, NIV 1984 (\"so that ... without excuse\")",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 3",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210203.htm",
-      "quote": "And yet it is not for this God has made these things, even if this came of it. For it was not to bereave them of all excuse, that He set before them so great a system of teaching, but that they might come to know Him.",
-      "page": "210203"
-     }
+  },
+  {
+    "id": "rom-2-14-physei",
+    "book": "Romans",
+    "chapter": 2,
+    "verse": 14,
+    "words": [
+      "ROM 2:14!3",
+      "ROM 2:14!7",
+      "ROM 2:14!8",
+      "ROM 2:14!12"
+    ],
+    "title": "physei: \"do by nature\" or \"who by nature lack the law\"?",
+    "category": "attachment",
+    "summary": "The adverbial dative physei can be taken with the verb poiosin (Gentiles do by nature the things of the law) or with the preceding participle phrase (Gentiles who do not by nature have the law). The choice decides whether Paul describes unaided nature or Gentile Christians.",
+    "readings": [
+      {
+        "label": "With the verb: \"do by nature what the law requires\"",
+        "rendering": "Gentiles who have not the law do by nature the things of the law",
+        "grammar": "φύσει modifies ποιῶσιν (instinctive obedience; or nature restored by grace)",
+        "modern": "RSV, NRSV, ESV, NIV (\"do by nature\"); Cranfield, Moo",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 6",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210206.htm",
+            "quote": "Do by nature the things of the Law. Of what Law? Of that by works.",
+            "page": "210206"
+          },
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Spirit and the Letter",
+            "ref": "ch. 47",
+            "year": 412,
+            "url": "https://www.newadvent.org/fathers/1502.htm",
+            "quote": "Nor ought it to disturb us that the apostle described them as doing that which is contained in the law by nature, — not by the Spirit of God, not by faith, not by grace. For it is the Spirit of grace that does it, in order to restore in us the image of God, in which we were naturally created.",
+            "page": "1502"
+          }
+        ]
+      },
+      {
+        "label": "With the participle: \"Gentiles who by nature do not have the law\"",
+        "rendering": "when Gentiles, who by nature have no law (are Gentiles by birth), do what the law requires",
+        "grammar": "φύσει modifies ἔχοντα (lacking the law by birth/nature), so the doing is something beyond nature",
+        "modern": "A minority of interpreters",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "MACULA places φύσει inside the clause with ποιῶσιν (\"when gentiles ... by nature do the things of the law\") and outside the relative clause τὰ μὴ νόμον ἔχοντα, so the tree encodes the \"with the verb\" reading.",
+    "sources": [
+      "NET note on Rom 2:14",
+      "Cranfield, Romans (ICC)",
+      "Wallace, GGBB"
     ]
-   },
-   {
-    "label": "Purpose: \"in order that they be without excuse\"",
-    "rendering": "in order that they should be without excuse",
-    "grammar": "εἰς τὸ + infinitive of purpose",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA gives εἰς τὸ εἶναι as a flat infinitive phrase with no distinction of purpose/result.",
-  "sources": [
-   "NET note on Rom 1:20",
-   "Wallace, GGBB",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-2-14-physei",
-  "book": "Romans",
-  "chapter": 2,
-  "verse": 14,
-  "words": [
-   "ROM 2:14!3",
-   "ROM 2:14!7",
-   "ROM 2:14!8",
-   "ROM 2:14!12"
-  ],
-  "title": "physei: \"do by nature\" or \"who by nature lack the law\"?",
-  "category": "attachment",
-  "summary": "The adverbial dative physei can be taken with the verb poiosin (Gentiles do by nature the things of the law) or with the preceding participle phrase (Gentiles who do not by nature have the law). The choice decides whether Paul describes unaided nature or Gentile Christians.",
-  "readings": [
-   {
-    "label": "With the verb: \"do by nature what the law requires\"",
-    "rendering": "Gentiles who have not the law do by nature the things of the law",
-    "grammar": "φύσει modifies ποιῶσιν (instinctive obedience; or nature restored by grace)",
-    "modern": "RSV, NRSV, ESV, NIV (\"do by nature\"); Cranfield, Moo",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 6",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210206.htm",
-      "quote": "Do by nature the things of the Law. Of what Law? Of that by works.",
-      "page": "210206"
-     },
-     {
-      "father": "Augustine of Hippo",
-      "work": "On the Spirit and the Letter",
-      "ref": "ch. 47",
-      "year": 412,
-      "url": "https://www.newadvent.org/fathers/1502.htm",
-      "quote": "Nor ought it to disturb us that the apostle described them as doing that which is contained in the law by nature, — not by the Spirit of God, not by faith, not by grace. For it is the Spirit of grace that does it, in order to restore in us the image of God, in which we were naturally created.",
-      "page": "1502"
-     }
+  },
+  {
+    "id": "rom-2-15-16-en-hemera",
+    "book": "Romans",
+    "chapter": 2,
+    "verse": 16,
+    "words": [
+      "ROM 2:15!2",
+      "ROM 2:16!1",
+      "ROM 2:16!2",
+      "ROM 2:16!3",
+      "ROM 2:16!4"
+    ],
+    "title": "\"In the day when God judges\" (2:16): which clause does it complete?",
+    "category": "attachment",
+    "summary": "The temporal clause of v. 16 follows a long parenthesis (vv. 14-15) and can be attached to the thoughts \"accusing or excusing\" of v. 15, or back to the judgment of v. 12-13 (\"all who have sinned ... will be judged ... on the day\").",
+    "readings": [
+      {
+        "label": "With v. 15: conscience and thoughts bear witness on judgment day",
+        "rendering": "their conscience bears witness, and their thoughts accuse or excuse them, on the day when God judges",
+        "grammar": "ἐν ἡμέρᾳ ὅτε κρίνει completes ἐνδείκνυνται / the accusing-excusing clause of v. 15",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Spirit and the Letter",
+            "ref": "ch. 48",
+            "year": 412,
+            "url": "https://www.newadvent.org/fathers/1502.htm",
+            "quote": "of what use will be their excusing thoughts to them in the day when God shall judge the secrets of men, unless it be perhaps to procure for them a milder punishment?",
+            "page": "1502"
+          }
+        ]
+      },
+      {
+        "label": "With vv. 12-13: all are judged on that day (vv. 14-15 parenthetical)",
+        "rendering": "all who sinned will be judged ... on the day when God judges the secrets of men",
+        "grammar": "vv. 14-15 as parenthesis; v. 16 resumes v. 12 (κριθήσονται)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives v. 16 as its own sentence beginning ἐν ἡμέρᾳ with no syntactic link to v. 15 or v. 12.",
+    "sources": [
+      "NET note on Rom 2:16",
+      "Cranfield, Romans (ICC)",
+      "Moo, Romans (NICNT)"
     ]
-   },
-   {
-    "label": "With the participle: \"Gentiles who by nature do not have the law\"",
-    "rendering": "when Gentiles, who by nature have no law (are Gentiles by birth), do what the law requires",
-    "grammar": "φύσει modifies ἔχοντα (lacking the law by birth/nature), so the doing is something beyond nature",
-    "modern": "A minority of interpreters",
-    "fathers": []
-   }
-  ],
-  "macula_follows": 0,
-  "macula_evidence": "MACULA places φύσει inside the clause with ποιῶσιν (\"when gentiles ... by nature do the things of the law\") and outside the relative clause τὰ μὴ νόμον ἔχοντα, so the tree encodes the \"with the verb\" reading.",
-  "sources": [
-   "NET note on Rom 2:14",
-   "Cranfield, Romans (ICC)",
-   "Wallace, GGBB"
-  ]
- },
- {
-  "id": "rom-2-15-16-en-hemera",
-  "book": "Romans",
-  "chapter": 2,
-  "verse": 16,
-  "words": [
-   "ROM 2:15!2",
-   "ROM 2:16!1",
-   "ROM 2:16!2",
-   "ROM 2:16!3",
-   "ROM 2:16!4"
-  ],
-  "title": "\"In the day when God judges\" (2:16): which clause does it complete?",
-  "category": "attachment",
-  "summary": "The temporal clause of v. 16 follows a long parenthesis (vv. 14-15) and can be attached to the thoughts \"accusing or excusing\" of v. 15, or back to the judgment of v. 12-13 (\"all who have sinned ... will be judged ... on the day\").",
-  "readings": [
-   {
-    "label": "With v. 15: conscience and thoughts bear witness on judgment day",
-    "rendering": "their conscience bears witness, and their thoughts accuse or excuse them, on the day when God judges",
-    "grammar": "ἐν ἡμέρᾳ ὅτε κρίνει completes ἐνδείκνυνται / the accusing-excusing clause of v. 15",
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "On the Spirit and the Letter",
-      "ref": "ch. 48",
-      "year": 412,
-      "url": "https://www.newadvent.org/fathers/1502.htm",
-      "quote": "of what use will be their excusing thoughts to them in the day when God shall judge the secrets of men, unless it be perhaps to procure for them a milder punishment?",
-      "page": "1502"
-     }
+  },
+  {
+    "id": "rom-3-9-proechometha",
+    "book": "Romans",
+    "chapter": 3,
+    "verse": 9,
+    "words": [
+      "ROM 3:9!3"
+    ],
+    "title": "proechometha: \"Are we better off?\" or \"Are we at a disadvantage?\"",
+    "category": "construction",
+    "summary": "The form proechometha can be middle (\"do we have an advantage?\") or passive (\"are we excelled / at a disadvantage?\"), and with ou pantos (\"not at all\" or \"not altogether\"), giving different answers to the Jew's standing.",
+    "readings": [
+      {
+        "label": "Middle: \"Do we (Jews) have an advantage?\"",
+        "rendering": "What then? Are we better off? Not at all.",
+        "grammar": "προέχομαι middle, \"to excel, surpass\" (intransitive)",
+        "modern": "KJV, NIV, ESV, NRSV (\"better off\" / \"better than they\")",
+        "fathers": []
+      },
+      {
+        "label": "Passive: \"Are we excelled / at a disadvantage?\"",
+        "rendering": "What then? Are we (Jews) at a disadvantage? Not altogether.",
+        "grammar": "προέχομαι passive, \"to be surpassed\"",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA lists προεχόμεθα as a single finite verb without noting voice.",
+    "sources": [
+      "NET note on Rom 3:9",
+      "Cranfield, Romans (ICC)",
+      "Moo, Romans (NICNT)"
     ]
-   },
-   {
-    "label": "With vv. 12-13: all are judged on that day (vv. 14-15 parenthetical)",
-    "rendering": "all who sinned will be judged ... on the day when God judges the secrets of men",
-    "grammar": "vv. 14-15 as parenthesis; v. 16 resumes v. 12 (κριθήσονται)",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA gives v. 16 as its own sentence beginning ἐν ἡμέρᾳ with no syntactic link to v. 15 or v. 12.",
-  "sources": [
-   "NET note on Rom 2:16",
-   "Cranfield, Romans (ICC)",
-   "Moo, Romans (NICNT)"
-  ]
- },
- {
-  "id": "rom-3-9-proechometha",
-  "book": "Romans",
-  "chapter": 3,
-  "verse": 9,
-  "words": [
-   "ROM 3:9!3"
-  ],
-  "title": "proechometha: \"Are we better off?\" or \"Are we at a disadvantage?\"",
-  "category": "construction",
-  "summary": "The form proechometha can be middle (\"do we have an advantage?\") or passive (\"are we excelled / at a disadvantage?\"), and with ou pantos (\"not at all\" or \"not altogether\"), giving different answers to the Jew's standing.",
-  "readings": [
-   {
-    "label": "Middle: \"Do we (Jews) have an advantage?\"",
-    "rendering": "What then? Are we better off? Not at all.",
-    "grammar": "προέχομαι middle, \"to excel, surpass\" (intransitive)",
-    "modern": "KJV, NIV, ESV, NRSV (\"better off\" / \"better than they\")",
-    "fathers": []
-   },
-   {
-    "label": "Passive: \"Are we excelled / at a disadvantage?\"",
-    "rendering": "What then? Are we (Jews) at a disadvantage? Not altogether.",
-    "grammar": "προέχομαι passive, \"to be surpassed\"",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA lists προεχόμεθα as a single finite verb without noting voice.",
-  "sources": [
-   "NET note on Rom 3:9",
-   "Cranfield, Romans (ICC)",
-   "Moo, Romans (NICNT)"
-  ]
- },
- {
-  "id": "rom-3-22-pistis-iesou-christou",
-  "book": "Romans",
-  "chapter": 3,
-  "verse": 22,
-  "words": [
-   "ROM 3:22!5",
-   "ROM 3:22!6",
-   "ROM 3:22!7"
-  ],
-  "title": "pistis Iesou Christou: faith in Christ or the faithfulness of Christ?",
-  "category": "case",
-  "summary": "The genitive Iesou Christou after pistis (also 3:26; Gal 2:16; Phil 3:9) can be objective (faith in Jesus Christ) or subjective (Jesus Christ's own faithfulness). The following phrase \"to all who believe\" supports the objective reading for some, redundancy for others.",
-  "readings": [
-   {
-    "label": "Objective: \"faith in Jesus Christ\"",
-    "rendering": "through faith in Jesus Christ for all who believe",
-    "grammar": "objective genitive: Christ is the object of πίστις",
-    "modern": "RSV, ESV, NAB, NIV 1984 (\"faith in Jesus Christ\")",
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "On the Spirit and the Letter",
-      "ref": "ch. 15",
-      "year": 412,
-      "url": "https://www.newadvent.org/fathers/1502.htm",
-      "quote": "But righteousness of God by faith of Jesus Christ, that is by the faith wherewith one believes in Christ for just as there is not meant the faith with which Christ Himself believes, so also there is not meant the righteousness whereby God is Himself righteous.",
-      "page": "1502"
-     }
+  },
+  {
+    "id": "rom-3-22-pistis-iesou-christou",
+    "book": "Romans",
+    "chapter": 3,
+    "verse": 22,
+    "words": [
+      "ROM 3:22!5",
+      "ROM 3:22!6",
+      "ROM 3:22!7"
+    ],
+    "title": "pistis Iesou Christou: faith in Christ or the faithfulness of Christ?",
+    "category": "case",
+    "summary": "The genitive Iesou Christou after pistis (also 3:26; Gal 2:16; Phil 3:9) can be objective (faith in Jesus Christ) or subjective (Jesus Christ's own faithfulness). The following phrase \"to all who believe\" supports the objective reading for some, redundancy for others.",
+    "readings": [
+      {
+        "label": "Objective: \"faith in Jesus Christ\"",
+        "rendering": "through faith in Jesus Christ for all who believe",
+        "grammar": "objective genitive: Christ is the object of πίστις",
+        "modern": "RSV, ESV, NAB, NIV 1984 (\"faith in Jesus Christ\")",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Spirit and the Letter",
+            "ref": "ch. 15",
+            "year": 412,
+            "url": "https://www.newadvent.org/fathers/1502.htm",
+            "quote": "But righteousness of God by faith of Jesus Christ, that is by the faith wherewith one believes in Christ for just as there is not meant the faith with which Christ Himself believes, so also there is not meant the righteousness whereby God is Himself righteous.",
+            "page": "1502"
+          }
+        ]
+      },
+      {
+        "label": "Subjective: \"the faithfulness of Jesus Christ\"",
+        "rendering": "through the faithfulness of Jesus Christ, for all who believe",
+        "grammar": "subjective genitive (or genitive of source): Christ's own faithful obedience",
+        "modern": "NET text (\"through the faithfulness of Jesus Christ\"), NRSV and ESV margin; Hays, Wright, Dunn (some)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA glosses διὰ πίστεως Ἰησοῦ Χριστοῦ as \"through faith Jesus Christ\" and does not label the genitive.",
+    "sources": [
+      "NET note on Rom 3:22",
+      "Wallace, GGBB",
+      "Dunn, Romans 1-8 (WBC)"
     ]
-   },
-   {
-    "label": "Subjective: \"the faithfulness of Jesus Christ\"",
-    "rendering": "through the faithfulness of Jesus Christ, for all who believe",
-    "grammar": "subjective genitive (or genitive of source): Christ's own faithful obedience",
-    "modern": "NET text (\"through the faithfulness of Jesus Christ\"), NRSV and ESV margin; Hays, Wright, Dunn (some)",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA glosses διὰ πίστεως Ἰησοῦ Χριστοῦ as \"through faith Jesus Christ\" and does not label the genitive.",
-  "sources": [
-   "NET note on Rom 3:22",
-   "Wallace, GGBB",
-   "Dunn, Romans 1-8 (WBC)"
-  ]
- },
- {
-  "id": "rom-3-25-en-to-haimati",
-  "book": "Romans",
-  "chapter": 3,
-  "verse": 25,
-  "words": [
-   "ROM 3:25!5",
-   "ROM 3:25!7",
-   "ROM 3:25!8",
-   "ROM 3:25!9",
-   "ROM 3:25!10",
-   "ROM 3:25!11"
-  ],
-  "title": "\"through faith in his blood\": what does en to autou haimati modify?",
-  "category": "attachment",
-  "summary": "The phrase dia pisteos en to autou haimati can be read as one unit (\"through faith in his blood\") or with en to haimati attached to hilasterion (\"a propitiation by his blood, received through faith\"). The Greek gives pisteos no object and the phrase may go with either.",
-  "readings": [
-   {
-    "label": "With hilasterion: \"a propitiation in/by his blood, through faith\"",
-    "rendering": "whom God set forth as a propitiation by his blood, through faith",
-    "grammar": "ἐν τῷ αὐτοῦ αἵματι adverbial/instrumental with ἱλαστήριον; διὰ πίστεως parenthetical",
-    "modern": "RSV, NRSV, NIV, ESV (\"by his blood ... to be received by faith\")",
-    "fathers": []
-   },
-   {
-    "label": "With pisteos: \"through faith in his blood\"",
-    "rendering": "whom God set forth as a propitiation through faith in his blood",
-    "grammar": "ἐν τῷ αἵματι as the object of πίστεως (\"faith in his blood\")",
-    "modern": "KJV",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA lists the whole chain διὰ πίστεως ἐν τῷ αὐτοῦ αἵματι as a flat string of prepositional phrases after ἱλαστήριον.",
-  "sources": [
-   "NET note on Rom 3:25",
-   "Cranfield, Romans (ICC)",
-   "Moo, Romans (NICNT)"
-  ]
- },
- {
-  "id": "rom-3-26-ek-pisteos-iesou",
-  "book": "Romans",
-  "chapter": 3,
-  "verse": 26,
-  "words": [
-   "ROM 3:26!23",
-   "ROM 3:26!24",
-   "ROM 3:26!25",
-   "ROM 3:26!26"
-  ],
-  "title": "ton ek pisteos Iesou: \"the one who has faith in Jesus\" or \"who shares Jesus' faith\"?",
-  "category": "case",
-  "summary": "The expression ton ek pisteos Iesou, \"the one of the faith of Jesus\", has Iesou as the genitive of pistis. It can mean the one who believes in Jesus (objective), or the one whose standing rests on Jesus' own faithfulness (subjective).",
-  "readings": [
-   {
-    "label": "Objective: \"the one who has faith in Jesus\"",
-    "rendering": "that he might be just and the justifier of the one who has faith in Jesus",
-    "grammar": "objective genitive after πίστεως",
-    "modern": "KJV, NIV, RSV, ESV (\"faith in Jesus\")",
-    "fathers": []
-   },
-   {
-    "label": "Subjective: \"the one who lives from the faithfulness of Jesus\"",
-    "rendering": "... the justifier of the one who lives from the faithfulness of Jesus",
-    "grammar": "subjective genitive",
-    "modern": "NET margin, NRSV margin; Hays, Campbell",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA glosses the phrase as \"the by faith Jesus\" and does not mark the type of genitive.",
-  "sources": [
-   "NET note on Rom 3:26",
-   "Dunn, Romans 1-8 (WBC)"
-  ]
- },
- {
-  "id": "rom-4-1-kata-sarka",
-  "book": "Romans",
-  "chapter": 4,
-  "verse": 1,
-  "words": [
-   "ROM 4:1!4",
-   "ROM 4:1!7",
-   "ROM 4:1!9",
-   "ROM 4:1!10"
-  ],
-  "title": "Abraham \"according to the flesh\": what does kata sarka modify?",
-  "category": "attachment",
-  "summary": "In Rom 4:1 kata sarka can be linked to propatora (\"our forefather according to the flesh\") or to heurekenai (\"found according to the flesh\", i.e. by human effort). The infinitive heurekenai is itself omitted in some manuscripts.",
-  "readings": [
-   {
-    "label": "With propatora: \"our forefather according to the flesh\"",
-    "rendering": "what did Abraham, our forefather according to the flesh, find?",
-    "grammar": "κατὰ σάρκα adjectival, modifying τὸν προπάτορα ἡμῶν",
-    "modern": "RSV, ESV, NAB, NIV 1984 (\"our forefather according to the flesh\")",
-    "fathers": []
-   },
-   {
-    "label": "With heurekenai: \"found according to the flesh\"",
-    "rendering": "what did Abraham, our forefather, discover by his own human efforts?",
-    "grammar": "κατὰ σάρκα adverbial, modifying εὑρηκέναι",
-    "modern": "Hays",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA lists κατὰ σάρκα as the last words of the clause with no marked attachment.",
-  "sources": [
-   "NET note on Rom 4:1",
-   "Cranfield, Romans (ICC)",
-   "Moo, Romans (NICNT)"
-  ]
- },
- {
-  "id": "rom-4-25-dia",
-  "book": "Romans",
-  "chapter": 4,
-  "verse": 25,
-  "words": [
-   "ROM 4:25!3",
-   "ROM 4:25!9"
-  ],
-  "title": "dia in 4:25: \"because of\" or \"for the sake of\"?",
-  "category": "construction",
-  "summary": "Dia + accusative can be causal (\"because of our trespasses ... because of our justification\") or final (\"for our trespasses ... for our justification\"). The same preposition governs both halves, but each half may take a different sense.",
-  "readings": [
-   {
-    "label": "Retrospective in the first half, prospective in the second",
-    "rendering": "delivered up because of our trespasses, raised for the sake of our justification",
-    "grammar": "first διά causal (past sins), second διά final (to bring about justification)",
-    "modern": "RSV, NIV, ESV render \"for\" in both halves",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 9",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210209.htm",
-      "quote": "See how after mentioning the cause of His death, he makes the same cause likewise a demonstration of the resurrection.",
-      "page": "210209"
-     }
+  },
+  {
+    "id": "rom-3-25-en-to-haimati",
+    "book": "Romans",
+    "chapter": 3,
+    "verse": 25,
+    "words": [
+      "ROM 3:25!5",
+      "ROM 3:25!7",
+      "ROM 3:25!8",
+      "ROM 3:25!9",
+      "ROM 3:25!10",
+      "ROM 3:25!11"
+    ],
+    "title": "\"through faith in his blood\": what does en to autou haimati modify?",
+    "category": "attachment",
+    "summary": "The phrase dia pisteos en to autou haimati can be read as one unit (\"through faith in his blood\") or with en to haimati attached to hilasterion (\"a propitiation by his blood, received through faith\"). The Greek gives pisteos no object and the phrase may go with either.",
+    "readings": [
+      {
+        "label": "With hilasterion: \"a propitiation in/by his blood, through faith\"",
+        "rendering": "whom God set forth as a propitiation by his blood, through faith",
+        "grammar": "ἐν τῷ αὐτοῦ αἵματι adverbial/instrumental with ἱλαστήριον; διὰ πίστεως parenthetical",
+        "modern": "RSV, NRSV, NIV, ESV (\"by his blood ... to be received by faith\")",
+        "fathers": []
+      },
+      {
+        "label": "With pisteos: \"through faith in his blood\"",
+        "rendering": "whom God set forth as a propitiation through faith in his blood",
+        "grammar": "ἐν τῷ αἵματι as the object of πίστεως (\"faith in his blood\")",
+        "modern": "KJV",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA lists the whole chain διὰ πίστεως ἐν τῷ αὐτοῦ αἵματι as a flat string of prepositional phrases after ἱλαστήριον.",
+    "sources": [
+      "NET note on Rom 3:25",
+      "Cranfield, Romans (ICC)",
+      "Moo, Romans (NICNT)"
     ]
-   },
-   {
-    "label": "Retrospective in both halves",
-    "rendering": "delivered because of our trespasses and raised because we had been justified",
-    "grammar": "both διά causal; the resurrection follows an already accomplished justification",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA lists both διά phrases as flat prepositional phrases with no marked sense.",
-  "sources": [
-   "NET note on Rom 4:25",
-   "Cranfield, Romans (ICC)",
-   "Wallace, GGBB"
-  ]
- },
- {
-  "id": "rom-5-5-agape-tou-theou",
-  "book": "Romans",
-  "chapter": 5,
-  "verse": 5,
-  "words": [
-   "ROM 5:5!7",
-   "ROM 5:5!8",
-   "ROM 5:5!9",
-   "ROM 5:5!10"
-  ],
-  "title": "he agape tou theou: God's love for us or our love for God?",
-  "category": "case",
-  "summary": "The genitive tou theou after agape can be subjective (God's love for us) or objective (our love for God), a difference that bears on the origin of love in the Christian.",
-  "readings": [
-   {
-    "label": "Subjective: God's love for us",
-    "rendering": "the love which God has for us is poured into our hearts through the Holy Spirit",
-    "grammar": "subjective genitive: God is the lover",
-    "modern": "NIV, NET, NRSV; Cranfield, Moo (the context speaks of God's love shown at the cross, 5:8)",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 9",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210209.htm",
-      "quote": "What things done? The Love which He has shown for us. In doing what? Some may say. In giving the Holy Ghost. Wherefore after saying hope makes not ashamed, he goes on to the proof of this, as follows: Because the love of God is, he does not say given, but shed abroad in our hearts, so showing the profusion of it. That gift then, which is the greatest possible, He has given; not heaven and earth and sea, but what is more precious than any of these, and has rendered us Angels from being men, yea sons of God, and brethren of Christ. But what is this gift? The Holy Spirit.",
-      "page": "210209"
-     }
+  },
+  {
+    "id": "rom-3-26-ek-pisteos-iesou",
+    "book": "Romans",
+    "chapter": 3,
+    "verse": 26,
+    "words": [
+      "ROM 3:26!23",
+      "ROM 3:26!24",
+      "ROM 3:26!25",
+      "ROM 3:26!26"
+    ],
+    "title": "ton ek pisteos Iesou: \"the one who has faith in Jesus\" or \"who shares Jesus' faith\"?",
+    "category": "case",
+    "summary": "The expression ton ek pisteos Iesou, \"the one of the faith of Jesus\", has Iesou as the genitive of pistis. It can mean the one who believes in Jesus (objective), or the one whose standing rests on Jesus' own faithfulness (subjective).",
+    "readings": [
+      {
+        "label": "Objective: \"the one who has faith in Jesus\"",
+        "rendering": "that he might be just and the justifier of the one who has faith in Jesus",
+        "grammar": "objective genitive after πίστεως",
+        "modern": "KJV, NIV, RSV, ESV (\"faith in Jesus\")",
+        "fathers": []
+      },
+      {
+        "label": "Subjective: \"the one who lives from the faithfulness of Jesus\"",
+        "rendering": "... the justifier of the one who lives from the faithfulness of Jesus",
+        "grammar": "subjective genitive",
+        "modern": "NET margin, NRSV margin; Hays, Campbell",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA glosses the phrase as \"the by faith Jesus\" and does not mark the type of genitive.",
+    "sources": [
+      "NET note on Rom 3:26",
+      "Dunn, Romans 1-8 (WBC)"
     ]
-   },
-   {
-    "label": "Objective: our love for God",
-    "rendering": "love for God has been shed abroad in our hearts by the Holy Spirit",
-    "grammar": "objective genitive: God is the object of love",
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "On the Spirit and the Letter",
-      "ref": "ch. 56",
-      "year": 412,
-      "url": "https://www.newadvent.org/fathers/1502.htm",
-      "quote": "Now the love of God is said to be shed abroad in our hearts, not because He loves us, but because He makes us lovers of Himself;",
-      "page": "1502"
-     }
+  },
+  {
+    "id": "rom-4-1-kata-sarka",
+    "book": "Romans",
+    "chapter": 4,
+    "verse": 1,
+    "words": [
+      "ROM 4:1!4",
+      "ROM 4:1!7",
+      "ROM 4:1!9",
+      "ROM 4:1!10"
+    ],
+    "title": "Abraham \"according to the flesh\": what does kata sarka modify?",
+    "category": "attachment",
+    "summary": "In Rom 4:1 kata sarka can be linked to propatora (\"our forefather according to the flesh\") or to heurekenai (\"found according to the flesh\", i.e. by human effort). The infinitive heurekenai is itself omitted in some manuscripts.",
+    "readings": [
+      {
+        "label": "With propatora: \"our forefather according to the flesh\"",
+        "rendering": "what did Abraham, our forefather according to the flesh, find?",
+        "grammar": "κατὰ σάρκα adjectival, modifying τὸν προπάτορα ἡμῶν",
+        "modern": "RSV, ESV, NAB, NIV 1984 (\"our forefather according to the flesh\")",
+        "fathers": []
+      },
+      {
+        "label": "With heurekenai: \"found according to the flesh\"",
+        "rendering": "what did Abraham, our forefather, discover by his own human efforts?",
+        "grammar": "κατὰ σάρκα adverbial, modifying εὑρηκέναι",
+        "modern": "Hays",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA lists κατὰ σάρκα as the last words of the clause with no marked attachment.",
+    "sources": [
+      "NET note on Rom 4:1",
+      "Cranfield, Romans (ICC)",
+      "Moo, Romans (NICNT)"
     ]
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA leaves ἡ ἀγάπη τοῦ θεοῦ as a noun phrase with an unlabelled genitive.",
-  "sources": [
-   "NET note on Rom 5:5",
-   "Cranfield, Romans (ICC)",
-   "Wallace, GGBB"
-  ]
- },
- {
-  "id": "rom-5-12-eph-ho",
-  "book": "Romans",
-  "chapter": 5,
-  "verse": 12,
-  "words": [
-   "ROM 5:12!27",
-   "ROM 5:12!28"
-  ],
-  "title": "eph' hō: \"because\" or \"in whom\"?",
-  "category": "construction",
-  "summary": "The compound eph' hō can be read as a conjunction (\"because\", \"inasmuch as\") or as a preposition plus relative pronoun whose antecedent is Adam (\"in whom\") or sin/death (\"in which\"). The Latin Vulgate in quo allowed both Adam and sin; the Greek Fathers read it causally.",
-  "readings": [
-   {
-    "label": "Causal: \"because all sinned\"",
-    "rendering": "death spread to all men, because all sinned",
-    "grammar": "ἐφ᾽ ᾧ as a conjunction (= ἐπὶ τούτῳ ὅτι)",
-    "traditions": {
-     "orthodox": "Greek patristic reading: death is inherited from Adam, guilt is each person's own"
-    },
-    "modern": "Most modern translations (RSV, NAB, ESV, NIV: \"because\")",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 10",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210210.htm",
-      "quote": "But what means, for that all have sinned? This; he having once fallen, even they that had not eaten of the tree did from him, all of them, become mortal.",
-      "page": "210210"
-     }
+  },
+  {
+    "id": "rom-4-25-dia",
+    "book": "Romans",
+    "chapter": 4,
+    "verse": 25,
+    "words": [
+      "ROM 4:25!3",
+      "ROM 4:25!9"
+    ],
+    "title": "dia in 4:25: \"because of\" or \"for the sake of\"?",
+    "category": "construction",
+    "summary": "Dia + accusative can be causal (\"because of our trespasses ... because of our justification\") or final (\"for our trespasses ... for our justification\"). The same preposition governs both halves, but each half may take a different sense.",
+    "readings": [
+      {
+        "label": "Retrospective in the first half, prospective in the second",
+        "rendering": "delivered up because of our trespasses, raised for the sake of our justification",
+        "grammar": "first διά causal (past sins), second διά final (to bring about justification)",
+        "modern": "RSV, NIV, ESV render \"for\" in both halves",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 9",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210209.htm",
+            "quote": "See how after mentioning the cause of His death, he makes the same cause likewise a demonstration of the resurrection.",
+            "page": "210209"
+          }
+        ]
+      },
+      {
+        "label": "Retrospective in both halves",
+        "rendering": "delivered because of our trespasses and raised because we had been justified",
+        "grammar": "both διά causal; the resurrection follows an already accomplished justification",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA lists both διά phrases as flat prepositional phrases with no marked sense.",
+    "sources": [
+      "NET note on Rom 4:25",
+      "Cranfield, Romans (ICC)",
+      "Wallace, GGBB"
     ]
-   },
-   {
-    "label": "\"In whom\" (Adam): all sinned in him",
-    "rendering": "death spread to all, in whom (Adam) all sinned",
-    "grammar": "ᾧ as masculine relative with antecedent ἑνὸς ἀνθρώπου (Adam)",
-    "traditions": {
-     "catholic": "Latin West, Augustine (in quo): basis of the doctrine of original sin, cited at Trent session 5"
-    },
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "On Merit and the Forgiveness of Sins",
-      "ref": "Book I, ch. 17",
-      "year": 412,
-      "url": "https://www.newadvent.org/fathers/15011.htm",
-      "quote": "Why did death reign on account of the sin of one, unless it was that men were bound by the chain of death in that one man in whom all men sinned, even though they added no sins of their own?",
-      "page": "15011"
-     }
+  },
+  {
+    "id": "rom-5-5-agape-tou-theou",
+    "book": "Romans",
+    "chapter": 5,
+    "verse": 5,
+    "words": [
+      "ROM 5:5!7",
+      "ROM 5:5!8",
+      "ROM 5:5!9",
+      "ROM 5:5!10"
+    ],
+    "title": "he agape tou theou: God's love for us or our love for God?",
+    "category": "case",
+    "summary": "The genitive tou theou after agape can be subjective (God's love for us) or objective (our love for God), a difference that bears on the origin of love in the Christian.",
+    "readings": [
+      {
+        "label": "Subjective: God's love for us",
+        "rendering": "the love which God has for us is poured into our hearts through the Holy Spirit",
+        "grammar": "subjective genitive: God is the lover",
+        "modern": "NIV, NET, NRSV; Cranfield, Moo (the context speaks of God's love shown at the cross, 5:8)",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 9",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210209.htm",
+            "quote": "What things done? The Love which He has shown for us. In doing what? Some may say. In giving the Holy Ghost. Wherefore after saying hope makes not ashamed, he goes on to the proof of this, as follows: Because the love of God is, he does not say given, but shed abroad in our hearts, so showing the profusion of it. That gift then, which is the greatest possible, He has given; not heaven and earth and sea, but what is more precious than any of these, and has rendered us Angels from being men, yea sons of God, and brethren of Christ. But what is this gift? The Holy Spirit.",
+            "page": "210209"
+          }
+        ]
+      },
+      {
+        "label": "Objective: our love for God",
+        "rendering": "love for God has been shed abroad in our hearts by the Holy Spirit",
+        "grammar": "objective genitive: God is the object of love",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Spirit and the Letter",
+            "ref": "ch. 56",
+            "year": 412,
+            "url": "https://www.newadvent.org/fathers/1502.htm",
+            "quote": "Now the love of God is said to be shed abroad in our hearts, not because He loves us, but because He makes us lovers of Himself;",
+            "page": "1502"
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA leaves ἡ ἀγάπη τοῦ θεοῦ as a noun phrase with an unlabelled genitive.",
+    "sources": [
+      "NET note on Rom 5:5",
+      "Cranfield, Romans (ICC)",
+      "Wallace, GGBB"
     ]
-   },
-   {
-    "label": "\"In which\" (the sin, or death)",
-    "rendering": "death spread to all, in which [sin] all sinned",
-    "grammar": "ᾧ as neuter relative: antecedent ἁμαρτία or θάνατος",
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "On Merit and the Forgiveness of Sins",
-      "ref": "Book I, ch. 11",
-      "year": 412,
-      "url": "https://www.newadvent.org/fathers/15011.htm",
-      "quote": "Again, in the clause which follows, In which all have sinned, how cautiously, rightly, and unambiguously is the statement expressed! For if you understand that sin to be meant which by one man entered into the world, In which [sin] all have sinned, it is surely clear enough, that the sins which are peculiar to every man, which they themselves commit and which belong simply to them, mean one thing;",
-      "commentary": 25384
-     }
+  },
+  {
+    "id": "rom-5-12-eph-ho",
+    "book": "Romans",
+    "chapter": 5,
+    "verse": 12,
+    "words": [
+      "ROM 5:12!27",
+      "ROM 5:12!28"
+    ],
+    "title": "eph' hō: \"because\" or \"in whom\"?",
+    "category": "construction",
+    "summary": "The compound eph' hō can be read as a conjunction (\"because\", \"inasmuch as\") or as a preposition plus relative pronoun whose antecedent is Adam (\"in whom\") or sin/death (\"in which\"). The Latin Vulgate in quo allowed both Adam and sin; the Greek Fathers read it causally.",
+    "readings": [
+      {
+        "label": "Causal: \"because all sinned\"",
+        "rendering": "death spread to all men, because all sinned",
+        "grammar": "ἐφ᾽ ᾧ as a conjunction (= ἐπὶ τούτῳ ὅτι)",
+        "traditions": {
+          "orthodox": "Greek patristic reading: death is inherited from Adam, guilt is each person's own"
+        },
+        "modern": "Most modern translations (RSV, NAB, ESV, NIV: \"because\")",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 10",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210210.htm",
+            "quote": "But what means, for that all have sinned? This; he having once fallen, even they that had not eaten of the tree did from him, all of them, become mortal.",
+            "page": "210210"
+          }
+        ]
+      },
+      {
+        "label": "\"In whom\" (Adam): all sinned in him",
+        "rendering": "death spread to all, in whom (Adam) all sinned",
+        "grammar": "ᾧ as masculine relative with antecedent ἑνὸς ἀνθρώπου (Adam)",
+        "traditions": {
+          "catholic": "Latin West, Augustine (in quo): basis of the doctrine of original sin, cited at Trent session 5"
+        },
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On Merit and the Forgiveness of Sins",
+            "ref": "Book I, ch. 17",
+            "year": 412,
+            "url": "https://www.newadvent.org/fathers/15011.htm",
+            "quote": "Why did death reign on account of the sin of one, unless it was that men were bound by the chain of death in that one man in whom all men sinned, even though they added no sins of their own?",
+            "page": "15011"
+          }
+        ]
+      },
+      {
+        "label": "\"In which\" (the sin, or death)",
+        "rendering": "death spread to all, in which [sin] all sinned",
+        "grammar": "ᾧ as neuter relative: antecedent ἁμαρτία or θάνατος",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On Merit and the Forgiveness of Sins",
+            "ref": "Book I, ch. 11",
+            "year": 412,
+            "url": "https://www.newadvent.org/fathers/15011.htm",
+            "quote": "Again, in the clause which follows, In which all have sinned, how cautiously, rightly, and unambiguously is the statement expressed! For if you understand that sin to be meant which by one man entered into the world, In which [sin] all have sinned, it is surely clear enough, that the sins which are peculiar to every man, which they themselves commit and which belong simply to them, mean one thing;",
+            "commentary": 25384
+          }
+        ]
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree glosses ἐφ᾽ as \"because\" and heads the clause ᾧ πάντες ἥμαρτον as a relative under ἐφ᾽ with a bare \"*\" gloss on ᾧ; the gloss follows the causal reading.",
+    "sources": [
+      "NET note on Rom 5:12",
+      "Cranfield, Romans (ICC)",
+      "Fitzmyer, Romans (AB)"
     ]
-   }
-  ],
-  "macula_follows": 0,
-  "macula_evidence": "The tree glosses ἐφ᾽ as \"because\" and heads the clause ᾧ πάντες ἥμαρτον as a relative under ἐφ᾽ with a bare \"*\" gloss on ᾧ; the gloss follows the causal reading.",
-  "sources": [
-   "NET note on Rom 5:12",
-   "Cranfield, Romans (ICC)",
-   "Fitzmyer, Romans (AB)"
-  ]
- },
- {
-  "id": "rom-5-14-epi-to-homoiomati",
-  "book": "Romans",
-  "chapter": 5,
-  "verse": 14,
-  "words": [
-   "ROM 5:14!12",
-   "ROM 5:14!13",
-   "ROM 5:14!14",
-   "ROM 5:14!15",
-   "ROM 5:14!16",
-   "ROM 5:14!18",
-   "ROM 5:14!19"
-  ],
-  "title": "\"After the likeness of Adam's transgression\": what does it modify?",
-  "category": "attachment",
-  "summary": "The phrase epi to homoiomati tes parabaseos Adam can modify \"those who had not sinned\" (they did not sin in the way Adam did) or the verb \"reigned\" (death reigned in the manner of Adam's sin).",
-  "readings": [
-   {
-    "label": "With \"those who had not sinned\"",
-    "rendering": "death reigned even over those who had not sinned in the likeness of Adam's transgression",
-    "grammar": "ἐπὶ τῷ ὁμοιώματι with τοὺς μὴ ἁμαρτήσαντας",
-    "modern": "ESV, RSV, NIV",
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "On Merit and the Forgiveness of Sins",
-      "ref": "Book I, ch. 15",
-      "year": 412,
-      "url": "https://www.newadvent.org/fathers/15011.htm",
-      "quote": "even in those who had not sinned after the similitude of Adam's transgression, that is, who had not yet sinned of their own individual will, as Adam did,",
-      "page": "15011"
-     }
+  },
+  {
+    "id": "rom-5-14-epi-to-homoiomati",
+    "book": "Romans",
+    "chapter": 5,
+    "verse": 14,
+    "words": [
+      "ROM 5:14!12",
+      "ROM 5:14!13",
+      "ROM 5:14!14",
+      "ROM 5:14!15",
+      "ROM 5:14!16",
+      "ROM 5:14!18",
+      "ROM 5:14!19"
+    ],
+    "title": "\"After the likeness of Adam's transgression\": what does it modify?",
+    "category": "attachment",
+    "summary": "The phrase epi to homoiomati tes parabaseos Adam can modify \"those who had not sinned\" (they did not sin in the way Adam did) or the verb \"reigned\" (death reigned in the manner of Adam's sin).",
+    "readings": [
+      {
+        "label": "With \"those who had not sinned\"",
+        "rendering": "death reigned even over those who had not sinned in the likeness of Adam's transgression",
+        "grammar": "ἐπὶ τῷ ὁμοιώματι with τοὺς μὴ ἁμαρτήσαντας",
+        "modern": "ESV, RSV, NIV",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On Merit and the Forgiveness of Sins",
+            "ref": "Book I, ch. 15",
+            "year": 412,
+            "url": "https://www.newadvent.org/fathers/15011.htm",
+            "quote": "even in those who had not sinned after the similitude of Adam's transgression, that is, who had not yet sinned of their own individual will, as Adam did,",
+            "page": "15011"
+          }
+        ]
+      },
+      {
+        "label": "With \"death reigned\"",
+        "rendering": "death reigned from Adam to Moses, after the similitude of Adam's transgression, even over those who had not sinned",
+        "grammar": "ἐπὶ τῷ ὁμοιώματι adverbial with ἐβασίλευσεν",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 10",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210210.htm",
+            "quote": "How did it reign? After the similitude of Adam's transgression, who is the figure of Him that was to come.",
+            "page": "210210"
+          }
+        ]
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree places ἐπὶ τῷ ὁμοιώματι τῆς παραβάσεως Ἀδάμ inside the clause headed by μὴ ἁμαρτήσαντας.",
+    "sources": [
+      "NET note on Rom 5:14",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "With \"death reigned\"",
-    "rendering": "death reigned from Adam to Moses, after the similitude of Adam's transgression, even over those who had not sinned",
-    "grammar": "ἐπὶ τῷ ὁμοιώματι adverbial with ἐβασίλευσεν",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 10",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210210.htm",
-      "quote": "How did it reign? After the similitude of Adam's transgression, who is the figure of Him that was to come.",
-      "page": "210210"
-     }
+  },
+  {
+    "id": "rom-5-20-hina",
+    "book": "Romans",
+    "chapter": 5,
+    "verse": 20,
+    "words": [
+      "ROM 5:20!4",
+      "ROM 5:20!5"
+    ],
+    "title": "hina pleonase: purpose or result?",
+    "category": "construction",
+    "summary": "ἵνα can express purpose (\"the law came in in order that the trespass might increase\") or result (\"with the result that\"). The choice decides whether increasing sin was God's aim in giving the law.",
+    "readings": [
+      {
+        "label": "Result: \"so that the trespass increased\"",
+        "rendering": "the law came in, with the result that the trespass increased",
+        "grammar": "ἵνα consecutive (ecbatic)",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 10",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210210.htm",
+            "quote": "But the particle that again does not assign the cause, but the result. For the purpose of its being given was not in order that it might abound, for it was given to diminish and destroy the offense. But it resulted the opposite way, not owing to the nature of the Law, but owing to the listlessness of those who received it.",
+            "page": "210210"
+          }
+        ]
+      },
+      {
+        "label": "Purpose: \"in order that the trespass might increase\"",
+        "rendering": "the law came in in order that the trespass might abound (so that grace might abound more)",
+        "grammar": "ἵνα telic",
+        "modern": "KJV, RSV, NIV, ESV (\"so that\" / \"in order that\")",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Spirit and the Letter",
+            "ref": "ch. 9",
+            "year": 412,
+            "url": "https://www.newadvent.org/fathers/1502.htm",
+            "quote": "For there was need to prove to man how corruptly weak he was, so that against his iniquity, the holy law brought him no help towards good, but rather increased than diminished his iniquity; seeing that the law entered, that the offense might abound; that being thus convicted and confounded, he might see not only that he needed a physician, but also God as his helper so to direct his steps that sin should not rule over him, and he might be healed by betaking himself to the help of the divine mercy;",
+            "page": "1502"
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree marks ἵνα as the head of an adverbial clause with no purpose/result distinction.",
+    "sources": [
+      "NET note on Rom 5:20",
+      "Wallace, GGBB"
     ]
-   }
-  ],
-  "macula_follows": 0,
-  "macula_evidence": "The tree places ἐπὶ τῷ ὁμοιώματι τῆς παραβάσεως Ἀδάμ inside the clause headed by μὴ ἁμαρτήσαντας.",
-  "sources": [
-   "NET note on Rom 5:14",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-5-20-hina",
-  "book": "Romans",
-  "chapter": 5,
-  "verse": 20,
-  "words": [
-   "ROM 5:20!4",
-   "ROM 5:20!5"
-  ],
-  "title": "hina pleonase: purpose or result?",
-  "category": "construction",
-  "summary": "ἵνα can express purpose (\"the law came in in order that the trespass might increase\") or result (\"with the result that\"). The choice decides whether increasing sin was God's aim in giving the law.",
-  "readings": [
-   {
-    "label": "Result: \"so that the trespass increased\"",
-    "rendering": "the law came in, with the result that the trespass increased",
-    "grammar": "ἵνα consecutive (ecbatic)",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 10",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210210.htm",
-      "quote": "But the particle that again does not assign the cause, but the result. For the purpose of its being given was not in order that it might abound, for it was given to diminish and destroy the offense. But it resulted the opposite way, not owing to the nature of the Law, but owing to the listlessness of those who received it.",
-      "page": "210210"
-     }
+  },
+  {
+    "id": "rom-6-21-eph-hois",
+    "book": "Romans",
+    "chapter": 6,
+    "verse": 21,
+    "words": [
+      "ROM 6:21!5",
+      "ROM 6:21!6",
+      "ROM 6:21!7"
+    ],
+    "title": "\"What fruit had you then?\": where does the question end?",
+    "category": "punctuation",
+    "summary": "The question can end after tote (what fruit did you then have? things of which you are now ashamed) or run on (what fruit did you have then from the things of which you are now ashamed?). The second makes the answer \"none\".",
+    "readings": [
+      {
+        "label": "One question: \"fruit from the things of which you are now ashamed\"",
+        "rendering": "What fruit were you getting then from the things of which you are now ashamed? (None; their end is death)",
+        "grammar": "ἐφ᾽ οἷς as part of the question, with εἴχετε",
+        "modern": "ESV, NIV, NRSV (one question)",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 12",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210212.htm",
+            "quote": "What fruit had ye then in those things whereof you are now ashamed? So great was the slavery, that even the recollection of it now makes you ashamed;",
+            "page": "210212"
+          }
+        ]
+      },
+      {
+        "label": "Stop after tote: \"What fruit did you have then? Things of which you are now ashamed\"",
+        "rendering": "What fruit did you have then? The things of which you are now ashamed",
+        "grammar": "ἐφ᾽ οἷς begins the answer",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 1,
+    "macula_evidence": "The tree keeps ἐφ᾽ οἷς νῦν ἐπαισχύνεσθε as a relative clause under εἴχετε in the same sentence as τίνα καρπὸν, i.e. one question.",
+    "sources": [
+      "NET note on Rom 6:21",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "Purpose: \"in order that the trespass might increase\"",
-    "rendering": "the law came in in order that the trespass might abound (so that grace might abound more)",
-    "grammar": "ἵνα telic",
-    "modern": "KJV, RSV, NIV, ESV (\"so that\" / \"in order that\")",
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "On the Spirit and the Letter",
-      "ref": "ch. 9",
-      "year": 412,
-      "url": "https://www.newadvent.org/fathers/1502.htm",
-      "quote": "For there was need to prove to man how corruptly weak he was, so that against his iniquity, the holy law brought him no help towards good, but rather increased than diminished his iniquity; seeing that the law entered, that the offense might abound; that being thus convicted and confounded, he might see not only that he needed a physician, but also God as his helper so to direct his steps that sin should not rule over him, and he might be healed by betaking himself to the help of the divine mercy;",
-      "page": "1502"
-     }
+  },
+  {
+    "id": "rom-7-14-ego",
+    "book": "Romans",
+    "chapter": 7,
+    "verse": 14,
+    "words": [
+      "ROM 7:14!8",
+      "ROM 7:14!10",
+      "ROM 7:14!11",
+      "ROM 7:14!12"
+    ],
+    "title": "Romans 7:14-25: who is the \"I\", and does the present tense matter?",
+    "category": "referent",
+    "summary": "The present-tense first-person speaker is \"carnal, sold under sin\" yet delights in God's law. Readers divide over whether \"I\" is Paul before Christ, the regenerate Paul, or a representative figure (Adam, Israel, humanity under the law).",
+    "readings": [
+      {
+        "label": "Unregenerate: man under the law, before grace",
+        "rendering": "a portrait of the person (Paul or Israel) under the law without the Spirit",
+        "grammar": "ἐγὼ σάρκινός εἰμι as a vivid or dramatic present describing the pre-Christian state",
+        "traditions": {
+          "orthodox": "Greek Fathers generally (Chrysostom, Origen): the person under the law without grace"
+        },
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 13",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210213.htm",
+            "quote": "giving us a sketch now of man, as comporting himself in the Law, and before the Law.",
+            "page": "210213"
+          }
+        ]
+      },
+      {
+        "label": "Regenerate: Paul as a believer, struggling",
+        "rendering": "the Christian Paul, still carnal in his body, who nevertheless serves God",
+        "grammar": "present tense taken literally (εἰμί, not ἦν)",
+        "traditions": {
+          "catholic": "Later Augustine",
+          "protestant": "Luther and Calvin read it of the regenerate"
+        },
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Against Two Letters of the Pelagians",
+            "ref": "Book I, ch. 17",
+            "year": 420,
+            "url": "https://www.newadvent.org/fathers/15091.htm",
+            "quote": "He does not say, I was, but, I am. Was, then, the apostle, when he wrote this, carnal?",
+            "page": "15091"
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree is flat for the clause (ἐγὼ σάρκινός εἰμι πεπραμένος ὑπὸ τὴν ἁμαρτίαν) and does not encode who the speaker is.",
+    "sources": [
+      "NET note on Rom 7:14",
+      "Cranfield, Romans (ICC)",
+      "Moo, Romans (NICNT)"
     ]
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree marks ἵνα as the head of an adverbial clause with no purpose/result distinction.",
-  "sources": [
-   "NET note on Rom 5:20",
-   "Wallace, GGBB"
-  ]
- },
- {
-  "id": "rom-6-21-eph-hois",
-  "book": "Romans",
-  "chapter": 6,
-  "verse": 21,
-  "words": [
-   "ROM 6:21!5",
-   "ROM 6:21!6",
-   "ROM 6:21!7"
-  ],
-  "title": "\"What fruit had you then?\": where does the question end?",
-  "category": "punctuation",
-  "summary": "The question can end after tote (what fruit did you then have? things of which you are now ashamed) or run on (what fruit did you have then from the things of which you are now ashamed?). The second makes the answer \"none\".",
-  "readings": [
-   {
-    "label": "One question: \"fruit from the things of which you are now ashamed\"",
-    "rendering": "What fruit were you getting then from the things of which you are now ashamed? (None; their end is death)",
-    "grammar": "ἐφ᾽ οἷς as part of the question, with εἴχετε",
-    "modern": "ESV, NIV, NRSV (one question)",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 12",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210212.htm",
-      "quote": "What fruit had ye then in those things whereof you are now ashamed? So great was the slavery, that even the recollection of it now makes you ashamed;",
-      "page": "210212"
-     }
+  },
+  {
+    "id": "rom-8-2-en-christo",
+    "book": "Romans",
+    "chapter": 8,
+    "verse": 2,
+    "words": [
+      "ROM 8:2!8",
+      "ROM 8:2!9",
+      "ROM 8:2!10",
+      "ROM 8:2!11"
+    ],
+    "title": "\"In Christ Jesus\" (8:2): does it modify \"the law of the Spirit of life\" or \"set you free\"?",
+    "category": "attachment",
+    "summary": "The phrase en Christo Iesou can qualify the noun phrase \"the law of the Spirit of life\" (the law of the Spirit that operates in Christ Jesus) or the verb eleutherosen (\"in Christ Jesus the law of the Spirit set you free\").",
+    "readings": [
+      {
+        "label": "With the noun phrase: \"the law of the Spirit of life in Christ Jesus\"",
+        "rendering": "the law of the Spirit of life in Christ Jesus has set you free",
+        "grammar": "ἐν Χριστῷ Ἰησοῦ adjectival, after τῆς ζωῆς",
+        "modern": "KJV, RSV, ESV",
+        "fathers": []
+      },
+      {
+        "label": "With the verb: \"in Christ Jesus ... has set you free\"",
+        "rendering": "the law of the Spirit of life has set you free in Christ Jesus",
+        "grammar": "ἐν Χριστῷ Ἰησοῦ adverbial, with ἠλευθέρωσέν",
+        "modern": "NIV (\"through Christ Jesus the law of the Spirit ... has set you free\")",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree is flat: the whole phrase ὁ νόμος τοῦ πνεύματος τῆς ζωῆς ἐν Χριστῷ Ἰησοῦ ἠλευθέρωσέν σε is one clause with no marked attachment.",
+    "sources": [
+      "NET note on Rom 8:2",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "Stop after tote: \"What fruit did you have then? Things of which you are now ashamed\"",
-    "rendering": "What fruit did you have then? The things of which you are now ashamed",
-    "grammar": "ἐφ᾽ οἷς begins the answer",
-    "fathers": []
-   }
-  ],
-  "macula_follows": 1,
-  "macula_evidence": "The tree keeps ἐφ᾽ οἷς νῦν ἐπαισχύνεσθε as a relative clause under εἴχετε in the same sentence as τίνα καρπὸν, i.e. one question.",
-  "sources": [
-   "NET note on Rom 6:21",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-7-14-ego",
-  "book": "Romans",
-  "chapter": 7,
-  "verse": 14,
-  "words": [
-   "ROM 7:14!8",
-   "ROM 7:14!10",
-   "ROM 7:14!11",
-   "ROM 7:14!12"
-  ],
-  "title": "Romans 7:14-25: who is the \"I\", and does the present tense matter?",
-  "category": "referent",
-  "summary": "The present-tense first-person speaker is \"carnal, sold under sin\" yet delights in God's law. Readers divide over whether \"I\" is Paul before Christ, the regenerate Paul, or a representative figure (Adam, Israel, humanity under the law).",
-  "readings": [
-   {
-    "label": "Unregenerate: man under the law, before grace",
-    "rendering": "a portrait of the person (Paul or Israel) under the law without the Spirit",
-    "grammar": "ἐγὼ σάρκινός εἰμι as a vivid or dramatic present describing the pre-Christian state",
-    "traditions": {
-     "orthodox": "Greek Fathers generally (Chrysostom, Origen): the person under the law without grace"
-    },
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 13",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210213.htm",
-      "quote": "giving us a sketch now of man, as comporting himself in the Law, and before the Law.",
-      "page": "210213"
-     }
+  },
+  {
+    "id": "rom-8-3-peri-hamartias",
+    "book": "Romans",
+    "chapter": 8,
+    "verse": 3,
+    "words": [
+      "ROM 8:3!22",
+      "ROM 8:3!23",
+      "ROM 8:3!24"
+    ],
+    "title": "kai peri hamartias: \"as a sin offering\" or \"concerning sin\"?",
+    "category": "construction",
+    "summary": "The phrase peri hamartias, used in the Septuagint for the sin offering, can be a technical sacrificial term (\"as a sin offering\") or a general phrase (\"because of / to deal with sin\").",
+    "readings": [
+      {
+        "label": "Sacrificial: \"as a sin offering\"",
+        "rendering": "God sent his Son in the likeness of sinful flesh, as a sin offering",
+        "grammar": "περὶ ἁμαρτίας as the LXX term for the sin offering",
+        "modern": "NIV (\"to be a sin offering\"); NRSV margin; Cranfield",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Tractates on the Gospel of John",
+            "ref": "Tractate 41, ch. 5",
+            "year": 417,
+            "url": "https://www.newadvent.org/fathers/1701041.htm",
+            "quote": "For He came in the flesh, that is, in the likeness of sinful flesh, but not in sinful flesh, because He had no sin at all; and therefore became a true sacrifice for sin, because He Himself had no sin.",
+            "page": "1701041"
+          }
+        ]
+      },
+      {
+        "label": "General: \"for sin\" / \"concerning sin\"",
+        "rendering": "God sent his Son in the likeness of sinful flesh, and to deal with sin",
+        "grammar": "περὶ ἁμαρτίας adverbial, \"on account of sin\"",
+        "modern": "KJV (\"for sin\"), NRSV (\"to deal with sin\")",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree lists καὶ περὶ ἁμαρτίας as a plain prepositional phrase before κατέκρινε.",
+    "sources": [
+      "NET note on Rom 8:3",
+      "Cranfield, Romans (ICC)",
+      "Moo, Romans (NICNT)"
     ]
-   },
-   {
-    "label": "Regenerate: Paul as a believer, struggling",
-    "rendering": "the Christian Paul, still carnal in his body, who nevertheless serves God",
-    "grammar": "present tense taken literally (εἰμί, not ἦν)",
-    "traditions": {
-     "catholic": "Later Augustine",
-     "protestant": "Luther and Calvin read it of the regenerate"
-    },
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "Against Two Letters of the Pelagians",
-      "ref": "Book I, ch. 17",
-      "year": 420,
-      "url": "https://www.newadvent.org/fathers/15091.htm",
-      "quote": "He does not say, I was, but, I am. Was, then, the apostle, when he wrote this, carnal?",
-      "page": "15091"
-     }
+  },
+  {
+    "id": "rom-8-16-symmartyrei",
+    "book": "Romans",
+    "chapter": 8,
+    "verse": 16,
+    "words": [
+      "ROM 8:16!4",
+      "ROM 8:16!5",
+      "ROM 8:16!6",
+      "ROM 8:16!7"
+    ],
+    "title": "symmartyrei to pneumati hemon: \"with our spirit\" or \"to our spirit\"?",
+    "category": "case",
+    "summary": "The dative pneumati after symmartyrei can be a dative of association (the Spirit testifies together with our spirit) or a dative of the person addressed (the Spirit testifies to our spirit).",
+    "readings": [
+      {
+        "label": "Association: \"bears witness with our spirit\"",
+        "rendering": "the Spirit himself bears witness together with our spirit",
+        "grammar": "dative of association; the prefix συν- (\"with\")",
+        "modern": "KJV, RSV, NIV, ESV (\"with\")",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 14",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210214.htm",
+            "quote": "And what is that, Spirit bears witness with spirit? The Comforter, he means, with that Gift, which is given unto us.",
+            "page": "210214"
+          }
+        ]
+      },
+      {
+        "label": "Indirect object: \"bears witness to our spirit\"",
+        "rendering": "the Spirit himself testifies to our spirit that we are children of God",
+        "grammar": "dative of the person addressed",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses the verb with its dative as a flat clause and does not label the dative.",
+    "sources": [
+      "NET note on Rom 8:16",
+      "Cranfield, Romans (ICC)"
     ]
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree is flat for the clause (ἐγὼ σάρκινός εἰμι πεπραμένος ὑπὸ τὴν ἁμαρτίαν) and does not encode who the speaker is.",
-  "sources": [
-   "NET note on Rom 7:14",
-   "Cranfield, Romans (ICC)",
-   "Moo, Romans (NICNT)"
-  ]
- },
- {
-  "id": "rom-8-2-en-christo",
-  "book": "Romans",
-  "chapter": 8,
-  "verse": 2,
-  "words": [
-   "ROM 8:2!8",
-   "ROM 8:2!9",
-   "ROM 8:2!10",
-   "ROM 8:2!11"
-  ],
-  "title": "\"In Christ Jesus\" (8:2): does it modify \"the law of the Spirit of life\" or \"set you free\"?",
-  "category": "attachment",
-  "summary": "The phrase en Christo Iesou can qualify the noun phrase \"the law of the Spirit of life\" (the law of the Spirit that operates in Christ Jesus) or the verb eleutherosen (\"in Christ Jesus the law of the Spirit set you free\").",
-  "readings": [
-   {
-    "label": "With the noun phrase: \"the law of the Spirit of life in Christ Jesus\"",
-    "rendering": "the law of the Spirit of life in Christ Jesus has set you free",
-    "grammar": "ἐν Χριστῷ Ἰησοῦ adjectival, after τῆς ζωῆς",
-    "modern": "KJV, RSV, ESV",
-    "fathers": []
-   },
-   {
-    "label": "With the verb: \"in Christ Jesus ... has set you free\"",
-    "rendering": "the law of the Spirit of life has set you free in Christ Jesus",
-    "grammar": "ἐν Χριστῷ Ἰησοῦ adverbial, with ἠλευθέρωσέν",
-    "modern": "NIV (\"through Christ Jesus the law of the Spirit ... has set you free\")",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree is flat: the whole phrase ὁ νόμος τοῦ πνεύματος τῆς ζωῆς ἐν Χριστῷ Ἰησοῦ ἠλευθέρωσέν σε is one clause with no marked attachment.",
-  "sources": [
-   "NET note on Rom 8:2",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-8-3-peri-hamartias",
-  "book": "Romans",
-  "chapter": 8,
-  "verse": 3,
-  "words": [
-   "ROM 8:3!22",
-   "ROM 8:3!23",
-   "ROM 8:3!24"
-  ],
-  "title": "kai peri hamartias: \"as a sin offering\" or \"concerning sin\"?",
-  "category": "construction",
-  "summary": "The phrase peri hamartias, used in the Septuagint for the sin offering, can be a technical sacrificial term (\"as a sin offering\") or a general phrase (\"because of / to deal with sin\").",
-  "readings": [
-   {
-    "label": "Sacrificial: \"as a sin offering\"",
-    "rendering": "God sent his Son in the likeness of sinful flesh, as a sin offering",
-    "grammar": "περὶ ἁμαρτίας as the LXX term for the sin offering",
-    "modern": "NIV (\"to be a sin offering\"); NRSV margin; Cranfield",
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "Tractates on the Gospel of John",
-      "ref": "Tractate 41, ch. 5",
-      "year": 417,
-      "url": "https://www.newadvent.org/fathers/1701041.htm",
-      "quote": "For He came in the flesh, that is, in the likeness of sinful flesh, but not in sinful flesh, because He had no sin at all; and therefore became a true sacrifice for sin, because He Himself had no sin.",
-      "page": "1701041"
-     }
+  },
+  {
+    "id": "rom-8-20-eph-helpidi",
+    "book": "Romans",
+    "chapter": 8,
+    "verse": 20,
+    "words": [
+      "ROM 8:20!12",
+      "ROM 8:20!13",
+      "ROM 8:20!14",
+      "ROM 8:21!1"
+    ],
+    "title": "eph' helpidi: what does \"in hope\" modify, and is hoti \"that\" or \"because\"?",
+    "category": "attachment",
+    "summary": "The phrase eph' helpidi can be tied to \"the one who subjected\" (he subjected it in hope), or to the creation (it was subjected in hope). The following hoti can be \"that\" (the content of the hope) or \"because\" (the ground).",
+    "readings": [
+      {
+        "label": "With \"the one who subjected it\": \"subjected it in hope\"",
+        "rendering": "creation was subjected by the one who subjected it, in hope that it would be set free",
+        "grammar": "ἐφ᾽ ἑλπίδι with τὸν ὑποτάξαντα; ὅτι = \"that\"",
+        "modern": "ESV, NIV, RSV (hope that the creation will be set free)",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 14",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210214.htm",
+            "quote": "It was evil intreated for your sake, and became corruptible; yet it has had no wrong done it. For incorruptible will it be for your sake again. This then is the meaning of in hope.",
+            "page": "210214"
+          }
+        ]
+      },
+      {
+        "label": "With the creation, ground: \"in hope, because it too will be set free\"",
+        "rendering": "creation was subjected in hope, because it too will be freed",
+        "grammar": "ἐφ᾽ ἑλπίδι with ὑπετάγη; ὅτι causal",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree attaches ἐφ᾽ ἑλπίδι to τὸν ὑποτάξαντα inside the διὰ phrase and treats the ὅτι clause as a separate adverbial clause.",
+    "sources": [
+      "NET note on Rom 8:20",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "General: \"for sin\" / \"concerning sin\"",
-    "rendering": "God sent his Son in the likeness of sinful flesh, and to deal with sin",
-    "grammar": "περὶ ἁμαρτίας adverbial, \"on account of sin\"",
-    "modern": "KJV (\"for sin\"), NRSV (\"to deal with sin\")",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree lists καὶ περὶ ἁμαρτίας as a plain prepositional phrase before κατέκρινε.",
-  "sources": [
-   "NET note on Rom 8:3",
-   "Cranfield, Romans (ICC)",
-   "Moo, Romans (NICNT)"
-  ]
- },
- {
-  "id": "rom-8-16-symmartyrei",
-  "book": "Romans",
-  "chapter": 8,
-  "verse": 16,
-  "words": [
-   "ROM 8:16!4",
-   "ROM 8:16!5",
-   "ROM 8:16!6",
-   "ROM 8:16!7"
-  ],
-  "title": "symmartyrei to pneumati hemon: \"with our spirit\" or \"to our spirit\"?",
-  "category": "case",
-  "summary": "The dative pneumati after symmartyrei can be a dative of association (the Spirit testifies together with our spirit) or a dative of the person addressed (the Spirit testifies to our spirit).",
-  "readings": [
-   {
-    "label": "Association: \"bears witness with our spirit\"",
-    "rendering": "the Spirit himself bears witness together with our spirit",
-    "grammar": "dative of association; the prefix συν- (\"with\")",
-    "modern": "KJV, RSV, NIV, ESV (\"with\")",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 14",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210214.htm",
-      "quote": "And what is that, Spirit bears witness with spirit? The Comforter, he means, with that Gift, which is given unto us.",
-      "page": "210214"
-     }
+  },
+  {
+    "id": "rom-8-28-panta-synergei",
+    "book": "Romans",
+    "chapter": 8,
+    "verse": 28,
+    "words": [
+      "ROM 8:28!8",
+      "ROM 8:28!9"
+    ],
+    "title": "panta synergei: what is the subject?",
+    "category": "construction",
+    "summary": "Without an expressed subject, panta can be the nominative subject (\"all things work together\") or the accusative object of an understood subject God (or the Spirit): \"he works all things together for good\". (A textual variant adds ho theos; this entry is about the Greek of the shorter text.)",
+    "readings": [
+      {
+        "label": "Subject: \"all things work together for good\"",
+        "rendering": "all things work together for good for those who love God",
+        "grammar": "πάντα as nominative subject of συνεργεῖ",
+        "modern": "KJV, ESV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 15",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210215.htm",
+            "quote": "See how for those who love God all things work together for good.",
+            "page": "210215"
+          }
+        ]
+      },
+      {
+        "label": "Object: \"God works all things together for good\"",
+        "rendering": "God works all things together for good for those who love him",
+        "grammar": "πάντα accusative object; subject God (or the Spirit) supplied",
+        "modern": "RSV, NIV, NRSV (\"in all things God works\")",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On Rebuke and Grace",
+            "ref": "ch. 14",
+            "year": 427,
+            "url": "https://www.newadvent.org/fathers/1513.htm",
+            "quote": "Of such says the apostle, We know that to those that love God He works together all things for good, to them who are called according to His purpose;",
+            "page": "1513"
+          }
+        ]
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree has no stated subject and treats πάντα as the subject of συνεργεῖ in a flat clause.",
+    "sources": [
+      "NET note on Rom 8:28",
+      "Cranfield, Romans (ICC)",
+      "Moo, Romans (NICNT)"
     ]
-   },
-   {
-    "label": "Indirect object: \"bears witness to our spirit\"",
-    "rendering": "the Spirit himself testifies to our spirit that we are children of God",
-    "grammar": "dative of the person addressed",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree glosses the verb with its dative as a flat clause and does not label the dative.",
-  "sources": [
-   "NET note on Rom 8:16",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-8-20-eph-helpidi",
-  "book": "Romans",
-  "chapter": 8,
-  "verse": 20,
-  "words": [
-   "ROM 8:20!12",
-   "ROM 8:20!13",
-   "ROM 8:20!14",
-   "ROM 8:21!1"
-  ],
-  "title": "eph' helpidi: what does \"in hope\" modify, and is hoti \"that\" or \"because\"?",
-  "category": "attachment",
-  "summary": "The phrase eph' helpidi can be tied to \"the one who subjected\" (he subjected it in hope), or to the creation (it was subjected in hope). The following hoti can be \"that\" (the content of the hope) or \"because\" (the ground).",
-  "readings": [
-   {
-    "label": "With \"the one who subjected it\": \"subjected it in hope\"",
-    "rendering": "creation was subjected by the one who subjected it, in hope that it would be set free",
-    "grammar": "ἐφ᾽ ἑλπίδι with τὸν ὑποτάξαντα; ὅτι = \"that\"",
-    "modern": "ESV, NIV, RSV (hope that the creation will be set free)",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 14",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210214.htm",
-      "quote": "It was evil intreated for your sake, and became corruptible; yet it has had no wrong done it. For incorruptible will it be for your sake again. This then is the meaning of in hope.",
-      "page": "210214"
-     }
+  },
+  {
+    "id": "rom-8-33-34-punctuation",
+    "book": "Romans",
+    "chapter": 8,
+    "verse": 33,
+    "words": [
+      "ROM 8:33!1",
+      "ROM 8:33!6",
+      "ROM 8:33!7",
+      "ROM 8:33!8",
+      "ROM 8:34!1",
+      "ROM 8:34!2",
+      "ROM 8:34!3"
+    ],
+    "title": "\"It is God who justifies\": statement or question?",
+    "category": "punctuation",
+    "summary": "Paul's series can be read as questions followed by answers (\"Who will bring a charge? God, who justifies. Who condemns? Christ ...\") or each second clause can be read as a rhetorical question (\"Is it God who justifies? Who is it that condemns?\"), which changes the sense.",
+    "readings": [
+      {
+        "label": "Question and answer",
+        "rendering": "Who will charge God's elect? It is God who justifies. Who will condemn? It is Christ who died.",
+        "grammar": "θεὸς ὁ δικαιῶν as an affirmation answering τίς ἐγκαλέσει",
+        "modern": "RSV, NIV, ESV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 15",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210215.htm",
+            "quote": "It is God that justifies. Ver. 34. Who is He that condemns?",
+            "page": "210215"
+          }
+        ]
+      },
+      {
+        "label": "Chain of rhetorical questions",
+        "rendering": "Who will charge God's elect? Is it God, who justifies? Who is it that condemns? Is it Christ, who died?",
+        "grammar": "θεὸς ὁ δικαιῶν as a second question expecting \"no\"",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree gives θεὸς ὁ δικαιῶν as a separate affirmative clause after the question τίς ἐγκαλέσει.",
+    "sources": [
+      "NET note on Rom 8:33-34",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "With the creation, ground: \"in hope, because it too will be set free\"",
-    "rendering": "creation was subjected in hope, because it too will be freed",
-    "grammar": "ἐφ᾽ ἑλπίδι with ὑπετάγη; ὅτι causal",
-    "fathers": []
-   }
-  ],
-  "macula_follows": 0,
-  "macula_evidence": "The tree attaches ἐφ᾽ ἑλπίδι to τὸν ὑποτάξαντα inside the διὰ phrase and treats the ὅτι clause as a separate adverbial clause.",
-  "sources": [
-   "NET note on Rom 8:20",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-8-28-panta-synergei",
-  "book": "Romans",
-  "chapter": 8,
-  "verse": 28,
-  "words": [
-   "ROM 8:28!8",
-   "ROM 8:28!9"
-  ],
-  "title": "panta synergei: what is the subject?",
-  "category": "construction",
-  "summary": "Without an expressed subject, panta can be the nominative subject (\"all things work together\") or the accusative object of an understood subject God (or the Spirit): \"he works all things together for good\". (A textual variant adds ho theos; this entry is about the Greek of the shorter text.)",
-  "readings": [
-   {
-    "label": "Subject: \"all things work together for good\"",
-    "rendering": "all things work together for good for those who love God",
-    "grammar": "πάντα as nominative subject of συνεργεῖ",
-    "modern": "KJV, ESV",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 15",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210215.htm",
-      "quote": "See how for those who love God all things work together for good.",
-      "page": "210215"
-     }
+  },
+  {
+    "id": "rom-9-3-euchomen",
+    "book": "Romans",
+    "chapter": 9,
+    "verse": 3,
+    "words": [
+      "ROM 9:3!1"
+    ],
+    "title": "ēuchomēn: \"I could wish\" or \"I was wishing\"?",
+    "category": "construction",
+    "summary": "The imperfect ēuchomēn can be a conative or unfulfilled-wish imperfect (\"I could wish, if it were possible\") or a true past (\"I used to pray\", in Paul's pre-conversion zeal).",
+    "readings": [
+      {
+        "label": "Conative/potential: \"I could wish\"",
+        "rendering": "I could wish (were it possible) that I myself were accursed from Christ",
+        "grammar": "imperfect of a wish that is not or cannot be realised",
+        "modern": "KJV, RSV, ESV (\"I could wish\")",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 16",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210216.htm",
+            "quote": "And he does not say merely that I could be willing, but using a stronger term, he says even, I could wish (or pray",
+            "page": "210216"
+          }
+        ]
+      },
+      {
+        "label": "Past: \"I was wishing\"",
+        "rendering": "I used to wish myself accursed from Christ (as a past, unconverted state)",
+        "grammar": "imperfect as a genuine past tense",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA lists ηὐχόμην as a plain finite verb with no tense nuance.",
+    "sources": [
+      "NET note on Rom 9:3",
+      "Wallace, GGBB",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "Object: \"God works all things together for good\"",
-    "rendering": "God works all things together for good for those who love him",
-    "grammar": "πάντα accusative object; subject God (or the Spirit) supplied",
-    "modern": "RSV, NIV, NRSV (\"in all things God works\")",
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "On Rebuke and Grace",
-      "ref": "ch. 14",
-      "year": 427,
-      "url": "https://www.newadvent.org/fathers/1513.htm",
-      "quote": "Of such says the apostle, We know that to those that love God He works together all things for good, to them who are called according to His purpose;",
-      "page": "1513"
-     }
+  },
+  {
+    "id": "rom-9-5-doxology",
+    "book": "Romans",
+    "chapter": 9,
+    "verse": 5,
+    "words": [
+      "ROM 9:5!12",
+      "ROM 9:5!13",
+      "ROM 9:5!14",
+      "ROM 9:5!15",
+      "ROM 9:5!16",
+      "ROM 9:5!17"
+    ],
+    "title": "Romans 9:5: is Christ called \"God over all\"?",
+    "category": "punctuation",
+    "summary": "Unpunctuated, \"ho on epi panton theos eulogetos eis tous aionas\" can be a relative clause in apposition to Christ (\"Christ, who is God over all, blessed forever\"), a separate doxology to the Father after a full stop at sarka (\"God who is over all be blessed forever\"), or a doxology after a stop at pantōn (\"who is over all. God be blessed\"). Whichever way the grammar is taken, the Church confesses Christ as true God, of one substance with the Father (Nicaea, 325), and the Fathers read this verse of Christ.",
+    "readings": [
+      {
+        "label": "Apposition to Christ: \"Christ, who is God over all\"",
+        "rendering": "from whom is the Christ according to the flesh, who is God over all, blessed forever",
+        "grammar": "ὁ ὢν ἐπὶ πάντων θεὸς εὐλογητός as a relative clause modifying ὁ χριστός",
+        "modern": "ESV, NIV, NAB, KJV text",
+        "fathers": [
+          {
+            "father": "Irenaeus of Lyons",
+            "work": "Against Heresies",
+            "ref": "Book III, ch. 16",
+            "year": 180,
+            "url": "https://www.newadvent.org/fathers/0103316.htm",
+            "quote": "Whose are the fathers, and from whom is Christ according to the flesh, who is God over all, blessed forever.",
+            "page": "0103316"
+          },
+          {
+            "father": "Tertullian",
+            "work": "Against Praxeas",
+            "ref": "ch. 15",
+            "year": 213,
+            "url": "https://www.newadvent.org/fathers/0317.htm",
+            "quote": "Moreover, he expressly called Christ God, saying: Of whom are the fathers, and of whom as concerning the flesh Christ came, who is over all, God blessed forever.",
+            "page": "0317"
+          }
+        ]
+      },
+      {
+        "label": "Full stop after sarka: doxology to the Father",
+        "rendering": "Christ came according to the flesh. God who is over all be blessed forever",
+        "grammar": "ὁ ὢν ἐπὶ πάντων θεὸς εὐλογητός as an independent doxology (εὐλογητός precedes or follows)",
+        "modern": "RSV (1952) text; ESV, NRSV margin",
+        "fathers": []
+      },
+      {
+        "label": "Full stop after pantōn",
+        "rendering": "... who is over all. God be blessed forever",
+        "grammar": "θεὸς εὐλογητός a separate doxology",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 1,
+    "macula_evidence": "MACULA ends the sentence after τὸ κατὰ σάρκα and starts a new tree at ὁ ὢν ἐπὶ πάντων θεὸς εὐλογητός, so the parse separates it from the clause about Christ.",
+    "sources": [
+      "NET note on Rom 9:5",
+      "Metzger, Textual Commentary (note on Rom 9:5)",
+      "Cranfield, Romans (ICC)"
     ]
-   }
-  ],
-  "macula_follows": 0,
-  "macula_evidence": "The tree has no stated subject and treats πάντα as the subject of συνεργεῖ in a flat clause.",
-  "sources": [
-   "NET note on Rom 8:28",
-   "Cranfield, Romans (ICC)",
-   "Moo, Romans (NICNT)"
-  ]
- },
- {
-  "id": "rom-8-33-34-punctuation",
-  "book": "Romans",
-  "chapter": 8,
-  "verse": 33,
-  "words": [
-   "ROM 8:33!1",
-   "ROM 8:33!6",
-   "ROM 8:33!7",
-   "ROM 8:33!8",
-   "ROM 8:34!1",
-   "ROM 8:34!2",
-   "ROM 8:34!3"
-  ],
-  "title": "\"It is God who justifies\": statement or question?",
-  "category": "punctuation",
-  "summary": "Paul's series can be read as questions followed by answers (\"Who will bring a charge? God, who justifies. Who condemns? Christ ...\") or each second clause can be read as a rhetorical question (\"Is it God who justifies? Who is it that condemns?\"), which changes the sense.",
-  "readings": [
-   {
-    "label": "Question and answer",
-    "rendering": "Who will charge God's elect? It is God who justifies. Who will condemn? It is Christ who died.",
-    "grammar": "θεὸς ὁ δικαιῶν as an affirmation answering τίς ἐγκαλέσει",
-    "modern": "RSV, NIV, ESV",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 15",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210215.htm",
-      "quote": "It is God that justifies. Ver. 34. Who is He that condemns?",
-      "page": "210215"
-     }
+  },
+  {
+    "id": "rom-9-22-katertismena",
+    "book": "Romans",
+    "chapter": 9,
+    "verse": 22,
+    "words": [
+      "ROM 9:22!20"
+    ],
+    "title": "skeue orges katertismena: who fitted the vessels?",
+    "category": "construction",
+    "summary": "The perfect participle katertismena can be passive (fitted by God), middle (having fitted themselves), or a passive without implied agent (ripe, ready for destruction). The voice decides whether God or the vessels prepared them.",
+    "readings": [
+      {
+        "label": "Middle: \"having fitted themselves\"",
+        "rendering": "vessels of wrath that had made themselves fit for destruction",
+        "grammar": "κατηρτισμένα as middle/reflexive in sense",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 16",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210216.htm",
+            "quote": "Wherefore he calls him not only a vessel of wrath, but also one fitted for destruction. That is, fully fitted indeed, but by his own proper self.",
+            "page": "210216"
+          }
+        ]
+      },
+      {
+        "label": "Passive with God as agent: \"fitted by God\"",
+        "rendering": "vessels of wrath fitted by God for destruction",
+        "grammar": "κατηρτισμένα as a divine passive (contrast v. 23 \"prepared beforehand\" ἃ προητοίμασεν)",
+        "traditions": {
+          "protestant": "Reformed and Calvinist reading (God's decree)"
+        },
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On Grace and Free Will",
+            "ref": "ch. 41",
+            "year": 426,
+            "url": "https://www.newadvent.org/fathers/1510.htm",
+            "quote": "For we find that some sins are even the punishment of other sins, as are those vessels of wrath which the apostle describes as fitted to destruction;",
+            "page": "1510"
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses the participle as a plain adjectival modifier of σκεύη ὀργῆς with no marking of voice or agent.",
+    "sources": [
+      "NET note on Rom 9:22",
+      "Cranfield, Romans (ICC)",
+      "Wallace, GGBB"
     ]
-   },
-   {
-    "label": "Chain of rhetorical questions",
-    "rendering": "Who will charge God's elect? Is it God, who justifies? Who is it that condemns? Is it Christ, who died?",
-    "grammar": "θεὸς ὁ δικαιῶν as a second question expecting \"no\"",
-    "fathers": []
-   }
-  ],
-  "macula_follows": 0,
-  "macula_evidence": "The tree gives θεὸς ὁ δικαιῶν as a separate affirmative clause after the question τίς ἐγκαλέσει.",
-  "sources": [
-   "NET note on Rom 8:33-34",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-9-3-euchomen",
-  "book": "Romans",
-  "chapter": 9,
-  "verse": 3,
-  "words": [
-   "ROM 9:3!1"
-  ],
-  "title": "ēuchomēn: \"I could wish\" or \"I was wishing\"?",
-  "category": "construction",
-  "summary": "The imperfect ēuchomēn can be a conative or unfulfilled-wish imperfect (\"I could wish, if it were possible\") or a true past (\"I used to pray\", in Paul's pre-conversion zeal).",
-  "readings": [
-   {
-    "label": "Conative/potential: \"I could wish\"",
-    "rendering": "I could wish (were it possible) that I myself were accursed from Christ",
-    "grammar": "imperfect of a wish that is not or cannot be realised",
-    "modern": "KJV, RSV, ESV (\"I could wish\")",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 16",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210216.htm",
-      "quote": "And he does not say merely that I could be willing, but using a stronger term, he says even, I could wish (or pray",
-      "page": "210216"
-     }
+  },
+  {
+    "id": "rom-11-26-houtos",
+    "book": "Romans",
+    "chapter": 11,
+    "verse": 26,
+    "words": [
+      "ROM 11:26!1",
+      "ROM 11:26!2",
+      "ROM 11:26!3",
+      "ROM 11:26!4"
+    ],
+    "title": "kai houtōs pas Israel sōthēsetai: \"and so\" or \"and then\"?",
+    "category": "construction",
+    "summary": "The adverb houtōs normally means \"in this way\", but it has been read as \"and then\" (temporal sequence after the fullness of the Gentiles) or as \"thus\" (the manner: by Israel being provoked to jealousy).",
+    "readings": [
+      {
+        "label": "Temporal: \"and then all Israel will be saved\"",
+        "rendering": "after the fullness of the Gentiles has come in, all Israel will be saved",
+        "grammar": "οὕτως as sequence (a future mass conversion)",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 19",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210219.htm",
+            "quote": "When the fullness of the Gentiles, he says, shall have come in, then shall all Israel be saved, at the time of his second coming, and the end of the world.",
+            "page": "210219"
+          }
+        ]
+      },
+      {
+        "label": "Manner: \"in this way all Israel will be saved\"",
+        "rendering": "in this way (by the process of vv. 11-25) all Israel will be saved",
+        "grammar": "οὕτως adverb of manner",
+        "modern": "Many modern commentators (Moo, Cranfield: \"and so\")",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses οὕτως as \"so\" and sets it at the head of the clause with πᾶς Ἰσραήλ.",
+    "sources": [
+      "NET note on Rom 11:26",
+      "Cranfield, Romans (ICC)",
+      "Moo, Romans (NICNT)"
     ]
-   },
-   {
-    "label": "Past: \"I was wishing\"",
-    "rendering": "I used to wish myself accursed from Christ (as a past, unconverted state)",
-    "grammar": "imperfect as a genuine past tense",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "MACULA lists ηὐχόμην as a plain finite verb with no tense nuance.",
-  "sources": [
-   "NET note on Rom 9:3",
-   "Wallace, GGBB",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-9-5-doxology",
-  "book": "Romans",
-  "chapter": 9,
-  "verse": 5,
-  "words": [
-   "ROM 9:5!12",
-   "ROM 9:5!13",
-   "ROM 9:5!14",
-   "ROM 9:5!15",
-   "ROM 9:5!16",
-   "ROM 9:5!17"
-  ],
-  "title": "Romans 9:5: is Christ called \"God over all\"?",
-  "category": "punctuation",
-  "summary": "Unpunctuated, \"ho on epi panton theos eulogetos eis tous aionas\" can be a relative clause in apposition to Christ (\"Christ, who is God over all, blessed forever\"), a separate doxology to the Father after a full stop at sarka (\"God who is over all be blessed forever\"), or a doxology after a stop at pantōn (\"who is over all. God be blessed\").",
-  "readings": [
-   {
-    "label": "Apposition to Christ: \"Christ, who is God over all\"",
-    "rendering": "from whom is the Christ according to the flesh, who is God over all, blessed forever",
-    "grammar": "ὁ ὢν ἐπὶ πάντων θεὸς εὐλογητός as a relative clause modifying ὁ χριστός",
-    "modern": "ESV, NIV, NAB, KJV text",
-    "fathers": [
-     {
-      "father": "Irenaeus of Lyons",
-      "work": "Against Heresies",
-      "ref": "Book III, ch. 16",
-      "year": 180,
-      "url": "https://www.newadvent.org/fathers/0103316.htm",
-      "quote": "Whose are the fathers, and from whom is Christ according to the flesh, who is God over all, blessed forever.",
-      "page": "0103316"
-     },
-     {
-      "father": "Tertullian",
-      "work": "Against Praxeas",
-      "ref": "ch. 15",
-      "year": 213,
-      "url": "https://www.newadvent.org/fathers/0317.htm",
-      "quote": "Moreover, he expressly called Christ God, saying: Of whom are the fathers, and of whom as concerning the flesh Christ came, who is over all, God blessed forever.",
-      "page": "0317"
-     }
+  },
+  {
+    "id": "rom-12-3-metron-pisteos",
+    "book": "Romans",
+    "chapter": 12,
+    "verse": 3,
+    "words": [
+      "ROM 12:3!30",
+      "ROM 12:3!31"
+    ],
+    "title": "metron pisteos: what is \"the measure of faith\"?",
+    "category": "case",
+    "summary": "The genitive pisteos can be epexegetic (the measure is faith itself, given by God in different amounts), or a genitive of standard (a measure by which each is to judge) or a measure belonging to each one's faith.",
+    "readings": [
+      {
+        "label": "Epexegetic: God dealt faith as a measure to each",
+        "rendering": "God has apportioned to each a measure which is faith",
+        "grammar": "genitive of apposition: μέτρον = πίστις",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 20",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210220.htm",
+            "quote": "meaning here the gift by faith: and by using the word dealt, he solaces him who had the less, and humbles him who had the greater share.",
+            "page": "210220"
+          }
+        ]
+      },
+      {
+        "label": "Standard: faith as the measure of self-judgment",
+        "rendering": "think soberly, as God has given each the standard of faith",
+        "grammar": "genitive of content/standard (πίστις as the criterion)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses μέτρον πίστεως as a flat noun phrase after ἐμέρισεν.",
+    "sources": [
+      "NET note on Rom 12:3",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "Full stop after sarka: doxology to the Father",
-    "rendering": "Christ came according to the flesh. God who is over all be blessed forever",
-    "grammar": "ὁ ὢν ἐπὶ πάντων θεὸς εὐλογητός as an independent doxology (εὐλογητός precedes or follows)",
-    "modern": "RSV (1952) text; ESV, NRSV margin",
-    "fathers": []
-   },
-   {
-    "label": "Full stop after pantōn",
-    "rendering": "... who is over all. God be blessed forever",
-    "grammar": "θεὸς εὐλογητός a separate doxology",
-    "fathers": []
-   }
-  ],
-  "macula_follows": 1,
-  "macula_evidence": "MACULA ends the sentence after τὸ κατὰ σάρκα and starts a new tree at ὁ ὢν ἐπὶ πάντων θεὸς εὐλογητός, so the parse separates it from the clause about Christ.",
-  "sources": [
-   "NET note on Rom 9:5",
-   "Metzger, Textual Commentary (note on Rom 9:5)",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-9-22-katertismena",
-  "book": "Romans",
-  "chapter": 9,
-  "verse": 22,
-  "words": [
-   "ROM 9:22!20"
-  ],
-  "title": "skeue orges katertismena: who fitted the vessels?",
-  "category": "construction",
-  "summary": "The perfect participle katertismena can be passive (fitted by God), middle (having fitted themselves), or a passive without implied agent (ripe, ready for destruction). The voice decides whether God or the vessels prepared them.",
-  "readings": [
-   {
-    "label": "Middle: \"having fitted themselves\"",
-    "rendering": "vessels of wrath that had made themselves fit for destruction",
-    "grammar": "κατηρτισμένα as middle/reflexive in sense",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 16",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210216.htm",
-      "quote": "Wherefore he calls him not only a vessel of wrath, but also one fitted for destruction. That is, fully fitted indeed, but by his own proper self.",
-      "page": "210216"
-     }
+  },
+  {
+    "id": "rom-12-6-analogia-pisteos",
+    "book": "Romans",
+    "chapter": 12,
+    "verse": 6,
+    "words": [
+      "ROM 12:6!13",
+      "ROM 12:6!14",
+      "ROM 12:6!15",
+      "ROM 12:6!16",
+      "ROM 12:6!17"
+    ],
+    "title": "analogia tes pisteos: proportion of one's faith, or the rule of faith?",
+    "category": "case",
+    "summary": "The genitive pisteos can be subjective (\"in proportion to one's own faith\") or objective (\"in accord with the faith\", the body of belief), a distinction behind the later \"analogy of faith\".",
+    "readings": [
+      {
+        "label": "Subjective: in proportion to the prophet's faith",
+        "rendering": "let us prophesy in proportion to our faith",
+        "grammar": "genitive of the possessor; ἀναλογία = proportion",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 21",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210221.htm",
+            "quote": "For though it is a grace, yet it is not poured forth at random, but framing its measure according to the recipients, it lets as much flow as it may find the vessel of faith that is brought to be capable of.",
+            "page": "210221"
+          }
+        ]
+      },
+      {
+        "label": "Objective: in agreement with the faith (the creed)",
+        "rendering": "let prophecy be in accord with the faith (the body of doctrine)",
+        "grammar": "objective genitive; ἀναλογία = analogy / conformity",
+        "traditions": {
+          "protestant": "Later Reformation \"analogy of faith\" principle of exegesis"
+        },
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses κατὰ τὴν ἀναλογίαν τῆς πίστεως as a flat phrase with no genitive label.",
+    "sources": [
+      "NET note on Rom 12:6",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "Passive with God as agent: \"fitted by God\"",
-    "rendering": "vessels of wrath fitted by God for destruction",
-    "grammar": "κατηρτισμένα as a divine passive (contrast v. 23 \"prepared beforehand\" ἃ προητοίμασεν)",
-    "traditions": {
-     "protestant": "Reformed and Calvinist reading (God's decree)"
-    },
-    "fathers": [
-     {
-      "father": "Augustine of Hippo",
-      "work": "On Grace and Free Will",
-      "ref": "ch. 41",
-      "year": 426,
-      "url": "https://www.newadvent.org/fathers/1510.htm",
-      "quote": "For we find that some sins are even the punishment of other sins, as are those vessels of wrath which the apostle describes as fitted to destruction;",
-      "page": "1510"
-     }
+  },
+  {
+    "id": "rom-12-16-tapeinois",
+    "book": "Romans",
+    "chapter": 12,
+    "verse": 16,
+    "words": [
+      "ROM 12:16!11",
+      "ROM 12:16!12",
+      "ROM 12:16!13"
+    ],
+    "title": "tois tapeinois synapagomenoi: \"lowly people\" or \"lowly things\"?",
+    "category": "referent",
+    "summary": "The dative tois tapeinois can be masculine (\"associate with the lowly\") or neuter (\"be carried along with lowly things / humble tasks\"); the verb synapagomenoi means \"be led along with\".",
+    "readings": [
+      {
+        "label": "Masculine: \"associate with the lowly\"",
+        "rendering": "do not be haughty but associate with the lowly",
+        "grammar": "τοῖς ταπεινοῖς masculine (persons)",
+        "modern": "NIV, ESV, NRSV, NAB",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 22",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210222.htm",
+            "quote": "That is, bring yourself down to their humble condition, associate with them, walk with them,",
+            "page": "210222"
+          }
+        ]
+      },
+      {
+        "label": "Neuter: \"be carried along with lowly things\"",
+        "rendering": "do not set your mind on high things but go along with humble things",
+        "grammar": "τοῖς ταπεινοῖς neuter (circumstances or tasks)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses τοῖς ταπεινοῖς συναπαγόμενοι as a flat phrase and does not mark gender.",
+    "sources": [
+      "NET note on Rom 12:16",
+      "Cranfield, Romans (ICC)"
     ]
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree glosses the participle as a plain adjectival modifier of σκεύη ὀργῆς with no marking of voice or agent.",
-  "sources": [
-   "NET note on Rom 9:22",
-   "Cranfield, Romans (ICC)",
-   "Wallace, GGBB"
-  ]
- },
- {
-  "id": "rom-11-26-houtos",
-  "book": "Romans",
-  "chapter": 11,
-  "verse": 26,
-  "words": [
-   "ROM 11:26!1",
-   "ROM 11:26!2",
-   "ROM 11:26!3",
-   "ROM 11:26!4"
-  ],
-  "title": "kai houtōs pas Israel sōthēsetai: \"and so\" or \"and then\"?",
-  "category": "construction",
-  "summary": "The adverb houtōs normally means \"in this way\", but it has been read as \"and then\" (temporal sequence after the fullness of the Gentiles) or as \"thus\" (the manner: by Israel being provoked to jealousy).",
-  "readings": [
-   {
-    "label": "Temporal: \"and then all Israel will be saved\"",
-    "rendering": "after the fullness of the Gentiles has come in, all Israel will be saved",
-    "grammar": "οὕτως as sequence (a future mass conversion)",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 19",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210219.htm",
-      "quote": "When the fullness of the Gentiles, he says, shall have come in, then shall all Israel be saved, at the time of his second coming, and the end of the world.",
-      "page": "210219"
-     }
+  },
+  {
+    "id": "rom-12-19-dote-topon",
+    "book": "Romans",
+    "chapter": 12,
+    "verse": 19,
+    "words": [
+      "ROM 12:19!7",
+      "ROM 12:19!8",
+      "ROM 12:19!9"
+    ],
+    "title": "dote topon te orge: whose wrath?",
+    "category": "referent",
+    "summary": "The article-anarthrous dative te orge (\"give place to wrath\") does not say whose wrath: the angry person's own, the offender's, or God's.",
+    "readings": [
+      {
+        "label": "God's wrath: leave room for divine vengeance",
+        "rendering": "give place to the wrath of God",
+        "grammar": "τῇ ὀργῇ = divine wrath (cf. 12:19b \"Vengeance is mine\")",
+        "modern": "NIV, ESV, NRSV (add \"of God\")",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 22",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210222.htm",
+            "quote": "Unto what wrath? To the wrath of God. Now since what the injured man desires most to see is, himself having the pleasure of revenge, this very thing he gives him in full measure, that if you dost not avenge yourself, he means, God will be your avenger. Leave it then to Him to follow up your wrongs.",
+            "page": "210222"
+          }
+        ]
+      },
+      {
+        "label": "One's own or the enemy's wrath: yield to anger",
+        "rendering": "give way to anger (your own or his) rather than avenge yourself",
+        "grammar": "τῇ ὀργῇ = human wrath, to be allowed to cool",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses δότε τόπον τῇ ὀργῇ as \"give place to the wrath\" with no possessor.",
+    "sources": [
+      "NET note on Rom 12:19",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "Manner: \"in this way all Israel will be saved\"",
-    "rendering": "in this way (by the process of vv. 11-25) all Israel will be saved",
-    "grammar": "οὕτως adverb of manner",
-    "modern": "Many modern commentators (Moo, Cranfield: \"and so\")",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree glosses οὕτως as \"so\" and sets it at the head of the clause with πᾶς Ἰσραήλ.",
-  "sources": [
-   "NET note on Rom 11:26",
-   "Cranfield, Romans (ICC)",
-   "Moo, Romans (NICNT)"
-  ]
- },
- {
-  "id": "rom-12-3-metron-pisteos",
-  "book": "Romans",
-  "chapter": 12,
-  "verse": 3,
-  "words": [
-   "ROM 12:3!30",
-   "ROM 12:3!31"
-  ],
-  "title": "metron pisteos: what is \"the measure of faith\"?",
-  "category": "case",
-  "summary": "The genitive pisteos can be epexegetic (the measure is faith itself, given by God in different amounts), or a genitive of standard (a measure by which each is to judge) or a measure belonging to each one's faith.",
-  "readings": [
-   {
-    "label": "Epexegetic: God dealt faith as a measure to each",
-    "rendering": "God has apportioned to each a measure which is faith",
-    "grammar": "genitive of apposition: μέτρον = πίστις",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 20",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210220.htm",
-      "quote": "meaning here the gift by faith: and by using the word dealt, he solaces him who had the less, and humbles him who had the greater share.",
-      "page": "210220"
-     }
+  },
+  {
+    "id": "rom-16-7-episemoi",
+    "book": "Romans",
+    "chapter": 16,
+    "verse": 7,
+    "words": [
+      "ROM 16:7!4",
+      "ROM 16:7!13",
+      "ROM 16:7!14",
+      "ROM 16:7!15",
+      "ROM 16:7!16"
+    ],
+    "title": "episemoi en tois apostolois: \"outstanding among the apostles\" or \"well known to the apostles\"?",
+    "category": "construction",
+    "summary": "The preposition en with the dative can be inclusive (\"outstanding among the apostles\", so Andronicus and Junia are apostles) or exclusive (\"well known to / in the eyes of the apostles\", so they are not). The question is bound up with whether Iounian is a woman (Junia) or a man (Junias).",
+    "readings": [
+      {
+        "label": "Inclusive: \"outstanding among the apostles\"",
+        "rendering": "they are prominent members of the circle of apostles",
+        "grammar": "ἐπίσημοι ἐν = \"outstanding among\", partitive",
+        "modern": "NIV, NRSV, RSV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 31",
+            "year": 391,
+            "url": "https://www.newadvent.org/fathers/210231.htm",
+            "quote": "Then another praise besides. Who are of note among the Apostles. And indeed to be apostles at all is a great thing. But to be even among these of note, just consider what a great encomium this is! But they were of note owing to their works, to their achievements. Oh! How great is the devotion (φιλοσοφία) of this woman, that she should be even counted worthy of the appellation of apostle!",
+            "page": "210231"
+          }
+        ]
+      },
+      {
+        "label": "Exclusive: \"well known to the apostles\"",
+        "rendering": "they are well known to the apostles (but are not themselves apostles)",
+        "grammar": "ἐν as \"in the eyes of\"",
+        "modern": "ESV (\"well known to the apostles\"); Burer and Wallace",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "MACULA glosses the relative clause \"who are outstanding among the apostles\" (inclusive).",
+    "sources": [
+      "NET note on Rom 16:7",
+      "Epp, Junia: The First Woman Apostle",
+      "Burer and Wallace, NTS 47 (2001)"
     ]
-   },
-   {
-    "label": "Standard: faith as the measure of self-judgment",
-    "rendering": "think soberly, as God has given each the standard of faith",
-    "grammar": "genitive of content/standard (πίστις as the criterion)",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree glosses μέτρον πίστεως as a flat noun phrase after ἐμέρισεν.",
-  "sources": [
-   "NET note on Rom 12:3",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-12-6-analogia-pisteos",
-  "book": "Romans",
-  "chapter": 12,
-  "verse": 6,
-  "words": [
-   "ROM 12:6!13",
-   "ROM 12:6!14",
-   "ROM 12:6!15",
-   "ROM 12:6!16",
-   "ROM 12:6!17"
-  ],
-  "title": "analogia tes pisteos: proportion of one's faith, or the rule of faith?",
-  "category": "case",
-  "summary": "The genitive pisteos can be subjective (\"in proportion to one's own faith\") or objective (\"in accord with the faith\", the body of belief), a distinction behind the later \"analogy of faith\".",
-  "readings": [
-   {
-    "label": "Subjective: in proportion to the prophet's faith",
-    "rendering": "let us prophesy in proportion to our faith",
-    "grammar": "genitive of the possessor; ἀναλογία = proportion",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 21",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210221.htm",
-      "quote": "For though it is a grace, yet it is not poured forth at random, but framing its measure according to the recipients, it lets as much flow as it may find the vessel of faith that is brought to be capable of.",
-      "page": "210221"
-     }
+  },
+  {
+    "id": "rom-5-18-henos",
+    "book": "Romans",
+    "chapter": 5,
+    "verse": 18,
+    "words": [
+      "ROM 5:18!5",
+      "ROM 5:18!6",
+      "ROM 5:18!15",
+      "ROM 5:18!16"
+    ],
+    "title": "di' henos paraptomatos / dikaiomatos: \"one trespass\" or \"one man's trespass\"?",
+    "category": "case",
+    "summary": "The adjective henos is masculine or neuter in the genitive, so \"through one trespass / one act of righteousness\" (neuter, with the nouns) or \"through the trespass of the one man / the righteous act of the one\" (masculine, Adam and Christ) are both possible.",
+    "readings": [
+      {
+        "label": "Neuter: \"one trespass ... one act of righteousness\"",
+        "rendering": "through one trespass came condemnation; through one act of righteousness came justification",
+        "grammar": "ἑνός agrees with the neuter nouns",
+        "fathers": []
+      },
+      {
+        "label": "Masculine: \"the trespass of the one ... the righteous act of the one\"",
+        "rendering": "through the trespass of the one man (Adam) ... through the righteous act of the one man (Christ)",
+        "grammar": "ἑνός masculine, personal",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree lists δι᾽ ἑνὸς παραπτώματος as a flat prepositional phrase and does not mark gender.",
+    "sources": [
+      "NET note on Rom 5:18",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "Objective: in agreement with the faith (the creed)",
-    "rendering": "let prophecy be in accord with the faith (the body of doctrine)",
-    "grammar": "objective genitive; ἀναλογία = analogy / conformity",
-    "traditions": {
-     "protestant": "Later Reformation \"analogy of faith\" principle of exegesis"
-    },
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree glosses κατὰ τὴν ἀναλογίαν τῆς πίστεως as a flat phrase with no genitive label.",
-  "sources": [
-   "NET note on Rom 12:6",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-12-16-tapeinois",
-  "book": "Romans",
-  "chapter": 12,
-  "verse": 16,
-  "words": [
-   "ROM 12:16!11",
-   "ROM 12:16!12",
-   "ROM 12:16!13"
-  ],
-  "title": "tois tapeinois synapagomenoi: \"lowly people\" or \"lowly things\"?",
-  "category": "referent",
-  "summary": "The dative tois tapeinois can be masculine (\"associate with the lowly\") or neuter (\"be carried along with lowly things / humble tasks\"); the verb synapagomenoi means \"be led along with\".",
-  "readings": [
-   {
-    "label": "Masculine: \"associate with the lowly\"",
-    "rendering": "do not be haughty but associate with the lowly",
-    "grammar": "τοῖς ταπεινοῖς masculine (persons)",
-    "modern": "NIV, ESV, NRSV, NAB",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 22",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210222.htm",
-      "quote": "That is, bring yourself down to their humble condition, associate with them, walk with them,",
-      "page": "210222"
-     }
+  },
+  {
+    "id": "rom-6-17-typon-didaches",
+    "book": "Romans",
+    "chapter": 6,
+    "verse": 17,
+    "words": [
+      "ROM 6:17!15",
+      "ROM 6:17!16",
+      "ROM 6:17!17",
+      "ROM 6:17!18"
+    ],
+    "title": "eis hon paredothete typon didaches: who was handed over to what?",
+    "category": "construction",
+    "summary": "The relative eis hon (attracted to the case of typon) can mean \"the pattern of teaching to which you were handed over\" (the teaching as the mould into which believers were delivered) or \"the pattern of teaching that was handed on to you\".",
+    "readings": [
+      {
+        "label": "Believers handed over to the teaching",
+        "rendering": "you obeyed from the heart the form of teaching to which you were delivered",
+        "grammar": "εἰς ὃν παρεδόθητε with the believers as the ones delivered into the pattern",
+        "fathers": []
+      },
+      {
+        "label": "The teaching handed on to believers",
+        "rendering": "you obeyed the pattern of teaching which was entrusted to you",
+        "grammar": "the teaching as the thing transmitted (παραδίδωμι, cf. 1 Cor 15:3)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree gives εἰς ὃν παρεδόθητε τύπον διδαχῆς as a flat clause.",
+    "sources": [
+      "NET note on Rom 6:17",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "Neuter: \"be carried along with lowly things\"",
-    "rendering": "do not set your mind on high things but go along with humble things",
-    "grammar": "τοῖς ταπεινοῖς neuter (circumstances or tasks)",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree glosses τοῖς ταπεινοῖς συναπαγόμενοι as a flat phrase and does not mark gender.",
-  "sources": [
-   "NET note on Rom 12:16",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-12-19-dote-topon",
-  "book": "Romans",
-  "chapter": 12,
-  "verse": 19,
-  "words": [
-   "ROM 12:19!7",
-   "ROM 12:19!8",
-   "ROM 12:19!9"
-  ],
-  "title": "dote topon te orge: whose wrath?",
-  "category": "referent",
-  "summary": "The article-anarthrous dative te orge (\"give place to wrath\") does not say whose wrath: the angry person's own, the offender's, or God's.",
-  "readings": [
-   {
-    "label": "God's wrath: leave room for divine vengeance",
-    "rendering": "give place to the wrath of God",
-    "grammar": "τῇ ὀργῇ = divine wrath (cf. 12:19b \"Vengeance is mine\")",
-    "modern": "NIV, ESV, NRSV (add \"of God\")",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 22",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210222.htm",
-      "quote": "Unto what wrath? To the wrath of God. Now since what the injured man desires most to see is, himself having the pleasure of revenge, this very thing he gives him in full measure, that if you dost not avenge yourself, he means, God will be your avenger. Leave it then to Him to follow up your wrongs.",
-      "page": "210222"
-     }
+  },
+  {
+    "id": "rom-8-20-hypotaxanta",
+    "book": "Romans",
+    "chapter": 8,
+    "verse": 20,
+    "words": [
+      "ROM 8:20!10",
+      "ROM 8:20!11",
+      "ROM 8:20!12"
+    ],
+    "title": "dia ton hypotaxanta: who subjected creation?",
+    "category": "referent",
+    "summary": "The aorist participle \"the one who subjected it\" has no named agent: God, Adam, or Satan have each been proposed.",
+    "readings": [
+      {
+        "label": "God",
+        "rendering": "creation was subjected by God's judgment",
+        "grammar": "ὁ ὑποτάξας = God",
+        "fathers": []
+      },
+      {
+        "label": "Adam",
+        "rendering": "creation was subjected on account of Adam, whose sin brought the curse",
+        "grammar": "ὁ ὑποτάξας = Adam, whose sin was the occasion",
+        "fathers": []
+      },
+      {
+        "label": "Satan",
+        "rendering": "creation was subjected by Satan",
+        "grammar": "ὁ ὑποτάξας = the devil (rare)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree gives διὰ τὸν ὑποτάξαντα as a plain prepositional phrase with an unnamed agent.",
+    "sources": [
+      "NET note on Rom 8:20",
+      "Cranfield, Romans (ICC)",
+      "Moo, Romans (NICNT)"
     ]
-   },
-   {
-    "label": "One's own or the enemy's wrath: yield to anger",
-    "rendering": "give way to anger (your own or his) rather than avenge yourself",
-    "grammar": "τῇ ὀργῇ = human wrath, to be allowed to cool",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree glosses δότε τόπον τῇ ὀργῇ as \"give place to the wrath\" with no possessor.",
-  "sources": [
-   "NET note on Rom 12:19",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-16-7-episemoi",
-  "book": "Romans",
-  "chapter": 16,
-  "verse": 7,
-  "words": [
-   "ROM 16:7!4",
-   "ROM 16:7!13",
-   "ROM 16:7!14",
-   "ROM 16:7!15",
-   "ROM 16:7!16"
-  ],
-  "title": "episemoi en tois apostolois: \"outstanding among the apostles\" or \"well known to the apostles\"?",
-  "category": "construction",
-  "summary": "The preposition en with the dative can be inclusive (\"outstanding among the apostles\", so Andronicus and Junia are apostles) or exclusive (\"well known to / in the eyes of the apostles\", so they are not). The question is bound up with whether Iounian is a woman (Junia) or a man (Junias).",
-  "readings": [
-   {
-    "label": "Inclusive: \"outstanding among the apostles\"",
-    "rendering": "they are prominent members of the circle of apostles",
-    "grammar": "ἐπίσημοι ἐν = \"outstanding among\", partitive",
-    "modern": "NIV, NRSV, RSV",
-    "fathers": [
-     {
-      "father": "John Chrysostom",
-      "work": "Homilies on Romans",
-      "ref": "Homily 31",
-      "year": 391,
-      "url": "https://www.newadvent.org/fathers/210231.htm",
-      "quote": "Then another praise besides. Who are of note among the Apostles. And indeed to be apostles at all is a great thing. But to be even among these of note, just consider what a great encomium this is! But they were of note owing to their works, to their achievements. Oh! How great is the devotion (φιλοσοφία) of this woman, that she should be even counted worthy of the appellation of apostle!",
-      "page": "210231"
-     }
+  },
+  {
+    "id": "rom-8-23-aparche-tou-pneumatos",
+    "book": "Romans",
+    "chapter": 8,
+    "verse": 23,
+    "words": [
+      "ROM 8:23!8",
+      "ROM 8:23!9",
+      "ROM 8:23!10"
+    ],
+    "title": "ten aparchen tou pneumatos: \"firstfruits which is the Spirit\" or \"firstfruits from the Spirit\"?",
+    "category": "case",
+    "summary": "The genitive tou pneumatos can be appositional (the firstfruits that is the Spirit) or partitive/source (the firstfruits of the Spirit's gifts).",
+    "readings": [
+      {
+        "label": "Epexegetic: the Spirit is the firstfruits",
+        "rendering": "we who have the Spirit as firstfruits",
+        "grammar": "genitive of apposition",
+        "fathers": []
+      },
+      {
+        "label": "Partitive/source: the firstfruits given by the Spirit",
+        "rendering": "we who have the firstfruits that come from the Spirit",
+        "grammar": "genitive of source or part",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree lists τὴν ἀπαρχὴν τοῦ πνεύματος as a noun phrase object of ἔχοντες.",
+    "sources": [
+      "NET note on Rom 8:23",
+      "Cranfield, Romans (ICC)"
     ]
-   },
-   {
-    "label": "Exclusive: \"well known to the apostles\"",
-    "rendering": "they are well known to the apostles (but are not themselves apostles)",
-    "grammar": "ἐν as \"in the eyes of\"",
-    "modern": "ESV (\"well known to the apostles\"); Burer and Wallace",
-    "fathers": []
-   }
-  ],
-  "macula_follows": 0,
-  "macula_evidence": "MACULA glosses the relative clause \"who are outstanding among the apostles\" (inclusive).",
-  "sources": [
-   "NET note on Rom 16:7",
-   "Epp, Junia: The First Woman Apostle",
-   "Burer and Wallace, NTS 47 (2001)"
-  ]
- },
- {
-  "id": "rom-5-18-henos",
-  "book": "Romans",
-  "chapter": 5,
-  "verse": 18,
-  "words": [
-   "ROM 5:18!5",
-   "ROM 5:18!6",
-   "ROM 5:18!15",
-   "ROM 5:18!16"
-  ],
-  "title": "di' henos paraptomatos / dikaiomatos: \"one trespass\" or \"one man's trespass\"?",
-  "category": "case",
-  "summary": "The adjective henos is masculine or neuter in the genitive, so \"through one trespass / one act of righteousness\" (neuter, with the nouns) or \"through the trespass of the one man / the righteous act of the one\" (masculine, Adam and Christ) are both possible.",
-  "readings": [
-   {
-    "label": "Neuter: \"one trespass ... one act of righteousness\"",
-    "rendering": "through one trespass came condemnation; through one act of righteousness came justification",
-    "grammar": "ἑνός agrees with the neuter nouns",
-    "fathers": []
-   },
-   {
-    "label": "Masculine: \"the trespass of the one ... the righteous act of the one\"",
-    "rendering": "through the trespass of the one man (Adam) ... through the righteous act of the one man (Christ)",
-    "grammar": "ἑνός masculine, personal",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree lists δι᾽ ἑνὸς παραπτώματος as a flat prepositional phrase and does not mark gender.",
-  "sources": [
-   "NET note on Rom 5:18",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-6-17-typon-didaches",
-  "book": "Romans",
-  "chapter": 6,
-  "verse": 17,
-  "words": [
-   "ROM 6:17!15",
-   "ROM 6:17!16",
-   "ROM 6:17!17",
-   "ROM 6:17!18"
-  ],
-  "title": "eis hon paredothete typon didaches: who was handed over to what?",
-  "category": "construction",
-  "summary": "The relative eis hon (attracted to the case of typon) can mean \"the pattern of teaching to which you were handed over\" (the teaching as the mould into which believers were delivered) or \"the pattern of teaching that was handed on to you\".",
-  "readings": [
-   {
-    "label": "Believers handed over to the teaching",
-    "rendering": "you obeyed from the heart the form of teaching to which you were delivered",
-    "grammar": "εἰς ὃν παρεδόθητε with the believers as the ones delivered into the pattern",
-    "fathers": []
-   },
-   {
-    "label": "The teaching handed on to believers",
-    "rendering": "you obeyed the pattern of teaching which was entrusted to you",
-    "grammar": "the teaching as the thing transmitted (παραδίδωμι, cf. 1 Cor 15:3)",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree gives εἰς ὃν παρεδόθητε τύπον διδαχῆς as a flat clause.",
-  "sources": [
-   "NET note on Rom 6:17",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-8-20-hypotaxanta",
-  "book": "Romans",
-  "chapter": 8,
-  "verse": 20,
-  "words": [
-   "ROM 8:20!10",
-   "ROM 8:20!11",
-   "ROM 8:20!12"
-  ],
-  "title": "dia ton hypotaxanta: who subjected creation?",
-  "category": "referent",
-  "summary": "The aorist participle \"the one who subjected it\" has no named agent: God, Adam, or Satan have each been proposed.",
-  "readings": [
-   {
-    "label": "God",
-    "rendering": "creation was subjected by God's judgment",
-    "grammar": "ὁ ὑποτάξας = God",
-    "fathers": []
-   },
-   {
-    "label": "Adam",
-    "rendering": "creation was subjected on account of Adam, whose sin brought the curse",
-    "grammar": "ὁ ὑποτάξας = Adam, whose sin was the occasion",
-    "fathers": []
-   },
-   {
-    "label": "Satan",
-    "rendering": "creation was subjected by Satan",
-    "grammar": "ὁ ὑποτάξας = the devil (rare)",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree gives διὰ τὸν ὑποτάξαντα as a plain prepositional phrase with an unnamed agent.",
-  "sources": [
-   "NET note on Rom 8:20",
-   "Cranfield, Romans (ICC)",
-   "Moo, Romans (NICNT)"
-  ]
- },
- {
-  "id": "rom-8-23-aparche-tou-pneumatos",
-  "book": "Romans",
-  "chapter": 8,
-  "verse": 23,
-  "words": [
-   "ROM 8:23!8",
-   "ROM 8:23!9",
-   "ROM 8:23!10"
-  ],
-  "title": "ten aparchen tou pneumatos: \"firstfruits which is the Spirit\" or \"firstfruits from the Spirit\"?",
-  "category": "case",
-  "summary": "The genitive tou pneumatos can be appositional (the firstfruits that is the Spirit) or partitive/source (the firstfruits of the Spirit's gifts).",
-  "readings": [
-   {
-    "label": "Epexegetic: the Spirit is the firstfruits",
-    "rendering": "we who have the Spirit as firstfruits",
-    "grammar": "genitive of apposition",
-    "fathers": []
-   },
-   {
-    "label": "Partitive/source: the firstfruits given by the Spirit",
-    "rendering": "we who have the firstfruits that come from the Spirit",
-    "grammar": "genitive of source or part",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree lists τὴν ἀπαρχὴν τοῦ πνεύματος as a noun phrase object of ἔχοντες.",
-  "sources": [
-   "NET note on Rom 8:23",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-8-24-te-elpidi",
-  "book": "Romans",
-  "chapter": 8,
-  "verse": 24,
-  "words": [
-   "ROM 8:24!1",
-   "ROM 8:24!3",
-   "ROM 8:24!4"
-  ],
-  "title": "te elpidi esothemen: \"in hope\", \"by hope\" or \"for hope\"?",
-  "category": "case",
-  "summary": "The dative te elpidi can express manner/sphere (\"in this hope we were saved\"), means (\"by hope\") or advantage (\"for hope\", i.e. our salvation is oriented to hope).",
-  "readings": [
-   {
-    "label": "Sphere or manner: \"in hope\"",
-    "rendering": "in hope we were saved",
-    "grammar": "locative / manner dative",
-    "fathers": []
-   },
-   {
-    "label": "Means: \"by hope\"",
-    "rendering": "by hope we were saved",
-    "grammar": "instrumental dative",
-    "fathers": []
-   },
-   {
-    "label": "Advantage: \"for hope\"",
-    "rendering": "we were saved with hope as our end",
-    "grammar": "dative of advantage",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree glosses τῇ ἐλπίδι with ἐσώθημεν and gives no case function.",
-  "sources": [
-   "NET note on Rom 8:24",
-   "Wallace, GGBB"
-  ]
- },
- {
-  "id": "rom-10-14-hou-ouk-ekousan",
-  "book": "Romans",
-  "chapter": 10,
-  "verse": 14,
-  "words": [
-   "ROM 10:14!11",
-   "ROM 10:14!12",
-   "ROM 10:14!13"
-  ],
-  "title": "hou ouk ekousan: \"of whom they have not heard\" or \"whom they have not heard\"?",
-  "category": "case",
-  "summary": "Akouo with the genitive of a person can mean \"hear about\" or \"hear (him speak)\". The second reading makes the preachers the voice of Christ himself.",
-  "readings": [
-   {
-    "label": "Hear about: \"of whom they have not heard\"",
-    "rendering": "how can they believe in one about whom they have not heard?",
-    "grammar": "genitive of reference after ἀκούω",
-    "fathers": []
-   },
-   {
-    "label": "Hear him: \"whom they have not heard\"",
-    "rendering": "how can they believe in one whom they have not heard (speaking through the preacher)?",
-    "grammar": "genitive of the person heard",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree gives οὗ οὐκ ἤκουσαν as a flat clause.",
-  "sources": [
-   "NET note on Rom 10:14",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-10-17-rhema-christou",
-  "book": "Romans",
-  "chapter": 10,
-  "verse": 17,
-  "words": [
-   "ROM 10:17!10",
-   "ROM 10:17!11"
-  ],
-  "title": "rhematos Christou: the word about Christ or spoken by Christ?",
-  "category": "case",
-  "summary": "The genitive Christou after rhema can be objective (the message about Christ) or subjective (the word spoken by Christ through his messengers). Some manuscripts read theou (a separate textual question).",
-  "readings": [
-   {
-    "label": "Objective: the message about Christ",
-    "rendering": "faith comes through the message about Christ",
-    "grammar": "objective genitive",
-    "fathers": []
-   },
-   {
-    "label": "Subjective: the word spoken by Christ",
-    "rendering": "faith comes through the word that Christ speaks",
-    "grammar": "subjective genitive",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree lists διὰ ῥήματος Χριστοῦ as a flat prepositional phrase.",
-  "sources": [
-   "NET note on Rom 10:17",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-11-11-hina-pesosin",
-  "book": "Romans",
-  "chapter": 11,
-  "verse": 11,
-  "words": [
-   "ROM 11:11!5",
-   "ROM 11:11!6"
-  ],
-  "title": "me eptaisan hina pesosin: purpose or result?",
-  "category": "construction",
-  "summary": "ἵνα after \"Have they stumbled\" can be purpose (\"did they stumble in order to fall completely?\") or result (\"did they stumble with the result that they fell?\"); either way Paul answers \"may it never be\".",
-  "readings": [
-   {
-    "label": "Purpose: \"in order that they might fall\"",
-    "rendering": "did they stumble in order that they might fall for good?",
-    "grammar": "ἵνα telic",
-    "fathers": []
-   },
-   {
-    "label": "Result: \"so as to fall\"",
-    "rendering": "did they stumble with the result that they fell beyond recovery?",
-    "grammar": "ἵνα consecutive",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree glosses ἵνα with πέσωσιν in a flat clause.",
-  "sources": [
-   "NET note on Rom 11:11",
-   "Wallace, GGBB"
-  ]
- },
- {
-  "id": "rom-11-31-to-hymetero-eleei",
-  "book": "Romans",
-  "chapter": 11,
-  "verse": 31,
-  "words": [
-   "ROM 11:31!6",
-   "ROM 11:31!7",
-   "ROM 11:31!8",
-   "ROM 11:31!9",
-   "ROM 11:31!13"
-  ],
-  "title": "toi hymeteroi eleei: disobedient \"by\" your mercy, or merciful \"by\" your mercy?",
-  "category": "attachment",
-  "summary": "The dative phrase to hymetero eleei can go with the preceding verb (\"they were disobedient because of the mercy shown to you\") or with the following clause (\"in order that by the mercy shown to you they also may receive mercy\").",
-  "readings": [
-   {
-    "label": "With the following clause: \"so that by your mercy they too may receive mercy\"",
-    "rendering": "they have now been disobedient in order that, through the mercy shown to you, they also may receive mercy",
-    "grammar": "τῷ ὑμετέρῳ ἐλέει with ἐλεηθῶσιν",
-    "fathers": []
-   },
-   {
-    "label": "With the preceding verb: \"disobedient by the mercy shown to you\"",
-    "rendering": "they were disobedient because of the mercy shown to you, so that they too may now receive mercy",
-    "grammar": "τῷ ὑμετέρῳ ἐλέει with ἠπείθησαν",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree gives τῷ ὑμετέρῳ ἐλέει next to ἠπείθησαν without a marked attachment.",
-  "sources": [
-   "NET note on Rom 11:31",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-11-33-bathos",
-  "book": "Romans",
-  "chapter": 11,
-  "verse": 33,
-  "words": [
-   "ROM 11:33!2",
-   "ROM 11:33!3",
-   "ROM 11:33!5",
-   "ROM 11:33!7",
-   "ROM 11:33!8"
-  ],
-  "title": "\"Depth of the riches and wisdom and knowledge of God\"",
-  "category": "attachment",
-  "summary": "Three genitives follow bathos: it can be \"depth of riches, of wisdom and of knowledge of God\" (three coordinate attributes), or \"depth of the riches both of the wisdom and knowledge of God\", changing what is being called deep.",
-  "readings": [
-   {
-    "label": "Three coordinate attributes",
-    "rendering": "O the depth of the riches and wisdom and knowledge of God",
-    "grammar": "πλούτου, σοφίας, γνώσεως coordinate genitives of βάθος",
-    "fathers": []
-   },
-   {
-    "label": "\"Riches\" governs wisdom and knowledge",
-    "rendering": "O the depth of the riches, both of the wisdom and knowledge of God",
-    "grammar": "πλούτου governs σοφίας and γνώσεως",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree lists πλούτου καὶ σοφίας καὶ γνώσεως θεοῦ as flat coordinate genitives.",
-  "sources": [
-   "NET note on Rom 11:33",
-   "Cranfield, Romans (ICC)"
-  ]
- },
- {
-  "id": "rom-13-8-opheilete",
-  "book": "Romans",
-  "chapter": 13,
-  "verse": 8,
-  "words": [
-   "ROM 13:8!3"
-  ],
-  "title": "opheilete: indicative or imperative?",
-  "category": "construction",
-  "summary": "The form opheilete is the same for the present indicative (\"you owe nothing to anyone, except to love\") and the imperative (\"owe no one anything\"); with medeni meden it is most naturally a command, but the indicative reading shifts the sense toward the permanent debt of love.",
-  "readings": [
-   {
-    "label": "Imperative: \"Owe no one anything\"",
-    "rendering": "owe no one anything, except to love one another",
-    "grammar": "imperative of ὀφείλω",
-    "fathers": []
-   },
-   {
-    "label": "Indicative: \"you owe no one anything except love\"",
-    "rendering": "you owe nothing to anyone except to love one another",
-    "grammar": "present indicative",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree lists ὀφείλετε with μηδενὶ μηδέν as one clause and does not mark mood.",
-  "sources": [
-   "NET note on Rom 13:8",
-   "Wallace, GGBB"
-  ]
- },
- {
-  "id": "rom-15-6-theon-kai-patera",
-  "book": "Romans",
-  "chapter": 15,
-  "verse": 6,
-  "words": [
-   "ROM 15:6!7",
-   "ROM 15:6!8",
-   "ROM 15:6!9",
-   "ROM 15:6!10",
-   "ROM 15:6!11",
-   "ROM 15:6!12"
-  ],
-  "title": "ton theon kai patera tou kyriou hemon: \"God and Father of our Lord\" or \"God of our Lord and Father\"?",
-  "category": "article",
-  "summary": "The single article ton governs theon and patera. The genitive tou kyriou can depend on patera only (\"the God and Father of our Lord\") or on both nouns (\"the God of our Lord Jesus Christ, and his Father\").",
-  "readings": [
-   {
-    "label": "Genitive depends on \"Father\"",
-    "rendering": "that you glorify the God and Father of our Lord Jesus Christ",
-    "grammar": "τοῦ κυρίου with πατέρα only",
-    "fathers": []
-   },
-   {
-    "label": "Genitive depends on both nouns",
-    "rendering": "that you glorify the God of our Lord Jesus Christ, and his Father",
-    "grammar": "τοῦ κυρίου with θεόν and πατέρα",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree lists τὸν θεὸν καὶ πατέρα τοῦ κυρίου as a flat noun phrase.",
-  "sources": [
-   "NET note on Rom 15:6",
-   "Wallace, GGBB"
-  ]
- },
- {
-  "id": "rom-15-16-prosphora-ton-ethnon",
-  "book": "Romans",
-  "chapter": 15,
-  "verse": 16,
-  "words": [
-   "ROM 15:16!19",
-   "ROM 15:16!20",
-   "ROM 15:16!21"
-  ],
-  "title": "he prosphora ton ethnon: the offering made by or consisting of the Gentiles?",
-  "category": "case",
-  "summary": "The genitive ton ethnon can be epexegetic (the offering which is the Gentiles) or subjective (the offering the Gentiles make).",
-  "readings": [
-   {
-    "label": "Epexegetic: the Gentiles themselves are the offering",
-    "rendering": "that the offering that is the Gentiles may be acceptable",
-    "grammar": "genitive of apposition",
-    "fathers": []
-   },
-   {
-    "label": "Subjective: the offering made by the Gentiles",
-    "rendering": "that the offering made by the Gentiles may be acceptable",
-    "grammar": "subjective genitive",
-    "fathers": []
-   }
-  ],
-  "macula_follows": null,
-  "macula_evidence": "The tree lists ἡ προσφορὰ τῶν ἐθνῶν as a noun phrase.",
-  "sources": [
-   "NET note on Rom 15:16",
-   "Cranfield, Romans (ICC)"
-  ]
- }
+  },
+  {
+    "id": "rom-8-24-te-elpidi",
+    "book": "Romans",
+    "chapter": 8,
+    "verse": 24,
+    "words": [
+      "ROM 8:24!1",
+      "ROM 8:24!3",
+      "ROM 8:24!4"
+    ],
+    "title": "te elpidi esothemen: \"in hope\", \"by hope\" or \"for hope\"?",
+    "category": "case",
+    "summary": "The dative te elpidi can express manner/sphere (\"in this hope we were saved\"), means (\"by hope\") or advantage (\"for hope\", i.e. our salvation is oriented to hope).",
+    "readings": [
+      {
+        "label": "Sphere or manner: \"in hope\"",
+        "rendering": "in hope we were saved",
+        "grammar": "locative / manner dative",
+        "fathers": []
+      },
+      {
+        "label": "Means: \"by hope\"",
+        "rendering": "by hope we were saved",
+        "grammar": "instrumental dative",
+        "fathers": []
+      },
+      {
+        "label": "Advantage: \"for hope\"",
+        "rendering": "we were saved with hope as our end",
+        "grammar": "dative of advantage",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses τῇ ἐλπίδι with ἐσώθημεν and gives no case function.",
+    "sources": [
+      "NET note on Rom 8:24",
+      "Wallace, GGBB"
+    ]
+  },
+  {
+    "id": "rom-10-14-hou-ouk-ekousan",
+    "book": "Romans",
+    "chapter": 10,
+    "verse": 14,
+    "words": [
+      "ROM 10:14!11",
+      "ROM 10:14!12",
+      "ROM 10:14!13"
+    ],
+    "title": "hou ouk ekousan: \"of whom they have not heard\" or \"whom they have not heard\"?",
+    "category": "case",
+    "summary": "Akouo with the genitive of a person can mean \"hear about\" or \"hear (him speak)\". The second reading makes the preachers the voice of Christ himself.",
+    "readings": [
+      {
+        "label": "Hear about: \"of whom they have not heard\"",
+        "rendering": "how can they believe in one about whom they have not heard?",
+        "grammar": "genitive of reference after ἀκούω",
+        "fathers": []
+      },
+      {
+        "label": "Hear him: \"whom they have not heard\"",
+        "rendering": "how can they believe in one whom they have not heard (speaking through the preacher)?",
+        "grammar": "genitive of the person heard",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree gives οὗ οὐκ ἤκουσαν as a flat clause.",
+    "sources": [
+      "NET note on Rom 10:14",
+      "Cranfield, Romans (ICC)"
+    ]
+  },
+  {
+    "id": "rom-10-17-rhema-christou",
+    "book": "Romans",
+    "chapter": 10,
+    "verse": 17,
+    "words": [
+      "ROM 10:17!10",
+      "ROM 10:17!11"
+    ],
+    "title": "rhematos Christou: the word about Christ or spoken by Christ?",
+    "category": "case",
+    "summary": "The genitive Christou after rhema can be objective (the message about Christ) or subjective (the word spoken by Christ through his messengers). Some manuscripts read theou (a separate textual question).",
+    "readings": [
+      {
+        "label": "Objective: the message about Christ",
+        "rendering": "faith comes through the message about Christ",
+        "grammar": "objective genitive",
+        "fathers": []
+      },
+      {
+        "label": "Subjective: the word spoken by Christ",
+        "rendering": "faith comes through the word that Christ speaks",
+        "grammar": "subjective genitive",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree lists διὰ ῥήματος Χριστοῦ as a flat prepositional phrase.",
+    "sources": [
+      "NET note on Rom 10:17",
+      "Cranfield, Romans (ICC)"
+    ]
+  },
+  {
+    "id": "rom-11-11-hina-pesosin",
+    "book": "Romans",
+    "chapter": 11,
+    "verse": 11,
+    "words": [
+      "ROM 11:11!5",
+      "ROM 11:11!6"
+    ],
+    "title": "me eptaisan hina pesosin: purpose or result?",
+    "category": "construction",
+    "summary": "ἵνα after \"Have they stumbled\" can be purpose (\"did they stumble in order to fall completely?\") or result (\"did they stumble with the result that they fell?\"); either way Paul answers \"may it never be\".",
+    "readings": [
+      {
+        "label": "Purpose: \"in order that they might fall\"",
+        "rendering": "did they stumble in order that they might fall for good?",
+        "grammar": "ἵνα telic",
+        "fathers": []
+      },
+      {
+        "label": "Result: \"so as to fall\"",
+        "rendering": "did they stumble with the result that they fell beyond recovery?",
+        "grammar": "ἵνα consecutive",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses ἵνα with πέσωσιν in a flat clause.",
+    "sources": [
+      "NET note on Rom 11:11",
+      "Wallace, GGBB"
+    ]
+  },
+  {
+    "id": "rom-11-31-to-hymetero-eleei",
+    "book": "Romans",
+    "chapter": 11,
+    "verse": 31,
+    "words": [
+      "ROM 11:31!6",
+      "ROM 11:31!7",
+      "ROM 11:31!8",
+      "ROM 11:31!9",
+      "ROM 11:31!13"
+    ],
+    "title": "toi hymeteroi eleei: disobedient \"by\" your mercy, or merciful \"by\" your mercy?",
+    "category": "attachment",
+    "summary": "The dative phrase to hymetero eleei can go with the preceding verb (\"they were disobedient because of the mercy shown to you\") or with the following clause (\"in order that by the mercy shown to you they also may receive mercy\").",
+    "readings": [
+      {
+        "label": "With the following clause: \"so that by your mercy they too may receive mercy\"",
+        "rendering": "they have now been disobedient in order that, through the mercy shown to you, they also may receive mercy",
+        "grammar": "τῷ ὑμετέρῳ ἐλέει with ἐλεηθῶσιν",
+        "fathers": []
+      },
+      {
+        "label": "With the preceding verb: \"disobedient by the mercy shown to you\"",
+        "rendering": "they were disobedient because of the mercy shown to you, so that they too may now receive mercy",
+        "grammar": "τῷ ὑμετέρῳ ἐλέει with ἠπείθησαν",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree gives τῷ ὑμετέρῳ ἐλέει next to ἠπείθησαν without a marked attachment.",
+    "sources": [
+      "NET note on Rom 11:31",
+      "Cranfield, Romans (ICC)"
+    ]
+  },
+  {
+    "id": "rom-11-33-bathos",
+    "book": "Romans",
+    "chapter": 11,
+    "verse": 33,
+    "words": [
+      "ROM 11:33!2",
+      "ROM 11:33!3",
+      "ROM 11:33!5",
+      "ROM 11:33!7",
+      "ROM 11:33!8"
+    ],
+    "title": "\"Depth of the riches and wisdom and knowledge of God\"",
+    "category": "attachment",
+    "summary": "Three genitives follow bathos: it can be \"depth of riches, of wisdom and of knowledge of God\" (three coordinate attributes), or \"depth of the riches both of the wisdom and knowledge of God\", changing what is being called deep.",
+    "readings": [
+      {
+        "label": "Three coordinate attributes",
+        "rendering": "O the depth of the riches and wisdom and knowledge of God",
+        "grammar": "πλούτου, σοφίας, γνώσεως coordinate genitives of βάθος",
+        "fathers": []
+      },
+      {
+        "label": "\"Riches\" governs wisdom and knowledge",
+        "rendering": "O the depth of the riches, both of the wisdom and knowledge of God",
+        "grammar": "πλούτου governs σοφίας and γνώσεως",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree lists πλούτου καὶ σοφίας καὶ γνώσεως θεοῦ as flat coordinate genitives.",
+    "sources": [
+      "NET note on Rom 11:33",
+      "Cranfield, Romans (ICC)"
+    ]
+  },
+  {
+    "id": "rom-13-8-opheilete",
+    "book": "Romans",
+    "chapter": 13,
+    "verse": 8,
+    "words": [
+      "ROM 13:8!3"
+    ],
+    "title": "opheilete: indicative or imperative?",
+    "category": "construction",
+    "summary": "The form opheilete is the same for the present indicative (\"you owe nothing to anyone, except to love\") and the imperative (\"owe no one anything\"); with medeni meden it is most naturally a command, but the indicative reading shifts the sense toward the permanent debt of love.",
+    "readings": [
+      {
+        "label": "Imperative: \"Owe no one anything\"",
+        "rendering": "owe no one anything, except to love one another",
+        "grammar": "imperative of ὀφείλω",
+        "fathers": []
+      },
+      {
+        "label": "Indicative: \"you owe no one anything except love\"",
+        "rendering": "you owe nothing to anyone except to love one another",
+        "grammar": "present indicative",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree lists ὀφείλετε with μηδενὶ μηδέν as one clause and does not mark mood.",
+    "sources": [
+      "NET note on Rom 13:8",
+      "Wallace, GGBB"
+    ]
+  },
+  {
+    "id": "rom-15-6-theon-kai-patera",
+    "book": "Romans",
+    "chapter": 15,
+    "verse": 6,
+    "words": [
+      "ROM 15:6!7",
+      "ROM 15:6!8",
+      "ROM 15:6!9",
+      "ROM 15:6!10",
+      "ROM 15:6!11",
+      "ROM 15:6!12"
+    ],
+    "title": "ton theon kai patera tou kyriou hemon: \"God and Father of our Lord\" or \"God of our Lord and Father\"?",
+    "category": "article",
+    "summary": "The single article ton governs theon and patera. The genitive tou kyriou can depend on patera only (\"the God and Father of our Lord\") or on both nouns (\"the God of our Lord Jesus Christ, and his Father\").",
+    "readings": [
+      {
+        "label": "Genitive depends on \"Father\"",
+        "rendering": "that you glorify the God and Father of our Lord Jesus Christ",
+        "grammar": "τοῦ κυρίου with πατέρα only",
+        "fathers": []
+      },
+      {
+        "label": "Genitive depends on both nouns",
+        "rendering": "that you glorify the God of our Lord Jesus Christ, and his Father",
+        "grammar": "τοῦ κυρίου with θεόν and πατέρα",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree lists τὸν θεὸν καὶ πατέρα τοῦ κυρίου as a flat noun phrase.",
+    "sources": [
+      "NET note on Rom 15:6",
+      "Wallace, GGBB"
+    ]
+  },
+  {
+    "id": "rom-15-16-prosphora-ton-ethnon",
+    "book": "Romans",
+    "chapter": 15,
+    "verse": 16,
+    "words": [
+      "ROM 15:16!19",
+      "ROM 15:16!20",
+      "ROM 15:16!21"
+    ],
+    "title": "he prosphora ton ethnon: the offering made by or consisting of the Gentiles?",
+    "category": "case",
+    "summary": "The genitive ton ethnon can be epexegetic (the offering which is the Gentiles) or subjective (the offering the Gentiles make).",
+    "readings": [
+      {
+        "label": "Epexegetic: the Gentiles themselves are the offering",
+        "rendering": "that the offering that is the Gentiles may be acceptable",
+        "grammar": "genitive of apposition",
+        "fathers": []
+      },
+      {
+        "label": "Subjective: the offering made by the Gentiles",
+        "rendering": "that the offering made by the Gentiles may be acceptable",
+        "grammar": "subjective genitive",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree lists ἡ προσφορὰ τῶν ἐθνῶν as a noun phrase.",
+    "sources": [
+      "NET note on Rom 15:16",
+      "Cranfield, Romans (ICC)"
+    ]
+  }
 ]

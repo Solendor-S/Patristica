@@ -13,6 +13,15 @@ traditions (Catholic / Orthodox / Protestant) followed.
 - article: article constructions (Titus 2:13; 2 Pet 1:1; John 1:1c theos without article)
 - construction: force of a conjunction/construction/tense/mood (Rom 5:12 eph' ho; Matt 1:25 heos hou; Gen 1:1 bereshit; imperative vs indicative John 5:39)
 
+ORTHODOXY RULE (user decision 2026-11-28): never include a reading contrary to the ecumenical councils
+(Trinity; Christ's full divinity, consubstantiality, true humanity, one person in two natures, two wills;
+divinity of the Holy Spirit; Theotokos; icons; condemned Pelagian and Origenist positions). E.g. John 1:1c
+"a god"/"divine", "no distinction of person", Col 1:15 or Rev 3:14 "a creature", John 20:28 "exclamation,
+not about Jesus" (condemned at Constantinople II). If removing such readings leaves fewer than 2, drop the
+entry. Confessional Catholic/Orthodox/Protestant differences (Matt 1:25, 16:18, 26:26) DO stay, labelled by
+tradition. Where a legitimate reading removes a proof text (Titus 2:13 "two persons", Rom 9:5 doxology),
+the summary must state that the Church confesses Christ as true God regardless.
+
 EXCLUDE: purely lexical disputes (what a word means: Prov 8:22 qanani, Luke 1:28 kecharitomene, Matt 5:32 porneia)
 and textual variants (manuscript differences). Put lexical ones you notice in your backlog file
 (see below) — do NOT put them in curation. Include an item only if real scholars / translations /

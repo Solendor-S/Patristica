@@ -46,7 +46,7 @@
 - Greek NT (SBLGNT, Textus Receptus), tagged Greek and Hebrew texts (TAGNT / TAHOT / WLC via packs), LXX with online fallback, and the biblical Dead Sea Scrolls in Hebrew
 - Morphology decoding with plain-English explanations of tenses, stems, cases, and moods
 - Interlinear KJV+ with per-word Strong's tags
-- **Clause view**: the sentence structure of every Greek NT and Hebrew OT verse as an indented outline, with 290 "disputed constructions" (e.g. Rom 5:12, John 1:3-4, Gen 3:15) showing each grammatical reading, the Fathers who held it (verbatim-checked) and which traditions followed
+- **Clause view**: the sentence structure of every Greek NT and Hebrew OT verse as an indented outline, with 287 "disputed constructions" (e.g. Rom 5:12, John 1:3-4, Gen 3:15) showing each grammatical reading, the Fathers who held it (verbatim-checked) and which traditions followed
 
 ---
 
