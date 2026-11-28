@@ -259,12 +259,10 @@ function splitHistoricalPresent(seg: Segment): Segment[] {
   return seg.t.split(/(\*)/).filter(Boolean).map(t => t === '*' ? { ...seg, t, hp: true } : { ...seg, t })
 }
 
-export function explainHistoricalPresent() {
-  Alert.alert(
-    'Historical present (*)',
-    'In the Greek this verb is in the present tense ("he comes", "he says"), a vivid storytelling style ' +
-    'Mark uses often. The NASB translates it into the English past tense and marks it with an asterisk.',
-  )
+// VerseRow is memoised and module-level, so the tap reaches the screen's popup through this listener.
+let historicalPresentListener: (() => void) | null = null
+function explainHistoricalPresent() {
+  historicalPresentListener?.()
 }
 
 function applyItalics(seg: Segment): Segment[] {
@@ -1530,6 +1528,11 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [crossRefsByVerse, setCrossRefsByVerse] = useState<Map<number, CrossRef[]>>(new Map())
   const [splitCrossRefsByVerse, setSplitCrossRefsByVerse] = useState<Map<number, CrossRef[]>>(new Map())
   const [activeFn, setActiveFn] = useState<Footnote | null>(null)
+  const [hpNoteOpen, setHpNoteOpen] = useState(false)
+  useEffect(() => {
+    historicalPresentListener = () => setHpNoteOpen(true)
+    return () => { historicalPresentListener = null }
+  }, [])
   const [activeBsbFn, setActiveBsbFn] = useState<BsbFootnote | null>(null)
   const [activeElxxNote, setActiveElxxNote] = useState<ElxxNote | null>(null)
   const [activeCrossRef, setActiveCrossRef] = useState<CrossRef | null>(null)
@@ -1735,6 +1738,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
     setActiveBsbFn(null)
     setActiveElxxNote(null)
     setActiveCrossRef(null)
+    setHpNoteOpen(false)
     setScripturePreview(null)
 
     if (!isTranslationOnly) {
@@ -3117,6 +3121,22 @@ export default function ReaderScreen({ navigation, route }: Props) {
           <View style={styles.fnPopupDivider} />
           <Text style={styles.fnPopupContent}>{activeFn.content}</Text>
           <TouchableOpacity onPress={() => setActiveFn(null)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+            <Ionicons name="close" size={16} color={colors.textMuted} />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* NASB historical-present note (same look as footnotes) */}
+      {hpNoteOpen && (
+        <View style={styles.fnPopup}>
+          <Text style={styles.fnPopupMarker}>*</Text>
+          <View style={styles.fnPopupDivider} />
+          <Text style={styles.fnPopupContent}>
+            <Text style={{ fontWeight: '700', color: colors.textPrimary }}>Historical present{'\n'}</Text>
+            In the Greek this verb is in the present tense ("he comes", "he says"), a vivid storytelling
+            style Mark uses often. The NASB puts it in the English past tense and marks it with an asterisk.
+          </Text>
+          <TouchableOpacity onPress={() => setHpNoteOpen(false)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
             <Ionicons name="close" size={16} color={colors.textMuted} />
           </TouchableOpacity>
         </View>
