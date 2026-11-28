@@ -163,7 +163,7 @@ def webc_verses() -> set:
     return {(b, ch, v) for b, ch, v in c.execute("SELECT book, chapter, verse FROM bible_translations")}
 
 
-RELS = {"father", "mother", "sibling", "spouse", "child", "ancestor", "descendant"}
+RELS = {"father", "mother", "sibling", "spouse", "child", "ancestor", "descendant", "relative"}
 
 
 def load_curation(recs: list[dict], files: list[str] | None = None) -> list[str]:
@@ -223,6 +223,43 @@ def load_curation(recs: list[dict], files: list[str] | None = None) -> list[str]
     return errs
 
 
+# ── Corrections to TIPNR (our changes, noted per its licence) ─────────────────
+# Mary remained ever-virgin: TIPNR makes the "brothers of the Lord" (Matt 13:55) children of Mary
+# and Joseph and Jesus' siblings. In Catholic and Orthodox teaching they are kinsmen: Jerome took
+# them as cousins (sons of Mary of Clopas), the East as sons of Joseph by an earlier marriage.
+MARY = "Mary@Mat.1.16-Act"
+JOSEPH = "Joseph@Mat.1.16-Jhn"
+JESUS = "Jesus@Isa.7.14-Rev"
+KINSMAN_NOTE = ("Scripture calls him one of the Lord's \"brothers\" (Matt 13:55), a word used for kinsmen; "
+                "the Church holds that Mary remained ever-virgin and bore no other children. St Jerome took "
+                "the brethren to be cousins, sons of Mary the wife of Clopas; Eastern tradition holds them sons "
+                "of Joseph by an earlier marriage.")
+BRETHREN = {
+    "James@Mat.13.55-Jud": ("\"Brother of the Lord\" (kinsman), leader of the Jerusalem church",
+                            "James, called \"the brother of the Lord\" (Gal 1:19), led the church in Jerusalem and wrote the Epistle of James. "),
+    "Joses@Mat.13.55-Mrk": ("One of the \"brethren of the Lord\" (a kinsman of Jesus)", "Joses (or Joseph) is named among the brethren of the Lord. "),
+    "Jude@Mat.13.55-Jud": ("One of the \"brethren of the Lord\", author of the Epistle of Jude",
+                           "Jude, \"brother of James\" (Jude 1), is named among the brethren of the Lord and wrote the Epistle of Jude. "),
+    "Simon@Mat.13.55-Mrk": ("One of the \"brethren of the Lord\" (a kinsman of Jesus)", "Simon is named among the brethren of the Lord. "),
+}
+
+
+def apply_corrections(recs: list[dict]):
+    by_uid = {r["uid"]: r for r in recs}
+    for uid, (brief, short) in BRETHREN.items():
+        r = by_uid[uid]
+        r["rel"] = [(rel, u) for rel, u in r["rel"] if u not in (MARY, JOSEPH, JESUS)] + [("relative", JESUS)]
+        r["brief"], r["short"] = brief, short + KINSMAN_NOTE
+    for uid in (MARY, JOSEPH):
+        by_uid[uid]["rel"] = [(rel, u) for rel, u in by_uid[uid]["rel"] if not (rel == "child" and u != JESUS)]
+    jesus = by_uid[JESUS]
+    jesus["rel"] = [(rel, u) for rel, u in jesus["rel"] if not (rel == "sibling" and u in BRETHREN)] + \
+                   [("relative", u) for u in BRETHREN]
+    mary = by_uid[MARY]
+    mary["short"] = ("Mary, the mother of Jesus and wife of Joseph, conceived by the Holy Spirit and remained "
+                     "ever-virgin; the Church honours her as Theotokos, Mother of God (Council of Ephesus, 431).")
+
+
 def build():
     sys.stdout.reconfigure(encoding="utf-8")
     recs = parse_tipnr()
@@ -231,6 +268,7 @@ def build():
         print("\n".join(errs[:80]))
         print(f"{len(errs)} curation problem(s)")
         sys.exit(1)
+    apply_corrections(recs)
 
     ob = openbible_coords()
     filled = 0
@@ -248,7 +286,7 @@ def build():
         r["id"] = ids[r["uid"]]
 
     # inverse relations so a child's profile shows the parent even if only the parent lists it
-    inverse = {"father": "child", "mother": "child", "child": None, "spouse": "spouse", "sibling": "sibling"}
+    inverse = {"father": "child", "mother": "child", "child": None, "spouse": "spouse", "sibling": "sibling", "relative": "relative"}
     rels = set()
     for r in recs:
         for rel, u in r["rel"]:
@@ -346,6 +384,15 @@ def selfcheck():
     rel = {(r, n) for r, n in db.execute(
         "SELECT r.rel, e.name FROM pn_rel r JOIN pn_entity e ON e.id=r.other_id WHERE r.entity_id=?", ab)}
     assert ("spouse", "Sarah") in rel and ("child", "Isaac") in rel and ("father", "Terah") in rel, rel
+    mary = db.execute("SELECT id FROM pn_entity WHERE uid = 'Mary@Mat.1.16-Act'").fetchone()
+    kids = {n for (n,) in db.execute(
+        "SELECT e.name FROM pn_rel r JOIN pn_entity e ON e.id=r.other_id WHERE r.entity_id=? AND r.rel='child'", mary)}
+    assert kids == {"Jesus"}, kids  # ever-virgin: no other children
+    bad = db.execute("SELECT COUNT(*) FROM pn_rel r JOIN pn_entity e ON e.id=r.other_id "
+                     "WHERE e.uid='Mary@Mat.1.16-Act' AND r.rel='mother' AND r.entity_id NOT IN "
+                     "(SELECT id FROM pn_entity WHERE uid='Jesus@Isa.7.14-Rev')").fetchone()[0]
+    assert bad == 0, bad
+    assert not db.execute("SELECT 1 FROM pn_entity WHERE short LIKE '%son of Mary and Joseph%' OR brief LIKE '%son of Mary%'").fetchone()
     lat, lng = db.execute("SELECT lat, lng FROM pn_entity WHERE uid LIKE 'Bethel@Gen.12.8%'").fetchone()
     assert abs(lat - 31.93) < 0.05 and abs(lng - 35.22) < 0.05, (lat, lng)
     hits = {n for (n,) in db.execute(

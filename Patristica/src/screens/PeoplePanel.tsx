@@ -24,7 +24,7 @@ interface Props {
 const KIND_ICON = { person: 'person-outline', place: 'location-outline', other: 'pricetag-outline' } as const
 const REL_LABEL: Record<string, string> = {
   father: 'Father', mother: 'Mother', spouse: 'Spouse', sibling: 'Siblings', child: 'Children',
-  ancestor: 'Ancestors', descendant: 'Descendants',
+  ancestor: 'Ancestors', descendant: 'Descendants', relative: 'Kinsmen ("brethren of the Lord")',
 }
 const BOOK_ORDER = new Map([...BOOKS, ...APOCRYPHA_BOOKS].map((b, i) => [b.name, i]))
 
