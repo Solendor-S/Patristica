@@ -58,11 +58,14 @@ const GROUPS = [
   { label: "Paul's Journeys", ids: ['paul-1', 'paul-2', 'paul-3', 'paul-4'] },
 ]
 
+// CARTO basemaps need a key since Sept 2026 (free non-commercial tier). Set in .env.
+const CARTO_KEY = process.env.EXPO_PUBLIC_CARTO_KEY ?? ''
+
 function buildMapHtml(isDark: boolean): string {
   const journeysJson = JOURNEYS_JSON
   const tileUrl = isDark
-    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-    : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+    ? `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`
+    : `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`
   const bodyBg      = isDark ? '#0d1117' : '#f0ebe2'
   const popupBg     = isDark ? '#1a2030' : '#f5f0e8'
   const popupBorder = isDark ? '#2d3748' : '#d4cfc6'
@@ -163,8 +166,8 @@ window.addEventListener('message',function(e){
 function buildFatherMapHtml(isDark: boolean): string {
   const citiesJson = FATHER_CITIES_JSON
   const tileUrl = isDark
-    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-    : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+    ? `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`
+    : `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`
   const bodyBg      = isDark ? '#0d1117' : '#f0ebe2'
   const zoomBg      = isDark ? '#1a2030' : '#f5f0e8'
   const zoomColor   = isDark ? '#e2e8f0' : '#2a2218'
@@ -244,8 +247,8 @@ function buildLettersMapHtml(isDark: boolean): string {
   const lettersJson = RESOLVED_LETTERS_JSON
   const tcJson = TRADITION_COLORS_JSON
   const tileUrl = isDark
-    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-    : 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+    ? `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`
+    : `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`
   const bodyBg     = isDark ? '#0d1117' : '#f0ebe2'
   const zoomBg     = isDark ? '#1a2030' : '#f5f0e8'
   const zoomColor  = isDark ? '#e2e8f0' : '#2a2218'
