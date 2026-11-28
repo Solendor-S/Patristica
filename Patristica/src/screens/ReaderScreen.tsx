@@ -70,7 +70,7 @@ type Props = {
 
 import { HIGHLIGHT_COLORS, type ColorKey, getHighlightBg } from '../theme/highlightColors'
 
-type TaggedWord = { w: string; red: boolean; italic?: boolean; caps?: boolean }
+type TaggedWord = { w: string; red: boolean; italic?: boolean; caps?: boolean; hp?: boolean }
 
 const SUPERSCRIPT: Record<string, string> = {
   a:'ᵃ', b:'ᵇ', c:'ᶜ', d:'ᵈ', e:'ᵉ', f:'ᶠ', g:'ᵍ', h:'ʰ', i:'ⁱ', j:'ʲ',
@@ -250,6 +250,21 @@ function parseKJVPlus(text: string, lazyPush = false): KJVToken[] {
     }
   }
   return tokens
+}
+
+// NASB convention: "*" before a verb = Greek historical present translated as an English past tense.
+// Split each marker into its own segment so it can be drawn faint and explained on tap.
+function splitHistoricalPresent(seg: Segment): Segment[] {
+  if (!seg.t.includes('*')) return [seg]
+  return seg.t.split(/(\*)/).filter(Boolean).map(t => t === '*' ? { ...seg, t, hp: true } : { ...seg, t })
+}
+
+export function explainHistoricalPresent() {
+  Alert.alert(
+    'Historical present (*)',
+    'In the Greek this verb is in the present tense ("he comes", "he says"), a vivid storytelling style ' +
+    'Mark uses often. The NASB translates it into the English past tense and marks it with an asterisk.',
+  )
 }
 
 function applyItalics(seg: Segment): Segment[] {
@@ -541,6 +556,7 @@ const VerseRow = memo(function VerseRow({
     const base = markerSegs
       ?? (isRL && useHeuristicRedLetter ? splitRedLetterVerse(cleanText) : [{ t: cleanText, red: false }])
     let segs = cleanText.includes('{') ? base.flatMap(applyItalics) : base
+    if (cleanText.includes('*')) segs = segs.flatMap(splitHistoricalPresent)
     if (otQuoteSpans?.length) {
       for (const span of otQuoteSpans) {
         segs = applyOtQuoteCaps(segs, span.word_start, span.word_end)
@@ -717,12 +733,18 @@ const VerseRow = memo(function VerseRow({
 
   if (isSelected) {
     const tagged: TaggedWord[] = segments.flatMap(seg =>
-      seg.t.trim().split(/\s+/).filter(Boolean).map(w => ({ w, red: seg.red, italic: seg.italic, caps: seg.caps }))
+      seg.t.trim().split(/\s+/).filter(Boolean).map(w => ({ w, red: seg.red, italic: seg.italic, caps: seg.caps, hp: seg.hp }))
     )
     const elems: React.ReactNode[] = []
     tagged.forEach((tw, i) => {
       const wordIdx = i + 1
       const hasSpace = i < tagged.length - 1
+      if (tw.hp) {
+        elems.push(
+          <Text key={`w${i}`} onPress={explainHistoricalPresent} suppressHighlighting style={[styles.verseText, styles.verseTextSelected, styles.hpMarker]}>*</Text>
+        )
+        return
+      }
       elems.push(
         <Text key={`w${i}`} onPress={() => onWordPress(tw.w)} suppressHighlighting
           style={[styles.verseText, hebrewTextStyle, styles.verseTextSelected, tw.red ? styles.redLetterSelected : undefined, tw.italic ? styles.italicText : undefined, tw.caps ? styles.capsText : undefined]}>
@@ -802,7 +824,7 @@ const VerseRow = memo(function VerseRow({
                 ) : (
                   <Text style={[styles.verseText, hebrewTextStyle]}>
                     {segments.map((seg, i) => (
-                      <Text key={i} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined]}>{seg.t}</Text>
+                      <Text key={i} onPress={seg.hp ? explainHistoricalPresent : undefined} suppressHighlighting={seg.hp} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined, seg.hp ? styles.hpMarker : undefined]}>{seg.t}</Text>
                     ))}
                   </Text>
                 )}
@@ -820,7 +842,7 @@ const VerseRow = memo(function VerseRow({
           ) : (
             <Text style={[styles.verseText, hebrewTextStyle]}>
               {segments.map((seg, i) => (
-                <Text key={i} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined]}>{seg.t}</Text>
+                <Text key={i} onPress={seg.hp ? explainHistoricalPresent : undefined} suppressHighlighting={seg.hp} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined, seg.hp ? styles.hpMarker : undefined]}>{seg.t}</Text>
               ))}
             </Text>
           )}
@@ -837,6 +859,10 @@ const VerseRow = memo(function VerseRow({
       const key = `${si}-${ti}`
       if (/^\s+$/.test(token) || token === '') {
         elems.push(<Text key={key}>{token}</Text>)
+        return
+      }
+      if (seg.hp) {  // NASB "*" marker: not a word, so footnote positions stay aligned
+        elems.push(<Text key={key} onPress={explainHistoricalPresent} suppressHighlighting style={styles.hpMarker}>{token}</Text>)
         return
       }
       wordIdx++
@@ -948,7 +974,7 @@ function focusSplit(word: string): [string, string] {
 
 function renderFocusSegments(segments: Segment[], styles: ReturnType<typeof makeStyles>): React.ReactNode[] {
   return segments.flatMap((seg, si) => {
-    const segStyle = [seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined]
+    const segStyle = [seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined, seg.hp ? styles.hpMarker : undefined]
     return seg.t.split(/(\s+)/).map((token, ti) => {
       const key = `f${si}-${ti}`
       if (/^\s+$/.test(token) || !token) return <React.Fragment key={key}>{token}</React.Fragment>
@@ -3619,6 +3645,7 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
   bsbFnMarker: { color: c.accent, fontSize: 13, fontWeight: '700' },
   fnMarkerSelected: { color: '#7ab8e8' },
   crossRefMarker: { color: c.accent, fontSize: 18, fontWeight: '600', paddingHorizontal: 4 },
+  hpMarker: { color: c.textMuted, fontSize: 12 },
   crossRefLink: { color: c.accent, fontWeight: '600', textDecorationLine: 'underline' },
   inlineScriptureRef: { color: c.accent, textDecorationLine: 'underline' },
   fnPopup: {
