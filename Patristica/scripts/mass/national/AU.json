@@ -1,0 +1,133 @@
+{
+ "calendar": "AU",
+ "name": "Australia",
+ "params": {
+  "epiphany": "SUNDAY_JAN2_JAN8",
+  "ascension": "SUNDAY",
+  "corpus_christi": "SUNDAY"
+ },
+ "params_note": "params verified against LitCal general calendar 2027/2028 (epiphany=JAN6|SUNDAY_JAN2_JAN8; ascension=THURSDAY|SUNDAY; corpus_christi=THURSDAY|SUNDAY; eternal_high_priest=true|false). LitCal grade ints: 2 optional, 3 memorial, 4 feast, 5 feast of Lord, 6 solemnity.",
+ "sources": [
+  "https://www.liturgybrisbane.net.au/resources/liturgy-lines/more-about-the-liturgical-calendar (Patrick + Help of Christians solemnities)",
+  "https://www.liturgybrisbane.net.au/learn/liturgy-lines/changes-to-the-calendar/ (2010 decree changes: Timothy&Titus, Louis de Montfort, Chanel, Paulinus, Fisher&More)",
+  "https://liturgybrisbane.net.au/Learn/Liturgy-Lines/solemnity-of-mary-mackillop (MacKillop solemnity + readings)",
+  "https://en.wikipedia.org/wiki/National_calendars_of_the_Roman_Rite (Australia table: Champagnat, Peter To Rot, Dominic 3 Aug)",
+  "https://gcatholic.org/calendar/2027/AU-en (Epiphany/Ascension/Corpus Christi on Sunday; Dominic 3 Aug; Chanel 28 Apr)",
+  "https://cbdparish.org.au/?p=3503 and https://stmaryscathedral.org.au/?p=10359 (Dominic moved to 3 Aug)"
+ ],
+ "celebrations": [
+  {
+   "date": "01-27",
+   "key": "StsTimothyTitus",
+   "title": "Saints Timothy and Titus, bishops",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK+DATE CHANGE of StsTimothyTitus (GRC 26 Jan memorial); kept 27 Jan as optional memorial to make room for Australia Day on 26 Jan."
+  },
+  {
+   "date": "03-17",
+   "key": "StPatrick",
+   "title": "Saint Patrick, bishop",
+   "grade": "solemnity",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of LitCal StPatrick (optional memorial in GRC; solemnity in Australia)."
+  },
+  {
+   "date": "04-28",
+   "key": "StPeterChanel",
+   "title": "Saint Peter Chanel, priest and martyr",
+   "grade": "memorial",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StPeterChanel. GRC optional memorial; obligatory memorial in Australia (Oceania patron). Louis de Montfort moves to 27 Apr."
+  },
+  {
+   "date": "05-24",
+   "key": "AU_OurLadyHelpOfChristians",
+   "title": "Our Lady, Help of Christians",
+   "grade": "solemnity",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "06-06",
+   "key": "AU_StMarcellinChampagnat",
+   "title": "Saint Marcellin Champagnat, priest",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "06-22",
+   "key": "StsJohnFisherThomasMore",
+   "title": "Saints John Fisher, bishop, and Thomas More, martyrs",
+   "grade": "memorial",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StsJohnFisherThomasMore. GRC optional; obligatory memorial in Australia (2010 decree)."
+  },
+  {
+   "date": "07-07",
+   "key": "AU_StPeterToRot",
+   "title": "Saint Peter To Rot, martyr",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "08-03",
+   "key": "StDominic",
+   "title": "Saint Dominic, priest",
+   "grade": "memorial",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StDominic. Moved from GRC 8 Aug memorial to 3 Aug in Australia to make way for MacKillop."
+  },
+  {
+   "date": "08-08",
+   "key": "AU_StMaryMacKillop",
+   "title": "Saint Mary of the Cross (Mary MacKillop), virgin",
+   "grade": "solemnity",
+   "replaces_key": null,
+   "readings": {
+    "first": "1 Kings 17:8-16",
+    "psalm": "Psalm 63",
+    "second": "Colossians 3:12-17",
+    "gospel": "Matthew 6:25-34"
+   },
+   "note": "Liturgical books name her Mary of the Cross. Readings per Liturgy Brisbane 2011 (first reading changed from Judith to 1 Kings; psalm 31 to 63). 8 Aug is an Ordinary Time Sunday in some years; apply normal precedence."
+  }
+ ],
+ "moved": [
+  {
+   "key": "StsTimothyTitus",
+   "to": "01-27",
+   "note": "Optional memorial with Angela Merici (27 Jan); frees 26 Jan for Australia Day."
+  },
+  {
+   "key": "StLouisGrignionMontfort",
+   "to": "04-27",
+   "note": "Optional memorial moved from 28 Apr to make way for Peter Chanel."
+  },
+  {
+   "key": "StPaulinusNola",
+   "to": "06-23",
+   "note": "Optional memorial moved to 23 Jun so Fisher and More can be a memorial (Liturgy Brisbane). LitCal outputs StPaulinusNola on 22 Jun."
+  },
+  {
+   "key": "StDominic",
+   "to": "08-03",
+   "note": "Memorial on 3 Aug (not 8 Aug)."
+  }
+ ],
+ "suppressed": [],
+ "holy_days_transferred": [
+  "Epiphany: Sunday between 2 and 8 January (gcatholic AU 2027 shows Sun 3 Jan).",
+  "Ascension: Seventh Sunday of Easter (gcatholic AU 2027 shows Sun 9 May).",
+  "Corpus Christi: Sunday after Trinity (gcatholic AU 2027 shows Sun 30 May).",
+  "Holyday-of-obligation list for Australia and any Sat/Mon transfer rule were NOT verified; none assumed.",
+  "26 Jan Australia Day and 25 Apr Anzac Day are days of prayer/votive, deliberately omitted."
+ ]
+}

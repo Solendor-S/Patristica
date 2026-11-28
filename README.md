@@ -34,12 +34,19 @@
 - Roman persecutions and canon-formation history
 - Geographic map of the Church Fathers
 - Josephus cross-references and other historical sources tied to relevant verses
+- **Passage Guide**: one screen summarising everything the app has on a verse — Fathers (with the tradition breakdown), cross-references, parallels, people and places, doctrine, variants and your notes
+- **People & Places**: every named person and place in the Bible, deuterocanon included, with all references, family links, Strong's numbers and a map pin
+
+### ⛪ Daily Mass
+- **Mass** tab opens on today's Mass: the Novus Ordo readings for your national calendar (General Roman, Australia, Canada, England & Wales, Ireland, USA) in your chosen translation, or the full 1962 Missal propers in English and Latin
+- Links straight to the Fathers' commentary on the day's Gospel
 
 ### 🔤 Original Languages
 - Word study panel: tap a word for Strong's, Thayer's, Abbott-Smith and Brown-Driver-Briggs definitions, plus UBS semantic domains marking the sense used in the verse
 - Greek NT (SBLGNT, Textus Receptus), tagged Greek and Hebrew texts (TAGNT / TAHOT / WLC via packs), LXX with online fallback, and the biblical Dead Sea Scrolls in Hebrew
 - Morphology decoding with plain-English explanations of tenses, stems, cases, and moods
 - Interlinear KJV+ with per-word Strong's tags
+- **Clause view**: the sentence structure of every Greek NT and Hebrew OT verse as an indented outline, with 287 "disputed constructions" (e.g. Rom 5:12, John 1:3-4, Gen 3:15) showing each grammatical reading, the Fathers who held it (verbatim-checked) and which traditions followed
 
 ---
 
@@ -102,6 +109,9 @@ Patristica stands on the shoulders of many public-domain and openly licensed pro
 - **Aquinas**: Catena Aurea (Newman edition, 1841), Summa Theologica (Dominican translation, 1920), Summa Contra Gentiles (Rickaby, 1905), all public domain
 - **Eusebian Canons**: INTF data via the CrossWire modules (public domain)
 - **Historical sources**: Josephus (Whiston translation, public domain)
+- **People & Places**: [STEPBible TIPNR](https://github.com/STEPBible/STEPBible-Data) proper names (CC BY 4.0) with coordinates from [OpenBible.info Bible Geocoding Data](https://github.com/openbibleinfo/Bible-Geocoding-Data) (CC BY 4.0); deuterocanon entries curated for Patristica
+- **Syntax trees**: [MACULA Greek](https://github.com/Clear-Bible/macula-greek) and [MACULA Hebrew](https://github.com/Clear-Bible/macula-hebrew) © Biblica, Inc. (CC BY 4.0); versification mapping from STEPBible TVTMS (CC BY 4.0)
+- **Mass**: calendar from the [Liturgical Calendar API](https://github.com/Liturgical-Calendar/LiturgicalCalendarAPI) (Apache-2.0); lectionary citations from Felix Just SJ's [Catholic Lectionary Website](https://catholic-resources.org/Lectionary/) and LitCal, checked against [catholic-readings-api](https://github.com/cpbjr/catholic-readings-api) (MIT); 1962 propers from [Missale Meum](https://github.com/mmolenda/missalemeum) and [Divinum Officium](https://github.com/DivinumOfficium/divinum-officium) (MIT)
 
 If you are a rights holder and have a concern about any content in this app, please open an issue.
 

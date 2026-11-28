@@ -1,0 +1,638 @@
+{
+ "calendar": "IE",
+ "name": "Ireland",
+ "params": {
+  "epiphany": "JAN6",
+  "ascension": "SUNDAY",
+  "corpus_christi": "SUNDAY"
+ },
+ "params_note": "params verified against LitCal general calendar 2027/2028 (epiphany=JAN6|SUNDAY_JAN2_JAN8; ascension=THURSDAY|SUNDAY; corpus_christi=THURSDAY|SUNDAY; eternal_high_priest=true|false). LitCal grade ints: 2 optional, 3 memorial, 4 feast, 5 feast of Lord, 6 solemnity.",
+ "sources": [
+  "https://catholicbishops.ie/wp-content/uploads/2024/09/National-Proper-for-Ireland-web.pdf (National Proper, CDWDS Prot. 816/07/L, 10 Jul 2007: dates, Brigid/Patrick/Columba/All Saints readings)",
+  "https://catholicbishops.ie/wp-content/uploads/2024/09/Celebrating-the-Mass-throughout-the-year-web.pdf (ranks: 1 solemnity, 3 feasts, 7 obligatory memorials; Knock memorial; Marmion; Ascension on Seventh Sunday of Easter; UNLYC norm 7)",
+  "https://en.wikipedia.org/wiki/National_calendars_of_the_Roman_Rite (Ireland table, Europe patrons, Eunan/Nathy notes)",
+  "https://gcatholic.org/calendar/2027/IE-en (Epiphany Wed 6 Jan 2027; Ascension 9 May and Corpus Christi 30 May on Sunday)"
+ ],
+ "celebrations": [
+  {
+   "date": "01-03",
+   "key": "IE_Munchin",
+   "title": "Saint Munchin (Mainchin), bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "01-15",
+   "key": "IE_StIta",
+   "title": "Saint Ita, virgin",
+   "grade": "memorial",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "01-16",
+   "key": "IE_Fursa",
+   "title": "Saint Fursa, abbot and missionary",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "01-30",
+   "key": "IE_AidanFerns",
+   "title": "Saint Aidan (Maedoc of Ferns), bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "02-01",
+   "key": "IE_StBrigid",
+   "title": "Saint Brigid, abbess, Secondary Patron of Ireland",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": {
+    "first": "Job 31:16-20, 24-25, 31-32",
+    "first_alt": "Ephesians 3:14-21",
+    "psalm": "Psalm 106 (107):35-38, 41-42",
+    "second": null,
+    "gospel": "Luke 6:32-38"
+   },
+   "note": "Readings from National Proper for Ireland (2007)."
+  },
+  {
+   "date": "02-07",
+   "key": "IE_Mel",
+   "title": "Saint Mel, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "02-11",
+   "key": "IE_Gobnait",
+   "title": "Saint Gobnait, virgin",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "02-14",
+   "key": "StsCyrilMethodius",
+   "title": "Saints Cyril, monk, and Methodius, bishop, Patrons of Europe",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StsCyrilMethodius. GRC memorial. (Wikipedia Ireland table)"
+  },
+  {
+   "date": "02-17",
+   "key": "IE_Fintan",
+   "title": "Saint Fintan, abbot",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "03-01",
+   "key": "IE_David",
+   "title": "Saint David, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "03-05",
+   "key": "IE_Kieran",
+   "title": "Saint Kieran, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "03-08",
+   "key": "IE_Senan",
+   "title": "Saint Senan, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "03-11",
+   "key": "IE_Aengus",
+   "title": "Saint Aengus (Oengus), bishop and abbot",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "03-17",
+   "key": "StPatrick",
+   "title": "Saint Patrick, bishop, Principal Patron of Ireland",
+   "grade": "solemnity",
+   "replaces_key": null,
+   "readings": {
+    "first": "Sirach 39:6-10",
+    "psalm": "Psalm 115:12-19",
+    "second": "2 Timothy 4:1-8",
+    "gospel": "Matthew 13:24-32",
+    "alternatives": {
+     "B": {
+      "first": "Jeremiah 1:4-9",
+      "psalm": "Psalm 116",
+      "second": "Romans 10:9-18",
+      "gospel": "Mark 16:15-20"
+     },
+     "C": {
+      "first": "Amos 7:12-15",
+      "psalm": "Psalm 138:1-3, 7-10, 13-14",
+      "second": "1 Thessalonians 2:2-8",
+      "gospel": "Luke 5:1-11"
+     }
+    }
+   },
+   "note": "RANK CHANGE of LitCal StPatrick (GRC optional). Holyday of obligation in Ireland. Default set for all years; B and C sets are ad libitum alternatives (National Proper)."
+  },
+  {
+   "date": "03-21",
+   "key": "IE_Enda",
+   "title": "Saint Enda, abbot",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "03-24",
+   "key": "IE_Macartan",
+   "title": "Saint Macartan, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "04-01",
+   "key": "IE_Ceallach",
+   "title": "Saint Ceallach (Celsus), bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "04-18",
+   "key": "IE_Laserian",
+   "title": "Saint Laserian (Molaise), bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "04-27",
+   "key": "IE_Asicus",
+   "title": "Saint Asicus, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "04-29",
+   "key": "StCatherineSiena",
+   "title": "Saint Catherine of Siena, virgin and doctor, Patron of Europe",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StCatherineSiena. GRC memorial. (Wikipedia Ireland table)"
+  },
+  {
+   "date": "05-04",
+   "key": "IE_Conleth",
+   "title": "Saint Conleth, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "05-05",
+   "key": "IE_EdmundRice",
+   "title": "Blessed Edmund Rice, religious",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "05-10",
+   "key": "IE_Comgall",
+   "title": "Saint Comgall, abbot",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "05-15",
+   "key": "IE_Carthage",
+   "title": "Saint Carthage (Mochuta), bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "05-16",
+   "key": "IE_Brendan",
+   "title": "Saint Brendan, abbot",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "06-03",
+   "key": "IE_StKevin",
+   "title": "Saint Kevin, abbot",
+   "grade": "memorial",
+   "replaces_key": null,
+   "readings": null,
+   "note": "Displaces GRC Charles Lwanga (moved to 4 Jun)."
+  },
+  {
+   "date": "06-06",
+   "key": "IE_Jarlath",
+   "title": "Saint Jarlath, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "06-07",
+   "key": "IE_ColmanDromore",
+   "title": "Saint Colman of Dromore, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "06-09",
+   "key": "IE_StColumba",
+   "title": "Saint Columba (Colum Cille), abbot and missionary, Secondary Patron of Ireland",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": {
+    "first": "Romans 12:1-2, 9-13",
+    "first_alt": "2 Corinthians 5:14-21",
+    "psalm": "Psalm 33:2-3, 10-11, 12-13, 14-15",
+    "second": null,
+    "gospel": "Matthew 8:18-27",
+    "gospel_alt": "Matthew 19:27-29"
+   },
+   "note": "Readings from National Proper for Ireland (2007)."
+  },
+  {
+   "date": "06-14",
+   "key": "IE_Davnet",
+   "title": "Saint Davnet, virgin",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "06-20",
+   "key": "IE_IrishMartyrs",
+   "title": "The Blessed Irish Martyrs",
+   "grade": "memorial",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "07-01",
+   "key": "IE_StOliverPlunkett",
+   "title": "Saint Oliver Plunkett, bishop and martyr",
+   "grade": "memorial",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "07-06",
+   "key": "IE_Moninne",
+   "title": "Saint Moninne, virgin",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "07-07",
+   "key": "IE_Maelruain",
+   "title": "Saint Maelruain, bishop and abbot",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "07-08",
+   "key": "IE_Kilian",
+   "title": "Saint Kilian, bishop and martyr",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "07-11",
+   "key": "StBenedict",
+   "title": "Saint Benedict, abbot, Patron of Europe",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StBenedict. GRC memorial. (Wikipedia Ireland table)"
+  },
+  {
+   "date": "07-23",
+   "key": "StBridget",
+   "title": "Saint Bridget (Birgitta), religious, Patron of Europe",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StBridget. GRC optional memorial. (Wikipedia Ireland table)"
+  },
+  {
+   "date": "07-24",
+   "key": "IE_Declan",
+   "title": "Saint Declan, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "08-09",
+   "key": "IE_Nathy",
+   "title": "Saint Nathy, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null,
+   "note": "Impeded by Edith Stein feast (9 Aug) except in dioceses that keep them higher."
+  },
+  {
+   "date": "08-09",
+   "key": "IE_Felim",
+   "title": "Saint Felim, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null,
+   "note": "Impeded by Edith Stein feast (9 Aug) except in dioceses that keep them higher."
+  },
+  {
+   "date": "08-09",
+   "key": "StEdithStein",
+   "title": "Saint Teresa Benedicta of the Cross, virgin and martyr, Patron of Europe",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StEdithStein. GRC optional memorial. (Wikipedia Ireland table)"
+  },
+  {
+   "date": "08-12",
+   "key": "IE_Muredach",
+   "title": "Saint Muredach, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "08-12",
+   "key": "IE_Attracta",
+   "title": "Saint Attracta, virgin",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "08-12",
+   "key": "IE_Lelia",
+   "title": "Saint Lelia, virgin",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "08-13",
+   "key": "IE_Fachtna",
+   "title": "Saint Fachtna, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "08-17",
+   "key": "IE_OurLadyOfKnock",
+   "title": "Our Lady of Knock",
+   "grade": "memorial",
+   "replaces_key": null,
+   "readings": null,
+   "note": "Memorial per Irish bishops 'Celebrating the Mass throughout the Year' and gcatholic; Wikipedia says Feast (conflict, memorial preferred)."
+  },
+  {
+   "date": "08-23",
+   "key": "IE_Eugene",
+   "title": "Saint Eugene (Eoghan), bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "08-30",
+   "key": "IE_Fiacre",
+   "title": "Saint Fiacre, monk",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "08-31",
+   "key": "IE_AidanLindisfarne",
+   "title": "Saint Aidan of Lindisfarne, bishop and missionary",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "09-04",
+   "key": "IE_MacNissi",
+   "title": "Saint Mac Nissi, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "09-09",
+   "key": "IE_StCiaran",
+   "title": "Saint Ciaran, abbot",
+   "grade": "memorial",
+   "replaces_key": "StPeterClaver",
+   "readings": null
+  },
+  {
+   "date": "09-12",
+   "key": "IE_Ailbe",
+   "title": "Saint Ailbe, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "09-23",
+   "key": "IE_Eunan",
+   "title": "Saint Eunan (Adomnan), abbot",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null,
+   "note": "Normally impeded by Pius of Pietrelcina (GRC obligatory memorial, 23 Sep)."
+  },
+  {
+   "date": "09-25",
+   "key": "IE_Finbarr",
+   "title": "Saint Finbarr, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "10-03",
+   "key": "IE_ColumbaMarmion",
+   "title": "Blessed Columba Marmion, priest",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null,
+   "note": "Optional memorial in some places (Celebrating the Mass throughout the Year)."
+  },
+  {
+   "date": "10-11",
+   "key": "IE_Canice",
+   "title": "Saint Canice, abbot",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "10-16",
+   "key": "IE_Gall",
+   "title": "Saint Gall, abbot and missionary",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "10-27",
+   "key": "IE_Otteran",
+   "title": "Saint Otteran, monk",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "10-29",
+   "key": "IE_ColmanKilmacduagh",
+   "title": "Saint Colman of Kilmacduagh, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "11-03",
+   "key": "IE_StMalachy",
+   "title": "Saint Malachy, bishop",
+   "grade": "memorial",
+   "replaces_key": "StMartinPorres",
+   "readings": null
+  },
+  {
+   "date": "11-06",
+   "key": "IE_AllSaintsIreland",
+   "title": "All the Saints of Ireland",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": {
+    "first": "Hebrews 11:2; 12:1-4, 15; 13:1",
+    "first_alt": "Sirach 44:1-15",
+    "psalm": "Psalm 125",
+    "second": null,
+    "gospel": "Luke 6:20-26"
+   },
+   "note": "Readings from National Proper for Ireland (2007)."
+  },
+  {
+   "date": "11-07",
+   "key": "IE_Willibrord",
+   "title": "Saint Willibrord, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "11-14",
+   "key": "IE_LaurenceOToole",
+   "title": "Saint Laurence O'Toole, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "11-23",
+   "key": "StColumban",
+   "title": "Saint Columban, abbot and missionary",
+   "grade": "memorial",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StColumban. GRC optional memorial; obligatory memorial in Ireland (Clement I stays optional)."
+  },
+  {
+   "date": "11-25",
+   "key": "IE_ColmanCloyne",
+   "title": "Saint Colman of Cloyne, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "11-27",
+   "key": "IE_Fergal",
+   "title": "Saint Fergal, bishop and missionary",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "12-12",
+   "key": "IE_Finnian",
+   "title": "Saint Finnian of Clonard, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "12-18",
+   "key": "IE_Flannan",
+   "title": "Saint Flannan, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "12-20",
+   "key": "IE_Fachanan",
+   "title": "Saint Fachanan, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  }
+ ],
+ "moved": [
+  {
+   "key": "StsCharlesLwanga",
+   "to": "06-04",
+   "note": "Memorial moved from 3 Jun (Kevin) to 4 Jun per National Proper contents ('as in the Roman Missal')."
+  }
+ ],
+ "suppressed": [],
+ "holy_days_transferred": [
+  "Epiphany stays on 6 January (kept as holyday; gcatholic IE 2027 = Wed 6 Jan).",
+  "Ascension: Seventh Sunday of Easter (Celebrating the Mass throughout the Year). Corpus Christi: Sunday after Trinity (bishops removed obligation 1996).",
+  "No Sat/Mon holyday transfer rule found for Ireland - NOT assumed.",
+  "St Patrick 17 Mar in Holy Week/Lent Sunday follows general transfer rules (not verified specifically for Ireland)."
+ ]
+}

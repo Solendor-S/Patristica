@@ -1,0 +1,1773 @@
+[
+  {
+    "id": "job-19-25-aharon-al-afar",
+    "book": "Job",
+    "chapter": 19,
+    "verse": 25,
+    "words": [
+      "JOB 19:25!3",
+      "JOB 19:25!5",
+      "JOB 19:25!6",
+      "JOB 19:25!7",
+      "JOB 19:25!8"
+    ],
+    "title": "Job 19:25: who stands, and when? 'aḥărôn' and 'ʿal ʿāpār'",
+    "category": "construction",
+    "summary": "The word aḥărôn ('last') can be an adverb ('at last'), an epithet of the redeemer ('the Last One') or, in the Latin tradition, be taken with a changed subject ('I shall rise on the last day'). 'ʿal ʿāpār' can mean 'upon the dust/earth' or 'out of the earth'. The choice decides whether the redeemer or Job himself stands up.",
+    "readings": [
+      {
+        "label": "Redeemer stands 'at last' (or 'as the Last') upon the dust",
+        "rendering": "I know that my Redeemer lives, and at the last he will stand upon the earth",
+        "grammar": "אַחֲרוֹן as adverb (or substantive epithet of גֹּאֲלִי) with the verb יָקוּם (3ms, subject = the redeemer); עַל־עָפָר = 'upon the dust/earth'",
+        "fathers": [],
+        "modern": "RSV, NRSV, ESV, NIV ('in the end he will stand on the earth'); NJPS takes it as 'he will rise last (as vindicator) upon the dust'"
+      },
+      {
+        "label": "Job himself rises on the last day out of the earth",
+        "rendering": "I know that my Redeemer lives, and that in the last day I shall rise out of the earth",
+        "grammar": "Vulgate 'in novissimo die de terra surrecturus sum' takes אַחֲרוֹן as 'last day' and the verb as Job's own rising, with עַל־עָפָר as 'from the earth'",
+        "fathers": [
+          {
+            "father": "Jerome",
+            "work": "Against John of Jerusalem",
+            "ref": "30",
+            "year": 398,
+            "page": "3004",
+            "url": "https://www.newadvent.org/fathers/3004.htm",
+            "quote": "For I know that my Redeemer lives, and that in the last day I shall rise from the earth, and again be clothed with my skin, and in my flesh shall see God,"
+          },
+          {
+            "father": "Gregory the Great",
+            "work": "Moralia in Job",
+            "ref": "On Job 19:25",
+            "year": 590,
+            "legacy": 17446,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "It goes on; And that I shall rise at the last day from the earth. 68. That is, because the resurrection which He manifested in His own Person, He will one day bring to pass in ourselves as well;"
+          }
+        ],
+        "traditions": {
+          "catholic": "Latin West follows the Vulgate: Job's own resurrection on the last day"
+        }
+      }
+    ],
+    "macula_follows": 0,
+    "sources": [
+      "NET note on Job 19:25",
+      "Vulgate / LXX comparison; Gregory the Great, Moralia 14"
+    ],
+    "macula_evidence": "In the tree אַחֲרוֹן is a direct daughter of the clause beside עַל־עָפָר and יָקוּם, outside the object clause 'my redeemer lives', so it is read adverbially ('at last') with the redeemer as subject."
+  },
+  {
+    "id": "job-19-26-mibbesari",
+    "book": "Job",
+    "chapter": 19,
+    "verse": 26,
+    "words": [
+      "JOB 19:26!3",
+      "JOB 19:26!4",
+      "JOB 19:26!5",
+      "JOB 19:26!6"
+    ],
+    "title": "Job 19:26: 'mibbĕśārî' - 'in my flesh' or 'apart from my flesh'?",
+    "category": "case",
+    "summary": "The prefixed preposition min can mean 'from/out of' (so 'apart from my flesh', disembodied) or 'from within, in the state of' (so 'in my flesh', embodied). The same verse also leaves open what 'zōʾt' ('this') and the destroyed 'skin' refer to. The reading carries the weight of the resurrection of the body.",
+    "readings": [
+      {
+        "label": "'In my flesh': embodied vision",
+        "rendering": "after my skin is destroyed, yet in my flesh I shall see God",
+        "grammar": "מִן in a locative/'from within' sense; Vulgate 'in carne mea videbo Deum'",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "City of God",
+            "ref": "22.29",
+            "year": 426,
+            "page": "120122",
+            "url": "https://www.newadvent.org/fathers/120122.htm",
+            "quote": "And in my flesh I shall see God, no doubt they were a prophecy of the resurrection of the flesh; yet he does not say by the flesh. And indeed, if he had said this, it would still be possible that Christ was meant by God; for Christ shall be seen by the flesh in the flesh. But even understanding it of God, it is only equivalent to saying, I shall be in the flesh when I see God."
+          },
+          {
+            "father": "Jerome",
+            "work": "Against John of Jerusalem",
+            "ref": "30",
+            "year": 398,
+            "page": "3004",
+            "url": "https://www.newadvent.org/fathers/3004.htm",
+            "quote": "and again be clothed with my skin, and in my flesh shall see God"
+          }
+        ],
+        "traditions": {
+          "catholic": "Vulgate: 'in my flesh I shall see God', read as a proof of bodily resurrection"
+        },
+        "modern": "KJV, NASB, ESV ('in my flesh'); RSV and NRSV footnote the alternative"
+      },
+      {
+        "label": "'From my flesh' / apart from it: disembodied vision",
+        "rendering": "after my skin is destroyed, then without (apart from) my flesh I shall see God",
+        "grammar": "מִן privative/ablative: 'out of / without my flesh'",
+        "fathers": [],
+        "modern": "RSV ('without my flesh'), NRSV margin, NJPS ('and then, freed of my flesh')"
+      }
+    ],
+    "macula_follows": 0,
+    "sources": [
+      "NET note on Job 19:26",
+      "Augustine, City of God 22.29"
+    ],
+    "macula_evidence": "The tree glosses מִ as 'in' with בְּשָׂרִי as its object and אֶחֱזֶה as the main verb, which matches the embodied reading."
+  },
+  {
+    "id": "job-42-6-ema-as-nicham",
+    "book": "Job",
+    "chapter": 42,
+    "verse": 6,
+    "words": [
+      "JOB 42:6!3",
+      "JOB 42:6!4",
+      "JOB 42:6!5",
+      "JOB 42:6!6"
+    ],
+    "title": "Job 42:6: 'I despise' - what? 'I repent' - where?",
+    "category": "construction",
+    "summary": "אֶמְאַס has no stated object, and נִחַמְתִּי (niphal of nḥm) can mean 'I repent' or 'I am comforted / change my mind'. עַל can mean 'in', 'upon' or 'concerning'. So Job may despise himself and repent in dust and ashes, or retract his words and be consoled about his lot as mortal dust.",
+    "readings": [
+      {
+        "label": "Self-reproach and penitence in dust and ashes",
+        "rendering": "therefore I despise myself and repent in dust and ashes",
+        "grammar": "אֶמְאַס with an understood reflexive object; נִחַמְתִּי 'I repent'; עַל = 'in'",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Merits and Remission of Sins",
+            "ref": "2.",
+            "year": 412,
+            "commentary": 25751,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "I used before now to hear of You by the hearing of the ear; but behold now my eye sees You: therefore I abhor myself and melt away, and account myself but dust and ashes."
+          },
+          {
+            "father": "Gregory the Great",
+            "work": "Moralia in Job",
+            "ref": "On Job 42:6",
+            "year": 590,
+            "legacy": 18707,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Therefore I reproach myself. But because there is no knowledge of reproach, if the lamentations of penitence do not also follow, it is rightly added, after the reproach, And do penance in dust and ashes."
+          }
+        ],
+        "modern": "KJV, NASB, ESV ('I despise myself, and repent in dust and ashes')"
+      },
+      {
+        "label": "Retraction of his words and consolation 'concerning' dust",
+        "rendering": "therefore I retract (what I said), and I am consoled/relent concerning dust and ashes",
+        "grammar": "אֶמְאַס with understood object 'my words' (or 'it'); נִחַמְתִּי 'I change my mind / am comforted'; עַל = 'concerning, about'",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on Job",
+            "ref": "On Job 42:6",
+            "year": 390,
+            "legacy": 18708,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Actually he has not been delivered yet from his trial when he speaks so, but he is still in the midst of his torments when he makes his retraction."
+          }
+        ],
+        "modern": "NJPS ('Therefore I recant and relent, being but dust and ashes'); NRSV and NIV footnote variants"
+      }
+    ],
+    "macula_follows": 0,
+    "sources": [
+      "NET note on Job 42:6",
+      "Gregory the Great, Moralia 35"
+    ],
+    "macula_evidence": "The tree glosses נִחַמְתִּי 'repent' and עַל 'in', with אֶמְאַס left objectless; it follows the penitential reading."
+  },
+  {
+    "id": "ps-2-7-today-begotten",
+    "book": "Psalms",
+    "chapter": 2,
+    "verse": 7,
+    "words": [
+      "PSA 2:7!9",
+      "PSA 2:7!10",
+      "PSA 2:7!11"
+    ],
+    "title": "Ps 2:7: what does 'today I have begotten you' declare?",
+    "category": "construction",
+    "summary": "The Hebrew perfect yĕlidtîkā can be declarative ('this day I proclaim you begotten', said on a particular day) or a simple past read in God's timeless 'today' (the eternal generation of the Son). Both are held by the Fathers; neither makes the Son begin to be Son.",
+    "readings": [
+      {
+        "label": "A particular day: the Son proclaimed (performative perfect)",
+        "rendering": "You are my Son; this day I declare that I have begotten you",
+        "grammar": "Perfect יְלִדְתִּיךָ as declarative: 'today' marks the day of proclamation. For David's line, the king's enthronement; in Christ, the Fathers applied it to his manifestation at the Jordan or at the resurrection (Acts 13:33, Heb 5:5), never to his becoming Son.",
+        "fathers": [
+          {
+            "father": "Justin Martyr",
+            "work": "Dialogue with Trypho",
+            "ref": "103",
+            "year": 155,
+            "page": "01287",
+            "url": "https://www.newadvent.org/fathers/01287.htm",
+            "quote": "when [Jesus] went up from the river Jordan, at the time when the voice spoke to Him, 'You are my Son: this day have I begotten You,'"
+          }
+        ],
+        "modern": "Most modern commentators: declarative language for the enthronement of the Davidic king"
+      },
+      {
+        "label": "The eternal 'today' of God (eternal generation)",
+        "rendering": "You are my Son; I have begotten you, in the 'today' that has no yesterday",
+        "grammar": "Perfect read as a timeless/present-state perfect; 'today' = God's eternity",
+        "fathers": [
+          {
+            "father": "Origen",
+            "work": "Commentary on John",
+            "ref": "1.204",
+            "year": 230,
+            "legacy": 71043,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "There is no evening of God possible and, I think, no morning, but the time, if I may put it this way, which is coextensive with his unoriginated and eternal life, is today for him, the day in which the Son has been begotten."
+          },
+          {
+            "father": "Augustine of Hippo",
+            "work": "Exposition on Psalm 2",
+            "ref": "Ps 2:7",
+            "year": 415,
+            "legacy": 12709,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "and in eternity there is nothing past as if it had ceased to be, nor future as if it were not yet"
+          }
+        ],
+        "traditions": {
+          "catholic": "Eternal generation of the Son (Nicene)",
+          "orthodox": "Eternal generation of the Son (Nicene)"
+        }
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "Wallace GGBB 'performative perfect'",
+      "NET note on Ps 2:7"
+    ],
+    "macula_evidence": "The tree is flat here: יְלִדְתִּיךָ is a plain finite verb with no tense or aspect annotation, so it gives no preference."
+  },
+  {
+    "id": "ps-45-6-kisaka-elohim",
+    "book": "Psalms",
+    "chapter": 45,
+    "verse": 6,
+    "words": [
+      "PSA 45:7!1",
+      "PSA 45:7!2",
+      "PSA 45:7!3"
+    ],
+    "title": "Ps 45:6: 'kisʾăkā ʾĕlōhîm' - 'Your throne, O God' or 'Your throne is God'?",
+    "category": "case",
+    "summary": "The two words כִּסְאֲךָ אֱלֹהִים can be a vocative addressed to the king ('Your throne, O God, is for ever'), a predicate ('your throne is God' / 'God is your throne'), or a construct chain ('your divine throne', 'your throne of God'). Quoted of the Son in Hebrews 1:8. Whichever way the grammar is taken, the Church confesses Christ as true God, of one substance with the Father (Nicaea, 325), and the Fathers read this verse of Christ.",
+    "readings": [
+      {
+        "label": "Vocative: 'Your throne, O God'",
+        "rendering": "Your throne, O God, endures for ever and ever",
+        "grammar": "אֱלֹהִים as a vocative; the clause is nominal with 'throne' as subject (LXX ὁ θρόνος σου, ὁ θεός)",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Expositions on the Psalms",
+            "ref": "Ps 45:6",
+            "year": 415,
+            "legacy": 13905,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Thy throne, O God, is for ever and ever-a sceptre of direction is the sceptre of Thy Kingdom."
+          }
+        ],
+        "modern": "NIV, ESV, NAB, NRSV text, NJB; the form quoted in Heb 1:8"
+      },
+      {
+        "label": "Predicate or construct: 'your throne is God' / 'your divine (God-given) throne'",
+        "rendering": "Your throne is God (or: God is your throne for ever); or: your throne of God, your divine throne, is for ever",
+        "grammar": "אֱלֹהִים as predicate nominative, or in construct with כִּסְאֲךָ ('the throne of God'); no vocative",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Expositions on the Psalms",
+            "ref": "Ps 45:6",
+            "year": 415,
+            "legacy": 13905,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Because it is God's throne. O divine Attribute of Eternity! for God could not have a temporal throne."
+          }
+        ],
+        "modern": "NRSV margin, NJPS ('Your divine throne is everlasting'), Targum, Ibn Ezra, many Jewish readings"
+      }
+    ],
+    "macula_follows": 0,
+    "sources": [
+      "NET note on Ps 45:6",
+      "Heb 1:8",
+      "Augustine, Enarr. in Ps 44"
+    ],
+    "macula_evidence": "The tree sets אֱלֹהִים on its own as a separate constituent before 'throne your forever', i.e. a detached vocative."
+  },
+  {
+    "id": "ps-104-4-angels-winds",
+    "book": "Psalms",
+    "chapter": 104,
+    "verse": 4,
+    "words": [
+      "PSA 104:4!1",
+      "PSA 104:4!2",
+      "PSA 104:4!3",
+      "PSA 104:4!4",
+      "PSA 104:4!5"
+    ],
+    "title": "Ps 104:4: which noun is the object, which the complement?",
+    "category": "construction",
+    "summary": "עֹשֶׂה מַלְאָכָיו רוּחוֹת has two accusatives with no marker. Either the winds are made into his messengers, or his messengers are made into winds. The Greek of Hebrews 1:7 chooses the second.",
+    "readings": [
+      {
+        "label": "He makes the winds his messengers",
+        "rendering": "He makes the winds his messengers, flaming fire his ministers",
+        "grammar": "רוּחוֹת = the thing made, מַלְאָכָיו = the role assigned (AV/ASV/NRSV)",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Expositions on the Psalms",
+            "ref": "Ps 103:4",
+            "year": 415,
+            "legacy": 15469,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Who maketh spirits His angels, and flaming fire His ministers\" (ver. 4): that is, those who are already spirits, who are spiritual, not carnal, He maketh His Angels, by sending them to preach His gospel."
+          }
+        ],
+        "modern": "KJV, NRSV, ESV, NIV, Targum"
+      },
+      {
+        "label": "He makes his angels winds (spirits)",
+        "rendering": "He makes his angels winds, and his ministers a flame of fire",
+        "grammar": "מַלְאָכָיו = the thing made, רוּחוֹת = what they are made (LXX/Heb 1:7: τοὺς ἀγγέλους αὐτοῦ πνεύματα)",
+        "fathers": [
+          {
+            "father": "Clement of Rome",
+            "work": "First Epistle to the Corinthians",
+            "ref": "36",
+            "year": 96,
+            "legacy": 63378,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "\"He makes his angels winds and his ministers flames of fire.\""
+          },
+          {
+            "father": "Athanasius",
+            "work": "De Synodis",
+            "ref": "35",
+            "year": 359,
+            "commentary": 18799,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "who makes His angels spirits, and His ministers a flame of fire' Psalm 104:4."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Ps 104:4",
+      "Heb 1:7"
+    ],
+    "macula_evidence": "The tree is flat: both nouns sit in one clause after עֹשֶׂה with no object or complement role marked."
+  },
+  {
+    "id": "ps-110-3-womb-of-dawn",
+    "book": "Psalms",
+    "chapter": 110,
+    "verse": 3,
+    "words": [
+      "PSA 110:3!1",
+      "PSA 110:3!2",
+      "PSA 110:3!7",
+      "PSA 110:3!8",
+      "PSA 110:3!9",
+      "PSA 110:3!10",
+      "PSA 110:3!11"
+    ],
+    "title": "Ps 110:3: 'from the womb of the dawn' - whose, and what begins?",
+    "category": "attachment",
+    "summary": "The line is a verbless sequence. 'From the womb of dawn' can be joined to the king's dew of youth ('yours is the dew of your youth from the womb of the dawn'), or, in the Greek and Latin tradition, to a first-person verb of begetting ('from the womb, before the morning star, I begot you'). The patristic reading depends on this regrouping (and on the vowel and letter division of the last word).",
+    "readings": [
+      {
+        "label": "MT: willing people, and the king's youth like dew from the dawn",
+        "rendering": "Your people offer themselves freely on the day of your power, in holy splendour; from the womb of the dawn, yours is the dew of your youth",
+        "grammar": "נְדָבֹת as predicate of עַמְּךָ; מֵרֶחֶם מִשְׁחָר attached to טַל יַלְדֻתֶךָ ('dew of your youth')",
+        "fathers": [],
+        "modern": "RSV, ESV, NIV, NRSV (with textual notes)"
+      },
+      {
+        "label": "LXX/Vulgate: 'before the morning star I begot you from the womb'",
+        "rendering": "With you is the principality in the day of your power; in the splendours of the holy ones, from the womb, before the morning star, I have begotten you",
+        "grammar": "מֵרֶחֶם attached to a first-person verb (reading יְלִדְתִּיךָ), 'dew' read as 'morning star' by division",
+        "fathers": [
+          {
+            "father": "Justin Martyr",
+            "work": "Dialogue with Trypho",
+            "ref": "83",
+            "year": 155,
+            "page": "01286",
+            "url": "https://www.newadvent.org/fathers/01286.htm",
+            "quote": "'In the splendour of the saints before the morning star have I begotten You from the womb,' is made to Christ."
+          },
+          {
+            "father": "Augustine of Hippo",
+            "work": "Expositions on the Psalms",
+            "ref": "Ps 110:3",
+            "year": 415,
+            "commentary": 35953,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Let us then understand the Father saying unto the Son, From My womb before the morning star have I brought You forth."
+          }
+        ],
+        "traditions": {
+          "catholic": "Vulgate 'ex utero ante luciferum genui te' read as eternal generation",
+          "orthodox": "LXX 'before the morning star' read as eternal generation"
+        }
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Ps 110:3",
+      "LXX Ps 109:3"
+    ],
+    "macula_evidence": "The outline is flat: מֵרֶחֶם מִשְׁחָר and לְךָ טַל יַלְדֻתֶיךָ share a line without internal structure, so no attachment is encoded."
+  },
+  {
+    "id": "isa-7-14-harah",
+    "book": "Isaiah",
+    "chapter": 7,
+    "verse": 14,
+    "words": [
+      "ISA 7:14!8",
+      "ISA 7:14!9",
+      "ISA 7:14!10"
+    ],
+    "title": "Isa 7:14: 'hāʿalmâ hārâ' - 'is with child' or 'will conceive'?",
+    "category": "construction",
+    "summary": "The form הָרָה is an adjective ('pregnant') and there is no verb 'to be', so the clause may be present ('the young woman is pregnant and will bear') or future ('the virgin will conceive'). The article on the almah may mark a woman known to Ahaz or simply a representative one. The tense decides whether the sign is near-term or distant.",
+    "readings": [
+      {
+        "label": "Present: 'the young woman is with child' (a sign within Ahaz's lifetime)",
+        "rendering": "Behold, the young woman is with child and bears a son, and she will call his name Immanuel",
+        "grammar": "הָרָה as an adjective/stative predicate in a verbless clause, with a participle יֹלֶדֶת: the pregnancy is already present",
+        "fathers": [],
+        "modern": "NIV margin; NJPS ('the young woman is with child'); many critical commentators"
+      },
+      {
+        "label": "Future: 'the virgin will conceive' (a miraculous sign)",
+        "rendering": "Behold, the virgin shall conceive and bear a son, and shall call his name Emmanuel",
+        "grammar": "הָרָה read as a future/prophetic perfect with the participle; LXX ἐν γαστρὶ ἕξει / λήμψεται; Matthew 1:23",
+        "fathers": [
+          {
+            "father": "Justin Martyr",
+            "work": "First Apology",
+            "ref": "33",
+            "year": 155,
+            "commentary": 5593,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Behold, a virgin shall conceive, and bring forth a son, and they shall say for His name, 'God with us.'"
+          },
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Matthew",
+            "ref": "Homily 5",
+            "year": 390,
+            "commentary": 48021,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "For he does not merely say, Behold, the Virgin shall be with child, but having first said, Behold, the Lord Himself shall give you a sign, then he subjoins, Behold, the Virgin shall be with child."
+          }
+        ],
+        "traditions": {
+          "catholic": "Virgin conception (Vulgate 'virgo concipiet')",
+          "orthodox": "LXX παρθένος ... ἕξει",
+          "protestant": "Reformers followed Matthew 1:23 and the Vulgate/LXX 'virgin'"
+        },
+        "modern": "KJV, NAB, ESV ('shall conceive')"
+      }
+    ],
+    "macula_follows": 0,
+    "sources": [
+      "NET note on Isa 7:14",
+      "Wallace GGBB",
+      "Matt 1:23"
+    ],
+    "macula_evidence": "The tree reads הָרָה as a bare predicate adjective ('with child') in a clause with no verb of its own, i.e. the present-state reading."
+  },
+  {
+    "id": "isa-9-6-names",
+    "book": "Isaiah",
+    "chapter": 9,
+    "verse": 6,
+    "words": [
+      "ISA 9:5!12",
+      "ISA 9:5!13",
+      "ISA 9:5!14",
+      "ISA 9:5!15",
+      "ISA 9:5!16",
+      "ISA 9:5!17",
+      "ISA 9:5!18",
+      "ISA 9:5!19",
+      "ISA 9:5!20",
+      "ISA 9:5!21"
+    ],
+    "title": "Isa 9:6: how do the throne-names divide, and who names him?",
+    "category": "construction",
+    "summary": "The string פֶּלֶא יוֹעֵץ אֵל גִּבּוֹר אֲבִי־עַד שַׂר־שָׁלוֹם has no marks of division. It can be separate titles, paired double names, or one long sentence-name ('Wonder-counsellor, Mighty God, Father-of-eternity, is the Prince of Peace'); and יִקְרָא ('one calls') has no stated subject, so God may be the one who names the child 'Prince of Peace'. Whichever way the grammar is taken, the Church confesses Christ as true God, of one substance with the Father (Nicaea, 325), and the Fathers read this verse of Christ.",
+    "readings": [
+      {
+        "label": "Separate (or paired) titles, all of the child, including 'God'",
+        "rendering": "His name is called Wonderful, Counsellor, Mighty God, Everlasting Father, Prince of Peace",
+        "grammar": "names in apposition after שְׁמוֹ; אֵל and גִּבּוֹר as titles of the child (Jerome six names; LXX 'Angel of great counsel')",
+        "fathers": [
+          {
+            "father": "Jerome",
+            "work": "Commentary on Isaiah",
+            "ref": "3 (Is 9:6)",
+            "year": 410,
+            "legacy": 21351,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "After two names, therefore [child and son], he will be called by another six names: wonderful, counselor, God, mighty, father of the coming age, prince of peace. For the names are not to be joined into couplets as many think, such that we would read “wonderful counselor” and “mighty God.” Instead “wonderful,” which is pele in Hebrew, is to be read separately, as is “counselor,” or what is called yôʿēṣ in their language. The title “God” also, whom the Hebrews call ēl stands on its own. Thus in subsequent passages where we read, “For you are God and we were unaware,” and again, “I am God and there is no other beyond me,” along with many similar statements, the Hebrew uses ēl where Latin uses Deus."
+          },
+          {
+            "father": "Athanasius",
+            "work": "On Luke 10:22 and Matthew 11:27",
+            "ref": "Sect. 1",
+            "year": 340,
+            "commentary": 17897,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Well then, He says by the prophet, 'A Son is born and given to us, whose government is upon his shoulder, and his name shall be called Angel of Great Counsel, mighty God, Ruler, Father of the coming age' Isaiah 9:6."
+          }
+        ],
+        "modern": "KJV, NIV, ESV, NAB (paired: 'Wonderful Counselor, Mighty God ...')"
+      },
+      {
+        "label": "The names are God's: a sentence-name, or God names him 'Prince of Peace'",
+        "rendering": "the Wonderful Counsellor, the Mighty God, the Everlasting Father, calls his name 'Prince of Peace'; or: Wonder-counsellor is the Mighty God, Father-of-eternity, the Prince of Peace",
+        "grammar": "יִקְרָא with God (the preceding names) as subject, or the whole string as one long sentence-name; אֵל גִּבּוֹר as a description of God rather than the child",
+        "fathers": [],
+        "modern": "Targum, Rashi, NJPS ('The Mighty God is planning grace; the Eternal Father, a peaceable ruler'), Hebrew Bible commentary tradition"
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Isa 9:6",
+      "Jerome, Commentary on Isaiah 3"
+    ],
+    "macula_evidence": "The tree has one flat clause after וַיִּקְרָא with the names as a plain list, giving no division or subject."
+  },
+  {
+    "id": "isa-40-3-in-the-wilderness",
+    "book": "Isaiah",
+    "chapter": 40,
+    "verse": 3,
+    "words": [
+      "ISA 40:3!1",
+      "ISA 40:3!2",
+      "ISA 40:3!3",
+      "ISA 40:3!4"
+    ],
+    "title": "Isa 40:3: 'in the wilderness' - where is the voice, or where is the road?",
+    "category": "attachment",
+    "summary": "'In the wilderness' (בַּמִּדְבָּר) can modify the voice that cries ('a voice crying in the wilderness: prepare the way') or the command ('a voice cries: in the wilderness prepare the way of the LORD'). The Masoretic accents join it to 'prepare'; the Septuagint and all four Gospels join it to the crier.",
+    "readings": [
+      {
+        "label": "The voice cries in the wilderness",
+        "rendering": "A voice of one crying in the wilderness: Prepare the way of the LORD",
+        "grammar": "בַּמִּדְבָּר attaches to קוֹרֵא; the quoted speech begins at פַּנּוּ (LXX, Matt 3:3, John 1:23)",
+        "fathers": [
+          {
+            "father": "Tertullian",
+            "work": "Against Marcion",
+            "ref": "4.33",
+            "year": 207,
+            "commentary": 12477,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "prophetically described John as the voice of one crying in the wilderness to prepare the way of the Lord, Isaiah 40:3"
+          },
+          {
+            "father": "Augustine of Hippo",
+            "work": "Tractates on John",
+            "ref": "Tractate 4",
+            "year": 407,
+            "commentary": 28516,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "I am the voice of one crying in the wilderness. Isaiah 40:3 That said Isaiah. This prophecy was fulfilled in John, I am the voice of one crying in the wilderness. Crying what? Prepare the way of the Lord, make straight the paths of our God."
+          }
+        ],
+        "traditions": {
+          "catholic": "Gospel reading (John the Baptist)",
+          "orthodox": "Gospel/LXX reading",
+          "protestant": "Gospel reading"
+        },
+        "modern": "KJV, NRSV in Gospel quotations"
+      },
+      {
+        "label": "The road is prepared in the wilderness",
+        "rendering": "A voice cries: In the wilderness prepare the way of the LORD",
+        "grammar": "בַּמִּדְבָּר attaches to פַּנּוּ, parallel to בָּעֲרָבָה in the next line (MT accents; NRSV, ESV, NIV, NJPS in Isaiah)",
+        "fathers": [],
+        "modern": "RSV, NRSV, ESV, NIV and NJPS in Isaiah 40:3; Qumran Community Rule (1QS 8:14) also joins it to 'prepare'"
+      }
+    ],
+    "macula_follows": 1,
+    "sources": [
+      "NET note on Isa 40:3",
+      "Matt 3:3; Mark 1:3; Luke 3:4; John 1:23"
+    ],
+    "macula_evidence": "The tree attaches בַּמִּדְבָּר inside the clause of פַּנּוּ דֶּרֶךְ יְהוָה, not inside 'voice calling', matching the Masoretic reading."
+  },
+  {
+    "id": "isa-48-16-sent-me-and-his-spirit",
+    "book": "Isaiah",
+    "chapter": 48,
+    "verse": 16,
+    "words": [
+      "ISA 48:16!16",
+      "ISA 48:16!17"
+    ],
+    "title": "Isa 48:16: 'has sent me and his Spirit' - is the Spirit a sender or one sent?",
+    "category": "case",
+    "summary": "Hebrew does not mark case on 'his Spirit', so וְרוּחוֹ can be a second subject ('the Lord GOD and his Spirit have sent me') or a second object ('the Lord GOD has sent me and his Spirit'). The first makes the Spirit a co-sender; the second makes the speaker and the Spirit both sent.",
+    "readings": [
+      {
+        "label": "The Spirit is a second object: 'sent me and his Spirit'",
+        "rendering": "And now the Lord GOD has sent me, and his Spirit",
+        "grammar": "רוּחוֹ as a second direct object of שְׁלָחַנִי; the speaker and the Spirit are both sent",
+        "fathers": [
+          {
+            "father": "Origen",
+            "work": "Against Celsus",
+            "ref": "1.46",
+            "year": 248,
+            "legacy": 69593,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Did the Father and the Holy Spirit send Jesus, or did the Father send both Christ and the Spirit? The latter is correct."
+          },
+          {
+            "father": "Origen",
+            "work": "Commentary on John",
+            "ref": "2.79-81",
+            "year": 230,
+            "legacy": 69594,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "According to Isaiah the Lord has sent Christ and his Spirit."
+          }
+        ],
+        "modern": "NRSV ('the Lord GOD has sent me and his spirit'), RSV, ESV, NJPS ('the Lord GOD has sent me, endowed with His spirit')"
+      },
+      {
+        "label": "The Spirit is a second subject: 'the Lord GOD and his Spirit have sent me'",
+        "rendering": "And now the Lord GOD and his Spirit have sent me",
+        "grammar": "רוּחוֹ as a second (compound) subject of שְׁלָחַנִי with the singular verb",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "City of God",
+            "ref": "20.30",
+            "year": 426,
+            "commentary": 22317,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "And now the Lord God and His Spirit has sent me. Isaiah 48:12-16 It was Himself who was speaking as the Lord God; and yet we should not have understood that it was Jesus Christ"
+          },
+          {
+            "father": "Ambrose of Milan",
+            "work": "On the Christian Faith",
+            "ref": "2.75",
+            "year": 380,
+            "commentary": 14658,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Bethink you that our Lord Jesus Christ said in Isaiah that He had been sent by the Spirit. Is the Son, therefore, less than the Spirit because He was sent by the Spirit? Thus you have the record, that the Son declares Himself sent by the Father and His Spirit."
+          }
+        ],
+        "traditions": {
+          "catholic": "Trinitarian reading (Spirit co-sends the Son)",
+          "orthodox": "Trinitarian reading (cf. Basil, Amphilochius)"
+        },
+        "modern": "KJV, NASB, NIV ('the Sovereign LORD has sent me, with his Spirit')"
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Isa 48:16",
+      "Augustine, City of God 20.30"
+    ],
+    "macula_evidence": "The tree is flat: וְרוּחוֹ sits at the same level as שְׁלָחַנִי with וְ glossed 'with', and no subject/object roles are marked."
+  },
+  {
+    "id": "isa-53-8-min-otser",
+    "book": "Isaiah",
+    "chapter": 53,
+    "verse": 8,
+    "words": [
+      "ISA 53:8!1",
+      "ISA 53:8!2",
+      "ISA 53:8!3"
+    ],
+    "title": "Isa 53:8: 'mēʿōṣer ûmimmišpāṭ luqqāḥ' - 'by' or 'from'?",
+    "category": "construction",
+    "summary": "מִן in מֵעֹצֶר וּמִמִּשְׁפָּט can mark agency/cause ('by oppression and judgment he was taken away'), separation ('from [= without] oppression and a fair trial he was taken'), or, in the Greek, a reading of the whole phrase as 'in his humiliation his judgment was taken away'.",
+    "readings": [
+      {
+        "label": "By oppression and judicial process he was taken away",
+        "rendering": "By oppression and judgment he was taken away",
+        "grammar": "מִן of agency/means with לֻקָּח passive (NRSV 'By a perversion of justice he was taken away')",
+        "fathers": [],
+        "modern": "RSV, ESV ('By oppression and judgment he was taken away'), NIV"
+      },
+      {
+        "label": "Out of (without) restraint and fair judgment he was taken",
+        "rendering": "Without hindrance and without fair trial he was taken away; or: from prison and from judgment he was taken away",
+        "grammar": "מִן of separation/privation: 'from/without' (NJPS 'Without hindrance, without trial, he was taken away')",
+        "fathers": [],
+        "modern": "NJPS; NET alternative"
+      },
+      {
+        "label": "LXX: 'in his humiliation his judgment was taken away'",
+        "rendering": "In His humiliation His judgment was taken away",
+        "grammar": "Greek ἐν τῇ ταπεινώσει ἡ κρίσις αὐτοῦ ἤρθη (the form quoted in Acts 8:33)",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Merits and Remission of Sins",
+            "ref": "1.",
+            "year": 412,
+            "commentary": 25620,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "In His humiliation His judgment was taken away: His generation who shall declare?"
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Isa 53:8",
+      "Acts 8:33"
+    ],
+    "macula_evidence": "The outline is a flat clause; מֵ is glossed 'by' and מִ 'of' with לֻקָּח as a plain passive verb. The tree gives no further structure."
+  },
+  {
+    "id": "isa-53-10-tasim-asham",
+    "book": "Isaiah",
+    "chapter": 53,
+    "verse": 10,
+    "words": [
+      "ISA 53:10!5",
+      "ISA 53:10!6",
+      "ISA 53:10!7",
+      "ISA 53:10!8",
+      "ISA 53:10!9"
+    ],
+    "title": "Isa 53:10: 'ʾim tāśîm ʾāšām nafšô' - who makes the offering?",
+    "category": "construction",
+    "summary": "The verb תָּשִׂים is second-person masculine or third-person feminine, and nafšô is feminine in agreement, so it can be 'when you (the LORD) make his life a guilt offering', 'when his soul makes (itself) an offering', or, in the Septuagint, 'if you (plural) give an offering for sin'.",
+    "readings": [
+      {
+        "label": "The LORD makes his life a guilt offering",
+        "rendering": "when you [the LORD] make his life an offering for sin, he shall see offspring",
+        "grammar": "תָּשִׂים 2ms ('you') addressed to God, אָשָׁם as the thing made",
+        "fathers": [],
+        "modern": "Some commentators (Targum-type address to God); NET note lists it"
+      },
+      {
+        "label": "His soul makes itself an offering",
+        "rendering": "when his soul makes (himself) an offering for sin, he shall see offspring",
+        "grammar": "תָּשִׂים 3fs with נַפְשׁוֹ ('his soul') as subject (RSV, NIV, ESV 'when his soul makes an offering for guilt')",
+        "fathers": [],
+        "modern": "RSV, NIV, ESV ('when his soul makes an offering for guilt')"
+      },
+      {
+        "label": "LXX: 'if you give an offering for sin, your soul shall see long-lived seed'",
+        "rendering": "If you could yourselves have given your soul on account of your sins, you should see a seed of a long life",
+        "grammar": "LXX ἐὰν δῶτε περὶ ἁμαρτίας: plural 'you', conditional, 'give' (not 'make')",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Merits and Remission of Sins",
+            "ref": "1.",
+            "year": 412,
+            "commentary": 25622,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "If you could yourselves have given your soul on account of your sins, you should see a seed of a long life."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Isa 53:10",
+      "Wallace GGBB"
+    ],
+    "macula_evidence": "The tree gives תָּשִׂים as a bare verb 'make' under אִם with no subject, leaving person and gender open."
+  },
+  {
+    "id": "jer-23-6-yhwh-tsidqenu",
+    "book": "Jeremiah",
+    "chapter": 23,
+    "verse": 6,
+    "words": [
+      "JER 23:6!8",
+      "JER 23:6!9",
+      "JER 23:6!10",
+      "JER 23:6!11",
+      "JER 23:6!12"
+    ],
+    "title": "Jer 23:6: 'YHWH ṣidqēnû' - the king's name, or the name he is given?",
+    "category": "construction",
+    "summary": "The relative clause אֲשֶׁר־יִקְרְאוֹ יְהוָה צִדְקֵנוּ has no stated subject for 'calls', and יְהוָה can be the subject ('which the LORD will call him: Our righteousness') or part of the name ('the name by which one will call him: The LORD our righteousness').",
+    "readings": [
+      {
+        "label": "The name itself is 'the LORD our righteousness'",
+        "rendering": "this is the name by which he will be called: The LORD (is) our righteousness",
+        "grammar": "יִקְרְאוֹ impersonal 'one calls him'; יְהוָה צִדְקֵנוּ = a nominal-sentence name (KJV, NIV, ESV)",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "City of God",
+            "ref": "18.",
+            "year": 418,
+            "commentary": 22063,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "In those days Judah shall be saved, and Israel shall dwell confidently: and this is the name which they shall call Him, Our righteous Lord."
+          }
+        ],
+        "modern": "KJV, NIV, ESV, NAB"
+      },
+      {
+        "label": "The LORD calls him 'Our righteousness'",
+        "rendering": "this is the name by which the LORD will call him: Our righteousness",
+        "grammar": "יְהוָה as subject of יִקְרְאוֹ; צִדְקֵנוּ as the name alone (LXX 'Iosedek')",
+        "fathers": [],
+        "modern": "Some critical commentators (cf. Jer 33:16 where it names Jerusalem); LXX 'Iosedek'"
+      }
+    ],
+    "macula_follows": 0,
+    "sources": [
+      "NET note on Jer 23:6",
+      "Jer 33:16"
+    ],
+    "macula_evidence": "The tree puts יִקְרְאוֹ in a relative clause and leaves יְהוָה צִדְקֵנוּ outside it as the content of the name, so YHWH is not the subject there."
+  },
+  {
+    "id": "ezk-28-14-et-cherub",
+    "book": "Ezekiel",
+    "chapter": 28,
+    "verse": 14,
+    "words": [
+      "EZK 28:14!1",
+      "EZK 28:14!2",
+      "EZK 28:14!3"
+    ],
+    "title": "Ezek 28:14: 'ʾat kĕrûb' / 'ʾēt kĕrûb' - 'you were a cherub' or 'you were with the cherub'?",
+    "category": "construction",
+    "summary": "The consonants אתכרוב can be read ʾattā kĕrûb ('you [were] a cherub') or ʾēt kĕrûb ('with the cherub'), with the long vowel and gloss deciding whether the king of Tyre is the guardian cherub himself or accompanied one.",
+    "readings": [
+      {
+        "label": "'You were an anointed guardian cherub'",
+        "rendering": "You were an anointed cherub that covers; I placed you on the holy mountain of God",
+        "grammar": "אַתְּ כְּרוּב: 'you (are) a cherub', pronoun as subject in a nominal clause (MT pointing)",
+        "fathers": [
+          {
+            "father": "John Cassian",
+            "work": "Conferences",
+            "ref": "8",
+            "year": 426,
+            "commentary": 47029,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "You were a cherub stretched out and protecting, and I set you in the holy mountain of God, you have walked in the midst of the stones of fire."
+          }
+        ],
+        "modern": "KJV, NIV, ESV, NRSV ('With an anointed guardian cherub I placed you' is the alternative)"
+      },
+      {
+        "label": "'You were with the cherub'",
+        "rendering": "You were with the cherub, the anointed one who overshadows",
+        "grammar": "אֵת as the preposition 'with' before כְּרוּב (LXX μετὰ τοῦ χερουβ)",
+        "fathers": [
+          {
+            "father": "Aphrahat the Persian Sage",
+            "work": "Demonstrations",
+            "ref": "5",
+            "year": 344,
+            "commentary": 17292,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "You were with the Cherub who was anointed and overshadowing."
+          }
+        ],
+        "modern": "RSV and NRSV: 'With an anointed guardian cherub I placed you'; NET lists it as the alternative"
+      }
+    ],
+    "macula_follows": 0,
+    "sources": [
+      "NET note on Ezek 28:14",
+      "LXX Ezek 28:14"
+    ],
+    "macula_evidence": "The tree reads אַתְּ as the pronoun 'you' standing before 'cherub anointed' in a nominal clause, i.e. the MT identification."
+  },
+  {
+    "id": "dan-9-25-seven-and-sixty-two",
+    "book": "Daniel",
+    "chapter": 9,
+    "verse": 25,
+    "words": [
+      "DAN 9:25!9",
+      "DAN 9:25!10",
+      "DAN 9:25!11",
+      "DAN 9:25!12",
+      "DAN 9:25!13",
+      "DAN 9:25!14",
+      "DAN 9:25!15",
+      "DAN 9:25!16",
+      "DAN 9:25!17"
+    ],
+    "title": "Dan 9:25: where does 'seven weeks' end and 'sixty-two weeks' begin?",
+    "category": "punctuation",
+    "summary": "The Masoretic accent (ʾatnāḥ) falls after 'seven weeks', so 'until an anointed one, a prince: seven weeks; and for sixty-two weeks it shall be rebuilt'. The older Christian reckoning joins 'seven and sixty-two' as one period of 69 weeks 'until Messiah the Prince'. The break decides what 'anointed prince' is and when he comes.",
+    "readings": [
+      {
+        "label": "Seven weeks plus sixty-two weeks, then Messiah",
+        "rendering": "From the going forth of the word until Messiah the Prince shall be seven weeks and sixty-two weeks",
+        "grammar": "שָׁבֻעִים שִׁבְעָה וְשָׁבֻעִים שִׁשִּׁים וּשְׁנַיִם as one sum (69) governed by עַד מָשִׁיחַ נָגִיד",
+        "fathers": [
+          {
+            "father": "Cyril of Jerusalem",
+            "work": "Catechetical Lectures",
+            "ref": "12.19",
+            "year": 350,
+            "commentary": 38512,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "From the going forth of the word for making answer , and for the building of Jerusalem, until Messiah the Prince are seven weeks and three score and two weeks."
+          }
+        ],
+        "traditions": {
+          "catholic": "69 weeks to Christ (Jerome, Eusebius, Cyril of Jerusalem)",
+          "protestant": "69 weeks to Messiah (dispensational and historicist)"
+        },
+        "modern": "KJV, NASB, NIV margin"
+      },
+      {
+        "label": "Seven weeks to an anointed prince (Cyrus), then sixty-two weeks for rebuilding",
+        "rendering": "from the word to restore Jerusalem until an anointed prince: seven weeks; and for sixty-two weeks it shall be rebuilt with streets and moat",
+        "grammar": "Masoretic ʾatnāḥ after שִׁבְעָה: the seven weeks end at the anointed prince; the sixty-two begin a new clause (תָּשׁוּב וְנִבְנְתָה)",
+        "fathers": [
+          {
+            "father": "Hippolytus of Rome",
+            "work": "Commentary on Daniel (cited by Jerome)",
+            "ref": "9:24-27",
+            "year": 204,
+            "legacy": 72472,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "he reckons the seven weeks as prior to the return of the people from Babylon, and the sixty-two weeks as subsequent to their return and extending to the birth of Christ."
+          }
+        ],
+        "modern": "RSV, NRSV, ESV, NIV ('until the Anointed One, the ruler, comes, there will be seven 'sevens', and sixty-two 'sevens'' with notes), NJPS"
+      }
+    ],
+    "macula_follows": 0,
+    "sources": [
+      "NET note on Dan 9:25",
+      "Jerome, Commentary on Daniel 9"
+    ],
+    "macula_evidence": "The tree puts שָׁבֻעִים שִׁבְעָה and שָׁבֻעִים שִׁשִּׁים וּשְׁנַיִם in one clause with עַד מָשִׁיחַ נָגִיד and starts the next with תָּשׁוּב, so seven and sixty-two are summed to the anointed prince."
+  },
+  {
+    "id": "dan-9-27-who-confirms-the-covenant",
+    "book": "Daniel",
+    "chapter": 9,
+    "verse": 27,
+    "words": [
+      "DAN 9:27!1",
+      "DAN 9:27!2",
+      "DAN 9:27!3",
+      "DAN 9:27!4",
+      "DAN 9:27!5"
+    ],
+    "title": "Dan 9:27: who 'makes a firm covenant with the many'?",
+    "category": "referent",
+    "summary": "הִגְבִּיר בְּרִית has no explicit subject. The nearest masculine singular nouns are 'the anointed one' (v. 26a) and 'the prince who is to come' (v. 26b), and 'week' is also a possible subject. The identification is disputed: Messiah (Christ) confirming the covenant, or the coming prince (Antichrist / a Seleucid or Roman ruler).",
+    "readings": [
+      {
+        "label": "The coming prince (Antichrist / a ruler) makes the covenant",
+        "rendering": "he [the prince who is to come] will confirm a covenant with many for one week, and in the middle of the week he will stop sacrifice and offering",
+        "grammar": "הִגְבִּיר with the nearest masculine subject נָגִיד הַבָּא of v. 26 (also the subject of 'cause to cease')",
+        "fathers": [
+          {
+            "father": "Hippolytus of Rome",
+            "work": "Commentary on Daniel (cited by Jerome)",
+            "ref": "9:27",
+            "year": 204,
+            "legacy": 72472,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Moreover Hippolytus places the final week at the end of the world and divides it into the period of Elias and the period of Antichrist, so that during the three and a half years of the last week the knowledge of God is established. And as for the statement, \"He shall establish a compact with many for a week\" (Daniel 9:27), during the other three years under the Antichrist the sacrifice and offering shall cease."
+          },
+          {
+            "father": "Irenaeus of Lyons",
+            "work": "Against Heresies",
+            "ref": "5.25.4",
+            "year": 180,
+            "commentary": 5361,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "And in the midst of the week, he says, the sacrifice and the libation shall be taken away, and the abomination of desolation [shall be brought] into the temple: even unto the consummation of the time shall the desolation be complete. Daniel 9:27 Now three years and six months constitute the half-week."
+          }
+        ],
+        "traditions": {
+          "catholic": "Antichrist reading (Hippolytus, Irenaeus); Messiah reading also common (Eusebius, Aquinas Study Bible)"
+        },
+        "modern": "Dispensational interpreters, some critical commentators (Antiochus IV)"
+      },
+      {
+        "label": "The Messiah (the anointed one cut off in v. 26) confirms the covenant",
+        "rendering": "he [the Messiah] will make a firm covenant with the many for one week; in the middle of the week his sacrificial death ends sacrifice and offering",
+        "grammar": "הִגְבִּיר with מָשִׁיחַ of v. 26a as subject; the middle of the week is his cutting off",
+        "fathers": [],
+        "modern": "Many Reformation and Catholic commentators; Calvin, Aquinas Study Bible"
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Dan 9:27",
+      "Jerome, Commentary on Daniel 9"
+    ],
+    "macula_evidence": "The tree has הִגְבִּיר with no subject expressed in a flat clause; the preceding verse's nouns are not attached to it."
+  },
+  {
+    "id": "hos-6-7-ke-adam",
+    "book": "Hosea",
+    "chapter": 6,
+    "verse": 7,
+    "words": [
+      "HOS 6:7!1",
+      "HOS 6:7!2",
+      "HOS 6:7!3",
+      "HOS 6:7!4"
+    ],
+    "title": "Hos 6:7: 'kĕʾādām' - 'like Adam' or 'like men'?",
+    "category": "construction",
+    "summary": "אָדָם can be the proper name Adam or the common noun 'humanity', and the prefix כְּ ('like') is comparative. 'They, like Adam, broke the covenant' evokes Eden; 'they, like ordinary men, broke covenant' is a general charge. The reading touches the doctrine of Adam's covenant.",
+    "readings": [
+      {
+        "label": "Like Adam: Eden as the model of covenant-breaking",
+        "rendering": "But they, like Adam, transgressed the covenant; there they dealt faithlessly with me",
+        "grammar": "אָדָם as the proper name Adam; כְּ comparative (KJV marg., NIV 'like Adam', ESV 'like Adam')",
+        "fathers": [],
+        "modern": "NIV, ESV, NASB, NAB; Reformed 'covenant of works' exegesis"
+      },
+      {
+        "label": "Like men: the common nouns 'humankind'",
+        "rendering": "But they, like [any] man, transgressed the covenant",
+        "grammar": "אָדָם as a collective 'human beings, mortals'; כְּ comparative (KJV 'like men', RSV 'like men')",
+        "fathers": [],
+        "modern": "KJV, RSV, NRSV, NJPS ('But like Adam they broke the covenant' with note)"
+      }
+    ],
+    "macula_follows": 0,
+    "sources": [
+      "NET note on Hos 6:7",
+      "Calvin on Hos 6:7"
+    ],
+    "macula_evidence": "The tree glosses אָדָם with a capital 'Adam' and joins כְּ to it as 'like Adam', following the proper-name reading."
+  },
+  {
+    "id": "hos-13-14-ehi",
+    "book": "Hosea",
+    "chapter": 13,
+    "verse": 14,
+    "words": [
+      "HOS 13:14!6",
+      "HOS 13:14!7",
+      "HOS 13:14!8",
+      "HOS 13:14!9",
+      "HOS 13:14!10",
+      "HOS 13:14!11"
+    ],
+    "title": "Hos 13:14: 'ʾĕhî dĕbārêkā māwet' - 'Where?' or 'I will be'?",
+    "category": "construction",
+    "summary": "The form אֱהִי can be an interrogative adverb 'where?' (a variant of אַיֵּה, as Paul quotes in 1 Cor 15:55) or the first-person verb 'I will be' (אֶהְיֶה). The earlier lines, 'I will ransom them... redeem them', may be statements or questions ('shall I ransom them?').",
+    "readings": [
+      {
+        "label": "Rhetorical question: 'Where are your plagues, O Death?'",
+        "rendering": "Where, O Death, are your plagues? Where, O Sheol, is your destruction?",
+        "grammar": "אֱהִי as interrogative 'where' (= אַיֵּה), the 1 Cor 15:55 form; the preceding lines are promises",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Of the Morals of the Catholic Church",
+            "ref": "1.",
+            "year": 388,
+            "page": "1401",
+            "url": "https://www.newadvent.org/fathers/1401.htm",
+            "quote": "Death is swallowed up in victory. O death, where is your sting? Where, O death, is your contest?"
+          }
+        ],
+        "traditions": {
+          "orthodox": "LXX 'Where is your penalty, O Death? where is your sting, O Hades?' (cited in 1 Cor 15:55)"
+        },
+        "modern": "RSV, NRSV, NIV, ESV (promise of redemption, then taunt)"
+      },
+      {
+        "label": "Summons: 'I will be your plagues, O Death'",
+        "rendering": "O Death, I will be your plagues; O Sheol, I will be your destruction",
+        "grammar": "אֱהִי as 'I will be' (אֶהְיֶה), with דְּבָרֶיךָ 'your plagues' as the predicate (Vulgate 'ero mors tua, o mors')",
+        "fathers": [
+          {
+            "father": "Jerome",
+            "work": "Letters",
+            "ref": "60",
+            "year": 396,
+            "commentary": 43573,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "He it was who of old threatened you in Hosea: O death, I will be your plagues; O grave, I will be your destruction."
+          },
+          {
+            "father": "Jerome",
+            "work": "Letters",
+            "ref": "75",
+            "year": 399,
+            "commentary": 43944,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "For it is said: O death, I will be your plagues; O grave, I will be your destruction"
+          }
+        ],
+        "traditions": {
+          "catholic": "Vulgate 'ero mors tua, o mors; morsus tuus ero, inferne'"
+        },
+        "modern": "KJV marg., Douay-Rheims, Vulgate, some Jewish readings"
+      }
+    ],
+    "macula_follows": 0,
+    "sources": [
+      "NET note on Hos 13:14",
+      "1 Cor 15:55"
+    ],
+    "macula_evidence": "The tree glosses אֱהִי as 'where' in both lines, treating it as the interrogative adverb."
+  },
+  {
+    "id": "mic-5-2-tsair-lihyot",
+    "book": "Micah",
+    "chapter": 5,
+    "verse": 2,
+    "words": [
+      "MIC 5:1!5",
+      "MIC 5:1!6",
+      "MIC 5:1!7",
+      "MIC 5:1!8",
+      "MIC 5:1!11"
+    ],
+    "title": "Mic 5:2: 'ṣāʿîr lihyôt' - 'too small to be' or 'though small'?",
+    "category": "construction",
+    "summary": "צָעִיר לִהְיוֹת ('small to be among the clans') can express result ('too small to be counted among...'), concession ('though small... yet from you shall come'), or, as in Matthew 2:6, a rhetorical reversal ('by no means least'). The tone of the verse changes.",
+    "readings": [
+      {
+        "label": "'Too small / the least to be among the clans of Judah'",
+        "rendering": "You, Bethlehem Ephrathah, are small among the clans of Judah (yet from you shall come...)",
+        "grammar": "צָעִיר 'small' with the infinitive of result לִהְיוֹת 'to be (counted)'",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "City of God",
+            "ref": "18.",
+            "year": 418,
+            "commentary": 22041,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "And you, Bethlehem, of the house of Ephratah, art the least that can be reckoned among the thousands of Judah;"
+          }
+        ],
+        "modern": "KJV, RSV, NRSV, ESV, NIV ('though you are small among the clans of Judah')"
+      },
+      {
+        "label": "Not least: the Matthean reversal ('by no means least')",
+        "rendering": "And you, Bethlehem, in the land of Judah, are by no means least among the princes of Judah",
+        "grammar": "Matt 2:6 renders the clause as a litotes of honour rather than a concession",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Matthew",
+            "ref": "Homily 6",
+            "year": 390,
+            "commentary": 48052,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "And thou, Bethlehem, in the land of Judah, art by no means the least among the princes of Judah;"
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Mic 5:2",
+      "Matt 2:6"
+    ],
+    "macula_evidence": "The tree sets צָעִיר and the infinitive clause לִהְיוֹת בְּאַלְפֵי יְהוּדָה as one unit with a relative-clause label and gives no concessive link."
+  },
+  {
+    "id": "hab-2-4-faith",
+    "book": "Habakkuk",
+    "chapter": 2,
+    "verse": 4,
+    "words": [
+      "HAB 2:4!7",
+      "HAB 2:4!8",
+      "HAB 2:4!9"
+    ],
+    "title": "Hab 2:4: 'by his faith' - attached to 'righteous' or to 'live'?",
+    "category": "attachment",
+    "summary": "בֶּאֱמוּנָתוֹ ('by/in his faith(fulness)') can go with the verb ('the righteous will live by his faith'), or with the noun ('the righteous-by-faith will live', as many read Rom 1:17). The suffix 'his' is the prophet's righteous one in the Hebrew, but is 'my' (God's) in the Septuagint.",
+    "readings": [
+      {
+        "label": "'By his faith(fulness) he shall live'",
+        "rendering": "the righteous shall live by his faith",
+        "grammar": "בֶּאֱמוּנָתוֹ with יִחְיֶה (adverbial); 'his' = the righteous one's",
+        "fathers": [
+          {
+            "father": "Tertullian",
+            "work": "Against Marcion",
+            "ref": "4.",
+            "year": 207,
+            "commentary": 12193,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "The just shall live by his faith. Habakkuk 2:4"
+          },
+          {
+            "father": "Augustine of Hippo",
+            "work": "City of God",
+            "ref": "19.",
+            "year": 419,
+            "commentary": 22132,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "And thus it is written, The just lives by faith, Habakkuk 2:4"
+          }
+        ],
+        "modern": "KJV, NASB, ESV, NIV ('the righteous person will live by his faithfulness')"
+      },
+      {
+        "label": "'The one who is righteous by faith shall live'",
+        "rendering": "the one who is righteous by faith will live",
+        "grammar": "בֶּאֱמוּנָתוֹ modifies צַדִּיק (the Pauline reading of Rom 1:17 in several commentators); יִחְיֶה stands alone",
+        "fathers": [],
+        "modern": "Some Pauline commentators on Rom 1:17; no clear Father so reading it"
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Hab 2:4",
+      "Rom 1:17; Gal 3:11; Heb 10:38"
+    ],
+    "macula_evidence": "The tree is a flat clause 'righteous by faith his live' with no attachment of the prepositional phrase to either word."
+  },
+  {
+    "id": "hag-2-7-chemdat",
+    "book": "Haggai",
+    "chapter": 2,
+    "verse": 7,
+    "words": [
+      "HAG 2:7!5",
+      "HAG 2:7!6",
+      "HAG 2:7!7",
+      "HAG 2:7!8"
+    ],
+    "title": "Hag 2:7: 'ḥemdat kol-haggôyim bāʾû' - the Desire of the nations, or their treasures?",
+    "category": "construction",
+    "summary": "חֶמְדַּת is singular, yet the verb בָּאוּ is plural. If חֶמְדַּת is a singular noun 'the desired one' the plural verb is hard, so most modern versions take it as a collective ('the treasures of all nations will come'); the older Latin tradition reads the singular and a personal Messiah ('the Desired of all nations shall come').",
+    "readings": [
+      {
+        "label": "The Desired One (Messiah) of all nations shall come",
+        "rendering": "the Desire of all nations shall come",
+        "grammar": "חֶמְדַּת as a singular personal noun 'desire, desired one' (Vulgate 'veniet desideratus cunctis gentibus'); the verb agrees by sense",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "City of God",
+            "ref": "18.48",
+            "year": 418,
+            "commentary": 22101,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "For then shall come the desired of all nations, Haggai 2:7 as we read in the Hebrew."
+          },
+          {
+            "father": "Jerome",
+            "work": "Letters",
+            "ref": "53",
+            "year": 394,
+            "commentary": 43365,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "and I will shake all nations and he who is desired of all nations shall come."
+          }
+        ],
+        "traditions": {
+          "catholic": "Vulgate 'veniet desideratus'; Messianic reading",
+          "protestant": "KJV 'the desire of all nations shall come'"
+        },
+        "modern": "KJV, Douay-Rheims; some conservative commentators"
+      },
+      {
+        "label": "The treasures / choice things of the nations shall come",
+        "rendering": "the treasures of all nations shall come in, and I will fill this house with glory",
+        "grammar": "חֶמְדַּת as a collective 'desirable things, treasures' with the plural verb (LXX τὰ ἐκλεκτὰ)",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "City of God",
+            "ref": "18.35",
+            "year": 418,
+            "commentary": 22095,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "The things shall come that are chosen of the Lord from all nations, that is, men, of whom Jesus says in the Gospel, Many are called, but few are chosen."
+          }
+        ],
+        "modern": "RSV, NRSV, ESV, NIV ('the desired of all nations' with note), NJPS"
+      }
+    ],
+    "macula_follows": 1,
+    "sources": [
+      "NET note on Hag 2:7",
+      "Augustine, City of God 18.35"
+    ],
+    "macula_evidence": "The tree glosses חֶמְדַּת 'treasure' as the subject of the plural בָּאוּ, following the collective reading."
+  },
+  {
+    "id": "zec-9-9-ass-and-colt",
+    "book": "Zechariah",
+    "chapter": 9,
+    "verse": 9,
+    "words": [
+      "ZEC 9:9!16",
+      "ZEC 9:9!17",
+      "ZEC 9:9!18",
+      "ZEC 9:9!19",
+      "ZEC 9:9!20",
+      "ZEC 9:9!21",
+      "ZEC 9:9!22"
+    ],
+    "title": "Zech 9:9: one animal or two?",
+    "category": "construction",
+    "summary": "רֹכֵב עַל־חֲמוֹר וְעַל־עַיִר בֶּן־אֲתֹנוֹת can be Hebrew parallelism with the waw as 'even' (one animal: a donkey, namely a colt, the foal of a she-donkey) or two animals (a donkey and a colt). Matthew 21:2-7 reads two.",
+    "readings": [
+      {
+        "label": "One animal in poetic parallelism",
+        "rendering": "riding on a donkey, even on a colt, the foal of a donkey",
+        "grammar": "וְ as waw-explicative/epexegetic; the three phrases describe one beast",
+        "fathers": [],
+        "modern": "RSV, NRSV, ESV, NIV, NJPS"
+      },
+      {
+        "label": "Two animals: a donkey and a colt",
+        "rendering": "riding on a donkey and on a colt, the foal of a donkey",
+        "grammar": "וְ as simple coordination of two prepositional phrases (Matt 21:2-7 'an ass tied, and a colt with her')",
+        "fathers": [
+          {
+            "father": "Origen",
+            "work": "Commentary on John",
+            "ref": "10",
+            "year": 231,
+            "commentary": 7201,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "But before this he has the story of the ass and the foal which were taken by command of the Lord and found by the two disciples whom he sent from Bethphage into the village over against them."
+          }
+        ],
+        "traditions": {
+          "orthodox": "Matthean two-animal reading in the liturgy (Palm Sunday)",
+          "catholic": "Matthean reading (ass and colt)"
+        },
+        "modern": "Matthew 21:7 as read literally by Origen, Chrysostom and others"
+      }
+    ],
+    "macula_follows": 0,
+    "sources": [
+      "NET note on Zech 9:9",
+      "Matt 21:2-7"
+    ],
+    "macula_evidence": "The tree glosses וְעַל as 'even on', treating the second phrase as epexegetic of the first, i.e. one animal."
+  },
+  {
+    "id": "zec-12-10-elay-et-asher",
+    "book": "Zechariah",
+    "chapter": 12,
+    "verse": 10,
+    "words": [
+      "ZEC 12:10!12",
+      "ZEC 12:10!13",
+      "ZEC 12:10!14",
+      "ZEC 12:10!15"
+    ],
+    "title": "Zech 12:10: 'ʾēlay ʾēt ʾăšer dāqārû' - to me, whom they pierced, or to him?",
+    "category": "referent",
+    "summary": "The construction אֵלַי אֵת אֲשֶׁר can be read three ways: 'look to me, [namely] the one whom they pierced' (the speaker is the pierced one), 'look to me concerning the one whom they pierced' (the speaker differs from the pierced one, who is then 'him' in the next clause), or, as in the Septuagint, 'they will look to me because they mocked/danced in triumph'.",
+    "readings": [
+      {
+        "label": "'Me' is the one pierced",
+        "rendering": "they will look on me, whom they have pierced",
+        "grammar": "אֵת אֲשֶׁר as the relative object 'the one whom', apposed to אֵלַי; the speaker (God) is the pierced one",
+        "fathers": [
+          {
+            "father": "Lucius Caecilius Firmianus Lactantius",
+            "work": "Divine Institutes",
+            "ref": "4.18",
+            "year": 310,
+            "commentary": 6082,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Zechariah also thus wrote: Zechariah 12:10 And they shall look on me, whom they pierced."
+          }
+        ],
+        "modern": "KJV, NASB, NRSV marg., ESV ('when they look on me, on him whom they have pierced')"
+      },
+      {
+        "label": "They look on him whom they pierced (the third-person form of John 19:37)",
+        "rendering": "they shall look on Him whom they have pierced, and mourn for him",
+        "grammar": "אֵלַי read as אֵלָיו (many MSS), or the relative clause refers to a person distinct from the speaker",
+        "fathers": [
+          {
+            "father": "Irenaeus of Lyons",
+            "work": "Against Heresies",
+            "ref": "4.33",
+            "year": 180,
+            "commentary": 5028,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "and those who declared regarding Him, They shall look on Him whom they have pierced, Zechariah 12:10 indicated His [second] advent"
+          },
+          {
+            "father": "Augustine of Hippo",
+            "work": "Expositions on the Psalms",
+            "ref": "Ps 102",
+            "year": 415,
+            "commentary": 35480,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "shall they not look then upon Him whom they have pierced? Zechariah 12:10"
+          }
+        ],
+        "modern": "NRSV, NIV ('they will look on the one they have pierced'), John 19:37"
+      },
+      {
+        "label": "LXX: they will look to me because they mocked",
+        "rendering": "they shall look upon me because they have insulted me, and they shall mourn for him as for one very dear",
+        "grammar": "אֵת אֲשֶׁר as the conjunction 'because'; דָּקָרוּ read as 'danced in triumph / insulted' (LXX κατωρχήσαντο)",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "City of God",
+            "ref": "20.30",
+            "year": 426,
+            "commentary": 22327,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "and they shall look upon me because they have insulted me, and they shall mourn for Him as for one very dear, and shall be in bitterness as for an only-begotten."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Zech 12:10",
+      "John 19:37; Rev 1:7"
+    ],
+    "macula_evidence": "The tree makes אֲשֶׁר a relative clause head under אֵת ('look on me (et) whom <rel> pierced'), which excludes the causal 'because' but does not decide between 'me' and 'him'."
+  },
+  {
+    "id": "mal-1-11-tense",
+    "book": "Malachi",
+    "chapter": 1,
+    "verse": 11,
+    "words": [
+      "MAL 1:11!11",
+      "MAL 1:11!12",
+      "MAL 1:11!13",
+      "MAL 1:11!14",
+      "MAL 1:11!15"
+    ],
+    "title": "Mal 1:11: 'incense is offered' - present or future?",
+    "category": "construction",
+    "summary": "The participles מֻגָּשׁ and מֻקְטָר in a verbless clause carry no tense of their own. Context decides whether it is a present fact (the nations already honour the LORD, even unwittingly, as the Hebrew perhaps implies), or a future promise (universal worship in the age to come), or a present of the Church's Eucharist.",
+    "readings": [
+      {
+        "label": "Present: incense and a pure offering are now being offered everywhere",
+        "rendering": "in every place incense is offered to my name, and a pure offering",
+        "grammar": "participles מֻגָּשׁ מֻקְטָר in a nominal clause as a present/continuous state",
+        "fathers": [
+          {
+            "father": "Irenaeus of Lyons",
+            "work": "Against Heresies",
+            "ref": "4.17.5",
+            "year": 180,
+            "commentary": 4798,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "and in every place incense is offered to My name, and a pure sacrifice;"
+          }
+        ],
+        "traditions": {
+          "catholic": "Eucharistic sacrifice already offered everywhere (Council of Trent, Session 22)",
+          "orthodox": "The Eucharist as the pure offering"
+        },
+        "modern": "NIV ('incense and pure offerings will be brought' vs. 'are brought'), NJPS ('everywhere incense and pure oblations are offered')"
+      },
+      {
+        "label": "Future: incense will be offered in every place",
+        "rendering": "in every place incense shall be offered to my name, and a pure offering",
+        "grammar": "participles read as futurate: the clause promises what will be (Vulgate 'offertur' vs. LXX 'προσάγεται' but KJV/RSV 'will be')",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Letters",
+            "ref": "93",
+            "year": 408,
+            "commentary": 20469,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "From the rising of the sun even unto the going down of the same, a pure offering shall be offered unto My name"
+          }
+        ],
+        "modern": "RSV, ESV, NASB ('will be offered'), most Reformation commentators (Calvin)"
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Mal 1:11",
+      "Council of Trent, Session 22 ch. 1"
+    ],
+    "macula_evidence": "The tree gives the participles as plain forms in a verbless clause with no tense label, so it does not decide."
+  },
+  {
+    "id": "mal-2-15-one-spirit",
+    "book": "Malachi",
+    "chapter": 2,
+    "verse": 15,
+    "words": [
+      "MAL 2:15!1",
+      "MAL 2:15!2",
+      "MAL 2:15!3",
+      "MAL 2:15!4",
+      "MAL 2:15!5",
+      "MAL 2:15!6",
+      "MAL 2:15!7",
+      "MAL 2:15!8"
+    ],
+    "title": "Mal 2:15: 'welōʾ ʾeḥād ʿāśâ' - one of the most obscure clauses in the Prophets",
+    "category": "construction",
+    "summary": "The Hebrew has no object of 'made', no stated referent for 'one', and 'remnant of spirit' can belong to the LORD or to the people. The sentence can be a question ('Did not the one God make them one?'), a negative statement ('no one who has any spirit left does this'), or a reference to Abraham ('not one has done so').",
+    "readings": [
+      {
+        "label": "God made husband and wife one (with a portion of the Spirit)",
+        "rendering": "Did he not make them one, with a portion of the Spirit in their union? And what was the one God seeking? Godly offspring",
+        "grammar": "אֶחָד as the object 'one (flesh)', שְׁאָר רוּחַ as the LORD's residue of spirit (ESV, KJV-type)",
+        "fathers": [],
+        "modern": "ESV, NASB; KJV ('And did not he make one? Yet had he the residue of the spirit')"
+      },
+      {
+        "label": "A general statement about the one God as creator: 'Did not one God make her? Both flesh and spirit are his'",
+        "rendering": "Has not the one God made you? You belong to him in body and spirit",
+        "grammar": "אֶחָד as the subject 'one God'; the verb עָשָׂה with understood object (NIV, NRSV)",
+        "fathers": [],
+        "modern": "NIV, NRSV ('Did not one God make her? Both flesh and spirit are his')"
+      },
+      {
+        "label": "A negative statement about the man with any spirit left",
+        "rendering": "No one who has any spirit left does this; and what did the one (Abraham) seek? A godly seed",
+        "grammar": "לֹא אֶחָד as 'no one' with עָשָׂה 'does so'; the 'one' of the next clause as the example (Abraham)",
+        "fathers": [],
+        "modern": "Targum; older Christian and Jewish commentators; Calmet"
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Mal 2:15",
+      "Hugenberger, Marriage as a Covenant"
+    ],
+    "macula_evidence": "The tree is flat here: לֹא, אֶחָד and עָשָׂה sit in one clause with no object, and 'remnant of spirit' is a separate clause with no attachment marked."
+  },
+  {
+    "id": "mal-2-16-hate-divorce",
+    "book": "Malachi",
+    "chapter": 2,
+    "verse": 16,
+    "words": [
+      "MAL 2:16!1",
+      "MAL 2:16!2",
+      "MAL 2:16!3",
+      "MAL 2:16!4",
+      "MAL 2:16!5"
+    ],
+    "title": "Mal 2:16: 'kî śānēʾ šallaḥ' - 'I hate divorce', or 'he who hates and divorces'?",
+    "category": "construction",
+    "summary": "שָׂנֵא שַׁלַּח has no pronoun. שָׂנֵא can be a perfect ('he hates') or an infinitive absolute used for 'I hate', and שַׁלַּח a noun 'divorce' or a verb 'send away'. So: 'God hates divorce', 'the man who hates his wife and sends her away covers his garment with violence' or, as in the LXX and Vulgate, 'if you hate her, put her away'.",
+    "readings": [
+      {
+        "label": "God hates divorce",
+        "rendering": "For I hate divorce, says the LORD, the God of Israel, and covering one's garment with violence, says the LORD of hosts",
+        "grammar": "שָׂנֵאתִי (read as 1cs / infinitive) with שַׁלַּח as the noun 'divorce' (RSV, NRSV, NJPS, ESV)",
+        "fathers": [],
+        "modern": "RSV, NRSV, NJPS, ESV, NASB, NIV ('I hate divorce')"
+      },
+      {
+        "label": "'He who hates and divorces' (a man's act)",
+        "rendering": "For the man who hates and divorces, says the LORD, covers his garment with violence",
+        "grammar": "שָׂנֵא as a participle 'hating' and שַׁלַּח as the verb: the man divorcing out of hatred (KJV 'he hateth putting away')",
+        "fathers": [],
+        "modern": "KJV, ASV, NIV margin, Targum"
+      },
+      {
+        "label": "'If you hate her, put her away' (Vulgate/LXX)",
+        "rendering": "But if you hate her, divorce her, says the LORD, the God of Israel; and injustice will cover his garment",
+        "grammar": "שָׂנֵא as a conditional 'if you hate' with שַׁלַּח as an imperative (LXX ἀλλὰ ἐὰν μισήσας ἐξαποστείλῃς, Vulgate 'cum odio habueris, dimitte')",
+        "fathers": [],
+        "traditions": {
+          "catholic": "Vulgate 'cum odio habueris, dimitte' (permission, not command)"
+        },
+        "modern": "Vulgate, LXX, Douay-Rheims"
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET note on Mal 2:16",
+      "Matt 5:31-32"
+    ],
+    "macula_evidence": "The tree is flat: שָׂנֵא and שַׁלַּח sit side by side glossed 'hate' and 'divorce' with no person or mood."
+  },
+  {
+    "id": "ecc-3-21-ha-olah",
+    "book": "Ecclesiastes",
+    "chapter": 3,
+    "verse": 21,
+    "words": [
+      "ECC 3:21!6",
+      "ECC 3:21!7",
+      "ECC 3:21!11",
+      "ECC 3:21!12"
+    ],
+    "title": "Eccl 3:21: 'hāʿōlâ' - 'that goes up' or 'does it go up?'",
+    "category": "article",
+    "summary": "The prefix הָ on עֹלָה and יֹּרֶדֶת can be the definite article/relative ('the spirit of man that goes upward') or the interrogative particle הֲ pointed as הָ ('does the spirit of man go upward?'). The first states a belief the writer doubts to know; the second doubts it altogether. Theology of the soul depends on it.",
+    "readings": [
+      {
+        "label": "Article/relative: 'the spirit of man that goes upward'",
+        "rendering": "Who knows the spirit of man, which goes upward, and the spirit of the beast, which goes down to the earth?",
+        "grammar": "הָ + participle as an article introducing an attributive/relative participle (MT pointing; KJV, RSV, NIV)",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "City of God",
+            "ref": "13.24",
+            "year": 420,
+            "commentary": 21521,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Who knows the spirit of man that goes upward, and the spirit of the beast that goes downward"
+          }
+        ],
+        "modern": "KJV, RSV, NIV, ESV"
+      },
+      {
+        "label": "Interrogative: 'whether it goes upward'",
+        "rendering": "Who knows whether the spirit of man goes upward and the spirit of the beast goes down?",
+        "grammar": "הָ read as the interrogative particle הֲ 'whether' (LXX, Vulgate 'si ascendat... si descendat')",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Soul and its Origin",
+            "ref": "4.",
+            "year": 420,
+            "commentary": 27445,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Who knows the spirit of the sons of men, whether it goes upward; and the spirit of the beast, whether it goes downward into the earth?"
+          }
+        ],
+        "modern": "NRSV, NJPS ('Who knows if a man's lifebreath does rise upward?'), LXX, Vulgate"
+      }
+    ],
+    "macula_follows": 0,
+    "sources": [
+      "NET note on Eccl 3:21",
+      "Augustine, De anima et eius origine 4"
+    ],
+    "macula_evidence": "The tree labels הָ as the article heading a relative clause (rel) 'the one that ascends', i.e. the attributive reading."
+  },
+  {
+    "id": "bar-3-38-afterward-seen",
+    "book": "Baruch",
+    "chapter": 3,
+    "verse": 38,
+    "words": [],
+    "title": "Baruch 3:38: who 'was seen upon earth and lived among men'?",
+    "category": "referent",
+    "summary": "Baruch 3:32-37 names God and the way of Wisdom ('she'), then 3:38 says 'afterward [he/she] appeared on earth and lived among men' with no explicit subject. If the subject is God, the verse is an Incarnation text; if it is Wisdom (Torah), it states that Wisdom took form in the Law.",
+    "readings": [
+      {
+        "label": "God appeared on earth (the Incarnation of the Son)",
+        "rendering": "Afterward He was seen upon the earth and dwelt among men",
+        "grammar": "Subject is God (v. 35-36, 'this is our God'); 3:38 continues without a new subject",
+        "fathers": [
+          {
+            "father": "Gregory the Wonderworker",
+            "work": "Twelve Topics on the Faith",
+            "ref": "Topic 2",
+            "year": 260,
+            "commentary": 3481,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "to show that He was made man in the world, and had His conversation with men, Baruch 3:38 yet without sin."
+          },
+          {
+            "father": "John of Damascus",
+            "work": "Exposition of the Orthodox Faith",
+            "ref": "4",
+            "year": 743,
+            "commentary": 46197,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Thereafter He was seen upon the earth and dwelt among men. Baruch 3:38"
+          }
+        ],
+        "traditions": {
+          "catholic": "Incarnation text (Cyprian, Athanasius, Damascus)",
+          "orthodox": "Christological, in the Great Prokeimenon cycle"
+        }
+      },
+      {
+        "label": "Wisdom (the Torah) appeared on earth",
+        "rendering": "Afterward she appeared on earth and lived among humans",
+        "grammar": "The antecedent is the feminine Wisdom of v. 37 ('she gave her to Jacob'); ὤφθη and συνανεστράφη have no new subject",
+        "fathers": [],
+        "modern": "NRSV, NAB ('Since then she has appeared on earth and moved among men'), Protestant and Jewish commentators"
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "NET Bible footnote on Bar 3:38",
+      "Skehan, Wisdom and Folly commentary"
+    ]
+  },
+  {
+    "id": "sir-25-24-because-of-her",
+    "book": "Sirach",
+    "chapter": 25,
+    "verse": 24,
+    "words": [],
+    "title": "Sirach 25:24: 'because of her we all die' - who is 'her'?",
+    "category": "referent",
+    "summary": "The Greek ἀπὸ γυναικὸς ἀρχὴ ἁμαρτίας, καὶ δι' αὐτὴν ἀποθνήσκομεν πάντες has two feminine nouns before the pronoun: 'woman' (γυνή) and 'sin' (ἁμαρτία). αὐτήν can therefore be 'the woman' (Eve) or 'sin'. The Syriac and Hebrew fragments differ in their wording.",
+    "readings": [
+      {
+        "label": "The woman (Eve): 'because of her we all die'",
+        "rendering": "From a woman sin had its beginning, and because of her we all die",
+        "grammar": "αὐτήν refers back to γυνή (and thus Eve)",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Merits and Remission of Sins",
+            "ref": "1.",
+            "year": 412,
+            "commentary": 25408,
+            "url": "https://www.newadvent.org/fathers/",
+            "quote": "Of the woman came the beginning of sin, and through her we all die. Sirach 25:24 Now whether it be said of the woman or of Adam, both statements pertain to the first man"
+          }
+        ],
+        "modern": "NRSV, NAB, Douay-Rheims; most commentators"
+      },
+      {
+        "label": "Sin: 'because of it we all die'",
+        "rendering": "From a woman sin had its beginning, and by it (sin) we all die",
+        "grammar": "αὐτήν refers to the nearer feminine ἁμαρτία, a general statement about the universality of death",
+        "fathers": [],
+        "modern": "Some commentators who read the Hebrew/Syriac; the reading is minority"
+      }
+    ],
+    "macula_follows": null,
+    "sources": [
+      "Skehan and Di Lella, Wisdom of Ben Sira, on 25:24"
+    ]
+  }
+]

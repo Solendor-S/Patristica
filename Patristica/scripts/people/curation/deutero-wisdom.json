@@ -1,0 +1,1180 @@
+{
+ "entities": [
+  {
+   "key": "Aaron@Exo.4.14-Heb#sir",
+   "same_as": "Aaron@Exo.4.14-Heb",
+   "names": [
+    "Aaron"
+   ],
+   "refs": [
+    "Sirach 36:17",
+    "Sirach 45:6",
+    "Sirach 45:20",
+    "Sirach 45:25",
+    "Sirach 50:13",
+    "Sirach 50:16"
+   ]
+  },
+  {
+   "key": "Abraham@Gen.11.26-1Pe#sir",
+   "same_as": "Abraham@Gen.11.26-1Pe",
+   "names": [
+    "Abraham"
+   ],
+   "refs": [
+    "Sirach 44:19",
+    "Sirach 44:22"
+   ]
+  },
+  {
+   "key": "Isaac@Gen.17.19-Jas#sir",
+   "same_as": "Isaac@Gen.17.19-Jas",
+   "names": [
+    "Isaac"
+   ],
+   "refs": [
+    "Sirach 44:22"
+   ]
+  },
+  {
+   "key": "Israel@Gen.25.26-Rev#sir",
+   "same_as": "Israel@Gen.25.26-Rev",
+   "names": [
+    "Jacob"
+   ],
+   "refs": [
+    "Sirach 23:12",
+    "Sirach 24:8",
+    "Sirach 24:23",
+    "Sirach 36:11",
+    "Sirach 44:23",
+    "Sirach 45:5",
+    "Sirach 45:17",
+    "Sirach 46:14",
+    "Sirach 47:22",
+    "Sirach 48:10",
+    "Sirach 49:10"
+   ]
+  },
+  {
+   "key": "Adam@Gen.2.19-Jud#sir",
+   "same_as": "Adam@Gen.2.19-Jud",
+   "names": [
+    "Adam"
+   ],
+   "refs": [
+    "Sirach 33:10",
+    "Sirach 40:1",
+    "Sirach 49:16"
+   ]
+  },
+  {
+   "key": "Abiram@Num.16.1-Psa#sir",
+   "same_as": "Abiram@Num.16.1-Psa",
+   "names": [
+    "Abiram"
+   ],
+   "refs": [
+    "Sirach 45:18"
+   ]
+  },
+  {
+   "key": "Dathan@Num.16.1-Psa#sir",
+   "same_as": "Dathan@Num.16.1-Psa",
+   "names": [
+    "Dathan"
+   ],
+   "refs": [
+    "Sirach 45:18"
+   ]
+  },
+  {
+   "key": "Korah@Exo.6.21-Jud#sir",
+   "same_as": "Korah@Exo.6.21-Jud",
+   "names": [
+    "Korah"
+   ],
+   "refs": [
+    "Sirach 45:18"
+   ]
+  },
+  {
+   "key": "Caleb@Num.13.6-1Ch#sir",
+   "same_as": "Caleb@Num.13.6-1Ch",
+   "names": [
+    "Caleb"
+   ],
+   "refs": [
+    "Sirach 46:7",
+    "Sirach 46:9"
+   ]
+  },
+  {
+   "key": "Jephunneh@Num.13.6-1Ch#sir",
+   "same_as": "Jephunneh@Num.13.6-1Ch",
+   "names": [
+    "Jephunneh"
+   ],
+   "refs": [
+    "Sirach 46:7"
+   ]
+  },
+  {
+   "key": "David@Rut.4.17-Rev#sir",
+   "same_as": "David@Rut.4.17-Rev",
+   "names": [
+    "David"
+   ],
+   "refs": [
+    "Sirach 45:25",
+    "Sirach 47:1",
+    "Sirach 47:2",
+    "Sirach 47:22",
+    "Sirach 48:15",
+    "Sirach 48:22",
+    "Sirach 49:4"
+   ]
+  },
+  {
+   "key": "Eleazar@Exo.6.23-Ezr#sir",
+   "same_as": "Eleazar@Exo.6.23-Ezr",
+   "names": [
+    "Eleazar"
+   ],
+   "refs": [
+    "Sirach 45:23"
+   ]
+  },
+  {
+   "key": "Elijah@1Ki.17.1-Jas#sir",
+   "same_as": "Elijah@1Ki.17.1-Jas",
+   "names": [
+    "Elijah"
+   ],
+   "refs": [
+    "Sirach 48:1",
+    "Sirach 48:4",
+    "Sirach 48:12"
+   ]
+  },
+  {
+   "key": "Elisha@1Ki.19.16-Luk#sir",
+   "same_as": "Elisha@1Ki.19.16-Luk",
+   "names": [
+    "Elisha"
+   ],
+   "refs": [
+    "Sirach 48:12"
+   ]
+  },
+  {
+   "key": "Enoch@Gen.5.18-Jud#sir",
+   "same_as": "Enoch@Gen.5.18-Jud",
+   "names": [
+    "Enoch"
+   ],
+   "refs": [
+    "Sirach 44:16",
+    "Sirach 49:14"
+   ]
+  },
+  {
+   "key": "Ephraim@Gen.41.52-Zec#sir",
+   "same_as": "Ephraim@Gen.41.52-Zec",
+   "names": [
+    "Ephraim"
+   ],
+   "refs": [
+    "Sirach 47:21",
+    "Sirach 47:23"
+   ]
+  },
+  {
+   "key": "Euphrates@Gen.2.14-Rev#sir",
+   "same_as": "Euphrates@Gen.2.14-Rev",
+   "names": [
+    "Euphrates"
+   ],
+   "refs": [
+    "Sirach 24:26",
+    "Sirach 44:21"
+   ]
+  },
+  {
+   "key": "Gihon@Gen.2.13-2Ch#sir",
+   "same_as": "Gihon@Gen.2.13-2Ch",
+   "names": [
+    "Gihon"
+   ],
+   "refs": [
+    "Sirach 24:27"
+   ]
+  },
+  {
+   "key": "Pishon@Gen.2.11#sir",
+   "same_as": "Pishon@Gen.2.11",
+   "names": [
+    "Pishon"
+   ],
+   "refs": [
+    "Sirach 24:25"
+   ]
+  },
+  {
+   "key": "Tigris@Gen.2.14-Dan#sir",
+   "same_as": "Tigris@Gen.2.14-Dan",
+   "names": [
+    "Tigris"
+   ],
+   "refs": [
+    "Sirach 24:25"
+   ]
+  },
+  {
+   "key": "Jordan@Gen.13.10-Jhn#sir",
+   "same_as": "Jordan@Gen.13.10-Jhn",
+   "names": [
+    "Jordan"
+   ],
+   "refs": [
+    "Sirach 24:26"
+   ]
+  },
+  {
+   "key": "Jericho@Num.22.1-Heb#sir",
+   "same_as": "Jericho@Num.22.1-Heb",
+   "names": [
+    "Jericho"
+   ],
+   "refs": [
+    "Sirach 24:14"
+   ]
+  },
+  {
+   "key": "Hermon_Mount@Num.34.7-Ezk#sir",
+   "same_as": "Hermon_Mount@Num.34.7-Ezk",
+   "names": [
+    "Hermon"
+   ],
+   "refs": [
+    "Sirach 24:13"
+   ]
+  },
+  {
+   "key": "Lebanon@Deu.1.7-Zec#sir",
+   "same_as": "Lebanon@Deu.1.7-Zec",
+   "names": [
+    "Lebanon"
+   ],
+   "refs": [
+    "Sirach 24:13",
+    "Sirach 50:12"
+   ]
+  },
+  {
+   "key": "Sinai@Exo.3.1-Gal#sir",
+   "same_as": "Sinai@Exo.3.1-Gal",
+   "names": [
+    "Sinai",
+    "Horeb"
+   ],
+   "refs": [
+    "Sirach 48:7"
+   ]
+  },
+  {
+   "key": "Ophir@1Ki.9.28-Isa#sir",
+   "same_as": "Ophir@1Ki.9.28-Isa",
+   "names": [
+    "Ophir"
+   ],
+   "refs": [
+    "Sirach 7:18"
+   ]
+  },
+  {
+   "key": "Samaria@1Ki.13.32-Act#sir",
+   "same_as": "Samaria@1Ki.13.32-Act",
+   "names": [
+    "Samaria"
+   ],
+   "refs": [
+    "Sirach 50:26"
+   ]
+  },
+  {
+   "key": "Shechem@Gen.12.6-Act#sir",
+   "same_as": "Shechem@Gen.12.6-Act",
+   "names": [
+    "Shechem"
+   ],
+   "refs": [
+    "Sirach 50:26"
+   ]
+  },
+  {
+   "key": "Jerusalem@Gen.14.18-Rev#sir",
+   "same_as": "Jerusalem@Gen.14.18-Rev",
+   "names": [
+    "Jerusalem",
+    "Zion"
+   ],
+   "refs": [
+    "Sirach 24:10",
+    "Sirach 24:11",
+    "Sirach 36:13",
+    "Sirach 36:14",
+    "Sirach 48:18",
+    "Sirach 48:24",
+    "Sirach 50:27"
+   ]
+  },
+  {
+   "key": "Philistia@Gen.21.32-Zec#sir",
+   "same_as": "Philistia@Gen.21.32-Zec",
+   "names": [
+    "Philistines"
+   ],
+   "refs": [
+    "Sirach 46:18",
+    "Sirach 47:7",
+    "Sirach 50:26"
+   ]
+  },
+  {
+   "key": "Tyre@Jos.19.29-Act#sir",
+   "same_as": "Tyre@Jos.19.29-Act",
+   "names": [
+    "Tyrians"
+   ],
+   "refs": [
+    "Sirach 46:18"
+   ]
+  },
+  {
+   "key": "Assyria@Gen.2.14-Zec#sir",
+   "same_as": "Assyria@Gen.2.14-Zec",
+   "names": [
+    "Assyrians"
+   ],
+   "refs": [
+    "Sirach 48:21"
+   ]
+  },
+  {
+   "key": "Sennacherib@2Ki.18.13-Isa#sir",
+   "same_as": "Sennacherib@2Ki.18.13-Isa",
+   "names": [
+    "Sennacherib"
+   ],
+   "refs": [
+    "Sirach 48:18"
+   ]
+  },
+  {
+   "key": "Rabshakeh@2Ki.18.17-Isa#sir",
+   "same_as": "Rabshakeh@2Ki.18.17-Isa",
+   "names": [
+    "Rabshakeh"
+   ],
+   "refs": [
+    "Sirach 48:18"
+   ]
+  },
+  {
+   "key": "Hezekiah@2Ki.16.20-Mat#sir",
+   "same_as": "Hezekiah@2Ki.16.20-Mat",
+   "names": [
+    "Hezekiah"
+   ],
+   "refs": [
+    "Sirach 48:17",
+    "Sirach 48:22",
+    "Sirach 49:4"
+   ]
+  },
+  {
+   "key": "Isaiah@2Ki.19.2-Rom#sir",
+   "same_as": "Isaiah@2Ki.19.2-Rom",
+   "names": [
+    "Isaiah"
+   ],
+   "refs": [
+    "Sirach 48:20",
+    "Sirach 48:22"
+   ]
+  },
+  {
+   "key": "Josiah@1Ki.13.2-Mat#sir",
+   "same_as": "Josiah@1Ki.13.2-Mat",
+   "names": [
+    "Josiah"
+   ],
+   "refs": [
+    "Sirach 49:1",
+    "Sirach 49:4"
+   ]
+  },
+  {
+   "key": "Jeremiah@2Ch.35.25-Mat#sir",
+   "same_as": "Jeremiah@2Ch.35.25-Mat",
+   "names": [
+    "Jeremiah"
+   ],
+   "refs": [
+    "Sirach 49:6",
+    "Sirach 49:7"
+   ]
+  },
+  {
+   "key": "Ezekiel@Ezk.1.3-#sir",
+   "same_as": "Ezekiel@Ezk.1.3-",
+   "names": [
+    "Ezekiel"
+   ],
+   "refs": [
+    "Sirach 49:8"
+   ]
+  },
+  {
+   "key": "Zerubbabel@1Ch.3.19-Mat#sir",
+   "same_as": "Zerubbabel@1Ch.3.19-Mat",
+   "names": [
+    "Zerubbabel"
+   ],
+   "refs": [
+    "Sirach 49:11"
+   ]
+  },
+  {
+   "key": "Joshua@Ezr.2.2-Zec#sir",
+   "same_as": "Joshua@Ezr.2.2-Zec",
+   "names": [
+    "Jesus the son of Josedek",
+    "Jeshua"
+   ],
+   "refs": [
+    "Sirach 49:12"
+   ]
+  },
+  {
+   "key": "Jehozadak@1Ch.6.14-Zec#sir",
+   "same_as": "Jehozadak@1Ch.6.14-Zec",
+   "names": [
+    "Josedek"
+   ],
+   "refs": [
+    "Sirach 49:12"
+   ]
+  },
+  {
+   "key": "Nehemiah@Neh.1.1-#sir",
+   "same_as": "Nehemiah@Neh.1.1-",
+   "names": [
+    "Nehemiah"
+   ],
+   "refs": [
+    "Sirach 49:13"
+   ]
+  },
+  {
+   "key": "Joseph@Gen.30.24-Rev#sir",
+   "same_as": "Joseph@Gen.30.24-Rev",
+   "names": [
+    "Joseph"
+   ],
+   "refs": [
+    "Sirach 49:15"
+   ]
+  },
+  {
+   "key": "Shem@Gen.5.32-Luk#sir",
+   "same_as": "Shem@Gen.5.32-Luk",
+   "names": [
+    "Shem"
+   ],
+   "refs": [
+    "Sirach 49:16"
+   ]
+  },
+  {
+   "key": "Seth@Gen.4.25-Luk#sir",
+   "same_as": "Seth@Gen.4.25-Luk",
+   "names": [
+    "Seth"
+   ],
+   "refs": [
+    "Sirach 49:16"
+   ]
+  },
+  {
+   "key": "Noah@Gen.5.29-2Pe#sir",
+   "same_as": "Noah@Gen.5.29-2Pe",
+   "names": [
+    "Noah"
+   ],
+   "refs": [
+    "Sirach 44:17"
+   ]
+  },
+  {
+   "key": "Joshua@Exo.17.9-Heb#sir",
+   "same_as": "Joshua@Exo.17.9-Heb",
+   "names": [
+    "Joshua"
+   ],
+   "refs": [
+    "Sirach 46:1"
+   ]
+  },
+  {
+   "key": "Nun@Exo.33.11-Neh#sir",
+   "same_as": "Nun@Exo.33.11-Neh",
+   "names": [
+    "Nun"
+   ],
+   "refs": [
+    "Sirach 46:1"
+   ]
+  },
+  {
+   "key": "Samuel@1Sa.1.20-Heb#sir",
+   "same_as": "Samuel@1Sa.1.20-Heb",
+   "names": [
+    "Samuel"
+   ],
+   "refs": [
+    "Sirach 46:13"
+   ]
+  },
+  {
+   "key": "Moses@Exo.2.10-Rev#sir",
+   "same_as": "Moses@Exo.2.10-Rev",
+   "names": [
+    "Moses"
+   ],
+   "refs": [
+    "Sirach 24:23",
+    "Sirach 45:1",
+    "Sirach 45:6",
+    "Sirach 45:15",
+    "Sirach 46:1",
+    "Sirach 46:7"
+   ]
+  },
+  {
+   "key": "Nathan@2Sa.7.2-Psa#sir",
+   "same_as": "Nathan@2Sa.7.2-Psa",
+   "names": [
+    "Nathan"
+   ],
+   "refs": [
+    "Sirach 47:1"
+   ]
+  },
+  {
+   "key": "Solomon@2Sa.5.14-Act#sir",
+   "same_as": "Solomon@2Sa.5.14-Act",
+   "names": [
+    "Solomon"
+   ],
+   "refs": [
+    "Sirach 47:13",
+    "Sirach 47:23"
+   ]
+  },
+  {
+   "key": "Rehoboam@1Ki.11.43-Mat#sir",
+   "same_as": "Rehoboam@1Ki.11.43-Mat",
+   "names": [
+    "Rehoboam"
+   ],
+   "refs": [
+    "Sirach 47:23"
+   ]
+  },
+  {
+   "key": "Jeroboam@1Ki.11.26-2Ch#sir",
+   "same_as": "Jeroboam@1Ki.11.26-2Ch",
+   "names": [
+    "Jeroboam"
+   ],
+   "refs": [
+    "Sirach 47:23"
+   ]
+  },
+  {
+   "key": "Nebat@1Ki.11.26-2Ch#sir",
+   "same_as": "Nebat@1Ki.11.26-2Ch",
+   "names": [
+    "Nebat"
+   ],
+   "refs": [
+    "Sirach 47:23"
+   ]
+  },
+  {
+   "key": "Phinehas@Exo.6.25-Psa#sir",
+   "same_as": "Phinehas@Exo.6.25-Psa",
+   "names": [
+    "Phinehas"
+   ],
+   "refs": [
+    "Sirach 45:23"
+   ]
+  },
+  {
+   "key": "Levi@Gen.29.34-Rev#sir",
+   "same_as": "Levi@Gen.29.34-Rev",
+   "names": [
+    "Levi"
+   ],
+   "refs": [
+    "Sirach 45:6"
+   ]
+  },
+  {
+   "key": "Jesse@Rut.4.17-Rom#sir",
+   "same_as": "Jesse@Rut.4.17-Rom",
+   "names": [
+    "Jesse"
+   ],
+   "refs": [
+    "Sirach 45:25"
+   ]
+  },
+  {
+   "key": "Lot@Gen.11.27-2Pe#sir",
+   "same_as": "Lot@Gen.11.27-2Pe",
+   "names": [
+    "Lot"
+   ],
+   "refs": [
+    "Sirach 16:8"
+   ]
+  },
+  {
+   "key": "Goliath@1Sa.17.4-1Ch#sir",
+   "same_as": "Goliath@1Sa.17.4-1Ch",
+   "names": [
+    "Goliath"
+   ],
+   "refs": [
+    "Sirach 47:4"
+   ]
+  },
+  {
+   "key": "Urim@Exo.28.30-Neh#sir",
+   "same_as": "Urim@Exo.28.30-Neh",
+   "names": [
+    "Urim"
+   ],
+   "refs": [
+    "Sirach 45:10"
+   ]
+  },
+  {
+   "key": "Thummim@Exo.28.30-Neh#sir",
+   "same_as": "Thummim@Exo.28.30-Neh",
+   "names": [
+    "Thummim"
+   ],
+   "refs": [
+    "Sirach 45:10"
+   ]
+  },
+  {
+   "key": "Baruch@Jer.32.12-#bar",
+   "same_as": "Baruch@Jer.32.12-",
+   "names": [
+    "Baruch"
+   ],
+   "refs": [
+    "Baruch 1:1",
+    "Baruch 1:3"
+   ]
+  },
+  {
+   "key": "Neriah@Jer.32.12-#bar",
+   "same_as": "Neriah@Jer.32.12-",
+   "names": [
+    "Nerias"
+   ],
+   "refs": [
+    "Baruch 1:1"
+   ]
+  },
+  {
+   "key": "Jehoiachin@2Ki.24.6-Mat#bar",
+   "same_as": "Jehoiachin@2Ki.24.6-Mat",
+   "names": [
+    "Jechonias"
+   ],
+   "refs": [
+    "Baruch 1:3",
+    "Baruch 1:9"
+   ]
+  },
+  {
+   "key": "Jehoiakim@2Ki.23.34-Dan#bar",
+   "same_as": "Jehoiakim@2Ki.23.34-Dan",
+   "names": [
+    "Joakim"
+   ],
+   "refs": [
+    "Baruch 1:3"
+   ]
+  },
+  {
+   "key": "Zedekiah@2Ki.24.17-Jer#bar",
+   "same_as": "Zedekiah@2Ki.24.17-Jer",
+   "names": [
+    "Sedekias"
+   ],
+   "refs": [
+    "Baruch 1:8"
+   ]
+  },
+  {
+   "key": "Josiah@1Ki.13.2-Mat#bar",
+   "same_as": "Josiah@1Ki.13.2-Mat",
+   "names": [
+    "Josias"
+   ],
+   "refs": [
+    "Baruch 1:8"
+   ]
+  },
+  {
+   "key": "Nebuchadnezzar@2Ki.24.1-Dan#bar",
+   "same_as": "Nebuchadnezzar@2Ki.24.1-Dan",
+   "names": [
+    "Nabuchodonosor"
+   ],
+   "refs": [
+    "Baruch 1:9",
+    "Baruch 1:11",
+    "Baruch 1:12",
+    "Baruch 6:2"
+   ]
+  },
+  {
+   "key": "Belshazzar@Dan.5.1-#bar",
+   "same_as": "Belshazzar@Dan.5.1-",
+   "names": [
+    "Baltasar"
+   ],
+   "refs": [
+    "Baruch 1:11",
+    "Baruch 1:12"
+   ]
+  },
+  {
+   "key": "Babylon@Gen.10.10-Rev#bar",
+   "same_as": "Babylon@Gen.10.10-Rev",
+   "names": [
+    "Babylon"
+   ],
+   "refs": [
+    "Baruch 1:1",
+    "Baruch 1:4",
+    "Baruch 1:9",
+    "Baruch 1:11",
+    "Baruch 1:12",
+    "Baruch 2:21",
+    "Baruch 2:22",
+    "Baruch 2:24",
+    "Baruch 6:1",
+    "Baruch 6:2",
+    "Baruch 6:3",
+    "Baruch 6:4"
+   ]
+  },
+  {
+   "key": "Chaldea@Gen.11.28-Act#bar",
+   "same_as": "Chaldea@Gen.11.28-Act",
+   "names": [
+    "Chaldeans",
+    "Babylonians"
+   ],
+   "refs": [
+    "Baruch 1:2",
+    "Baruch 6:1",
+    "Baruch 6:2",
+    "Baruch 6:40"
+   ]
+  },
+  {
+   "key": "Jerusalem@Gen.14.18-Rev#bar",
+   "same_as": "Jerusalem@Gen.14.18-Rev",
+   "names": [
+    "Jerusalem",
+    "Zion"
+   ],
+   "refs": [
+    "Baruch 1:2",
+    "Baruch 1:7",
+    "Baruch 1:9",
+    "Baruch 1:15",
+    "Baruch 2:2",
+    "Baruch 2:23",
+    "Baruch 4:8",
+    "Baruch 4:9",
+    "Baruch 4:14",
+    "Baruch 4:24",
+    "Baruch 4:30",
+    "Baruch 4:36",
+    "Baruch 5:1",
+    "Baruch 5:5"
+   ]
+  },
+  {
+   "key": "Egypt@Gen.12.10-Rev#bar",
+   "same_as": "Egypt@Gen.12.10-Rev",
+   "names": [
+    "Egypt"
+   ],
+   "refs": [
+    "Baruch 1:19",
+    "Baruch 1:20",
+    "Baruch 2:11"
+   ]
+  },
+  {
+   "key": "Moses@Exo.2.10-Rev#bar",
+   "same_as": "Moses@Exo.2.10-Rev",
+   "names": [
+    "Moses"
+   ],
+   "refs": [
+    "Baruch 1:20",
+    "Baruch 2:2",
+    "Baruch 2:28"
+   ]
+  },
+  {
+   "key": "Abraham@Gen.11.26-1Pe#bar",
+   "same_as": "Abraham@Gen.11.26-1Pe",
+   "names": [
+    "Abraham"
+   ],
+   "refs": [
+    "Baruch 2:34"
+   ]
+  },
+  {
+   "key": "Isaac@Gen.17.19-Jas#bar",
+   "same_as": "Isaac@Gen.17.19-Jas",
+   "names": [
+    "Isaac"
+   ],
+   "refs": [
+    "Baruch 2:34"
+   ]
+  },
+  {
+   "key": "Israel@Gen.25.26-Rev#bar",
+   "same_as": "Israel@Gen.25.26-Rev",
+   "names": [
+    "Jacob"
+   ],
+   "refs": [
+    "Baruch 2:34",
+    "Baruch 3:36",
+    "Baruch 4:2"
+   ]
+  },
+  {
+   "key": "Jeremiah@2Ch.35.25-Mat#bar",
+   "same_as": "Jeremiah@2Ch.35.25-Mat",
+   "names": [
+    "Jeremy"
+   ],
+   "refs": [
+    "Baruch 6:1"
+   ]
+  },
+  {
+   "key": "Hagar@Gen.16.1-Gal#bar",
+   "same_as": "Hagar@Gen.16.1-Gal",
+   "names": [
+    "Agar"
+   ],
+   "refs": [
+    "Baruch 3:23"
+   ]
+  },
+  {
+   "key": "Canaan@Gen.10.18-Act#bar",
+   "same_as": "Canaan@Gen.10.18-Act",
+   "names": [
+    "Canaan"
+   ],
+   "refs": [
+    "Baruch 3:22"
+   ]
+  },
+  {
+   "key": "Teman@Jer.49.7-Hab#bar",
+   "same_as": "Teman@Jer.49.7-Hab",
+   "names": [
+    "Teman"
+   ],
+   "refs": [
+    "Baruch 3:22",
+    "Baruch 3:23"
+   ]
+  },
+  {
+   "key": "Sivan@Est.8.9#bar",
+   "same_as": "Sivan@Est.8.9",
+   "names": [
+    "Sivan"
+   ],
+   "refs": [
+    "Baruch 1:8"
+   ]
+  },
+  {
+   "key": "Red_Sea@Wis#wis",
+   "same_as": "Red_Sea@Exo.10.19-Heb",
+   "names": [
+    "Red Sea"
+   ],
+   "refs": [
+    "Wisdom of Solomon 10:18",
+    "Wisdom of Solomon 19:7"
+   ]
+  },
+  {
+   "key": "Egypt@Wis#wis",
+   "same_as": "Egypt@Gen.12.10-Rev",
+   "names": [
+    "Egyptians"
+   ],
+   "refs": [
+    "Wisdom of Solomon 18:4",
+    "Wisdom of Solomon 19:14"
+   ]
+  },
+  {
+   "key": "Simon@Sir.50.1",
+   "name": "Simon son of Onias",
+   "kind": "person",
+   "names": [
+    "Simon",
+    "Simon son of Onias"
+   ],
+   "brief": "High priest who repaired the temple",
+   "short": "Simon son of Onias, high priest, repaired the temple and fortified Jerusalem; Ben Sira closes his praise of the fathers with him.",
+   "refs": [
+    "Sirach 50:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Onias@Sir.50.1"
+    }
+   ]
+  },
+  {
+   "key": "Onias@Sir.50.1",
+   "name": "Onias",
+   "kind": "person",
+   "names": [
+    "Onias"
+   ],
+   "brief": "Father of the high priest Simon",
+   "short": "Onias was the father of Simon the high priest.",
+   "refs": [
+    "Sirach 50:1"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Jesus@Sir.50.27",
+   "name": "Jesus son of Sirach",
+   "kind": "person",
+   "names": [
+    "Jesus the son of Sirach",
+    "Ben Sira",
+    "Sirach"
+   ],
+   "brief": "Author of the book of Sirach",
+   "short": "Jesus son of Sirach, of Jerusalem, wrote this book of instruction and wisdom (Ecclesiasticus).",
+   "refs": [
+    "Sirach 50:27"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Maaseas@Bar.1.1",
+   "name": "Maaseas",
+   "kind": "person",
+   "names": [
+    "Maaseas"
+   ],
+   "brief": "Grandfather of Baruch",
+   "short": "Maaseas was Baruch's grandfather, son of Sedekias.",
+   "refs": [
+    "Baruch 1:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Sedekias@Bar.1.1"
+    }
+   ]
+  },
+  {
+   "key": "Sedekias@Bar.1.1",
+   "name": "Sedekias (ancestor of Baruch)",
+   "kind": "person",
+   "names": [
+    "Sedekias"
+   ],
+   "brief": "Ancestor of Baruch",
+   "short": "Sedekias was an ancestor of Baruch, father of Maaseas.",
+   "refs": [
+    "Baruch 1:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Asadias@Bar.1.1"
+    }
+   ]
+  },
+  {
+   "key": "Asadias@Bar.1.1",
+   "name": "Asadias",
+   "kind": "person",
+   "names": [
+    "Asadias"
+   ],
+   "brief": "Ancestor of Baruch",
+   "short": "Asadias was an ancestor of Baruch, father of Sedekias.",
+   "refs": [
+    "Baruch 1:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Helkias@Bar.1.1"
+    }
+   ]
+  },
+  {
+   "key": "Helkias@Bar.1.1",
+   "name": "Helkias (ancestor of Baruch)",
+   "kind": "person",
+   "names": [
+    "Helkias"
+   ],
+   "brief": "Ancestor of Baruch",
+   "short": "Helkias was an ancestor of Baruch, father of Asadias.",
+   "refs": [
+    "Baruch 1:1"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Joakim@Bar.1.7",
+   "name": "Joakim the high priest",
+   "kind": "person",
+   "names": [
+    "Joakim"
+   ],
+   "brief": "High priest in Jerusalem during the exile",
+   "short": "Joakim son of Helkias and grandson of Salom was the high priest in Jerusalem who received the silver sent from Babylon.",
+   "refs": [
+    "Baruch 1:7"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Helkias@Bar.1.7"
+    }
+   ]
+  },
+  {
+   "key": "Helkias@Bar.1.7",
+   "name": "Helkias (father of Joakim)",
+   "kind": "person",
+   "names": [
+    "Helkias"
+   ],
+   "brief": "Father of the high priest Joakim",
+   "short": "Helkias was the father of the high priest Joakim and son of Salom.",
+   "refs": [
+    "Baruch 1:7"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Salom@Bar.1.7"
+    }
+   ]
+  },
+  {
+   "key": "Salom@Bar.1.7",
+   "name": "Salom",
+   "kind": "person",
+   "names": [
+    "Salom"
+   ],
+   "brief": "Grandfather of the high priest Joakim",
+   "short": "Salom was the father of Helkias and grandfather of the priest Joakim.",
+   "refs": [
+    "Baruch 1:7"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Sud@Bar.1.4",
+   "name": "Sud",
+   "kind": "place",
+   "names": [
+    "Sud",
+    "river Sud"
+   ],
+   "brief": "River in Babylonia",
+   "short": "The river Sud was where the Jewish exiles in Babylon lived when Baruch's book was read.",
+   "refs": [
+    "Baruch 1:4"
+   ]
+  },
+  {
+   "key": "Merran@Bar.3.23",
+   "name": "Merran",
+   "kind": "place",
+   "names": [
+    "Merran"
+   ],
+   "brief": "Land of merchants noted with Teman",
+   "short": "Merran was a trading centre whose merchants, like those of Teman, did not know the way of wisdom.",
+   "refs": [
+    "Baruch 3:23"
+   ]
+  },
+  {
+   "key": "Bel@Bar.6.41",
+   "name": "Bel",
+   "kind": "other",
+   "names": [
+    "Bel"
+   ],
+   "brief": "Babylonian god mocked in the Letter of Jeremiah",
+   "short": "Bel was the chief Babylonian god, whose idol the Letter of Jeremiah ridicules.",
+   "refs": [
+    "Baruch 6:41"
+   ]
+  }
+ ]
+}

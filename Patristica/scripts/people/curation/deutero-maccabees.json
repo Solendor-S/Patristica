@@ -1,0 +1,5640 @@
+{
+ "entities": [
+  {
+   "key": "Jerusalem@Gen.14.18-Rev#mac",
+   "same_as": "Jerusalem@Gen.14.18-Rev",
+   "names": [
+    "Jerusalem"
+   ],
+   "refs": [
+    "1 Maccabees 1:14",
+    "1 Maccabees 1:20",
+    "1 Maccabees 1:29",
+    "1 Maccabees 1:35",
+    "1 Maccabees 1:38",
+    "1 Maccabees 1:44",
+    "1 Maccabees 2:1",
+    "1 Maccabees 2:6",
+    "1 Maccabees 2:18",
+    "1 Maccabees 2:31",
+    "1 Maccabees 3:34",
+    "1 Maccabees 3:35",
+    "1 Maccabees 3:45",
+    "1 Maccabees 3:46",
+    "1 Maccabees 6:7",
+    "1 Maccabees 6:12",
+    "1 Maccabees 6:26",
+    "1 Maccabees 6:48",
+    "1 Maccabees 7:17",
+    "1 Maccabees 7:19",
+    "1 Maccabees 7:27",
+    "1 Maccabees 7:39",
+    "1 Maccabees 7:47",
+    "1 Maccabees 8:22",
+    "1 Maccabees 9:3",
+    "1 Maccabees 9:50",
+    "1 Maccabees 9:53",
+    "1 Maccabees 10:7",
+    "1 Maccabees 10:10",
+    "1 Maccabees 10:31",
+    "1 Maccabees 10:32",
+    "1 Maccabees 10:39",
+    "1 Maccabees 10:43",
+    "1 Maccabees 10:45",
+    "1 Maccabees 10:66",
+    "1 Maccabees 10:74",
+    "1 Maccabees 10:87",
+    "1 Maccabees 11:7",
+    "1 Maccabees 11:20",
+    "1 Maccabees 11:34",
+    "1 Maccabees 11:41",
+    "1 Maccabees 11:51",
+    "1 Maccabees 11:62",
+    "1 Maccabees 11:74",
+    "1 Maccabees 12:25",
+    "1 Maccabees 12:36",
+    "1 Maccabees 13:2",
+    "1 Maccabees 13:10",
+    "1 Maccabees 13:39",
+    "1 Maccabees 13:49",
+    "1 Maccabees 14:19",
+    "1 Maccabees 14:36",
+    "1 Maccabees 14:37",
+    "1 Maccabees 15:7",
+    "1 Maccabees 15:28",
+    "1 Maccabees 15:32",
+    "1 Maccabees 16:20",
+    "2 Maccabees 1:1",
+    "2 Maccabees 1:10",
+    "2 Maccabees 3:6",
+    "2 Maccabees 3:9",
+    "2 Maccabees 3:37",
+    "2 Maccabees 4:9",
+    "2 Maccabees 4:19",
+    "2 Maccabees 4:21",
+    "2 Maccabees 5:22",
+    "2 Maccabees 5:25",
+    "2 Maccabees 6:2",
+    "2 Maccabees 8:31",
+    "2 Maccabees 8:36",
+    "2 Maccabees 9:4",
+    "2 Maccabees 10:15",
+    "2 Maccabees 11:5",
+    "2 Maccabees 11:8",
+    "2 Maccabees 12:9",
+    "2 Maccabees 12:29",
+    "2 Maccabees 12:31",
+    "2 Maccabees 12:43",
+    "2 Maccabees 14:23",
+    "2 Maccabees 14:37",
+    "2 Maccabees 15:30"
+   ]
+  },
+  {
+   "key": "Egypt@Gen.12.10-Rev#mac",
+   "same_as": "Egypt@Gen.12.10-Rev",
+   "names": [
+    "Egypt"
+   ],
+   "refs": [
+    "1 Maccabees 1:16",
+    "1 Maccabees 1:17",
+    "1 Maccabees 1:18",
+    "1 Maccabees 1:19",
+    "1 Maccabees 1:20",
+    "1 Maccabees 2:53",
+    "1 Maccabees 3:32",
+    "1 Maccabees 10:51",
+    "1 Maccabees 10:57",
+    "1 Maccabees 11:1",
+    "1 Maccabees 11:13",
+    "1 Maccabees 11:59",
+    "2 Maccabees 1:1",
+    "2 Maccabees 1:10",
+    "2 Maccabees 4:21",
+    "2 Maccabees 5:1",
+    "2 Maccabees 5:8",
+    "2 Maccabees 5:11",
+    "2 Maccabees 9:29"
+   ]
+  },
+  {
+   "key": "Rome@Jhn.11.48-Phm#mac",
+   "same_as": "Rome@Jhn.11.48-Phm",
+   "names": [
+    "Rome"
+   ],
+   "refs": [
+    "1 Maccabees 1:10",
+    "1 Maccabees 7:1",
+    "1 Maccabees 8:17",
+    "1 Maccabees 8:19",
+    "1 Maccabees 8:24",
+    "1 Maccabees 8:26",
+    "1 Maccabees 8:28",
+    "1 Maccabees 12:1",
+    "1 Maccabees 12:3",
+    "1 Maccabees 14:16",
+    "1 Maccabees 14:24",
+    "1 Maccabees 15:15"
+   ]
+  },
+  {
+   "key": "Damascus@Gen.14.15-Gal#mac",
+   "same_as": "Damascus@Gen.14.15-Gal",
+   "names": [
+    "Damascus"
+   ],
+   "refs": [
+    "1 Maccabees 11:62",
+    "1 Maccabees 12:32"
+   ]
+  },
+  {
+   "key": "Jericho@Num.22.1-Heb#mac",
+   "same_as": "Jericho@Num.22.1-Heb",
+   "names": [
+    "Jericho"
+   ],
+   "refs": [
+    "1 Maccabees 9:50",
+    "1 Maccabees 16:11",
+    "1 Maccabees 16:14",
+    "2 Maccabees 12:15"
+   ]
+  },
+  {
+   "key": "Abraham@Gen.11.26-1Pe#mac",
+   "same_as": "Abraham@Gen.11.26-1Pe",
+   "names": [
+    "Abraham"
+   ],
+   "refs": [
+    "1 Maccabees 2:52",
+    "1 Maccabees 12:21",
+    "2 Maccabees 1:2"
+   ]
+  },
+  {
+   "key": "Isaac@Gen.17.19-Jas#mac",
+   "same_as": "Isaac@Gen.17.19-Jas",
+   "names": [
+    "Isaac"
+   ],
+   "refs": [
+    "2 Maccabees 1:2"
+   ]
+  },
+  {
+   "key": "Israel@Gen.25.26-Rev#mac",
+   "same_as": "Israel@Gen.25.26-Rev",
+   "names": [
+    "Jacob"
+   ],
+   "refs": [
+    "2 Maccabees 1:2"
+   ]
+  },
+  {
+   "key": "Moses@Exo.2.10-Rev#mac",
+   "same_as": "Moses@Exo.2.10-Rev",
+   "names": [
+    "Moses"
+   ],
+   "refs": [
+    "2 Maccabees 1:29",
+    "2 Maccabees 2:4",
+    "2 Maccabees 2:8",
+    "2 Maccabees 2:10",
+    "2 Maccabees 2:11",
+    "2 Maccabees 7:6",
+    "2 Maccabees 7:30"
+   ]
+  },
+  {
+   "key": "Phinehas@Exo.6.25-Psa#mac",
+   "same_as": "Phinehas@Exo.6.25-Psa",
+   "names": [
+    "Phinehas"
+   ],
+   "refs": [
+    "1 Maccabees 2:26",
+    "1 Maccabees 2:54"
+   ]
+  },
+  {
+   "key": "Zimri@Num.25.14#mac",
+   "same_as": "Zimri@Num.25.14",
+   "names": [
+    "Zimri"
+   ],
+   "refs": [
+    "1 Maccabees 2:26"
+   ]
+  },
+  {
+   "key": "Salu@Num.25.14#mac",
+   "same_as": "Salu@Num.25.14",
+   "names": [
+    "Salu"
+   ],
+   "refs": [
+    "1 Maccabees 2:26"
+   ]
+  },
+  {
+   "key": "Joshua@Exo.17.9-Heb#mac",
+   "same_as": "Joshua@Exo.17.9-Heb",
+   "names": [
+    "Joshua"
+   ],
+   "refs": [
+    "1 Maccabees 2:55",
+    "2 Maccabees 12:15"
+   ]
+  },
+  {
+   "key": "Caleb@Num.13.6-1Ch#mac",
+   "same_as": "Caleb@Num.13.6-1Ch",
+   "names": [
+    "Caleb"
+   ],
+   "refs": [
+    "1 Maccabees 2:56"
+   ]
+  },
+  {
+   "key": "David@Rut.4.17-Rev#mac",
+   "same_as": "David@Rut.4.17-Rev",
+   "names": [
+    "David"
+   ],
+   "refs": [
+    "1 Maccabees 2:57",
+    "1 Maccabees 4:30",
+    "2 Maccabees 2:13"
+   ]
+  },
+  {
+   "key": "Elijah@1Ki.17.1-Jas#mac",
+   "same_as": "Elijah@1Ki.17.1-Jas",
+   "names": [
+    "Elijah"
+   ],
+   "refs": [
+    "1 Maccabees 2:58"
+   ]
+  },
+  {
+   "key": "Daniel@Ezk.14.14-Mrk#mac",
+   "same_as": "Daniel@Ezk.14.14-Mrk",
+   "names": [
+    "Daniel"
+   ],
+   "refs": [
+    "1 Maccabees 2:60"
+   ]
+  },
+  {
+   "key": "Hananiah@Dan.1.6-#mac",
+   "same_as": "Hananiah@Dan.1.6-",
+   "names": [
+    "Hananiah"
+   ],
+   "refs": [
+    "1 Maccabees 2:59"
+   ]
+  },
+  {
+   "key": "Azariah@Dan.1.6-#mac",
+   "same_as": "Azariah@Dan.1.6-",
+   "names": [
+    "Azariah"
+   ],
+   "refs": [
+    "1 Maccabees 2:59"
+   ]
+  },
+  {
+   "key": "Mishael@Dan.1.6-#mac",
+   "same_as": "Mishael@Dan.1.6-",
+   "names": [
+    "Mishael"
+   ],
+   "refs": [
+    "1 Maccabees 2:59"
+   ]
+  },
+  {
+   "key": "Joseph@Gen.30.24-Rev#mac",
+   "same_as": "Joseph@Gen.30.24-Rev",
+   "names": [
+    "Joseph"
+   ],
+   "refs": [
+    "1 Maccabees 2:53"
+   ]
+  },
+  {
+   "key": "Aaron@Exo.4.14-Heb#mac",
+   "same_as": "Aaron@Exo.4.14-Heb",
+   "names": [
+    "Aaron"
+   ],
+   "refs": [
+    "1 Maccabees 7:14"
+   ]
+  },
+  {
+   "key": "Saul@1Sa.9.2-Act#mac",
+   "same_as": "Saul@1Sa.9.2-Act",
+   "names": [
+    "Saul"
+   ],
+   "refs": [
+    "1 Maccabees 4:30"
+   ]
+  },
+  {
+   "key": "Jonathan@1Sa.13.2-1Ch#mac",
+   "same_as": "Jonathan@1Sa.13.2-1Ch",
+   "names": [
+    "Jonathan"
+   ],
+   "refs": [
+    "1 Maccabees 4:30"
+   ]
+  },
+  {
+   "key": "Pharaoh@Exo.3.10-Rom#mac",
+   "same_as": "Pharaoh@Exo.3.10-Rom",
+   "names": [
+    "Pharaoh"
+   ],
+   "refs": [
+    "1 Maccabees 4:9"
+   ]
+  },
+  {
+   "key": "Solomon@2Sa.5.14-Act#mac",
+   "same_as": "Solomon@2Sa.5.14-Act",
+   "names": [
+    "Solomon"
+   ],
+   "refs": [
+    "2 Maccabees 2:8",
+    "2 Maccabees 2:10",
+    "2 Maccabees 2:12"
+   ]
+  },
+  {
+   "key": "Jeremiah@2Ch.35.25-Mat#mac",
+   "same_as": "Jeremiah@2Ch.35.25-Mat",
+   "names": [
+    "Jeremiah"
+   ],
+   "refs": [
+    "2 Maccabees 2:1",
+    "2 Maccabees 2:5",
+    "2 Maccabees 2:7",
+    "2 Maccabees 15:14",
+    "2 Maccabees 15:15"
+   ]
+  },
+  {
+   "key": "Nehemiah@Neh.1.1-#mac",
+   "same_as": "Nehemiah@Neh.1.1-",
+   "names": [
+    "Nehemiah"
+   ],
+   "refs": [
+    "2 Maccabees 1:18",
+    "2 Maccabees 1:20",
+    "2 Maccabees 1:21",
+    "2 Maccabees 1:23",
+    "2 Maccabees 1:31",
+    "2 Maccabees 1:33",
+    "2 Maccabees 1:36",
+    "2 Maccabees 2:13"
+   ]
+  },
+  {
+   "key": "Hezekiah@2Ki.16.20-Mat#mac",
+   "same_as": "Hezekiah@2Ki.16.20-Mat",
+   "names": [
+    "Hezekiah"
+   ],
+   "refs": [
+    "2 Maccabees 15:22"
+   ]
+  },
+  {
+   "key": "Sennacherib@2Ki.18.13-Isa#mac",
+   "same_as": "Sennacherib@2Ki.18.13-Isa",
+   "names": [
+    "Sennacherib"
+   ],
+   "refs": [
+    "2 Maccabees 8:19",
+    "2 Maccabees 15:22"
+   ]
+  },
+  {
+   "key": "Mordecai@Est.2.5-#mac",
+   "same_as": "Mordecai@Est.2.5-",
+   "names": [
+    "Mordecai"
+   ],
+   "refs": [
+    "2 Maccabees 15:36"
+   ]
+  },
+  {
+   "key": "Jehoiarib@1Ch.24.7#mac",
+   "same_as": "Jehoiarib@1Ch.24.7",
+   "names": [
+    "Joarib"
+   ],
+   "refs": [
+    "1 Maccabees 2:1",
+    "1 Maccabees 14:29"
+   ]
+  },
+  {
+   "key": "Idumea@Mrk.3.8#mac",
+   "same_as": "Idumea@Mrk.3.8",
+   "names": [
+    "Idumaea",
+    "Idumaeans",
+    "children of Esau"
+   ],
+   "refs": [
+    "1 Maccabees 4:15",
+    "1 Maccabees 4:29",
+    "1 Maccabees 4:61",
+    "1 Maccabees 5:3",
+    "1 Maccabees 5:65",
+    "1 Maccabees 6:31",
+    "2 Maccabees 10:15",
+    "2 Maccabees 10:16",
+    "2 Maccabees 12:32"
+   ]
+  },
+  {
+   "key": "Ammon@Gen.19.38-Zep#mac",
+   "same_as": "Ammon@Gen.19.38-Zep",
+   "names": [
+    "Ammon",
+    "Ammonites"
+   ],
+   "refs": [
+    "1 Maccabees 5:6",
+    "2 Maccabees 4:26",
+    "2 Maccabees 5:7"
+   ]
+  },
+  {
+   "key": "Philistia@Gen.21.32-Zec#mac",
+   "same_as": "Philistia@Gen.21.32-Zec",
+   "names": [
+    "land of the Philistines",
+    "Philistines"
+   ],
+   "refs": [
+    "1 Maccabees 3:24",
+    "1 Maccabees 3:41",
+    "1 Maccabees 4:22",
+    "1 Maccabees 4:30",
+    "1 Maccabees 5:66",
+    "1 Maccabees 5:68"
+   ]
+  },
+  {
+   "key": "Samaria@1Ki.13.32-Act#mac",
+   "same_as": "Samaria@1Ki.13.32-Act",
+   "names": [
+    "Samaria"
+   ],
+   "refs": [
+    "1 Maccabees 3:10",
+    "1 Maccabees 5:66",
+    "1 Maccabees 10:30",
+    "1 Maccabees 10:38",
+    "1 Maccabees 11:28",
+    "1 Maccabees 11:34",
+    "2 Maccabees 15:1"
+   ]
+  },
+  {
+   "key": "Galilee@Jos.12.23-Act#mac",
+   "same_as": "Galilee@Jos.12.23-Act",
+   "names": [
+    "Galilee"
+   ],
+   "refs": [
+    "1 Maccabees 5:14",
+    "1 Maccabees 5:15",
+    "1 Maccabees 5:17",
+    "1 Maccabees 5:20",
+    "1 Maccabees 5:21",
+    "1 Maccabees 5:23",
+    "1 Maccabees 5:55",
+    "1 Maccabees 10:30",
+    "1 Maccabees 11:63",
+    "1 Maccabees 12:47",
+    "1 Maccabees 12:49"
+   ]
+  },
+  {
+   "key": "Judea@Ezr.9.9-1Th#mac",
+   "same_as": "Judea@Ezr.9.9-1Th",
+   "names": [
+    "Judea",
+    "Judah",
+    "Judeans"
+   ],
+   "refs": [
+    "1 Maccabees 1:29",
+    "1 Maccabees 1:44",
+    "1 Maccabees 1:51",
+    "1 Maccabees 1:54",
+    "1 Maccabees 2:6",
+    "1 Maccabees 2:18",
+    "1 Maccabees 3:8",
+    "1 Maccabees 3:34",
+    "1 Maccabees 3:39",
+    "1 Maccabees 4:35",
+    "1 Maccabees 5:8",
+    "1 Maccabees 5:18",
+    "1 Maccabees 5:23",
+    "1 Maccabees 5:45",
+    "1 Maccabees 5:53",
+    "1 Maccabees 5:60",
+    "1 Maccabees 5:68",
+    "1 Maccabees 6:5",
+    "1 Maccabees 6:12",
+    "1 Maccabees 6:48",
+    "1 Maccabees 6:53",
+    "1 Maccabees 7:10",
+    "1 Maccabees 7:22",
+    "1 Maccabees 7:24",
+    "1 Maccabees 7:46",
+    "1 Maccabees 7:50",
+    "1 Maccabees 9:1",
+    "1 Maccabees 9:50",
+    "1 Maccabees 9:57",
+    "1 Maccabees 9:60",
+    "1 Maccabees 9:63",
+    "1 Maccabees 9:72",
+    "1 Maccabees 10:30",
+    "1 Maccabees 10:33",
+    "1 Maccabees 10:37",
+    "1 Maccabees 10:38",
+    "1 Maccabees 10:45",
+    "1 Maccabees 11:20",
+    "1 Maccabees 11:28",
+    "1 Maccabees 11:34",
+    "1 Maccabees 12:4",
+    "1 Maccabees 12:35",
+    "1 Maccabees 12:46",
+    "1 Maccabees 12:52",
+    "1 Maccabees 13:1",
+    "1 Maccabees 13:12",
+    "1 Maccabees 13:33",
+    "1 Maccabees 14:33",
+    "1 Maccabees 15:30",
+    "1 Maccabees 15:39",
+    "1 Maccabees 15:40",
+    "1 Maccabees 15:41",
+    "1 Maccabees 16:10",
+    "2 Maccabees 1:1",
+    "2 Maccabees 1:10",
+    "2 Maccabees 5:11",
+    "2 Maccabees 8:9",
+    "2 Maccabees 10:24",
+    "2 Maccabees 11:5",
+    "2 Maccabees 13:1",
+    "2 Maccabees 13:13",
+    "2 Maccabees 14:12",
+    "2 Maccabees 14:14",
+    "2 Maccabees 15:22"
+   ]
+  },
+  {
+   "key": "Jordan@Gen.13.10-Jhn#mac",
+   "same_as": "Jordan@Gen.13.10-Jhn",
+   "names": [
+    "Jordan"
+   ],
+   "refs": [
+    "1 Maccabees 5:24",
+    "1 Maccabees 5:52",
+    "1 Maccabees 9:34",
+    "1 Maccabees 9:42",
+    "1 Maccabees 9:43",
+    "1 Maccabees 9:45",
+    "1 Maccabees 9:48"
+   ]
+  },
+  {
+   "key": "Gilead@Gen.31.21-Zec#mac",
+   "same_as": "Gilead@Gen.31.21-Zec",
+   "names": [
+    "Gilead"
+   ],
+   "refs": [
+    "1 Maccabees 5:9",
+    "1 Maccabees 5:17",
+    "1 Maccabees 5:20",
+    "1 Maccabees 5:25",
+    "1 Maccabees 5:27",
+    "1 Maccabees 5:36",
+    "1 Maccabees 5:45",
+    "1 Maccabees 5:55",
+    "1 Maccabees 13:22"
+   ]
+  },
+  {
+   "key": "Tyre@Jos.19.29-Act#mac",
+   "same_as": "Tyre@Jos.19.29-Act",
+   "names": [
+    "Tyre",
+    "Tyrians",
+    "Ladder of Tyre"
+   ],
+   "refs": [
+    "1 Maccabees 5:15",
+    "1 Maccabees 11:59",
+    "2 Maccabees 4:18",
+    "2 Maccabees 4:32",
+    "2 Maccabees 4:44",
+    "2 Maccabees 4:49"
+   ]
+  },
+  {
+   "key": "Sidon@Gen.10.19-Act#mac",
+   "same_as": "Sidon@Gen.10.19-Act",
+   "names": [
+    "Sidon"
+   ],
+   "refs": [
+    "1 Maccabees 5:15"
+   ]
+  },
+  {
+   "key": "Gaza@Gen.10.19-Act#mac",
+   "same_as": "Gaza@Gen.10.19-Act",
+   "names": [
+    "Gaza"
+   ],
+   "refs": [
+    "1 Maccabees 4:15",
+    "1 Maccabees 7:45",
+    "1 Maccabees 9:52",
+    "1 Maccabees 11:61",
+    "1 Maccabees 11:62",
+    "1 Maccabees 13:43",
+    "1 Maccabees 13:53",
+    "1 Maccabees 14:7",
+    "1 Maccabees 14:34",
+    "1 Maccabees 15:28",
+    "1 Maccabees 15:35",
+    "1 Maccabees 16:1",
+    "1 Maccabees 16:19",
+    "1 Maccabees 16:21"
+   ]
+  },
+  {
+   "key": "Ashkelon@Jos.13.3-Zec#mac",
+   "same_as": "Ashkelon@Jos.13.3-Zec",
+   "names": [
+    "Ascalon"
+   ],
+   "refs": [
+    "1 Maccabees 10:86",
+    "1 Maccabees 11:60",
+    "1 Maccabees 12:33"
+   ]
+  },
+  {
+   "key": "Ashdod@Jos.11.22-Act#mac",
+   "same_as": "Ashdod@Jos.11.22-Act",
+   "names": [
+    "Azotus"
+   ],
+   "refs": [
+    "1 Maccabees 4:15",
+    "1 Maccabees 5:68",
+    "1 Maccabees 9:15",
+    "1 Maccabees 10:77",
+    "1 Maccabees 10:78",
+    "1 Maccabees 10:83",
+    "1 Maccabees 10:84",
+    "1 Maccabees 11:4",
+    "1 Maccabees 14:34",
+    "1 Maccabees 16:10"
+   ]
+  },
+  {
+   "key": "Joppa@Jos.19.46-Act#mac",
+   "same_as": "Joppa@Jos.19.46-Act",
+   "names": [
+    "Joppa"
+   ],
+   "refs": [
+    "1 Maccabees 10:75",
+    "1 Maccabees 10:76",
+    "1 Maccabees 11:6",
+    "1 Maccabees 12:33",
+    "1 Maccabees 13:11",
+    "1 Maccabees 14:5",
+    "1 Maccabees 14:34",
+    "1 Maccabees 15:28",
+    "1 Maccabees 15:35",
+    "2 Maccabees 4:21",
+    "2 Maccabees 12:3",
+    "2 Maccabees 12:7"
+   ]
+  },
+  {
+   "key": "Ekron@Jos.13.3-Zec#mac",
+   "same_as": "Ekron@Jos.13.3-Zec",
+   "names": [
+    "Ekron"
+   ],
+   "refs": [
+    "1 Maccabees 10:89"
+   ]
+  },
+  {
+   "key": "Hebron@Gen.13.18-Neh#mac",
+   "same_as": "Hebron@Gen.13.18-Neh",
+   "names": [
+    "Hebron"
+   ],
+   "refs": [
+    "1 Maccabees 5:65"
+   ]
+  },
+  {
+   "key": "Bethel@Gen.12.8-Zec#mac",
+   "same_as": "Bethel@Gen.12.8-Zec",
+   "names": [
+    "Bethel"
+   ],
+   "refs": [
+    "1 Maccabees 9:50"
+   ]
+  },
+  {
+   "key": "Jazer@Num.21.32-Jer#mac",
+   "same_as": "Jazer@Num.21.32-Jer",
+   "names": [
+    "Jazer"
+   ],
+   "refs": [
+    "1 Maccabees 5:8"
+   ]
+  },
+  {
+   "key": "Beth-shean@Jos.17.11-1Ch#mac",
+   "same_as": "Beth-shean@Jos.17.11-1Ch",
+   "names": [
+    "Bethshan",
+    "Scythopolis",
+    "Scythopolitans"
+   ],
+   "refs": [
+    "1 Maccabees 5:52",
+    "1 Maccabees 12:40",
+    "1 Maccabees 12:41",
+    "2 Maccabees 12:29",
+    "2 Maccabees 12:30"
+   ]
+  },
+  {
+   "key": "Kedesh@Jos.12.22-1Ch#mac",
+   "same_as": "Kedesh@Jos.12.22-1Ch",
+   "names": [
+    "Kedesh"
+   ],
+   "refs": [
+    "1 Maccabees 11:63",
+    "1 Maccabees 11:73"
+   ]
+  },
+  {
+   "key": "Hazor@Jos.11.1-2Ki#mac",
+   "same_as": "Hazor@Jos.11.1-2Ki",
+   "names": [
+    "Hazor"
+   ],
+   "refs": [
+    "1 Maccabees 11:67"
+   ]
+  },
+  {
+   "key": "Chinnereth@Num.34.11-Jhn#mac",
+   "same_as": "Chinnereth@Num.34.11-Jhn",
+   "names": [
+    "Gennesareth"
+   ],
+   "refs": [
+    "1 Maccabees 11:67"
+   ]
+  },
+  {
+   "key": "Cyprus@Num.24.24-Act#mac",
+   "same_as": "Cyprus@Num.24.24-Act",
+   "names": [
+    "Cyprus",
+    "Cyprians"
+   ],
+   "refs": [
+    "1 Maccabees 15:23",
+    "2 Maccabees 4:29",
+    "2 Maccabees 10:13",
+    "2 Maccabees 12:2"
+   ]
+  },
+  {
+   "key": "Persia@2Ch.36.20-Dan#mac",
+   "same_as": "Persia@2Ch.36.20-Dan",
+   "names": [
+    "Persia",
+    "Persians"
+   ],
+   "refs": [
+    "1 Maccabees 1:1",
+    "1 Maccabees 3:31",
+    "1 Maccabees 6:1",
+    "1 Maccabees 6:5",
+    "1 Maccabees 6:56",
+    "1 Maccabees 14:2",
+    "2 Maccabees 1:12",
+    "2 Maccabees 1:19",
+    "2 Maccabees 1:20",
+    "2 Maccabees 1:33",
+    "2 Maccabees 9:1",
+    "2 Maccabees 9:21"
+   ]
+  },
+  {
+   "key": "Media@2Ki.17.6-Act#mac",
+   "same_as": "Media@2Ki.17.6-Act",
+   "names": [
+    "Media",
+    "Medes"
+   ],
+   "refs": [
+    "1 Maccabees 1:1",
+    "1 Maccabees 6:56",
+    "1 Maccabees 8:8",
+    "1 Maccabees 14:1",
+    "1 Maccabees 14:2"
+   ]
+  },
+  {
+   "key": "Babylon@Gen.10.10-Rev#mac",
+   "same_as": "Babylon@Gen.10.10-Rev",
+   "names": [
+    "Babylon"
+   ],
+   "refs": [
+    "1 Maccabees 6:4",
+    "2 Maccabees 8:20"
+   ]
+  },
+  {
+   "key": "India@Est.1.1-#mac",
+   "same_as": "India@Est.1.1-",
+   "names": [
+    "India"
+   ],
+   "refs": [
+    "1 Maccabees 6:37",
+    "1 Maccabees 8:8"
+   ]
+  },
+  {
+   "key": "Greece@Isa.66.19-Act#mac",
+   "same_as": "Greece@Isa.66.19-Act",
+   "names": [
+    "Greece"
+   ],
+   "refs": [
+    "1 Maccabees 1:1"
+   ]
+  },
+  {
+   "key": "Kittim@Gen.10.4-1Ch#mac",
+   "same_as": "Kittim@Gen.10.4-1Ch",
+   "names": [
+    "Chittim"
+   ],
+   "refs": [
+    "1 Maccabees 1:1",
+    "1 Maccabees 8:5"
+   ]
+  },
+  {
+   "key": "Gezer@Jos.10.33-1Ch#mac",
+   "same_as": "Gezer@Jos.10.33-1Ch",
+   "names": [
+    "Gazara"
+   ],
+   "refs": [
+    "1 Maccabees 4:15",
+    "1 Maccabees 7:45",
+    "1 Maccabees 9:52",
+    "1 Maccabees 13:43",
+    "1 Maccabees 13:53",
+    "1 Maccabees 14:7",
+    "1 Maccabees 14:34",
+    "1 Maccabees 15:28",
+    "1 Maccabees 15:35",
+    "1 Maccabees 16:1",
+    "1 Maccabees 16:19",
+    "1 Maccabees 16:21",
+    "2 Maccabees 10:32"
+   ]
+  },
+  {
+   "key": "Beth-zur@Jos.15.58-Neh#mac",
+   "same_as": "Beth-zur@Jos.15.58-Neh",
+   "names": [
+    "Bethsura",
+    "Bethsuron"
+   ],
+   "refs": [
+    "1 Maccabees 4:29",
+    "1 Maccabees 4:61",
+    "1 Maccabees 6:7",
+    "1 Maccabees 6:26",
+    "1 Maccabees 6:31",
+    "1 Maccabees 6:49",
+    "1 Maccabees 6:50",
+    "1 Maccabees 9:52",
+    "1 Maccabees 10:14",
+    "1 Maccabees 11:65",
+    "1 Maccabees 14:7",
+    "1 Maccabees 14:33",
+    "2 Maccabees 11:5",
+    "2 Maccabees 13:19",
+    "2 Maccabees 13:22"
+   ]
+  },
+  {
+   "key": "Beth-dagon@Jos.15.41#mac",
+   "same_as": "Beth-dagon@Jos.15.41",
+   "names": [
+    "Beth-dagon"
+   ],
+   "refs": [
+    "1 Maccabees 10:83"
+   ]
+  },
+  {
+   "key": "Dagon@Jdg.16.23-1Ch#mac",
+   "same_as": "Dagon@Jdg.16.23-1Ch",
+   "names": [
+    "Dagon"
+   ],
+   "refs": [
+    "1 Maccabees 10:84",
+    "1 Maccabees 11:4"
+   ]
+  },
+  {
+   "key": "Mizpah@Jos.18.26-Jhn#mac",
+   "same_as": "Mizpah@Jos.18.26-Jhn",
+   "names": [
+    "Mizpeh"
+   ],
+   "refs": [
+    "1 Maccabees 3:46"
+   ]
+  },
+  {
+   "key": "Michmash@1Sa.13.2-Isa#mac",
+   "same_as": "Michmash@1Sa.13.2-Isa",
+   "names": [
+    "Michmash"
+   ],
+   "refs": [
+    "1 Maccabees 9:73"
+   ]
+  },
+  {
+   "key": "Tekoa@2Sa.14.2-Amo#mac",
+   "same_as": "Tekoa@2Sa.14.2-Amo",
+   "names": [
+    "Tekoah"
+   ],
+   "refs": [
+    "1 Maccabees 9:33"
+   ]
+  },
+  {
+   "key": "Medeba@Num.21.30-Isa#mac",
+   "same_as": "Medeba@Num.21.30-Isa",
+   "names": [
+    "Medaba"
+   ],
+   "refs": [
+    "1 Maccabees 9:36"
+   ]
+  },
+  {
+   "key": "Jabneel@Jos.15.11-2Ch#mac",
+   "same_as": "Jabneel@Jos.15.11-2Ch",
+   "names": [
+    "Jamnia"
+   ],
+   "refs": [
+    "1 Maccabees 4:15",
+    "1 Maccabees 5:58",
+    "1 Maccabees 10:69",
+    "1 Maccabees 15:40",
+    "2 Maccabees 12:8",
+    "2 Maccabees 12:40"
+   ]
+  },
+  {
+   "key": "Adullam@Gen.38.1-Mic#mac",
+   "same_as": "Adullam@Gen.38.1-Mic",
+   "names": [
+    "Adullam"
+   ],
+   "refs": [
+    "2 Maccabees 12:38"
+   ]
+  },
+  {
+   "key": "Hamath@Num.13.21-Zec#mac",
+   "same_as": "Hamath@Num.13.21-Zec",
+   "names": [
+    "Hamath"
+   ],
+   "refs": [
+    "1 Maccabees 12:25"
+   ]
+  },
+  {
+   "key": "Beth-horon_Upper@Jos.16.5-2Ch#mac",
+   "same_as": "Beth-horon_Upper@Jos.16.5-2Ch",
+   "names": [
+    "Bethhoron"
+   ],
+   "refs": [
+    "1 Maccabees 3:16",
+    "1 Maccabees 3:24",
+    "1 Maccabees 7:39",
+    "1 Maccabees 9:50"
+   ]
+  },
+  {
+   "key": "Euphrates@Gen.2.14-Rev#mac",
+   "same_as": "Euphrates@Gen.2.14-Rev",
+   "names": [
+    "Euphrates"
+   ],
+   "refs": [
+    "1 Maccabees 3:32",
+    "1 Maccabees 3:37"
+   ]
+  },
+  {
+   "key": "Antioch@Act.6.5-Gal#mac",
+   "same_as": "Antioch@Act.6.5-Gal",
+   "names": [
+    "Antioch",
+    "Antiochians"
+   ],
+   "refs": [
+    "1 Maccabees 3:37",
+    "1 Maccabees 4:35",
+    "1 Maccabees 6:63",
+    "1 Maccabees 10:68",
+    "1 Maccabees 11:13",
+    "1 Maccabees 11:44",
+    "1 Maccabees 11:56",
+    "2 Maccabees 4:9",
+    "2 Maccabees 4:19",
+    "2 Maccabees 4:33",
+    "2 Maccabees 5:21",
+    "2 Maccabees 8:35",
+    "2 Maccabees 11:36",
+    "2 Maccabees 13:23",
+    "2 Maccabees 13:26",
+    "2 Maccabees 14:27"
+   ]
+  },
+  {
+   "key": "Asia@Act.2.9-Rev#mac",
+   "same_as": "Asia@Act.2.9-Rev",
+   "names": [
+    "Asia"
+   ],
+   "refs": [
+    "1 Maccabees 8:6",
+    "1 Maccabees 11:13",
+    "1 Maccabees 12:39",
+    "1 Maccabees 13:32",
+    "2 Maccabees 3:3",
+    "2 Maccabees 10:24"
+   ]
+  },
+  {
+   "key": "Syria@Jdg.10.6-Gal#mac",
+   "same_as": "Syria@Jdg.10.6-Gal",
+   "names": [
+    "Syria",
+    "Syrian"
+   ],
+   "refs": [
+    "1 Maccabees 3:13",
+    "1 Maccabees 3:41",
+    "1 Maccabees 7:39",
+    "1 Maccabees 11:2",
+    "1 Maccabees 11:60"
+   ]
+  },
+  {
+   "key": "Phoenicia@Act.11.19-#mac",
+   "same_as": "Phoenicia@Act.11.19-",
+   "names": [
+    "Phoenicia"
+   ],
+   "refs": [
+    "2 Maccabees 3:5",
+    "2 Maccabees 3:8",
+    "2 Maccabees 4:4",
+    "2 Maccabees 4:22",
+    "2 Maccabees 8:8",
+    "2 Maccabees 10:11"
+   ]
+  },
+  {
+   "key": "Arabia@2Sa.23.35-Gal#mac",
+   "same_as": "Arabia@2Sa.23.35-Gal",
+   "names": [
+    "Arabia"
+   ],
+   "refs": [
+    "1 Maccabees 11:16"
+   ]
+  },
+  {
+   "key": "Cilicia@Act.6.9-Gal#mac",
+   "same_as": "Cilicia@Act.6.9-Gal",
+   "names": [
+    "Cilicia"
+   ],
+   "refs": [
+    "1 Maccabees 11:14",
+    "2 Maccabees 4:36"
+   ]
+  },
+  {
+   "key": "Tarsus@Act.9.11-#mac",
+   "same_as": "Tarsus@Act.9.11-",
+   "names": [
+    "Tarsus"
+   ],
+   "refs": [
+    "2 Maccabees 3:5",
+    "2 Maccabees 4:30"
+   ]
+  },
+  {
+   "key": "Cyrene@Mat.27.32-Act#mac",
+   "same_as": "Cyrene@Mat.27.32-Act",
+   "names": [
+    "Cyrene"
+   ],
+   "refs": [
+    "1 Maccabees 15:23",
+    "2 Maccabees 2:23"
+   ]
+  },
+  {
+   "key": "Athens@Act.17.15-2Th#mac",
+   "same_as": "Athens@Act.17.15-2Th",
+   "names": [
+    "Athens"
+   ],
+   "refs": [
+    "2 Maccabees 6:1",
+    "2 Maccabees 9:15"
+   ]
+  },
+  {
+   "key": "Zeus@Act.14.12-#mac",
+   "same_as": "Zeus@Act.14.12-",
+   "names": [
+    "Zeus",
+    "Olympian Zeus",
+    "Zeus Protector of Strangers"
+   ],
+   "refs": [
+    "2 Maccabees 6:2"
+   ]
+  },
+  {
+   "key": "Ecbatana@Ezr.6.2#mac",
+   "same_as": "Ecbatana@Ezr.6.2",
+   "names": [
+    "Ecbatana"
+   ],
+   "refs": [
+    "2 Maccabees 9:3"
+   ]
+  },
+  {
+   "key": "Samos@Act.20.15#mac",
+   "same_as": "Samos@Act.20.15",
+   "names": [
+    "Samos"
+   ],
+   "refs": [
+    "1 Maccabees 15:23"
+   ]
+  },
+  {
+   "key": "Pamphylia@Act.2.10-#mac",
+   "same_as": "Pamphylia@Act.2.10-",
+   "names": [
+    "Pamphylia"
+   ],
+   "refs": [
+    "1 Maccabees 15:23"
+   ]
+  },
+  {
+   "key": "Lycia@Act.27.5#mac",
+   "same_as": "Lycia@Act.27.5",
+   "names": [
+    "Lycia"
+   ],
+   "refs": [
+    "1 Maccabees 15:23"
+   ]
+  },
+  {
+   "key": "Rhodes@Act.21.1#mac",
+   "same_as": "Rhodes@Act.21.1",
+   "names": [
+    "Rhodes"
+   ],
+   "refs": [
+    "1 Maccabees 15:23"
+   ]
+  },
+  {
+   "key": "Cos@Act.21.1#mac",
+   "same_as": "Cos@Act.21.1",
+   "names": [
+    "Cos"
+   ],
+   "refs": [
+    "1 Maccabees 15:23"
+   ]
+  },
+  {
+   "key": "Cnidus@Act.27.7#mac",
+   "same_as": "Cnidus@Act.27.7",
+   "names": [
+    "Cnidus"
+   ],
+   "refs": [
+    "1 Maccabees 15:23"
+   ]
+  },
+  {
+   "key": "Scythians@Col.3.11#mac",
+   "same_as": "Scythians@Col.3.11",
+   "names": [
+    "Scythians"
+   ],
+   "refs": [
+    "2 Maccabees 4:47"
+   ]
+  },
+  {
+   "key": "Mattathias@1Ma.2.1",
+   "name": "Mattathias",
+   "kind": "person",
+   "names": [
+    "Mattathias"
+   ],
+   "brief": "Priest of Modein who began the Maccabean revolt.",
+   "short": "Mattathias, a priest of the family of Joarib from Jerusalem, lived at Modein, killed a Jew and a royal officer who tried to sacrifice there, and led the first Jewish resistance to Antiochus IV before dying and handing command to his sons.",
+   "refs": [
+    "1 Maccabees 2:1",
+    "1 Maccabees 2:14",
+    "1 Maccabees 2:16",
+    "1 Maccabees 2:17",
+    "1 Maccabees 2:19",
+    "1 Maccabees 2:24",
+    "1 Maccabees 2:27",
+    "1 Maccabees 2:39",
+    "1 Maccabees 2:45",
+    "1 Maccabees 2:49",
+    "1 Maccabees 14:29"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "John@1Ma.2.2"
+    },
+    {
+     "rel": "child",
+     "key": "Simon@1Ma.2.3"
+    },
+    {
+     "rel": "child",
+     "key": "Judas@1Ma.2.4"
+    },
+    {
+     "rel": "child",
+     "key": "Eleazar@1Ma.2.5"
+    },
+    {
+     "rel": "child",
+     "key": "Jonathan@1Ma.2.5"
+    },
+    {
+     "rel": "father",
+     "key": "John@1Ma.2.1"
+    },
+    {
+     "rel": "ancestor",
+     "key": "Simeon@1Ma.2.1"
+    },
+    {
+     "rel": "ancestor",
+     "key": "Jehoiarib@1Ch.24.7"
+    }
+   ]
+  },
+  {
+   "key": "Simeon@1Ma.2.1",
+   "name": "Simeon",
+   "kind": "person",
+   "names": [
+    "Simeon"
+   ],
+   "brief": "Ancestor of Mattathias, grandfather of the Maccabees' father.",
+   "short": "Simeon is named as the father of John and grandfather of the priest Mattathias in the genealogy that opens the Maccabean story.",
+   "refs": [
+    "1 Maccabees 2:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "descendant",
+     "key": "John@1Ma.2.1"
+    }
+   ]
+  },
+  {
+   "key": "John@1Ma.2.1",
+   "name": "John",
+   "kind": "person",
+   "names": [
+    "John"
+   ],
+   "brief": "Father of Mattathias, son of Simeon.",
+   "short": "John, son of Simeon, is named only as the father of Mattathias, the priest who started the revolt.",
+   "refs": [
+    "1 Maccabees 2:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Mattathias@1Ma.2.1"
+    },
+    {
+     "rel": "father",
+     "key": "Simeon@1Ma.2.1"
+    }
+   ]
+  },
+  {
+   "key": "John@1Ma.2.2",
+   "name": "John Gaddis",
+   "kind": "person",
+   "names": [
+    "John",
+    "Gaddis"
+   ],
+   "brief": "Eldest son of Mattathias, killed by the Jambri.",
+   "short": "John, surnamed Gaddis, was Mattathias's eldest son; he was taken and killed by the sons of Jambri of Medeba while guarding the Maccabean baggage.",
+   "refs": [
+    "1 Maccabees 2:2",
+    "1 Maccabees 9:36",
+    "1 Maccabees 9:38"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Mattathias@1Ma.2.1"
+    },
+    {
+     "rel": "sibling",
+     "key": "Simon@1Ma.2.3"
+    },
+    {
+     "rel": "sibling",
+     "key": "Judas@1Ma.2.4"
+    },
+    {
+     "rel": "sibling",
+     "key": "Jonathan@1Ma.2.5"
+    }
+   ]
+  },
+  {
+   "key": "Simon@1Ma.2.3",
+   "name": "Simon Thassi",
+   "kind": "person",
+   "names": [
+    "Simon",
+    "Thassi"
+   ],
+   "brief": "Maccabee brother, high priest and ethnarch (142-135 BC).",
+   "short": "Simon, called Thassi, was Mattathias's second son and a counsellor of Judas; after Jonathan's death he became high priest and leader, won freedom from Seleucid tribute, expelled the Jerusalem garrison and was murdered by his son-in-law Ptolemy.",
+   "refs": [
+    "1 Maccabees 2:3",
+    "1 Maccabees 2:65",
+    "1 Maccabees 5:17",
+    "1 Maccabees 5:20",
+    "1 Maccabees 5:21",
+    "1 Maccabees 5:55",
+    "1 Maccabees 9:19",
+    "1 Maccabees 9:33",
+    "1 Maccabees 9:37",
+    "1 Maccabees 9:62",
+    "1 Maccabees 9:65",
+    "1 Maccabees 9:67",
+    "1 Maccabees 10:74",
+    "1 Maccabees 10:82",
+    "1 Maccabees 11:59",
+    "1 Maccabees 11:64",
+    "1 Maccabees 11:65",
+    "1 Maccabees 12:33",
+    "1 Maccabees 12:38",
+    "1 Maccabees 13:1",
+    "1 Maccabees 13:13",
+    "1 Maccabees 13:14",
+    "1 Maccabees 13:17",
+    "1 Maccabees 13:20",
+    "1 Maccabees 13:25",
+    "1 Maccabees 13:27",
+    "1 Maccabees 13:33",
+    "1 Maccabees 13:34",
+    "1 Maccabees 13:36",
+    "1 Maccabees 13:42",
+    "1 Maccabees 13:43",
+    "1 Maccabees 13:45",
+    "1 Maccabees 13:47",
+    "1 Maccabees 13:50",
+    "1 Maccabees 13:52",
+    "1 Maccabees 13:53",
+    "1 Maccabees 14:4",
+    "1 Maccabees 14:17",
+    "1 Maccabees 14:20",
+    "1 Maccabees 14:23",
+    "1 Maccabees 14:24",
+    "1 Maccabees 14:25",
+    "1 Maccabees 14:27",
+    "1 Maccabees 14:29",
+    "1 Maccabees 14:32",
+    "1 Maccabees 14:35",
+    "1 Maccabees 14:40",
+    "1 Maccabees 14:41",
+    "1 Maccabees 14:46",
+    "1 Maccabees 14:47",
+    "1 Maccabees 14:49",
+    "1 Maccabees 15:1",
+    "1 Maccabees 15:2",
+    "1 Maccabees 15:17",
+    "1 Maccabees 15:21",
+    "1 Maccabees 15:24",
+    "1 Maccabees 15:26",
+    "1 Maccabees 15:32",
+    "1 Maccabees 15:33",
+    "1 Maccabees 15:36",
+    "1 Maccabees 16:1",
+    "1 Maccabees 16:2",
+    "1 Maccabees 16:13",
+    "1 Maccabees 16:14",
+    "1 Maccabees 16:16",
+    "2 Maccabees 8:22",
+    "2 Maccabees 10:19",
+    "2 Maccabees 10:20",
+    "2 Maccabees 14:17"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Mattathias@1Ma.2.1"
+    },
+    {
+     "rel": "sibling",
+     "key": "Judas@1Ma.2.4"
+    },
+    {
+     "rel": "sibling",
+     "key": "Jonathan@1Ma.2.5"
+    },
+    {
+     "rel": "child",
+     "key": "John@1Ma.16.1"
+    },
+    {
+     "rel": "child",
+     "key": "Judas@1Ma.16.2"
+    },
+    {
+     "rel": "child",
+     "key": "Mattathias@1Ma.16.14"
+    }
+   ]
+  },
+  {
+   "key": "Judas@1Ma.2.4",
+   "name": "Judas Maccabaeus",
+   "kind": "person",
+   "names": [
+    "Judas",
+    "Maccabaeus",
+    "Judas Maccabaeus"
+   ],
+   "brief": "Third son of Mattathias; Jewish military leader who rededicated the temple.",
+   "short": "Judas, called Maccabaeus, led the Jewish revolt after his father's death, defeated several Seleucid armies, cleansed and rededicated the temple in 164 BC, made a treaty with Rome and fell in battle against Bacchides at Elasa.",
+   "refs": [
+    "1 Maccabees 2:4",
+    "1 Maccabees 2:66",
+    "1 Maccabees 3:1",
+    "1 Maccabees 3:11",
+    "1 Maccabees 3:12",
+    "1 Maccabees 3:13",
+    "1 Maccabees 3:14",
+    "1 Maccabees 3:16",
+    "1 Maccabees 3:17",
+    "1 Maccabees 3:18",
+    "1 Maccabees 3:25",
+    "1 Maccabees 3:26",
+    "1 Maccabees 3:42",
+    "1 Maccabees 3:55",
+    "1 Maccabees 3:58",
+    "1 Maccabees 4:3",
+    "1 Maccabees 4:5",
+    "1 Maccabees 4:6",
+    "1 Maccabees 4:8",
+    "1 Maccabees 4:13",
+    "1 Maccabees 4:16",
+    "1 Maccabees 4:19",
+    "1 Maccabees 4:21",
+    "1 Maccabees 4:23",
+    "1 Maccabees 4:29",
+    "1 Maccabees 4:35",
+    "1 Maccabees 4:36",
+    "1 Maccabees 4:41",
+    "1 Maccabees 4:59",
+    "1 Maccabees 4:61",
+    "1 Maccabees 5:3",
+    "1 Maccabees 5:10",
+    "1 Maccabees 5:16",
+    "1 Maccabees 5:17",
+    "1 Maccabees 5:20",
+    "1 Maccabees 5:24",
+    "1 Maccabees 5:28",
+    "1 Maccabees 5:31",
+    "1 Maccabees 5:34",
+    "1 Maccabees 5:38",
+    "1 Maccabees 5:39",
+    "1 Maccabees 5:40",
+    "1 Maccabees 5:42",
+    "1 Maccabees 5:44",
+    "1 Maccabees 5:45",
+    "1 Maccabees 5:48",
+    "1 Maccabees 5:49",
+    "1 Maccabees 5:53",
+    "1 Maccabees 5:55",
+    "1 Maccabees 5:61",
+    "1 Maccabees 5:63",
+    "1 Maccabees 5:65",
+    "1 Maccabees 5:68",
+    "1 Maccabees 6:19",
+    "1 Maccabees 6:32",
+    "1 Maccabees 6:42",
+    "1 Maccabees 7:6",
+    "1 Maccabees 7:10",
+    "1 Maccabees 7:23",
+    "1 Maccabees 7:25",
+    "1 Maccabees 7:27",
+    "1 Maccabees 7:29",
+    "1 Maccabees 7:30",
+    "1 Maccabees 7:31",
+    "1 Maccabees 7:35",
+    "1 Maccabees 7:40",
+    "1 Maccabees 8:1",
+    "1 Maccabees 8:9",
+    "1 Maccabees 8:15",
+    "1 Maccabees 8:17",
+    "1 Maccabees 8:20",
+    "1 Maccabees 9:5",
+    "1 Maccabees 9:7",
+    "1 Maccabees 9:10",
+    "1 Maccabees 9:13",
+    "1 Maccabees 9:14",
+    "1 Maccabees 9:16",
+    "1 Maccabees 9:18",
+    "1 Maccabees 9:19",
+    "1 Maccabees 9:22",
+    "1 Maccabees 9:23",
+    "1 Maccabees 9:26",
+    "1 Maccabees 9:28",
+    "1 Maccabees 9:29",
+    "1 Maccabees 9:31",
+    "1 Maccabees 13:8",
+    "1 Maccabees 14:18",
+    "2 Maccabees 1:10",
+    "2 Maccabees 2:14",
+    "2 Maccabees 2:19",
+    "2 Maccabees 5:27",
+    "2 Maccabees 8:1",
+    "2 Maccabees 8:5",
+    "2 Maccabees 8:12",
+    "2 Maccabees 8:16",
+    "2 Maccabees 10:1",
+    "2 Maccabees 10:16",
+    "2 Maccabees 10:19",
+    "2 Maccabees 10:21",
+    "2 Maccabees 10:25",
+    "2 Maccabees 10:30",
+    "2 Maccabees 10:33",
+    "2 Maccabees 10:35",
+    "2 Maccabees 11:6",
+    "2 Maccabees 11:7",
+    "2 Maccabees 11:15",
+    "2 Maccabees 12:5",
+    "2 Maccabees 12:11",
+    "2 Maccabees 12:12",
+    "2 Maccabees 12:14",
+    "2 Maccabees 12:15",
+    "2 Maccabees 12:19",
+    "2 Maccabees 12:20",
+    "2 Maccabees 12:21",
+    "2 Maccabees 12:22",
+    "2 Maccabees 12:23",
+    "2 Maccabees 12:26",
+    "2 Maccabees 12:36",
+    "2 Maccabees 12:38",
+    "2 Maccabees 12:39",
+    "2 Maccabees 12:42",
+    "2 Maccabees 13:1",
+    "2 Maccabees 13:10",
+    "2 Maccabees 13:12",
+    "2 Maccabees 13:17",
+    "2 Maccabees 13:20",
+    "2 Maccabees 13:22",
+    "2 Maccabees 13:24",
+    "2 Maccabees 14:1",
+    "2 Maccabees 14:6",
+    "2 Maccabees 14:10",
+    "2 Maccabees 14:11",
+    "2 Maccabees 14:13",
+    "2 Maccabees 14:14",
+    "2 Maccabees 14:17",
+    "2 Maccabees 14:18",
+    "2 Maccabees 14:22",
+    "2 Maccabees 14:24",
+    "2 Maccabees 14:26",
+    "2 Maccabees 14:27",
+    "2 Maccabees 14:30",
+    "2 Maccabees 14:31",
+    "2 Maccabees 14:33",
+    "2 Maccabees 15:1",
+    "2 Maccabees 15:6",
+    "2 Maccabees 15:7",
+    "2 Maccabees 15:15",
+    "2 Maccabees 15:17",
+    "2 Maccabees 15:21",
+    "2 Maccabees 15:26"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Mattathias@1Ma.2.1"
+    },
+    {
+     "rel": "sibling",
+     "key": "Simon@1Ma.2.3"
+    },
+    {
+     "rel": "sibling",
+     "key": "Jonathan@1Ma.2.5"
+    },
+    {
+     "rel": "sibling",
+     "key": "John@1Ma.2.2"
+    },
+    {
+     "rel": "sibling",
+     "key": "Eleazar@1Ma.2.5"
+    }
+   ]
+  },
+  {
+   "key": "Eleazar@1Ma.2.5",
+   "name": "Eleazar Avaran",
+   "kind": "person",
+   "names": [
+    "Eleazar",
+    "Eleazer",
+    "Avaran"
+   ],
+   "brief": "Son of Mattathias who died under a war elephant.",
+   "short": "Eleazar, called Avaran, a son of Mattathias, killed a royal elephant at Beth-zechariah and was crushed to death when it fell on him; the Eleazar who reads the sacred book in 2 Maccabees 8:23 is probably the same brother.",
+   "refs": [
+    "1 Maccabees 2:5",
+    "1 Maccabees 6:43",
+    "2 Maccabees 8:23"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Mattathias@1Ma.2.1"
+    },
+    {
+     "rel": "sibling",
+     "key": "Judas@1Ma.2.4"
+    }
+   ]
+  },
+  {
+   "key": "Jonathan@1Ma.2.5",
+   "name": "Jonathan Apphus",
+   "kind": "person",
+   "names": [
+    "Jonathan",
+    "Apphus"
+   ],
+   "brief": "Youngest Maccabee brother; high priest and leader 160-143 BC.",
+   "short": "Jonathan, called Apphus, succeeded Judas, made a series of alliances with rival Seleucid kings, was appointed high priest by Alexander Balas and was treacherously captured and killed by Tryphon at Ptolemais.",
+   "refs": [
+    "1 Maccabees 2:5",
+    "1 Maccabees 5:17",
+    "1 Maccabees 5:24",
+    "1 Maccabees 5:55",
+    "1 Maccabees 9:19",
+    "1 Maccabees 9:28",
+    "1 Maccabees 9:31",
+    "1 Maccabees 9:33",
+    "1 Maccabees 9:35",
+    "1 Maccabees 9:37",
+    "1 Maccabees 9:44",
+    "1 Maccabees 9:47",
+    "1 Maccabees 9:48",
+    "1 Maccabees 9:58",
+    "1 Maccabees 9:60",
+    "1 Maccabees 9:61",
+    "1 Maccabees 9:62",
+    "1 Maccabees 9:65",
+    "1 Maccabees 9:70",
+    "1 Maccabees 9:73",
+    "1 Maccabees 10:3",
+    "1 Maccabees 10:7",
+    "1 Maccabees 10:9",
+    "1 Maccabees 10:10",
+    "1 Maccabees 10:15",
+    "1 Maccabees 10:18",
+    "1 Maccabees 10:21",
+    "1 Maccabees 10:46",
+    "1 Maccabees 10:59",
+    "1 Maccabees 10:62",
+    "1 Maccabees 10:66",
+    "1 Maccabees 10:69",
+    "1 Maccabees 10:74",
+    "1 Maccabees 10:76",
+    "1 Maccabees 10:80",
+    "1 Maccabees 10:81",
+    "1 Maccabees 10:84",
+    "1 Maccabees 10:86",
+    "1 Maccabees 10:87",
+    "1 Maccabees 10:88",
+    "1 Maccabees 11:5",
+    "1 Maccabees 11:6",
+    "1 Maccabees 11:7",
+    "1 Maccabees 11:20",
+    "1 Maccabees 11:21",
+    "1 Maccabees 11:22",
+    "1 Maccabees 11:23",
+    "1 Maccabees 11:28",
+    "1 Maccabees 11:29",
+    "1 Maccabees 11:30",
+    "1 Maccabees 11:37",
+    "1 Maccabees 11:41",
+    "1 Maccabees 11:42",
+    "1 Maccabees 11:44",
+    "1 Maccabees 11:53",
+    "1 Maccabees 11:57",
+    "1 Maccabees 11:60",
+    "1 Maccabees 11:62",
+    "1 Maccabees 11:63",
+    "1 Maccabees 11:67",
+    "1 Maccabees 11:69",
+    "1 Maccabees 11:71",
+    "1 Maccabees 11:74",
+    "1 Maccabees 12:1",
+    "1 Maccabees 12:3",
+    "1 Maccabees 12:5",
+    "1 Maccabees 12:6",
+    "1 Maccabees 12:24",
+    "1 Maccabees 12:27",
+    "1 Maccabees 12:28",
+    "1 Maccabees 12:29",
+    "1 Maccabees 12:30",
+    "1 Maccabees 12:31",
+    "1 Maccabees 12:35",
+    "1 Maccabees 12:40",
+    "1 Maccabees 12:41",
+    "1 Maccabees 12:44",
+    "1 Maccabees 12:48",
+    "1 Maccabees 12:49",
+    "1 Maccabees 12:52",
+    "1 Maccabees 13:8",
+    "1 Maccabees 13:12",
+    "1 Maccabees 13:14",
+    "1 Maccabees 13:15",
+    "1 Maccabees 13:19",
+    "1 Maccabees 13:23",
+    "1 Maccabees 13:25",
+    "1 Maccabees 14:16",
+    "1 Maccabees 14:18",
+    "1 Maccabees 14:30",
+    "2 Maccabees 8:22"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Mattathias@1Ma.2.1"
+    },
+    {
+     "rel": "sibling",
+     "key": "Simon@1Ma.2.3"
+    },
+    {
+     "rel": "sibling",
+     "key": "Judas@1Ma.2.4"
+    }
+   ]
+  },
+  {
+   "key": "John@1Ma.16.1",
+   "name": "John Hyrcanus",
+   "kind": "person",
+   "names": [
+    "John",
+    "John Hyrcanus"
+   ],
+   "brief": "Son of Simon; defeated Cendebaeus, succeeded him as high priest.",
+   "short": "John, son of Simon, held Gazara, warned his father of Cendebaeus's invasion and routed him, and escaped the plot in which Ptolemy killed Simon; he went on to become the next ruler of the Jews.",
+   "refs": [
+    "1 Maccabees 13:53",
+    "1 Maccabees 16:1",
+    "1 Maccabees 16:2",
+    "1 Maccabees 16:9",
+    "1 Maccabees 16:19",
+    "1 Maccabees 16:21",
+    "1 Maccabees 16:23"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Simon@1Ma.2.3"
+    },
+    {
+     "rel": "sibling",
+     "key": "Judas@1Ma.16.2"
+    },
+    {
+     "rel": "sibling",
+     "key": "Mattathias@1Ma.16.14"
+    }
+   ]
+  },
+  {
+   "key": "Judas@1Ma.16.2",
+   "name": "Judas son of Simon",
+   "kind": "person",
+   "names": [
+    "Judas"
+   ],
+   "brief": "Son of Simon, wounded fighting Cendebaeus; killed with his father.",
+   "short": "Judas, a son of Simon, led with his brother John against Cendebaeus, was wounded there, and was later murdered with his father at Dok.",
+   "refs": [
+    "1 Maccabees 16:2",
+    "1 Maccabees 16:9",
+    "1 Maccabees 16:14"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Simon@1Ma.2.3"
+    },
+    {
+     "rel": "sibling",
+     "key": "John@1Ma.16.1"
+    },
+    {
+     "rel": "sibling",
+     "key": "Mattathias@1Ma.16.14"
+    }
+   ]
+  },
+  {
+   "key": "Mattathias@1Ma.16.14",
+   "name": "Mattathias son of Simon",
+   "kind": "person",
+   "names": [
+    "Mattathias"
+   ],
+   "brief": "Son of Simon, murdered with his father at Dok.",
+   "short": "Mattathias, a son of Simon, accompanied his father and brother Judas on a tour of the cities and was killed in Ptolemy's treacherous banquet at Dok.",
+   "refs": [
+    "1 Maccabees 16:14"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Simon@1Ma.2.3"
+    },
+    {
+     "rel": "sibling",
+     "key": "Judas@1Ma.16.2"
+    },
+    {
+     "rel": "sibling",
+     "key": "John@1Ma.16.1"
+    }
+   ]
+  },
+  {
+   "key": "Joseph@1Ma.5.18",
+   "name": "Joseph son of Zacharias",
+   "kind": "person",
+   "names": [
+    "Joseph"
+   ],
+   "brief": "Jewish commander defeated at Jamnia against Judas's orders.",
+   "short": "Joseph, son of Zacharias, was left in charge of Judea with Azarias while Judas was away, disobeyed orders to avoid battle and was beaten by Gorgias at Jamnia.",
+   "refs": [
+    "1 Maccabees 5:18",
+    "1 Maccabees 5:56",
+    "1 Maccabees 5:60"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Zacharias@1Ma.5.18"
+    }
+   ]
+  },
+  {
+   "key": "Zacharias@1Ma.5.18",
+   "name": "Zacharias",
+   "kind": "person",
+   "names": [
+    "Zacharias"
+   ],
+   "brief": "Father of Joseph, a Jewish commander.",
+   "short": "Zacharias is named only as the father of Joseph, one of the two commanders defeated at Jamnia.",
+   "refs": [
+    "1 Maccabees 5:18",
+    "1 Maccabees 5:56"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Joseph@1Ma.5.18"
+    }
+   ]
+  },
+  {
+   "key": "Azarias@1Ma.5.18",
+   "name": "Azarias",
+   "kind": "person",
+   "names": [
+    "Azarias"
+   ],
+   "brief": "Jewish commander defeated at Jamnia with Joseph.",
+   "short": "Azarias shared command in Judea with Joseph son of Zacharias and fled from Gorgias at Jamnia.",
+   "refs": [
+    "1 Maccabees 5:18",
+    "1 Maccabees 5:56",
+    "1 Maccabees 5:60"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Mattathias@1Ma.11.70",
+   "name": "Mattathias son of Absalom",
+   "kind": "person",
+   "names": [
+    "Mattathias"
+   ],
+   "brief": "Jewish officer who stood with Jonathan at Hazor.",
+   "short": "Mattathias, son of Absalom, was one of the two commanders who remained with Jonathan in battle against Demetrius's generals.",
+   "refs": [
+    "1 Maccabees 11:70"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Absalom@1Ma.11.70"
+    },
+    {
+     "rel": "sibling",
+     "key": "Jonathan@1Ma.13.11"
+    }
+   ]
+  },
+  {
+   "key": "Judas@1Ma.11.70",
+   "name": "Judas son of Chalphi",
+   "kind": "person",
+   "names": [
+    "Judas"
+   ],
+   "brief": "Jewish officer who stood with Jonathan at Hazor.",
+   "short": "Judas, son of Chalphi, was one of the two captains who stayed with Jonathan when the rest of his army fled.",
+   "refs": [
+    "1 Maccabees 11:70"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Absalom@1Ma.11.70",
+   "name": "Absalom",
+   "kind": "person",
+   "names": [
+    "Absalom"
+   ],
+   "brief": "Father of Mattathias and Jonathan, Jewish officers.",
+   "short": "Absalom is named as the father of the officers Mattathias and Jonathan, who served under the Maccabees.",
+   "refs": [
+    "1 Maccabees 11:70",
+    "1 Maccabees 13:11"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Jonathan@1Ma.13.11",
+   "name": "Jonathan son of Absalom",
+   "kind": "person",
+   "names": [
+    "Jonathan"
+   ],
+   "brief": "Officer Simon sent to take and hold Joppa.",
+   "short": "Jonathan, son of Absalom, was sent by Simon with an army to Joppa, where he expelled its inhabitants and settled.",
+   "refs": [
+    "1 Maccabees 13:11"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Absalom@1Ma.11.70"
+    },
+    {
+     "rel": "sibling",
+     "key": "Mattathias@1Ma.11.70"
+    }
+   ]
+  },
+  {
+   "key": "Ptolemy@1Ma.16.11",
+   "name": "Ptolemy son of Abubus",
+   "kind": "person",
+   "names": [
+    "Ptolemy",
+    "Ptolemy son of Abubus"
+   ],
+   "brief": "Governor of Jericho who murdered Simon, his father-in-law.",
+   "short": "Ptolemy, son of Abubus, governor of the plain of Jericho, ambitious for power, killed Simon and two of his sons at a banquet in Dok and tried to seize the country.",
+   "refs": [
+    "1 Maccabees 16:11",
+    "1 Maccabees 16:15",
+    "1 Maccabees 16:16",
+    "1 Maccabees 16:18"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Abubus@1Ma.16.11"
+    }
+   ]
+  },
+  {
+   "key": "Abubus@1Ma.16.11",
+   "name": "Abubus",
+   "kind": "person",
+   "names": [
+    "Abubus"
+   ],
+   "brief": "Father of Ptolemy, Simon's murderer.",
+   "short": "Abubus is mentioned as the father of Ptolemy, who killed Simon.",
+   "refs": [
+    "1 Maccabees 16:11",
+    "1 Maccabees 16:15"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Ptolemy@1Ma.16.11"
+    }
+   ]
+  },
+  {
+   "key": "Eupolemus@1Ma.8.17",
+   "name": "Eupolemus",
+   "kind": "person",
+   "names": [
+    "Eupolemus"
+   ],
+   "brief": "Envoy sent by Judas to Rome.",
+   "short": "Eupolemus, son of John, son of Accos, was chosen by Judas with Jason son of Eleazar to go to Rome and establish friendship and alliance.",
+   "refs": [
+    "1 Maccabees 8:17",
+    "2 Maccabees 4:11"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "John@1Ma.8.17"
+    }
+   ]
+  },
+  {
+   "key": "John@1Ma.8.17",
+   "name": "John son of Accos",
+   "kind": "person",
+   "names": [
+    "John"
+   ],
+   "brief": "Father of Eupolemus, envoy to Rome.",
+   "short": "John, son of Accos, is named as the father of Eupolemus, whom Judas sent to Rome; 2 Maccabees 4:11 mentions the same John as the one who obtained royal privileges for the Jews.",
+   "refs": [
+    "1 Maccabees 8:17",
+    "2 Maccabees 4:11"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Eupolemus@1Ma.8.17"
+    },
+    {
+     "rel": "father",
+     "key": "Accos@1Ma.8.17"
+    }
+   ]
+  },
+  {
+   "key": "Accos@1Ma.8.17",
+   "name": "Accos",
+   "kind": "person",
+   "names": [
+    "Accos"
+   ],
+   "brief": "Grandfather of Eupolemus.",
+   "short": "Accos is the father of John and grandfather of Eupolemus, the Jewish envoy to Rome.",
+   "refs": [
+    "1 Maccabees 8:17"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "John@1Ma.8.17"
+    }
+   ]
+  },
+  {
+   "key": "Jason@1Ma.8.17",
+   "name": "Jason son of Eleazar",
+   "kind": "person",
+   "names": [
+    "Jason"
+   ],
+   "brief": "Envoy sent by Judas to Rome.",
+   "short": "Jason, son of Eleazar, travelled with Eupolemus to Rome to secure an alliance.",
+   "refs": [
+    "1 Maccabees 8:17"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Eleazar@1Ma.8.17"
+    }
+   ]
+  },
+  {
+   "key": "Eleazar@1Ma.8.17",
+   "name": "Eleazar",
+   "kind": "person",
+   "names": [
+    "Eleazar"
+   ],
+   "brief": "Father of Jason, envoy to Rome.",
+   "short": "Eleazar is named only as the father of Jason, one of Judas's two ambassadors to Rome.",
+   "refs": [
+    "1 Maccabees 8:17"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Jason@1Ma.8.17"
+    }
+   ]
+  },
+  {
+   "key": "Numenius@1Ma.12.16",
+   "name": "Numenius",
+   "kind": "person",
+   "names": [
+    "Numenius"
+   ],
+   "brief": "Jewish envoy to Rome and Sparta under Jonathan and Simon.",
+   "short": "Numenius, son of Antiochus, with Antipater son of Jason, carried Jonathan's embassy to Rome and Sparta and later brought back Rome's and Sparta's renewed friendship to Simon.",
+   "refs": [
+    "1 Maccabees 12:16",
+    "1 Maccabees 14:22",
+    "1 Maccabees 14:24",
+    "1 Maccabees 15:15"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Antiochus@1Ma.12.16"
+    }
+   ]
+  },
+  {
+   "key": "Antiochus@1Ma.12.16",
+   "name": "Antiochus",
+   "kind": "person",
+   "names": [
+    "Antiochus"
+   ],
+   "brief": "Father of the Jewish envoy Numenius.",
+   "short": "This Antiochus, a Jew, is named only as the father of the ambassador Numenius (not a Seleucid king).",
+   "refs": [
+    "1 Maccabees 12:16",
+    "1 Maccabees 14:22"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Numenius@1Ma.12.16"
+    }
+   ]
+  },
+  {
+   "key": "Antipater@1Ma.12.16",
+   "name": "Antipater",
+   "kind": "person",
+   "names": [
+    "Antipater"
+   ],
+   "brief": "Jewish envoy to Rome and Sparta, with Numenius.",
+   "short": "Antipater, son of Jason, was sent with Numenius to renew the alliance with Rome and Sparta.",
+   "refs": [
+    "1 Maccabees 12:16",
+    "1 Maccabees 14:22"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Jason@1Ma.12.16"
+    }
+   ]
+  },
+  {
+   "key": "Jason@1Ma.12.16",
+   "name": "Jason",
+   "kind": "person",
+   "names": [
+    "Jason"
+   ],
+   "brief": "Father of the Jewish envoy Antipater.",
+   "short": "Jason is named only as the father of Antipater, a Jewish ambassador.",
+   "refs": [
+    "1 Maccabees 12:16",
+    "1 Maccabees 14:22"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Antipater@1Ma.12.16"
+    }
+   ]
+  },
+  {
+   "key": "Onias@1Ma.12.7",
+   "name": "Onias",
+   "kind": "person",
+   "names": [
+    "Onias"
+   ],
+   "brief": "Jewish high priest to whom the Spartan king Arius wrote.",
+   "short": "Onias, a Jewish chief priest, was addressed by Arius king of the Spartans in a letter claiming kinship between Spartans and Jews, which Jonathan later cited.",
+   "refs": [
+    "1 Maccabees 12:7",
+    "1 Maccabees 12:8",
+    "1 Maccabees 12:19",
+    "1 Maccabees 12:20"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Arius@1Ma.12.7",
+   "name": "Arius",
+   "kind": "person",
+   "names": [
+    "Arius"
+   ],
+   "brief": "King of the Spartans who wrote of kinship with the Jews.",
+   "short": "Arius, a king of Sparta, wrote to the high priest Onias that Spartans and Jews were kindred, descended from Abraham.",
+   "refs": [
+    "1 Maccabees 12:7",
+    "1 Maccabees 12:20"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Antiochus@1Ma.1.10",
+   "name": "Antiochus IV Epiphanes",
+   "kind": "person",
+   "names": [
+    "Antiochus",
+    "Antiochus Epiphanes",
+    "Epiphanes"
+   ],
+   "brief": "Seleucid king (175-164 BC) who persecuted the Jews.",
+   "short": "Antiochus IV Epiphanes, son of Antiochus the Great and a former hostage at Rome, invaded Egypt, plundered the Jerusalem temple, outlawed Jewish practice and set up the abomination of desolation; he died in Persia.",
+   "refs": [
+    "1 Maccabees 1:10",
+    "1 Maccabees 1:16",
+    "1 Maccabees 1:20",
+    "1 Maccabees 1:41",
+    "1 Maccabees 3:27",
+    "1 Maccabees 6:1",
+    "1 Maccabees 6:16",
+    "1 Maccabees 6:55",
+    "1 Maccabees 10:1",
+    "2 Maccabees 1:14",
+    "2 Maccabees 1:15",
+    "2 Maccabees 2:20",
+    "2 Maccabees 4:7",
+    "2 Maccabees 4:21",
+    "2 Maccabees 4:37",
+    "2 Maccabees 5:1",
+    "2 Maccabees 5:5",
+    "2 Maccabees 5:17",
+    "2 Maccabees 5:21",
+    "2 Maccabees 7:24",
+    "2 Maccabees 9:1",
+    "2 Maccabees 9:2",
+    "2 Maccabees 9:19",
+    "2 Maccabees 9:25",
+    "2 Maccabees 9:29",
+    "2 Maccabees 10:9",
+    "2 Maccabees 10:13"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Antiochus@1Ma.8.6"
+    },
+    {
+     "rel": "child",
+     "key": "Antiochus@1Ma.3.33"
+    }
+   ]
+  },
+  {
+   "key": "Antiochus@1Ma.8.6",
+   "name": "Antiochus III the Great",
+   "kind": "person",
+   "names": [
+    "Antiochus",
+    "Antiochus the king"
+   ],
+   "brief": "Seleucid king defeated by Rome; father of Antiochus IV.",
+   "short": "Antiochus III the Great, king of Asia, came against the Romans with elephants and a huge army and was defeated; his son Antiochus IV had been a hostage at Rome.",
+   "refs": [
+    "1 Maccabees 1:10",
+    "1 Maccabees 8:6"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Antiochus@1Ma.1.10"
+    }
+   ]
+  },
+  {
+   "key": "Antiochus@1Ma.3.33",
+   "name": "Antiochus V Eupator",
+   "kind": "person",
+   "names": [
+    "Antiochus",
+    "Eupator",
+    "Antiochus Eupator"
+   ],
+   "brief": "Boy-king (164-162 BC); campaigned against Judea under Lysias.",
+   "short": "Antiochus V Eupator, young son of Antiochus IV, was raised by Lysias, invaded Judea, besieged Mount Zion, and made peace with the Jews before Demetrius I had him and Lysias killed.",
+   "refs": [
+    "1 Maccabees 3:33",
+    "1 Maccabees 6:15",
+    "1 Maccabees 6:17",
+    "1 Maccabees 6:55",
+    "1 Maccabees 7:2",
+    "2 Maccabees 2:20",
+    "2 Maccabees 9:25",
+    "2 Maccabees 9:29",
+    "2 Maccabees 10:10",
+    "2 Maccabees 10:13",
+    "2 Maccabees 11:22",
+    "2 Maccabees 11:27",
+    "2 Maccabees 13:1",
+    "2 Maccabees 13:3",
+    "2 Maccabees 13:4",
+    "2 Maccabees 14:2"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Antiochus@1Ma.1.10"
+    }
+   ]
+  },
+  {
+   "key": "Antiochus@1Ma.11.39",
+   "name": "Antiochus VI Dionysus",
+   "kind": "person",
+   "names": [
+    "Antiochus",
+    "young Antiochus"
+   ],
+   "brief": "Child king set up by Tryphon (145-142 BC).",
+   "short": "Antiochus VI, the young son of Alexander Balas, was raised up by Tryphon against Demetrius II and confirmed Jonathan as high priest before Tryphon killed him.",
+   "refs": [
+    "1 Maccabees 11:39",
+    "1 Maccabees 11:54",
+    "1 Maccabees 11:57",
+    "1 Maccabees 12:39",
+    "1 Maccabees 13:31"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Alexander@1Ma.10.1"
+    }
+   ]
+  },
+  {
+   "key": "Antiochus@1Ma.15.1",
+   "name": "Antiochus VII Sidetes",
+   "kind": "person",
+   "names": [
+    "Antiochus"
+   ],
+   "brief": "Seleucid king (138-129 BC); rival of Tryphon.",
+   "short": "Antiochus VII, younger son of Demetrius I, first confirmed Simon's privileges, then pursued Tryphon to Dor and turned on Simon, sending Cendebaeus to invade Judea.",
+   "refs": [
+    "1 Maccabees 15:1",
+    "1 Maccabees 15:2",
+    "1 Maccabees 15:10",
+    "1 Maccabees 15:11",
+    "1 Maccabees 15:13",
+    "1 Maccabees 15:25"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Demetrius@1Ma.7.1"
+    }
+   ]
+  },
+  {
+   "key": "Seleucus@1Ma.7.1",
+   "name": "Seleucus IV Philopator",
+   "kind": "person",
+   "names": [
+    "Seleucus"
+   ],
+   "brief": "Seleucid king (187-175 BC) who sent Heliodorus to the temple.",
+   "short": "Seleucus IV bore the cost of temple sacrifices, then sent Heliodorus to seize the temple treasury; his son Demetrius I later returned from Rome to take the throne.",
+   "refs": [
+    "1 Maccabees 7:1",
+    "2 Maccabees 3:3",
+    "2 Maccabees 4:7",
+    "2 Maccabees 5:18",
+    "2 Maccabees 14:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Demetrius@1Ma.7.1"
+    }
+   ]
+  },
+  {
+   "key": "Demetrius@1Ma.7.1",
+   "name": "Demetrius I Soter",
+   "kind": "person",
+   "names": [
+    "Demetrius",
+    "King Demetrius"
+   ],
+   "brief": "Seleucid king (162-150 BC) who sent Bacchides and Nicanor.",
+   "short": "Demetrius I, son of Seleucus IV, escaped from Rome, took the throne, installed Alcimus as high priest and sent Nicanor and Bacchides against Judas; he fell in battle with Alexander Balas.",
+   "refs": [
+    "1 Maccabees 7:1",
+    "1 Maccabees 7:4",
+    "1 Maccabees 8:31",
+    "1 Maccabees 9:1",
+    "1 Maccabees 10:2",
+    "1 Maccabees 10:3",
+    "1 Maccabees 10:15",
+    "1 Maccabees 10:22",
+    "1 Maccabees 10:25",
+    "1 Maccabees 10:48",
+    "1 Maccabees 10:49",
+    "1 Maccabees 10:50",
+    "1 Maccabees 10:52",
+    "1 Maccabees 10:67",
+    "1 Maccabees 15:1",
+    "2 Maccabees 14:1",
+    "2 Maccabees 14:4",
+    "2 Maccabees 14:5",
+    "2 Maccabees 14:11",
+    "2 Maccabees 14:26"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Seleucus@1Ma.7.1"
+    },
+    {
+     "rel": "child",
+     "key": "Demetrius@1Ma.10.67"
+    },
+    {
+     "rel": "child",
+     "key": "Antiochus@1Ma.15.1"
+    }
+   ]
+  },
+  {
+   "key": "Demetrius@1Ma.10.67",
+   "name": "Demetrius II Nicator",
+   "kind": "person",
+   "names": [
+    "Demetrius",
+    "King Demetrius"
+   ],
+   "brief": "Seleucid king (145-138, 129-125 BC); courted Jonathan and Simon.",
+   "short": "Demetrius II, son of Demetrius I, returned from Crete, defeated Alexander Balas, granted the Jews tax exemption and later their independence under Simon, and was captured by the Parthian king Arsaces.",
+   "refs": [
+    "1 Maccabees 10:67",
+    "1 Maccabees 10:69",
+    "1 Maccabees 11:9",
+    "1 Maccabees 11:12",
+    "1 Maccabees 11:19",
+    "1 Maccabees 11:30",
+    "1 Maccabees 11:32",
+    "1 Maccabees 11:38",
+    "1 Maccabees 11:39",
+    "1 Maccabees 11:40",
+    "1 Maccabees 11:41",
+    "1 Maccabees 11:42",
+    "1 Maccabees 11:52",
+    "1 Maccabees 11:55",
+    "1 Maccabees 11:63",
+    "1 Maccabees 12:24",
+    "1 Maccabees 12:34",
+    "1 Maccabees 13:34",
+    "1 Maccabees 13:35",
+    "1 Maccabees 13:36",
+    "1 Maccabees 14:1",
+    "1 Maccabees 14:2",
+    "1 Maccabees 14:3",
+    "1 Maccabees 14:38",
+    "1 Maccabees 15:22",
+    "2 Maccabees 1:7"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Demetrius@1Ma.7.1"
+    }
+   ]
+  },
+  {
+   "key": "Alexander@1Ma.10.1",
+   "name": "Alexander Balas",
+   "kind": "person",
+   "names": [
+    "Alexander",
+    "Alexander Epiphanes"
+   ],
+   "brief": "Seleucid pretender-king (150-145 BC); made Jonathan high priest.",
+   "short": "Alexander Epiphanes (Balas), claiming to be Antiochus IV's son, seized Ptolemais, appointed Jonathan high priest, married Cleopatra daughter of Ptolemy VI, and was defeated and killed in Arabia.",
+   "refs": [
+    "1 Maccabees 10:1",
+    "1 Maccabees 10:4",
+    "1 Maccabees 10:15",
+    "1 Maccabees 10:18",
+    "1 Maccabees 10:23",
+    "1 Maccabees 10:47",
+    "1 Maccabees 10:48",
+    "1 Maccabees 10:49",
+    "1 Maccabees 10:51",
+    "1 Maccabees 10:58",
+    "1 Maccabees 10:59",
+    "1 Maccabees 10:68",
+    "1 Maccabees 10:88",
+    "1 Maccabees 11:1",
+    "1 Maccabees 11:2",
+    "1 Maccabees 11:8",
+    "1 Maccabees 11:9",
+    "1 Maccabees 11:12",
+    "1 Maccabees 11:14",
+    "1 Maccabees 11:15",
+    "1 Maccabees 11:16",
+    "1 Maccabees 11:17",
+    "1 Maccabees 11:39"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "spouse",
+     "key": "Cleopatra@1Ma.10.57"
+    },
+    {
+     "rel": "child",
+     "key": "Antiochus@1Ma.11.39"
+    }
+   ]
+  },
+  {
+   "key": "Ptolemy@1Ma.1.18",
+   "name": "Ptolemy VI Philometor",
+   "kind": "person",
+   "names": [
+    "Ptolemy",
+    "Philometor",
+    "King Ptolemy"
+   ],
+   "brief": "King of Egypt (180-145 BC); father-in-law of Alexander Balas.",
+   "short": "Ptolemy VI Philometor was attacked by Antiochus IV, later gave his daughter Cleopatra to Alexander Balas, then switched to Demetrius II and seized Antioch before dying of wounds.",
+   "refs": [
+    "1 Maccabees 1:18",
+    "1 Maccabees 10:51",
+    "1 Maccabees 10:55",
+    "1 Maccabees 10:57",
+    "1 Maccabees 11:8",
+    "1 Maccabees 11:13",
+    "1 Maccabees 11:15",
+    "1 Maccabees 11:16",
+    "1 Maccabees 11:17",
+    "1 Maccabees 11:18",
+    "2 Maccabees 1:10",
+    "2 Maccabees 4:21",
+    "2 Maccabees 9:29",
+    "2 Maccabees 10:13"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Cleopatra@1Ma.10.57"
+    }
+   ]
+  },
+  {
+   "key": "Cleopatra@1Ma.10.57",
+   "name": "Cleopatra",
+   "kind": "person",
+   "names": [
+    "Cleopatra"
+   ],
+   "brief": "Daughter of Ptolemy VI; wife of Alexander Balas, then Demetrius II.",
+   "short": "Cleopatra Thea, daughter of Ptolemy VI, was married to Alexander Balas at Ptolemais and later given to Demetrius II.",
+   "refs": [
+    "1 Maccabees 10:57",
+    "1 Maccabees 10:58"
+   ],
+   "gender": "Female",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Ptolemy@1Ma.1.18"
+    },
+    {
+     "rel": "spouse",
+     "key": "Alexander@1Ma.10.1"
+    }
+   ]
+  },
+  {
+   "key": "Ptolemy@1Ma.15.16",
+   "name": "Ptolemy VIII",
+   "kind": "person",
+   "names": [
+    "Ptolemy",
+    "King Ptolemy"
+   ],
+   "brief": "King of Egypt addressed in the Roman consul's letter.",
+   "short": "The Roman consul Lucius wrote to King Ptolemy of Egypt (probably Ptolemy VIII) asking him not to harm the Jews, Rome's allies.",
+   "refs": [
+    "1 Maccabees 15:16"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Ptolemy@1Ma.3.38",
+   "name": "Ptolemy Macron",
+   "kind": "person",
+   "names": [
+    "Ptolemy",
+    "Ptolemy son of Dorymenes",
+    "Macron"
+   ],
+   "brief": "Seleucid governor of Coelesyria; son of Dorymenes.",
+   "short": "Ptolemy, son of Dorymenes and called Macron, was sent against Judas, advised persecution of the Jews, later governed Cyprus and Coelesyria and defected to Antiochus IV, ending in suicide; the identification of these references is partly uncertain.",
+   "refs": [
+    "1 Maccabees 3:38",
+    "2 Maccabees 4:45",
+    "2 Maccabees 4:46",
+    "2 Maccabees 6:8",
+    "2 Maccabees 8:8",
+    "2 Maccabees 8:9",
+    "2 Maccabees 10:12",
+    "2 Maccabees 10:13"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Dorymenes@1Ma.3.38"
+    }
+   ]
+  },
+  {
+   "key": "Dorymenes@1Ma.3.38",
+   "name": "Dorymenes",
+   "kind": "person",
+   "names": [
+    "Dorymenes"
+   ],
+   "brief": "Father of the Seleucid commander Ptolemy.",
+   "short": "Dorymenes is named only as the father of the general Ptolemy.",
+   "refs": [
+    "1 Maccabees 3:38",
+    "2 Maccabees 4:45"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Ptolemy@1Ma.3.38"
+    }
+   ]
+  },
+  {
+   "key": "Lysias@1Ma.3.32",
+   "name": "Lysias",
+   "kind": "person",
+   "names": [
+    "Lysias"
+   ],
+   "brief": "Seleucid regent who fought Judas at Beth-zur.",
+   "short": "Lysias, of royal lineage, was left in charge west of the Euphrates by Antiochus IV, lost at Beth-zur, guarded Antiochus V, and made peace with Judas before Demetrius I killed him.",
+   "refs": [
+    "1 Maccabees 3:32",
+    "1 Maccabees 3:34",
+    "1 Maccabees 3:38",
+    "1 Maccabees 4:26",
+    "1 Maccabees 4:34",
+    "1 Maccabees 4:35",
+    "1 Maccabees 6:6",
+    "1 Maccabees 6:17",
+    "1 Maccabees 6:55",
+    "1 Maccabees 7:2",
+    "2 Maccabees 10:11",
+    "2 Maccabees 11:1",
+    "2 Maccabees 11:12",
+    "2 Maccabees 11:15",
+    "2 Maccabees 11:16",
+    "2 Maccabees 11:22",
+    "2 Maccabees 11:35",
+    "2 Maccabees 12:1",
+    "2 Maccabees 13:2",
+    "2 Maccabees 13:4",
+    "2 Maccabees 13:26",
+    "2 Maccabees 14:2"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Nicanor@1Ma.3.38",
+   "name": "Nicanor",
+   "kind": "person",
+   "names": [
+    "Nicanor",
+    "Nicanor son of Patroclus"
+   ],
+   "brief": "Seleucid general killed at Adasa; Nicanor Day honours his defeat.",
+   "short": "Nicanor, son of Patroclus, was sent against Judas, threatened the temple, and was killed at Adasa; his head and hand were hung up and the thirteenth of Adar was kept as Nicanor's Day.",
+   "refs": [
+    "1 Maccabees 3:38",
+    "1 Maccabees 7:26",
+    "1 Maccabees 7:27",
+    "1 Maccabees 7:31",
+    "1 Maccabees 7:32",
+    "1 Maccabees 7:33",
+    "1 Maccabees 7:39",
+    "1 Maccabees 7:43",
+    "1 Maccabees 7:44",
+    "1 Maccabees 7:47",
+    "1 Maccabees 9:1",
+    "2 Maccabees 8:9",
+    "2 Maccabees 8:10",
+    "2 Maccabees 8:12",
+    "2 Maccabees 8:14",
+    "2 Maccabees 8:23",
+    "2 Maccabees 8:24",
+    "2 Maccabees 8:34",
+    "2 Maccabees 9:3",
+    "2 Maccabees 14:12",
+    "2 Maccabees 14:14",
+    "2 Maccabees 14:15",
+    "2 Maccabees 14:17",
+    "2 Maccabees 14:18",
+    "2 Maccabees 14:23",
+    "2 Maccabees 14:26",
+    "2 Maccabees 14:27",
+    "2 Maccabees 14:28",
+    "2 Maccabees 14:30",
+    "2 Maccabees 14:37",
+    "2 Maccabees 14:39",
+    "2 Maccabees 15:1",
+    "2 Maccabees 15:6",
+    "2 Maccabees 15:25",
+    "2 Maccabees 15:28",
+    "2 Maccabees 15:30",
+    "2 Maccabees 15:32",
+    "2 Maccabees 15:33",
+    "2 Maccabees 15:35",
+    "2 Maccabees 15:37"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Patroclus@2Ma.8.9"
+    }
+   ]
+  },
+  {
+   "key": "Patroclus@2Ma.8.9",
+   "name": "Patroclus",
+   "kind": "person",
+   "names": [
+    "Patroclus"
+   ],
+   "brief": "Father of the general Nicanor.",
+   "short": "Patroclus is named only as Nicanor's father.",
+   "refs": [
+    "2 Maccabees 8:9"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Nicanor@1Ma.3.38"
+    }
+   ]
+  },
+  {
+   "key": "Gorgias@1Ma.3.38",
+   "name": "Gorgias",
+   "kind": "person",
+   "names": [
+    "Gorgias"
+   ],
+   "brief": "Seleucid general beaten at Emmaus; later governor of Idumaea.",
+   "short": "Gorgias, one of the king's friends, tried a night attack on Judas's camp at Emmaus, was outmaneuvered, but later beat Joseph and Azarias at Jamnia.",
+   "refs": [
+    "1 Maccabees 3:38",
+    "1 Maccabees 4:1",
+    "1 Maccabees 4:5",
+    "1 Maccabees 4:18",
+    "1 Maccabees 5:59",
+    "2 Maccabees 8:9",
+    "2 Maccabees 10:14",
+    "2 Maccabees 12:32",
+    "2 Maccabees 12:35",
+    "2 Maccabees 12:37"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Seron@1Ma.3.13",
+   "name": "Seron",
+   "kind": "person",
+   "names": [
+    "Seron"
+   ],
+   "brief": "Syrian commander defeated by Judas at Beth-horon.",
+   "short": "Seron, commander of the Syrian army, sought glory by attacking Judas and was routed at the ascent of Beth-horon.",
+   "refs": [
+    "1 Maccabees 3:13",
+    "1 Maccabees 3:23"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Apollonius@1Ma.3.10",
+   "name": "Apollonius",
+   "kind": "person",
+   "names": [
+    "Apollonius"
+   ],
+   "brief": "Gentile commander from Samaria killed by Judas.",
+   "short": "Apollonius gathered an army from Samaria against Israel; Judas killed him and kept his sword for the rest of his life.",
+   "refs": [
+    "1 Maccabees 3:10",
+    "1 Maccabees 3:11",
+    "1 Maccabees 3:12"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Apollonius@1Ma.10.69",
+   "name": "Apollonius",
+   "kind": "person",
+   "names": [
+    "Apollonius"
+   ],
+   "brief": "Governor of Coelesyria under Demetrius II, defeated by Jonathan.",
+   "short": "Apollonius, governor of Coelesyria for Demetrius II, challenged Jonathan and was defeated at Joppa and Azotus.",
+   "refs": [
+    "1 Maccabees 10:69",
+    "1 Maccabees 10:74",
+    "1 Maccabees 10:75",
+    "1 Maccabees 10:77",
+    "1 Maccabees 10:79"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Timotheus@1Ma.5.6",
+   "name": "Timotheus",
+   "kind": "person",
+   "names": [
+    "Timotheus"
+   ],
+   "brief": "Ammonite leader and Seleucid commander beaten by Judas.",
+   "short": "Timotheus led Ammonite and other forces east of the Jordan and was repeatedly defeated by Judas; 2 Maccabees depicts a Timotheus killed in a cistern at Gazara, probably the same commander.",
+   "refs": [
+    "1 Maccabees 5:6",
+    "1 Maccabees 5:11",
+    "1 Maccabees 5:34",
+    "1 Maccabees 5:37",
+    "1 Maccabees 5:40",
+    "2 Maccabees 8:30",
+    "2 Maccabees 8:32",
+    "2 Maccabees 9:3",
+    "2 Maccabees 10:24",
+    "2 Maccabees 10:32",
+    "2 Maccabees 10:37",
+    "2 Maccabees 12:2",
+    "2 Maccabees 12:10",
+    "2 Maccabees 12:18",
+    "2 Maccabees 12:19",
+    "2 Maccabees 12:20",
+    "2 Maccabees 12:21",
+    "2 Maccabees 12:24"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Bacchides@1Ma.7.8",
+   "name": "Bacchides",
+   "kind": "person",
+   "names": [
+    "Bacchides"
+   ],
+   "brief": "Seleucid governor beyond the Euphrates who fought Judas and Jonathan.",
+   "short": "Bacchides, friend of Demetrius I, escorted Alcimus to Judea, killed Judas at Elasa, built strongholds in Judea and finally made peace with Jonathan.",
+   "refs": [
+    "1 Maccabees 7:8",
+    "1 Maccabees 7:12",
+    "1 Maccabees 7:19",
+    "1 Maccabees 7:20",
+    "1 Maccabees 9:1",
+    "1 Maccabees 9:12",
+    "1 Maccabees 9:14",
+    "1 Maccabees 9:25",
+    "1 Maccabees 9:26",
+    "1 Maccabees 9:29",
+    "1 Maccabees 9:32",
+    "1 Maccabees 9:34",
+    "1 Maccabees 9:43",
+    "1 Maccabees 9:47",
+    "1 Maccabees 9:49",
+    "1 Maccabees 9:57",
+    "1 Maccabees 9:58",
+    "1 Maccabees 9:63",
+    "1 Maccabees 9:68",
+    "1 Maccabees 10:12",
+    "2 Maccabees 8:30"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Alcimus@1Ma.7.5",
+   "name": "Alcimus",
+   "kind": "person",
+   "names": [
+    "Alcimus"
+   ],
+   "brief": "Hellenizing high priest appointed by Demetrius I.",
+   "short": "Alcimus, a priest not of the high-priestly line, was installed by Demetrius I, killed sixty Hasidaeans, and died of a stroke while pulling down the sanctuary wall.",
+   "refs": [
+    "1 Maccabees 7:5",
+    "1 Maccabees 7:9",
+    "1 Maccabees 7:12",
+    "1 Maccabees 7:20",
+    "1 Maccabees 7:21",
+    "1 Maccabees 7:23",
+    "1 Maccabees 7:25",
+    "1 Maccabees 9:1",
+    "1 Maccabees 9:54",
+    "1 Maccabees 9:55",
+    "1 Maccabees 9:56",
+    "1 Maccabees 9:57",
+    "2 Maccabees 14:3",
+    "2 Maccabees 14:13",
+    "2 Maccabees 14:26"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Tryphon@1Ma.11.39",
+   "name": "Tryphon",
+   "kind": "person",
+   "names": [
+    "Tryphon"
+   ],
+   "brief": "Seleucid general and usurper; captured and killed Jonathan.",
+   "short": "Tryphon backed the child Antiochus VI against Demetrius II, tricked Jonathan into Ptolemais, imprisoned and killed him, then murdered Antiochus VI and was driven out by Antiochus VII.",
+   "refs": [
+    "1 Maccabees 11:39",
+    "1 Maccabees 11:54",
+    "1 Maccabees 11:56",
+    "1 Maccabees 12:39",
+    "1 Maccabees 12:42",
+    "1 Maccabees 12:49",
+    "1 Maccabees 13:1",
+    "1 Maccabees 13:12",
+    "1 Maccabees 13:14",
+    "1 Maccabees 13:19",
+    "1 Maccabees 13:20",
+    "1 Maccabees 13:21",
+    "1 Maccabees 13:22",
+    "1 Maccabees 13:24",
+    "1 Maccabees 13:31",
+    "1 Maccabees 13:34",
+    "1 Maccabees 14:1",
+    "1 Maccabees 15:10",
+    "1 Maccabees 15:25",
+    "1 Maccabees 15:37",
+    "1 Maccabees 15:39"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Cendebaeus@1Ma.15.38",
+   "name": "Cendebaeus",
+   "kind": "person",
+   "names": [
+    "Cendebaeus"
+   ],
+   "brief": "Antiochus VII's coastal commander, defeated by Simon's sons.",
+   "short": "Cendebaeus, appointed chief captain of the coast, fortified Kidron and raided Judea until John and Judas, sons of Simon, routed him.",
+   "refs": [
+    "1 Maccabees 15:38",
+    "1 Maccabees 15:40",
+    "1 Maccabees 16:1",
+    "1 Maccabees 16:4",
+    "1 Maccabees 16:8",
+    "1 Maccabees 16:9"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Athenobius@1Ma.15.28",
+   "name": "Athenobius",
+   "kind": "person",
+   "names": [
+    "Athenobius"
+   ],
+   "brief": "Envoy of Antiochus VII to Simon.",
+   "short": "Athenobius, a friend of the king, demanded Joppa, Gazara and the Jerusalem citadel from Simon and left unanswered when Simon refused.",
+   "refs": [
+    "1 Maccabees 15:28",
+    "1 Maccabees 15:32",
+    "1 Maccabees 15:35"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Lasthenes@1Ma.11.31",
+   "name": "Lasthenes",
+   "kind": "person",
+   "names": [
+    "Lasthenes"
+   ],
+   "brief": "Cretan addressed by Demetrius II as 'father'.",
+   "short": "Lasthenes, a Cretan who helped Demetrius II win his throne, received the king's letter confirming privileges for the Jews.",
+   "refs": [
+    "1 Maccabees 11:31",
+    "1 Maccabees 11:32"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Zabdiel@1Ma.11.17",
+   "name": "Zabdiel",
+   "kind": "person",
+   "names": [
+    "Zabdiel"
+   ],
+   "brief": "Arab chief who beheaded Alexander Balas.",
+   "short": "Zabdiel the Arabian cut off Alexander Balas's head and sent it to Ptolemy.",
+   "refs": [
+    "1 Maccabees 11:17"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Imalcue@1Ma.11.39",
+   "name": "Imalcue",
+   "kind": "person",
+   "names": [
+    "Imalcue"
+   ],
+   "brief": "Arabian who raised the child Antiochus VI.",
+   "short": "Imalcue the Arabian cared for Antiochus VI until Tryphon persuaded him to hand the boy over.",
+   "refs": [
+    "1 Maccabees 11:39"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Philip@1Ma.6.14",
+   "name": "Philip",
+   "kind": "person",
+   "names": [
+    "Philip"
+   ],
+   "brief": "Friend of Antiochus IV appointed regent for Antiochus V.",
+   "short": "Philip, one of Antiochus IV's friends, was given the crown, robe and signet ring to guide the young Antiochus V, but Lysias seized power and Philip took Antioch only briefly.",
+   "refs": [
+    "1 Maccabees 6:14",
+    "1 Maccabees 6:55",
+    "1 Maccabees 6:63",
+    "2 Maccabees 9:29",
+    "2 Maccabees 13:23"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Philip@2Ma.5.22",
+   "name": "Philip the Phrygian",
+   "kind": "person",
+   "names": [
+    "Philip"
+   ],
+   "brief": "Antiochus IV's governor of Jerusalem, cruel to the Jews.",
+   "short": "Philip, a Phrygian by race, was left as governor at Jerusalem, burned Sabbath-keepers in caves, and wrote to Ptolemy for support against Judas.",
+   "refs": [
+    "2 Maccabees 5:22",
+    "2 Maccabees 6:11",
+    "2 Maccabees 8:8"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Philip@1Ma.1.1",
+   "name": "Philip II of Macedon",
+   "kind": "person",
+   "names": [
+    "Philip"
+   ],
+   "brief": "Father of Alexander the Great.",
+   "short": "Philip of Macedon is named as the father of Alexander the Great.",
+   "refs": [
+    "1 Maccabees 1:1",
+    "1 Maccabees 6:2"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Alexander@1Ma.1.1"
+    }
+   ]
+  },
+  {
+   "key": "Alexander@1Ma.1.1",
+   "name": "Alexander the Great",
+   "kind": "person",
+   "names": [
+    "Alexander",
+    "Alexander the Macedonian"
+   ],
+   "brief": "Macedonian conqueror whose successors' kingdoms shape the story.",
+   "short": "Alexander the Macedonian defeated Darius of Persia, conquered much of the known world and, dying after twelve years, divided his kingdom among his servants.",
+   "refs": [
+    "1 Maccabees 1:1",
+    "1 Maccabees 1:7",
+    "1 Maccabees 6:2"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Philip@1Ma.1.1"
+    }
+   ]
+  },
+  {
+   "key": "Darius@1Ma.1.1",
+   "name": "Darius III",
+   "kind": "person",
+   "names": [
+    "Darius"
+   ],
+   "brief": "Last Achaemenid Persian king, defeated by Alexander.",
+   "short": "Darius, king of the Persians and Medes, was defeated by Alexander the Great.",
+   "refs": [
+    "1 Maccabees 1:1"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Philip@1Ma.8.5",
+   "name": "Philip V of Macedon",
+   "kind": "person",
+   "names": [
+    "Philip"
+   ],
+   "brief": "King of Macedon (Chittim) defeated by the Romans.",
+   "short": "Philip V and Perseus, kings of Macedon, are listed among those whom Rome conquered.",
+   "refs": [
+    "1 Maccabees 8:5"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Perseus@1Ma.8.5",
+   "name": "Perseus",
+   "kind": "person",
+   "names": [
+    "Perseus"
+   ],
+   "brief": "Last king of Macedon, defeated by Rome (168 BC).",
+   "short": "Perseus, king of Chittim (Macedonia), was conquered by the Romans.",
+   "refs": [
+    "1 Maccabees 8:5"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Eumenes@1Ma.8.8",
+   "name": "Eumenes",
+   "kind": "person",
+   "names": [
+    "Eumenes"
+   ],
+   "brief": "King of Pergamum who received Antiochus III's lands from Rome.",
+   "short": "King Eumenes was given India, Media and Lydia, taken from Antiochus the Great.",
+   "refs": [
+    "1 Maccabees 8:8"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Arsaces@1Ma.14.2",
+   "name": "Arsaces",
+   "kind": "person",
+   "names": [
+    "Arsaces"
+   ],
+   "brief": "Parthian king who captured Demetrius II.",
+   "short": "Arsaces, king of Persia and Media, took Demetrius II alive and held him prisoner.",
+   "refs": [
+    "1 Maccabees 14:2",
+    "1 Maccabees 14:3",
+    "1 Maccabees 15:22"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Attalus@1Ma.15.22",
+   "name": "Attalus",
+   "kind": "person",
+   "names": [
+    "Attalus"
+   ],
+   "brief": "Ruler of Pergamum addressed in Lucius's letter.",
+   "short": "Attalus is one of the kings to whom Rome wrote on behalf of the Jews.",
+   "refs": [
+    "1 Maccabees 15:22"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Arathes@1Ma.15.22",
+   "name": "Arathes",
+   "kind": "person",
+   "names": [
+    "Arathes"
+   ],
+   "brief": "King of Cappadocia addressed in Lucius's letter.",
+   "short": "Arathes is one of the kings to whom Rome wrote on behalf of the Jews.",
+   "refs": [
+    "1 Maccabees 15:22"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Lucius@1Ma.15.16",
+   "name": "Lucius",
+   "kind": "person",
+   "names": [
+    "Lucius"
+   ],
+   "brief": "Roman consul who wrote on the Jews' behalf.",
+   "short": "Lucius, consul of the Romans, wrote to Ptolemy and other rulers not to harm the Jews.",
+   "refs": [
+    "1 Maccabees 15:16"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Aristobulus@2Ma.1.10",
+   "name": "Aristobulus",
+   "kind": "person",
+   "names": [
+    "Aristobulus"
+   ],
+   "brief": "Jewish teacher of King Ptolemy, addressed by the Jerusalem letter.",
+   "short": "Aristobulus, of the anointed priestly stock and teacher of King Ptolemy, receives the first letter inviting Egyptian Jews to keep the feast.",
+   "refs": [
+    "2 Maccabees 1:10"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Jonathan@2Ma.1.23",
+   "name": "Jonathan",
+   "kind": "person",
+   "names": [
+    "Jonathan"
+   ],
+   "brief": "Priest who led the prayer at the sacrifice in Nehemiah's time.",
+   "short": "Jonathan led the priests in prayer while the sacrifice burned, with the others responding, in Nehemiah's story of the sacred fire.",
+   "refs": [
+    "2 Maccabees 1:23"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Jason@2Ma.2.23",
+   "name": "Jason of Cyrene",
+   "kind": "person",
+   "names": [
+    "Jason of Cyrene",
+    "Jason"
+   ],
+   "brief": "Author whose five books 2 Maccabees abridges.",
+   "short": "Jason of Cyrene wrote a five-volume history of the Maccabean revolt that the author of 2 Maccabees condenses.",
+   "refs": [
+    "2 Maccabees 2:23"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Jason@2Ma.1.7",
+   "name": "Jason",
+   "kind": "person",
+   "names": [
+    "Jason"
+   ],
+   "brief": "Hellenizing high priest who bought the office from Antiochus IV.",
+   "short": "Jason, brother of Onias III, supplanted him as high priest by bribery, built a gymnasium in Jerusalem, and was driven out by Menelaus; he died in exile at Sparta.",
+   "refs": [
+    "2 Maccabees 1:7",
+    "2 Maccabees 4:7",
+    "2 Maccabees 4:10",
+    "2 Maccabees 4:13",
+    "2 Maccabees 4:19",
+    "2 Maccabees 4:22",
+    "2 Maccabees 4:23",
+    "2 Maccabees 4:24",
+    "2 Maccabees 4:26",
+    "2 Maccabees 5:5",
+    "2 Maccabees 5:6"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "sibling",
+     "key": "Onias@2Ma.3.1"
+    }
+   ]
+  },
+  {
+   "key": "Onias@2Ma.3.1",
+   "name": "Onias III",
+   "kind": "person",
+   "names": [
+    "Onias"
+   ],
+   "brief": "Pious high priest murdered through Menelaus's plotting.",
+   "short": "Onias III, the devout high priest, defended the temple treasury against Simon and Heliodorus, was displaced by his brother Jason, and was treacherously murdered at Daphne by Andronicus.",
+   "refs": [
+    "2 Maccabees 3:1",
+    "2 Maccabees 3:5",
+    "2 Maccabees 3:31",
+    "2 Maccabees 3:33",
+    "2 Maccabees 3:35",
+    "2 Maccabees 4:1",
+    "2 Maccabees 4:4",
+    "2 Maccabees 4:7",
+    "2 Maccabees 4:33",
+    "2 Maccabees 4:34",
+    "2 Maccabees 4:36",
+    "2 Maccabees 4:38",
+    "2 Maccabees 15:12",
+    "2 Maccabees 15:14"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "sibling",
+     "key": "Jason@2Ma.1.7"
+    }
+   ]
+  },
+  {
+   "key": "Simon@2Ma.3.4",
+   "name": "Simon",
+   "kind": "person",
+   "names": [
+    "Simon"
+   ],
+   "brief": "Temple overseer of the tribe of Benjamin; informed on the treasury.",
+   "short": "Simon, administrator of the temple of the tribe of Benjamin, quarrelled with Onias III and denounced the temple treasury to the Seleucid governor, bringing Heliodorus.",
+   "refs": [
+    "2 Maccabees 3:4",
+    "2 Maccabees 3:11",
+    "2 Maccabees 4:1",
+    "2 Maccabees 4:3",
+    "2 Maccabees 4:4",
+    "2 Maccabees 4:6"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "sibling",
+     "key": "Menelaus@2Ma.4.23"
+    }
+   ]
+  },
+  {
+   "key": "Apollonius@2Ma.3.5",
+   "name": "Apollonius",
+   "kind": "person",
+   "names": [
+    "Apollonius"
+   ],
+   "brief": "Seleucid governor of Coelesyria who reported the temple treasury.",
+   "short": "Apollonius, governor of Coelesyria and Phoenicia under Seleucus IV, was told of the temple money by Simon and informed the king.",
+   "refs": [
+    "2 Maccabees 3:5",
+    "2 Maccabees 3:7"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Apollonius@2Ma.4.4",
+   "name": "Apollonius son of Menestheus",
+   "kind": "person",
+   "names": [
+    "Apollonius"
+   ],
+   "brief": "Governor of Coelesyria who backed Simon, later sent to Egypt.",
+   "short": "Apollonius son of Menestheus, governor of Coelesyria and Phoenicia, increased Simon's malice and was later sent to Egypt for Philometor's enthronement.",
+   "refs": [
+    "2 Maccabees 4:4",
+    "2 Maccabees 4:21"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Menestheus@2Ma.4.4"
+    }
+   ]
+  },
+  {
+   "key": "Menestheus@2Ma.4.4",
+   "name": "Menestheus",
+   "kind": "person",
+   "names": [
+    "Menestheus"
+   ],
+   "brief": "Father of the governor Apollonius.",
+   "short": "Menestheus is named only as the father of Apollonius.",
+   "refs": [
+    "2 Maccabees 4:4",
+    "2 Maccabees 4:21"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Apollonius@2Ma.4.4"
+    }
+   ]
+  },
+  {
+   "key": "Apollonius@2Ma.5.24",
+   "name": "Apollonius",
+   "kind": "person",
+   "names": [
+    "Apollonius"
+   ],
+   "brief": "Commander sent by Antiochus IV to massacre Jerusalem.",
+   "short": "Apollonius was sent with 22,000 men to kill the adult men of Jerusalem and sell the women and boys into slavery.",
+   "refs": [
+    "2 Maccabees 5:24"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Apollonius@2Ma.12.2",
+   "name": "Apollonius son of Gennaeus",
+   "kind": "person",
+   "names": [
+    "Apollonius"
+   ],
+   "brief": "Local Seleucid governor who harassed the Jews.",
+   "short": "Apollonius son of Gennaeus, a district governor, together with Timotheus and others, would not let the Jews live in peace.",
+   "refs": [
+    "2 Maccabees 12:2"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Gennaeus@2Ma.12.2"
+    }
+   ]
+  },
+  {
+   "key": "Gennaeus@2Ma.12.2",
+   "name": "Gennaeus",
+   "kind": "person",
+   "names": [
+    "Gennaeus"
+   ],
+   "brief": "Father of the governor Apollonius.",
+   "short": "Gennaeus is named only as the father of Apollonius.",
+   "refs": [
+    "2 Maccabees 12:2"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Apollonius@2Ma.12.2"
+    }
+   ]
+  },
+  {
+   "key": "Heliodorus@2Ma.3.7",
+   "name": "Heliodorus",
+   "kind": "person",
+   "names": [
+    "Heliodorus"
+   ],
+   "brief": "Chancellor of Seleucus IV, struck down at the temple.",
+   "short": "Heliodorus was sent to seize the temple treasury but was beaten by angelic horsemen and healed only through Onias's prayer; he then testified to God's power.",
+   "refs": [
+    "2 Maccabees 3:7",
+    "2 Maccabees 3:8",
+    "2 Maccabees 3:13",
+    "2 Maccabees 3:23",
+    "2 Maccabees 3:25",
+    "2 Maccabees 3:31",
+    "2 Maccabees 3:32",
+    "2 Maccabees 3:33",
+    "2 Maccabees 3:35",
+    "2 Maccabees 3:37",
+    "2 Maccabees 3:40",
+    "2 Maccabees 4:1",
+    "2 Maccabees 5:18"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Hyrcanus@2Ma.3.11",
+   "name": "Hyrcanus",
+   "kind": "person",
+   "names": [
+    "Hyrcanus"
+   ],
+   "brief": "Man of high rank who deposited money in the temple.",
+   "short": "Hyrcanus son of Tobias is named as a man of very high standing whose funds were deposited in the temple.",
+   "refs": [
+    "2 Maccabees 3:11"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Tobias@2Ma.3.11"
+    }
+   ]
+  },
+  {
+   "key": "Tobias@2Ma.3.11",
+   "name": "Tobias",
+   "kind": "person",
+   "names": [
+    "Tobias"
+   ],
+   "brief": "Father of Hyrcanus.",
+   "short": "Tobias is named as the father of Hyrcanus, whose money was in the temple.",
+   "refs": [
+    "2 Maccabees 3:11"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Hyrcanus@2Ma.3.11"
+    }
+   ]
+  },
+  {
+   "key": "Menelaus@2Ma.4.23",
+   "name": "Menelaus",
+   "kind": "person",
+   "names": [
+    "Menelaus"
+   ],
+   "brief": "High priest who bought the office; brother of Simon.",
+   "short": "Menelaus, brother of Simon, outbid Jason for the high priesthood, stole temple vessels, arranged Onias's murder, and was executed by Antiochus V at Beroea.",
+   "refs": [
+    "2 Maccabees 4:23",
+    "2 Maccabees 4:27",
+    "2 Maccabees 4:29",
+    "2 Maccabees 4:32",
+    "2 Maccabees 4:34",
+    "2 Maccabees 4:39",
+    "2 Maccabees 4:43",
+    "2 Maccabees 4:45",
+    "2 Maccabees 4:47",
+    "2 Maccabees 4:50",
+    "2 Maccabees 5:5",
+    "2 Maccabees 5:15",
+    "2 Maccabees 5:23",
+    "2 Maccabees 11:29",
+    "2 Maccabees 11:32",
+    "2 Maccabees 13:3",
+    "2 Maccabees 13:7"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "sibling",
+     "key": "Simon@2Ma.3.4"
+    },
+    {
+     "rel": "sibling",
+     "key": "Lysimachus@2Ma.4.29"
+    }
+   ]
+  },
+  {
+   "key": "Lysimachus@2Ma.4.29",
+   "name": "Lysimachus",
+   "kind": "person",
+   "names": [
+    "Lysimachus"
+   ],
+   "brief": "Menelaus's brother, killed by a Jerusalem crowd.",
+   "short": "Lysimachus, left as deputy high priest by Menelaus, plundered the temple and was killed near the treasury by the people.",
+   "refs": [
+    "2 Maccabees 4:29",
+    "2 Maccabees 4:39",
+    "2 Maccabees 4:40",
+    "2 Maccabees 4:41"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "sibling",
+     "key": "Menelaus@2Ma.4.23"
+    }
+   ]
+  },
+  {
+   "key": "Sostratus@2Ma.4.27",
+   "name": "Sostratus",
+   "kind": "person",
+   "names": [
+    "Sostratus"
+   ],
+   "brief": "Governor of the Jerusalem citadel.",
+   "short": "Sostratus, governor of the citadel, demanded the money Menelaus had promised the king.",
+   "refs": [
+    "2 Maccabees 4:27",
+    "2 Maccabees 4:29"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Crates@2Ma.4.29",
+   "name": "Crates",
+   "kind": "person",
+   "names": [
+    "Crates"
+   ],
+   "brief": "Commander of the Cyprians in Jerusalem.",
+   "short": "Crates commanded the Cyprian troops while Sostratus was away.",
+   "refs": [
+    "2 Maccabees 4:29"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Andronicus@2Ma.4.31",
+   "name": "Andronicus",
+   "kind": "person",
+   "names": [
+    "Andronicus"
+   ],
+   "brief": "Antiochus IV's deputy who killed Onias III.",
+   "short": "Andronicus, left as deputy while the king was in Cilicia, was bribed by Menelaus to murder Onias and was executed by Antiochus on the same spot.",
+   "refs": [
+    "2 Maccabees 4:31",
+    "2 Maccabees 4:32",
+    "2 Maccabees 4:34",
+    "2 Maccabees 4:36",
+    "2 Maccabees 4:38",
+    "2 Maccabees 5:23"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Antiochis@2Ma.4.30",
+   "name": "Antiochis",
+   "kind": "person",
+   "names": [
+    "Antiochis"
+   ],
+   "brief": "Concubine of Antiochus IV given the revenues of Tarsus and Mallus.",
+   "short": "Antiochis, a concubine of Antiochus IV, was given Tarsus and Mallus as a gift, prompting their revolt.",
+   "refs": [
+    "2 Maccabees 4:30"
+   ],
+   "gender": "Female"
+  },
+  {
+   "key": "Hauran@2Ma.4.40",
+   "name": "Hauran",
+   "kind": "person",
+   "names": [
+    "Hauran"
+   ],
+   "brief": "Aged leader of Lysimachus's 3,000 men.",
+   "short": "Hauran, an elderly and foolish man, led the force Lysimachus armed against the Jerusalem crowd.",
+   "refs": [
+    "2 Maccabees 4:40"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Aretas@2Ma.5.8",
+   "name": "Aretas",
+   "kind": "person",
+   "names": [
+    "Aretas"
+   ],
+   "brief": "Arab ruler who imprisoned Jason the high priest.",
+   "short": "Aretas, prince of the Arabians, held Jason, who fled from city to city and died in exile.",
+   "refs": [
+    "2 Maccabees 5:8"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Eleazar@2Ma.6.18",
+   "name": "Eleazar the scribe",
+   "kind": "person",
+   "names": [
+    "Eleazar"
+   ],
+   "brief": "Aged scribe martyred rather than eat pork.",
+   "short": "Eleazar, an elderly leading scribe, refused to eat swine's flesh or feign eating it, and died under torture as an example of courage.",
+   "refs": [
+    "2 Maccabees 6:18",
+    "2 Maccabees 6:24"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Callisthenes@2Ma.8.33",
+   "name": "Callisthenes",
+   "kind": "person",
+   "names": [
+    "Callisthenes"
+   ],
+   "brief": "Man burned for setting fire to the temple gates.",
+   "short": "Callisthenes, one of those who had set the sacred gates on fire, was burned in a small house as punishment.",
+   "refs": [
+    "2 Maccabees 8:33"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Joseph@2Ma.8.22",
+   "name": "Joseph",
+   "kind": "person",
+   "names": [
+    "Joseph"
+   ],
+   "brief": "Brother appointed by Judas to lead a division.",
+   "short": "Joseph, with Simon and Jonathan, was set over a division of 1,500 men by Judas.",
+   "refs": [
+    "2 Maccabees 8:22",
+    "2 Maccabees 10:19"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Zacchaeus@2Ma.10.19",
+   "name": "Zacchaeus",
+   "kind": "person",
+   "names": [
+    "Zacchaeus"
+   ],
+   "brief": "Commander left by Judas to besiege Idumaean strongholds.",
+   "short": "Zacchaeus was left with Simon and Joseph and a force to besiege the Idumaean strongholds.",
+   "refs": [
+    "2 Maccabees 10:19"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Chaereas@2Ma.10.32",
+   "name": "Chaereas",
+   "kind": "person",
+   "names": [
+    "Chaereas"
+   ],
+   "brief": "Timotheus's brother, commander of Gazara.",
+   "short": "Chaereas commanded the fortress of Gazara and was killed with Timotheus.",
+   "refs": [
+    "2 Maccabees 10:32",
+    "2 Maccabees 10:37"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "sibling",
+     "key": "Timotheus@1Ma.5.6"
+    }
+   ]
+  },
+  {
+   "key": "Apollophanes@2Ma.10.37",
+   "name": "Apollophanes",
+   "kind": "person",
+   "names": [
+    "Apollophanes"
+   ],
+   "brief": "Killed with Timotheus at Gazara.",
+   "short": "Apollophanes was among those killed with Timotheus and Chaereas.",
+   "refs": [
+    "2 Maccabees 10:37"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Hieronymus@2Ma.12.2",
+   "name": "Hieronymus",
+   "kind": "person",
+   "names": [
+    "Hieronymus"
+   ],
+   "brief": "District governor who disturbed the Jews.",
+   "short": "Hieronymus was one of the governors who would not let the Jews live in peace.",
+   "refs": [
+    "2 Maccabees 12:2"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Demophon@2Ma.12.2",
+   "name": "Demophon",
+   "kind": "person",
+   "names": [
+    "Demophon"
+   ],
+   "brief": "District governor who disturbed the Jews.",
+   "short": "Demophon was one of the governors who would not let the Jews live in peace.",
+   "refs": [
+    "2 Maccabees 12:2"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Nicanor@2Ma.12.2",
+   "name": "Nicanor",
+   "kind": "person",
+   "names": [
+    "Nicanor"
+   ],
+   "brief": "Governor of Cyprus who troubled the Jews.",
+   "short": "This Nicanor, governor of Cyprus, is distinct from Nicanor son of Patroclus and joined other governors in harassing the Jews.",
+   "refs": [
+    "2 Maccabees 12:2"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Dositheus@2Ma.12.19",
+   "name": "Dositheus",
+   "kind": "person",
+   "names": [
+    "Dositheus"
+   ],
+   "brief": "Jewish captain who destroyed Timotheus's garrison; later seized Gorgias.",
+   "short": "Dositheus served under Maccabaeus with Sosipater and later seized Gorgias by his cloak before a Thracian horseman cut him down.",
+   "refs": [
+    "2 Maccabees 12:19",
+    "2 Maccabees 12:24",
+    "2 Maccabees 12:35"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Sosipater@2Ma.12.19",
+   "name": "Sosipater",
+   "kind": "person",
+   "names": [
+    "Sosipater"
+   ],
+   "brief": "Jewish captain with Dositheus.",
+   "short": "Sosipater, a captain under Maccabaeus, destroyed Timotheus's garrison and refused to release Timotheus's captives.",
+   "refs": [
+    "2 Maccabees 12:19",
+    "2 Maccabees 12:24"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Bacenor@2Ma.12.35",
+   "name": "Bacenor",
+   "kind": "person",
+   "names": [
+    "Bacenor"
+   ],
+   "brief": "Jewish officer whose company included Dositheus.",
+   "short": "Bacenor is named only as the leader of the company to which the horseman Dositheus belonged.",
+   "refs": [
+    "2 Maccabees 12:35"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Esdris@2Ma.12.36",
+   "name": "Esdris",
+   "kind": "person",
+   "names": [
+    "Esdris"
+   ],
+   "brief": "Jewish commander at Marisa.",
+   "short": "Esdris led fighters at the battle against Gorgias at Marisa and tired before Judas rallied them.",
+   "refs": [
+    "2 Maccabees 12:36"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Rhodocus@2Ma.13.21",
+   "name": "Rhodocus",
+   "kind": "person",
+   "names": [
+    "Rhodocus"
+   ],
+   "brief": "Jewish soldier who betrayed secrets to the enemy.",
+   "short": "Rhodocus leaked secrets to the enemy at Bethsura and was caught and imprisoned.",
+   "refs": [
+    "2 Maccabees 13:21"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Hegemonides@2Ma.13.24",
+   "name": "Hegemonides",
+   "kind": "person",
+   "names": [
+    "Hegemonides"
+   ],
+   "brief": "Governor appointed from Ptolemais to the Gerrenians.",
+   "short": "Hegemonides was left as governor by Antiochus V after he made peace with Judas.",
+   "refs": [
+    "2 Maccabees 13:24"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Razis@2Ma.14.37",
+   "name": "Razis",
+   "kind": "person",
+   "names": [
+    "Razis"
+   ],
+   "brief": "Jerusalem elder who died by his own sword.",
+   "short": "Razis, a respected elder called 'Father of the Jews', was denounced to Nicanor and chose suicide rather than capture.",
+   "refs": [
+    "2 Maccabees 14:37"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Posidonius@2Ma.14.19",
+   "name": "Posidonius",
+   "kind": "person",
+   "names": [
+    "Posidonius"
+   ],
+   "brief": "Envoy sent by Nicanor to Judas.",
+   "short": "Posidonius, with Theodotus and Mattathias, carried Nicanor's pledges of friendship to Judas.",
+   "refs": [
+    "2 Maccabees 14:19"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Theodotus@2Ma.14.19",
+   "name": "Theodotus",
+   "kind": "person",
+   "names": [
+    "Theodotus"
+   ],
+   "brief": "Envoy sent by Nicanor to Judas.",
+   "short": "Theodotus, with Posidonius and Mattathias, carried Nicanor's pledges of friendship to Judas.",
+   "refs": [
+    "2 Maccabees 14:19"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Mattathias@2Ma.14.19",
+   "name": "Mattathias",
+   "kind": "person",
+   "names": [
+    "Mattathias"
+   ],
+   "brief": "Envoy sent by Nicanor to Judas.",
+   "short": "This Mattathias, one of three envoys from Nicanor, is not the Maccabean patriarch.",
+   "refs": [
+    "2 Maccabees 14:19"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Quintus@2Ma.11.34",
+   "name": "Quintus Memmius",
+   "kind": "person",
+   "names": [
+    "Quintus Memmius"
+   ],
+   "brief": "Roman envoy who wrote to the Jews.",
+   "short": "Quintus Memmius and Titus Manius, Roman ambassadors, sent the Jews a letter confirming Lysias's concessions.",
+   "refs": [
+    "2 Maccabees 11:34"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Titus@2Ma.11.34",
+   "name": "Titus Manius",
+   "kind": "person",
+   "names": [
+    "Titus Manius"
+   ],
+   "brief": "Roman envoy who wrote to the Jews.",
+   "short": "Titus Manius, with Quintus Memmius, wrote a Roman letter to the Jewish people.",
+   "refs": [
+    "2 Maccabees 11:34"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "John@2Ma.11.17",
+   "name": "John",
+   "kind": "person",
+   "names": [
+    "John"
+   ],
+   "brief": "Jewish envoy who brought Lysias's letter to Judas.",
+   "short": "John and Absalom, envoys sent by the Jews, presented a written petition to Lysias.",
+   "refs": [
+    "2 Maccabees 11:17"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Absalom@2Ma.11.17",
+   "name": "Absalom",
+   "kind": "person",
+   "names": [
+    "Absalom"
+   ],
+   "brief": "Jewish envoy who brought Lysias's letter to Judas.",
+   "short": "Absalom and John carried Lysias's reply to Judas and the Jews.",
+   "refs": [
+    "2 Maccabees 11:17"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Dor@Jos.11.2-1Ch#mac",
+   "same_as": "Dor@Jos.11.2-1Ch",
+   "names": [
+    "Dor"
+   ],
+   "refs": [
+    "1 Maccabees 3:38",
+    "1 Maccabees 15:11",
+    "1 Maccabees 15:13",
+    "1 Maccabees 15:25"
+   ]
+  },
+  {
+   "key": "Adoraim@2Ch.11.9#mac",
+   "same_as": "Adoraim@2Ch.11.9",
+   "names": [
+    "Adora"
+   ],
+   "refs": [
+    "1 Maccabees 13:20"
+   ]
+  },
+  {
+   "key": "Mareshah@Jos.15.44-Mic#mac",
+   "same_as": "Mareshah@Jos.15.44-Mic",
+   "names": [
+    "Marisa"
+   ],
+   "refs": [
+    "2 Maccabees 12:35"
+   ]
+  },
+  {
+   "key": "Spain@Rom.15.24-#mac",
+   "same_as": "Spain@Rom.15.24-",
+   "names": [
+    "Spain"
+   ],
+   "refs": [
+    "1 Maccabees 8:3"
+   ]
+  },
+  {
+   "key": "Modin@1Ma.2.1",
+   "name": "Modein",
+   "kind": "place",
+   "names": [
+    "Modin",
+    "Modein"
+   ],
+   "brief": "Hometown of the Maccabees, northwest of Jerusalem.",
+   "short": "Modein (Modin), a village in the hills west of Jerusalem, was the home of Mattathias; the revolt began there and the Hasmonean family tomb stood there.",
+   "refs": [
+    "1 Maccabees 2:1",
+    "1 Maccabees 2:15",
+    "1 Maccabees 2:23",
+    "1 Maccabees 2:70",
+    "1 Maccabees 9:19",
+    "1 Maccabees 13:25",
+    "1 Maccabees 13:30",
+    "1 Maccabees 16:4",
+    "2 Maccabees 13:14"
+   ],
+   "lat": 31.93,
+   "lng": 34.97
+  },
+  {
+   "key": "Zion@1Ma.4.37",
+   "name": "Mount Zion",
+   "kind": "place",
+   "names": [
+    "Zion",
+    "Mount Zion"
+   ],
+   "brief": "Temple hill of Jerusalem, fortified by Judas.",
+   "short": "In 1 Maccabees Mount Zion is the temple mount: Judas and his army went up to cleanse the sanctuary there, then fortified it with walls and towers; tablets of Simon's honours were set up on it.",
+   "refs": [
+    "1 Maccabees 4:37",
+    "1 Maccabees 4:60",
+    "1 Maccabees 5:54",
+    "1 Maccabees 6:48",
+    "1 Maccabees 6:62",
+    "1 Maccabees 7:33",
+    "1 Maccabees 10:11",
+    "1 Maccabees 14:27"
+   ],
+   "lat": 31.78,
+   "lng": 35.235
+  },
+  {
+   "key": "Bethzacharias@1Ma.6.32",
+   "name": "Beth-zechariah",
+   "kind": "place",
+   "names": [
+    "Bethzacharias"
+   ],
+   "brief": "Site of Judas's battle with Antiochus V's elephants.",
+   "short": "Beth-zechariah, south of Jerusalem, was where Judas faced the army of Antiochus V and where Eleazar Avaran died killing an elephant.",
+   "refs": [
+    "1 Maccabees 6:32",
+    "1 Maccabees 6:33"
+   ],
+   "lat": 31.65,
+   "lng": 35.13
+  },
+  {
+   "key": "Emmaus@1Ma.3.40",
+   "name": "Emmaus",
+   "kind": "place",
+   "names": [
+    "Emmaus"
+   ],
+   "brief": "Judean plain town where Judas defeated Gorgias.",
+   "short": "This Emmaus (later Nicopolis) on the western edge of the Judean hills was the Seleucid camp that Judas outflanked in 165 BC.",
+   "refs": [
+    "1 Maccabees 3:40",
+    "1 Maccabees 3:57",
+    "1 Maccabees 4:3",
+    "1 Maccabees 9:50"
+   ],
+   "lat": 31.84,
+   "lng": 34.99
+  },
+  {
+   "key": "Adasa@1Ma.7.40",
+   "name": "Adasa",
+   "kind": "place",
+   "names": [
+    "Adasa"
+   ],
+   "brief": "Village where Judas defeated Nicanor.",
+   "short": "Adasa, near Beth-horon, was where Judas camped and killed Nicanor with his army in 161 BC.",
+   "refs": [
+    "1 Maccabees 7:40",
+    "1 Maccabees 7:45"
+   ],
+   "lat": 31.84,
+   "lng": 35.2
+  },
+  {
+   "key": "Elasa@1Ma.9.5",
+   "name": "Elasa",
+   "kind": "place",
+   "names": [
+    "Elasa"
+   ],
+   "brief": "Site where Judas died fighting Bacchides.",
+   "short": "Judas camped at Elasa with three thousand men; most deserted and he fell in battle against Bacchides.",
+   "refs": [
+    "1 Maccabees 9:5"
+   ]
+  },
+  {
+   "key": "Mizpeh@1Ma.5.35",
+   "name": "Mizpeh in Gilead",
+   "kind": "place",
+   "names": [
+    "Mizpeh"
+   ],
+   "brief": "Gilead city taken and burned by Judas.",
+   "short": "A Gentile city in Gilead which Judas took, whose men he killed and which he burned, distinct from the Mizpah near Jerusalem.",
+   "refs": [
+    "1 Maccabees 5:35"
+   ]
+  },
+  {
+   "key": "Gilgal@1Ma.9.2",
+   "name": "Gilgal",
+   "kind": "place",
+   "names": [
+    "Gilgal"
+   ],
+   "brief": "Place on Bacchides's route toward Arbela.",
+   "short": "Bacchides's army passed Gilgal on the way to Mesaloth in Arbela.",
+   "refs": [
+    "1 Maccabees 9:2"
+   ]
+  },
+  {
+   "key": "Arbela@1Ma.9.2",
+   "name": "Arbela",
+   "kind": "place",
+   "names": [
+    "Arbela",
+    "Mesaloth"
+   ],
+   "brief": "Galilean district with Mesaloth, attacked by Bacchides.",
+   "short": "Bacchides encamped against Mesaloth in Arbela in Galilee and killed many people.",
+   "refs": [
+    "1 Maccabees 9:2"
+   ],
+   "lat": 32.82,
+   "lng": 35.48
+  },
+  {
+   "key": "Berea@1Ma.9.4",
+   "name": "Berea",
+   "kind": "place",
+   "names": [
+    "Berea"
+   ],
+   "brief": "Place where Bacchides camped before Elasa.",
+   "short": "Bacchides marched from Berea with twenty thousand foot and two thousand horse.",
+   "refs": [
+    "1 Maccabees 9:4"
+   ]
+  },
+  {
+   "key": "Capharsalama@1Ma.7.31",
+   "name": "Capharsalama",
+   "kind": "place",
+   "names": [
+    "Capharsalama"
+   ],
+   "brief": "Site of a battle between Nicanor and Judas.",
+   "short": "Nicanor's plan was exposed and he met Judas beside Capharsalama, losing about five hundred men.",
+   "refs": [
+    "1 Maccabees 7:31"
+   ]
+  },
+  {
+   "key": "Bezeth@1Ma.7.19",
+   "name": "Bezeth",
+   "kind": "place",
+   "names": [
+    "Bezeth"
+   ],
+   "brief": "Place where Bacchides camped and killed deserters.",
+   "short": "Bacchides withdrew from Jerusalem to Bezeth, where he killed seized deserters and threw them into a large pit.",
+   "refs": [
+    "1 Maccabees 7:19"
+   ]
+  },
+  {
+   "key": "Asphar@1Ma.9.33",
+   "name": "Asphar",
+   "kind": "place",
+   "names": [
+    "Asphar"
+   ],
+   "brief": "Pool in the wilderness of Tekoa where Jonathan camped.",
+   "short": "Jonathan and Simon camped by the pool of Asphar in the wilderness near Tekoah.",
+   "refs": [
+    "1 Maccabees 9:33"
+   ]
+  },
+  {
+   "key": "Nadabath@1Ma.9.37",
+   "name": "Nadabath",
+   "kind": "place",
+   "names": [
+    "Nadabath"
+   ],
+   "brief": "Place of the Jambri wedding ambush.",
+   "short": "Jonathan ambushed the sons of Jambri escorting a bride from Nadabath.",
+   "refs": [
+    "1 Maccabees 9:37"
+   ]
+  },
+  {
+   "key": "Bethbasi@1Ma.9.62",
+   "name": "Beth-basi",
+   "kind": "place",
+   "names": [
+    "Bethbasi"
+   ],
+   "brief": "Wilderness fort fortified by Jonathan and Simon.",
+   "short": "Jonathan and Simon fortified a ruined stronghold at Beth-basi and withstood Bacchides's siege.",
+   "refs": [
+    "1 Maccabees 9:62",
+    "1 Maccabees 9:64"
+   ]
+  },
+  {
+   "key": "Odomera@1Ma.9.66",
+   "name": "Odomera",
+   "kind": "place",
+   "names": [
+    "Odomera"
+   ],
+   "brief": "Bedouin tribe or place defeated by Jonathan.",
+   "short": "Jonathan struck Odomera and the sons of Phasiron in their tents.",
+   "refs": [
+    "1 Maccabees 9:66"
+   ]
+  },
+  {
+   "key": "Phasiron@1Ma.9.66",
+   "name": "Phasiron",
+   "kind": "place",
+   "names": [
+    "Phasiron"
+   ],
+   "brief": "Group or place attacked by Jonathan and Simon.",
+   "short": "The sons of Phasiron were attacked by Jonathan and Simon along with Odomera.",
+   "refs": [
+    "1 Maccabees 9:66"
+   ]
+  },
+  {
+   "key": "Timnath@1Ma.9.50",
+   "name": "Timnath",
+   "kind": "place",
+   "names": [
+    "Timnath"
+   ],
+   "brief": "Judean town fortified by Bacchides.",
+   "short": "Bacchides fortified Timnath with high walls, gates and bars along with other Judean cities.",
+   "refs": [
+    "1 Maccabees 9:50"
+   ]
+  },
+  {
+   "key": "Pharathon@1Ma.9.50",
+   "name": "Pharathon",
+   "kind": "place",
+   "names": [
+    "Pharathon"
+   ],
+   "brief": "Judean town fortified by Bacchides.",
+   "short": "Bacchides fortified Pharathon with high walls, gates and bars.",
+   "refs": [
+    "1 Maccabees 9:50"
+   ]
+  },
+  {
+   "key": "Tephon@1Ma.9.50",
+   "name": "Tephon",
+   "kind": "place",
+   "names": [
+    "Tephon"
+   ],
+   "brief": "Judean town fortified by Bacchides.",
+   "short": "Bacchides fortified Tephon with high walls, gates and bars.",
+   "refs": [
+    "1 Maccabees 9:50"
+   ]
+  },
+  {
+   "key": "Kidron@1Ma.15.39",
+   "name": "Kidron",
+   "kind": "place",
+   "names": [
+    "Kidron"
+   ],
+   "brief": "Fortress built by Cendebaeus near Azotus.",
+   "short": "Antiochus VII ordered Cendebaeus to build up Kidron as a base for raiding Judea; John pursued him there.",
+   "refs": [
+    "1 Maccabees 15:39",
+    "1 Maccabees 15:41",
+    "1 Maccabees 16:9"
+   ]
+  },
+  {
+   "key": "Orthosia@1Ma.15.37",
+   "name": "Orthosia",
+   "kind": "place",
+   "names": [
+    "Orthosia"
+   ],
+   "brief": "Phoenician coastal city where Tryphon fled.",
+   "short": "Tryphon boarded a ship and fled to Orthosia after Antiochus VII besieged him.",
+   "refs": [
+    "1 Maccabees 15:37"
+   ]
+  },
+  {
+   "key": "Dok@1Ma.16.15",
+   "name": "Dok",
+   "kind": "place",
+   "names": [
+    "Dok"
+   ],
+   "brief": "Small fortress near Jericho where Ptolemy killed Simon.",
+   "short": "Ptolemy son of Abubus received Simon at the fortress of Dok and murdered him at a banquet.",
+   "refs": [
+    "1 Maccabees 16:15"
+   ]
+  },
+  {
+   "key": "Adida@1Ma.12.38",
+   "name": "Adida",
+   "kind": "place",
+   "names": [
+    "Adida"
+   ],
+   "brief": "Fortified town built by Simon in the lowland.",
+   "short": "Simon built Adida in the plain and fortified it with gates and bars; he camped there against Tryphon.",
+   "refs": [
+    "1 Maccabees 12:38",
+    "1 Maccabees 13:13"
+   ]
+  },
+  {
+   "key": "Bascama@1Ma.13.23",
+   "name": "Bascama",
+   "kind": "place",
+   "names": [
+    "Bascama"
+   ],
+   "brief": "Place where Tryphon killed Jonathan.",
+   "short": "Tryphon killed Jonathan and buried him at Bascama in Gilead.",
+   "refs": [
+    "1 Maccabees 13:23"
+   ]
+  },
+  {
+   "key": "Chaphenatha@1Ma.12.37",
+   "name": "Chaphenatha",
+   "kind": "place",
+   "names": [
+    "Chaphenatha"
+   ],
+   "brief": "Part of Jerusalem's east wall repaired by Jonathan.",
+   "short": "Jonathan repaired the part of the eastern wall called Chaphenatha.",
+   "refs": [
+    "1 Maccabees 12:37"
+   ]
+  },
+  {
+   "key": "Arbatta@1Ma.5.23",
+   "name": "Arbatta",
+   "kind": "place",
+   "names": [
+    "Arbatta"
+   ],
+   "brief": "District in Galilee from which Simon rescued Jews.",
+   "short": "Simon evacuated the Jews of Galilee and Arbatta to Judea.",
+   "refs": [
+    "1 Maccabees 5:23"
+   ]
+  },
+  {
+   "key": "Akrabattine@1Ma.5.3",
+   "name": "Akrabattine",
+   "kind": "place",
+   "names": [
+    "Akrabattine"
+   ],
+   "brief": "Idumaean district where Judas defeated Edomites.",
+   "short": "Judas fought the descendants of Esau at Akrabattine in Idumaea, who had besieged Israel.",
+   "refs": [
+    "1 Maccabees 5:3"
+   ]
+  },
+  {
+   "key": "Dathema@1Ma.5.9",
+   "name": "Dathema",
+   "kind": "place",
+   "names": [
+    "Dathema"
+   ],
+   "brief": "Gilead stronghold where Jews took refuge.",
+   "short": "Jews of Gilead fled to the stronghold of Dathema and appealed to Judas against Timotheus.",
+   "refs": [
+    "1 Maccabees 5:9"
+   ]
+  },
+  {
+   "key": "Bosora@1Ma.5.26",
+   "name": "Bosora",
+   "kind": "place",
+   "names": [
+    "Bosora"
+   ],
+   "brief": "Gilead city taken and burned by Judas.",
+   "short": "Judas took Bosora, killed its males and burned it after the Nabathaeans told him the Jews were shut up there.",
+   "refs": [
+    "1 Maccabees 5:26",
+    "1 Maccabees 5:28"
+   ]
+  },
+  {
+   "key": "Bosor@1Ma.5.26",
+   "name": "Bosor",
+   "kind": "place",
+   "names": [
+    "Bosor"
+   ],
+   "brief": "Strong city of Gilead taken by Judas.",
+   "short": "Bosor was one of the strong cities of Gilead where Jews were besieged and which Judas took.",
+   "refs": [
+    "1 Maccabees 5:26",
+    "1 Maccabees 5:36"
+   ]
+  },
+  {
+   "key": "Alema@1Ma.5.26",
+   "name": "Alema",
+   "kind": "place",
+   "names": [
+    "Alema"
+   ],
+   "brief": "City of Gilead where Jews were besieged.",
+   "short": "Alema was among the strong cities of Gilead in which Jews were shut up.",
+   "refs": [
+    "1 Maccabees 5:26"
+   ]
+  },
+  {
+   "key": "Casphor@1Ma.5.26",
+   "name": "Casphor",
+   "kind": "place",
+   "names": [
+    "Casphor"
+   ],
+   "brief": "City of Gilead taken by Judas.",
+   "short": "Casphor was a city of Gilead where Jews were besieged and which Judas captured.",
+   "refs": [
+    "1 Maccabees 5:26",
+    "1 Maccabees 5:36"
+   ]
+  },
+  {
+   "key": "Maked@1Ma.5.26",
+   "name": "Maked",
+   "kind": "place",
+   "names": [
+    "Maked"
+   ],
+   "brief": "City of Gilead taken by Judas.",
+   "short": "Maked was a city of Gilead where Jews were besieged and which Judas captured.",
+   "refs": [
+    "1 Maccabees 5:26",
+    "1 Maccabees 5:36"
+   ]
+  },
+  {
+   "key": "Carnaim@1Ma.5.26",
+   "name": "Carnaim",
+   "kind": "place",
+   "names": [
+    "Carnaim",
+    "Carnion"
+   ],
+   "brief": "Gilead city with a temple, burned by Judas.",
+   "short": "Carnaim (Carnion in 2 Maccabees) had a temple of Atergatis; Timotheus's men fled into it and Judas burned it.",
+   "refs": [
+    "1 Maccabees 5:26",
+    "1 Maccabees 5:43",
+    "1 Maccabees 5:44",
+    "2 Maccabees 12:21",
+    "2 Maccabees 12:26"
+   ]
+  },
+  {
+   "key": "Raphon@1Ma.5.37",
+   "name": "Raphon",
+   "kind": "place",
+   "names": [
+    "Raphon"
+   ],
+   "brief": "Gilead town where Timotheus camped beyond a brook.",
+   "short": "Timotheus encamped near Raphon beyond the brook before Judas defeated him.",
+   "refs": [
+    "1 Maccabees 5:37"
+   ]
+  },
+  {
+   "key": "Ephron@1Ma.5.46",
+   "name": "Ephron",
+   "kind": "place",
+   "names": [
+    "Ephron"
+   ],
+   "brief": "Large fortified city that Judas stormed on the Jordan road.",
+   "short": "Ephron blocked the path of Judas's returning column; Judas besieged and destroyed it.",
+   "refs": [
+    "1 Maccabees 5:46",
+    "2 Maccabees 12:27"
+   ]
+  },
+  {
+   "key": "Tubias@1Ma.5.13",
+   "name": "Tubias",
+   "kind": "place",
+   "names": [
+    "Tubias",
+    "Tubieni"
+   ],
+   "brief": "Land east of the Jordan where Jews were killed (Tob).",
+   "short": "The land of Tubias (Tob) was where about a thousand Jews were killed and the rest taken captive; 2 Maccabees 12:17 calls its Jews 'Tubieni'.",
+   "refs": [
+    "1 Maccabees 5:13",
+    "2 Maccabees 12:17"
+   ]
+  },
+  {
+   "key": "Lydda@1Ma.11.34",
+   "name": "Lydda",
+   "kind": "place",
+   "names": [
+    "Lydda"
+   ],
+   "brief": "Samarian district transferred to Judea by Demetrius II.",
+   "short": "Aphaerema, Lydda and Ramathaim were added to Judea from Samaria by Demetrius II.",
+   "refs": [
+    "1 Maccabees 11:34"
+   ],
+   "lat": 31.95,
+   "lng": 34.89
+  },
+  {
+   "key": "Ramathaim@1Ma.11.34",
+   "name": "Ramathaim",
+   "kind": "place",
+   "names": [
+    "Ramathaim"
+   ],
+   "brief": "Samarian district transferred to Judea.",
+   "short": "Ramathaim was one of three districts added to Judea from Samaria.",
+   "refs": [
+    "1 Maccabees 11:34"
+   ]
+  },
+  {
+   "key": "Aphaerema@1Ma.11.34",
+   "name": "Aphaerema",
+   "kind": "place",
+   "names": [
+    "Aphaerema"
+   ],
+   "brief": "Samarian district transferred to Judea.",
+   "short": "Aphaerema was one of three districts added to Judea from Samaria.",
+   "refs": [
+    "1 Maccabees 11:34"
+   ]
+  },
+  {
+   "key": "Eleutherus@1Ma.11.7",
+   "name": "Eleutherus",
+   "kind": "place",
+   "names": [
+    "Eleutherus"
+   ],
+   "brief": "River on the Phoenician-Syrian border.",
+   "short": "Jonathan accompanied Ptolemy VI as far as the river Eleutherus; later he pursued Demetrius's officers there.",
+   "refs": [
+    "1 Maccabees 11:7",
+    "1 Maccabees 12:30"
+   ]
+  },
+  {
+   "key": "Seleucia@1Ma.11.8",
+   "name": "Seleucia",
+   "kind": "place",
+   "names": [
+    "Selucia",
+    "Seleucia"
+   ],
+   "brief": "Seleucid port city on the Syrian coast.",
+   "short": "Ptolemy VI took control of the coastal cities as far as Seleucia by the sea.",
+   "refs": [
+    "1 Maccabees 11:8"
+   ],
+   "lat": 36.12,
+   "lng": 35.93
+  },
+  {
+   "key": "Ptolemais@1Ma.5.15",
+   "name": "Ptolemais",
+   "kind": "place",
+   "names": [
+    "Ptolemais"
+   ],
+   "brief": "Coastal city (Acre), Seleucid base and royal meeting place.",
+   "short": "Ptolemais (Acre) was a Gentile city of Galilee, the place where Alexander Balas was welcomed and married Cleopatra and where Jonathan was captured by Tryphon.",
+   "refs": [
+    "1 Maccabees 5:15",
+    "1 Maccabees 5:22",
+    "1 Maccabees 5:55",
+    "1 Maccabees 10:1",
+    "1 Maccabees 10:39",
+    "1 Maccabees 10:56",
+    "1 Maccabees 10:57",
+    "1 Maccabees 10:58",
+    "1 Maccabees 10:60",
+    "1 Maccabees 11:3",
+    "1 Maccabees 11:22",
+    "1 Maccabees 11:24",
+    "1 Maccabees 12:45",
+    "1 Maccabees 12:48",
+    "1 Maccabees 13:12",
+    "2 Maccabees 13:24",
+    "2 Maccabees 13:25"
+   ],
+   "lat": 32.92,
+   "lng": 35.08
+  },
+  {
+   "key": "Coelesyria@1Ma.10.69",
+   "name": "Coelesyria",
+   "kind": "place",
+   "names": [
+    "Coelesyria"
+   ],
+   "brief": "Seleucid province of Syria south of Antioch.",
+   "short": "Coelesyria was the Seleucid district including Judea and Phoenicia, governed by officials such as Apollonius and Ptolemy.",
+   "refs": [
+    "1 Maccabees 10:69",
+    "2 Maccabees 3:5",
+    "2 Maccabees 3:8",
+    "2 Maccabees 4:4",
+    "2 Maccabees 8:8",
+    "2 Maccabees 10:11"
+   ]
+  },
+  {
+   "key": "Elymais@1Ma.6.1",
+   "name": "Elymais",
+   "kind": "place",
+   "names": [
+    "Elymais"
+   ],
+   "brief": "Persian city rich in temple treasure that Antiochus IV tried to plunder.",
+   "short": "Antiochus IV heard of the wealthy city of Elymais in Persia, tried to rob its temple, was repulsed and fell ill.",
+   "refs": [
+    "1 Maccabees 6:1"
+   ]
+  },
+  {
+   "key": "Crete@1Ma.10.67",
+   "name": "Crete",
+   "kind": "place",
+   "names": [
+    "Crete"
+   ],
+   "brief": "Island from which Demetrius II set out.",
+   "short": "Demetrius II returned from Crete to claim his father's kingdom; Lasthenes was a Cretan.",
+   "refs": [
+    "1 Maccabees 10:67"
+   ],
+   "lat": 35.24,
+   "lng": 24.81
+  },
+  {
+   "key": "Lydia@1Ma.8.8",
+   "name": "Lydia",
+   "kind": "place",
+   "names": [
+    "Lydia"
+   ],
+   "brief": "Region of western Anatolia taken from Antiochus III.",
+   "short": "Rome took India, Media and Lydia from Antiochus the Great and gave them to Eumenes.",
+   "refs": [
+    "1 Maccabees 8:8"
+   ]
+  },
+  {
+   "key": "Sparta@1Ma.12.2",
+   "name": "Sparta",
+   "kind": "place",
+   "names": [
+    "Sparta",
+    "Spartans",
+    "Lacedaemonians"
+   ],
+   "brief": "Greek city whose king claimed kinship with the Jews.",
+   "short": "Spartans exchanged letters with Jonathan and Simon claiming common descent from Abraham; Jason the high priest died there.",
+   "refs": [
+    "1 Maccabees 12:2",
+    "1 Maccabees 12:5",
+    "1 Maccabees 12:6",
+    "1 Maccabees 12:20",
+    "1 Maccabees 12:21",
+    "1 Maccabees 14:16",
+    "1 Maccabees 14:20",
+    "1 Maccabees 14:23",
+    "1 Maccabees 15:23",
+    "2 Maccabees 5:9"
+   ],
+   "lat": 37.07,
+   "lng": 22.43
+  },
+  {
+   "key": "Delos@1Ma.15.23",
+   "name": "Delos",
+   "kind": "place",
+   "names": [
+    "Delos"
+   ],
+   "brief": "Aegean island addressed in Rome's letter.",
+   "short": "Delos is among the places that received Rome's letter protecting the Jews.",
+   "refs": [
+    "1 Maccabees 15:23"
+   ],
+   "lat": 37.4,
+   "lng": 25.27
+  },
+  {
+   "key": "Myndos@1Ma.15.23",
+   "name": "Myndos",
+   "kind": "place",
+   "names": [
+    "Myndos"
+   ],
+   "brief": "Carian city addressed in Rome's letter.",
+   "short": "Myndos is among the places that received Rome's letter protecting the Jews.",
+   "refs": [
+    "1 Maccabees 15:23"
+   ]
+  },
+  {
+   "key": "Sicyon@1Ma.15.23",
+   "name": "Sicyon",
+   "kind": "place",
+   "names": [
+    "Sicyon"
+   ],
+   "brief": "Greek city addressed in Rome's letter.",
+   "short": "Sicyon is among the places that received Rome's letter protecting the Jews.",
+   "refs": [
+    "1 Maccabees 15:23"
+   ],
+   "lat": 37.98,
+   "lng": 22.72
+  },
+  {
+   "key": "Caria@1Ma.15.23",
+   "name": "Caria",
+   "kind": "place",
+   "names": [
+    "Caria"
+   ],
+   "brief": "Region of Anatolia addressed in Rome's letter.",
+   "short": "Caria is among the regions that received Rome's letter protecting the Jews.",
+   "refs": [
+    "1 Maccabees 15:23"
+   ]
+  },
+  {
+   "key": "Halicarnassus@1Ma.15.23",
+   "name": "Halicarnassus",
+   "kind": "place",
+   "names": [
+    "Halicarnassus"
+   ],
+   "brief": "Carian city addressed in Rome's letter.",
+   "short": "Halicarnassus is among the places that received Rome's letter protecting the Jews.",
+   "refs": [
+    "1 Maccabees 15:23"
+   ],
+   "lat": 37.04,
+   "lng": 27.42
+  },
+  {
+   "key": "Phaselis@1Ma.15.23",
+   "name": "Phaselis",
+   "kind": "place",
+   "names": [
+    "Phaselis"
+   ],
+   "brief": "Lycian port addressed in Rome's letter.",
+   "short": "Phaselis is among the places that received Rome's letter protecting the Jews.",
+   "refs": [
+    "1 Maccabees 15:23"
+   ],
+   "lat": 36.52,
+   "lng": 30.55
+  },
+  {
+   "key": "Side@1Ma.15.23",
+   "name": "Side",
+   "kind": "place",
+   "names": [
+    "Side"
+   ],
+   "brief": "Pamphylian port addressed in Rome's letter.",
+   "short": "Side is among the places that received Rome's letter protecting the Jews.",
+   "refs": [
+    "1 Maccabees 15:23"
+   ],
+   "lat": 36.77,
+   "lng": 31.39
+  },
+  {
+   "key": "Aradus@1Ma.15.23",
+   "name": "Aradus",
+   "kind": "place",
+   "names": [
+    "Aradus"
+   ],
+   "brief": "Phoenician island city addressed in Rome's letter.",
+   "short": "Aradus is among the places that received Rome's letter protecting the Jews.",
+   "refs": [
+    "1 Maccabees 15:23"
+   ],
+   "lat": 34.86,
+   "lng": 35.86
+  },
+  {
+   "key": "Gortyna@1Ma.15.23",
+   "name": "Gortyna",
+   "kind": "place",
+   "names": [
+    "Gortyna"
+   ],
+   "brief": "Cretan city addressed in Rome's letter.",
+   "short": "Gortyna is among the places that received Rome's letter protecting the Jews.",
+   "refs": [
+    "1 Maccabees 15:23"
+   ],
+   "lat": 35.06,
+   "lng": 24.95
+  },
+  {
+   "key": "Sampsames@1Ma.15.23",
+   "name": "Sampsames",
+   "kind": "place",
+   "names": [
+    "Sampsames"
+   ],
+   "brief": "Locale addressed in Rome's letter.",
+   "short": "Sampsames is the first name in the list of recipients of Rome's letter protecting the Jews.",
+   "refs": [
+    "1 Maccabees 15:23"
+   ]
+  },
+  {
+   "key": "Gerizim@2Ma.5.23",
+   "name": "Mount Gerizim",
+   "kind": "place",
+   "names": [
+    "Gerizim"
+   ],
+   "brief": "Samaritan holy mountain; temple renamed for Zeus.",
+   "short": "Antiochus IV left Andronicus as governor at Gerizim and had its temple dedicated to Zeus Protector of Strangers.",
+   "refs": [
+    "2 Maccabees 5:23",
+    "2 Maccabees 6:2"
+   ],
+   "lat": 32.2,
+   "lng": 35.27
+  },
+  {
+   "key": "Daphne@2Ma.4.33",
+   "name": "Daphne",
+   "kind": "place",
+   "names": [
+    "Daphne"
+   ],
+   "brief": "Sanctuary suburb of Antioch where Onias III was killed.",
+   "short": "Onias III took refuge in the sanctuary at Daphne by Antioch but was lured out and murdered.",
+   "refs": [
+    "2 Maccabees 4:33"
+   ],
+   "lat": 36.13,
+   "lng": 36.19
+  },
+  {
+   "key": "Mallus@2Ma.4.30",
+   "name": "Mallus",
+   "kind": "place",
+   "names": [
+    "Mallus"
+   ],
+   "brief": "Cilician city that revolted over the king's concubine.",
+   "short": "The people of Tarsus and Mallus revolted when they were given as a gift to Antiochis.",
+   "refs": [
+    "2 Maccabees 4:30"
+   ]
+  },
+  {
+   "key": "Persepolis@2Ma.9.2",
+   "name": "Persepolis",
+   "kind": "place",
+   "names": [
+    "Persepolis"
+   ],
+   "brief": "Persian capital Antiochus IV tried to plunder.",
+   "short": "Antiochus IV tried to rob a temple at Persepolis, was driven off, and fled in disorder.",
+   "refs": [
+    "2 Maccabees 9:2"
+   ],
+   "lat": 29.93,
+   "lng": 52.89
+  },
+  {
+   "key": "Tripolis@2Ma.14.1",
+   "name": "Tripolis",
+   "kind": "place",
+   "names": [
+    "Tripolis"
+   ],
+   "brief": "Phoenician port where Demetrius I landed.",
+   "short": "Demetrius I landed at the harbor of Tripolis with an army and fleet.",
+   "refs": [
+    "2 Maccabees 14:1"
+   ],
+   "lat": 34.44,
+   "lng": 35.84
+  },
+  {
+   "key": "Beroea@2Ma.13.4",
+   "name": "Beroea",
+   "kind": "place",
+   "names": [
+    "Beroea"
+   ],
+   "brief": "Syrian city where Menelaus was executed.",
+   "short": "Antiochus V sent Menelaus to Beroea to be put to death.",
+   "refs": [
+    "2 Maccabees 13:4"
+   ],
+   "lat": 36.2,
+   "lng": 37.16
+  },
+  {
+   "key": "Charax@2Ma.12.17",
+   "name": "Charax",
+   "kind": "place",
+   "names": [
+    "Charax"
+   ],
+   "brief": "Place east of the Jordan with Jews called Tubieni.",
+   "short": "Judas's army came to Charax, to the Jews called Tubieni, after marching 750 stades.",
+   "refs": [
+    "2 Maccabees 12:17"
+   ]
+  },
+  {
+   "key": "Caspin@2Ma.12.13",
+   "name": "Caspin",
+   "kind": "place",
+   "names": [
+    "Caspin"
+   ],
+   "brief": "Fortified city of mixed peoples east of the Jordan.",
+   "short": "Judas attacked Caspin, a strong city inhabited by a mixed multitude.",
+   "refs": [
+    "2 Maccabees 12:13"
+   ]
+  },
+  {
+   "key": "Lessau@2Ma.14.16",
+   "name": "Lessau",
+   "kind": "place",
+   "names": [
+    "Lessau"
+   ],
+   "brief": "Village where Judas fought Nicanor.",
+   "short": "Nicanor joined battle with Judas at a village called Lessau.",
+   "refs": [
+    "2 Maccabees 14:16"
+   ]
+  },
+  {
+   "key": "Romans@1Ma.8.1",
+   "name": "Romans",
+   "kind": "other",
+   "names": [
+    "Romans"
+   ],
+   "brief": "Rome's people; Judas's distant ally against the Seleucids.",
+   "short": "Judas heard of Rome's victories over Gauls, Spain, Macedon and Antiochus III and sent envoys to make a treaty of friendship and mutual aid.",
+   "refs": [
+    "1 Maccabees 8:1",
+    "1 Maccabees 8:23",
+    "1 Maccabees 8:27",
+    "1 Maccabees 8:29",
+    "1 Maccabees 12:16",
+    "1 Maccabees 14:40",
+    "1 Maccabees 15:16",
+    "2 Maccabees 4:11",
+    "2 Maccabees 8:10",
+    "2 Maccabees 8:36",
+    "2 Maccabees 11:34"
+   ]
+  },
+  {
+   "key": "Hasidaeans@1Ma.2.42",
+   "name": "Hasidaeans",
+   "kind": "other",
+   "names": [
+    "Hasidaeans"
+   ],
+   "brief": "Pious group who joined the revolt and first sought peace.",
+   "short": "The Hasidaeans were mighty men of Israel devoted to the law; they joined Mattathias, later were the first to accept Alcimus and were killed by him.",
+   "refs": [
+    "1 Maccabees 2:42",
+    "1 Maccabees 7:13",
+    "2 Maccabees 14:6"
+   ]
+  },
+  {
+   "key": "Nabathaeans@1Ma.5.25",
+   "name": "Nabathaeans",
+   "kind": "other",
+   "names": [
+    "Nabathaeans"
+   ],
+   "brief": "Arab people who befriended Judas and Jonathan.",
+   "short": "The Nabathaeans met Judas peacefully and told him of the Jews in Gilead, and Jonathan asked them to store the Maccabean baggage.",
+   "refs": [
+    "1 Maccabees 5:25",
+    "1 Maccabees 9:35"
+   ]
+  },
+  {
+   "key": "Jambri@1Ma.9.36",
+   "name": "Sons of Jambri",
+   "kind": "other",
+   "names": [
+    "Jambri",
+    "children of Jambri"
+   ],
+   "brief": "Clan of Medeba that killed John, brother of Jonathan.",
+   "short": "The sons of Jambri seized and killed John Gaddis; Jonathan and Simon avenged him by attacking their wedding procession.",
+   "refs": [
+    "1 Maccabees 9:36",
+    "1 Maccabees 9:37"
+   ]
+  },
+  {
+   "key": "Baean@1Ma.5.4",
+   "name": "Children of Baean",
+   "kind": "other",
+   "names": [
+    "Baean",
+    "children of Baean"
+   ],
+   "brief": "Highway ambushers destroyed by Judas.",
+   "short": "Judas remembered the wickedness of the sons of Baean, who ambushed travellers, and burned their towers.",
+   "refs": [
+    "1 Maccabees 5:4"
+   ]
+  },
+  {
+   "key": "Gauls@1Ma.8.2",
+   "name": "Gauls",
+   "kind": "other",
+   "names": [
+    "Gauls"
+   ],
+   "brief": "People conquered by Rome.",
+   "short": "Judas heard that the Romans had conquered the Gauls and forced them to pay tribute.",
+   "refs": [
+    "1 Maccabees 8:2",
+    "2 Maccabees 8:20"
+   ]
+  },
+  {
+   "key": "Macedonians@2Ma.8.20",
+   "name": "Macedonians",
+   "kind": "other",
+   "names": [
+    "Macedonians"
+   ],
+   "brief": "Greek-speaking people; Jewish soldiers recalled a battle with them.",
+   "short": "Judas recalled how 8,000 Jews with 4,000 Macedonians once destroyed 120,000 Gauls in Babylon.",
+   "refs": [
+    "2 Maccabees 8:20"
+   ]
+  },
+  {
+   "key": "Arabians@1Ma.5.39",
+   "name": "Arabians",
+   "kind": "other",
+   "names": [
+    "Arabians"
+   ],
+   "brief": "Desert peoples who hired out to Timotheus and killed Alexander Balas.",
+   "short": "Arabians appear as mercenaries of Timotheus, as Zabdiel and Imalcue who handled Alexander Balas and Antiochus VI, and as hosts to the fleeing Jason.",
+   "refs": [
+    "1 Maccabees 5:39",
+    "1 Maccabees 11:17",
+    "1 Maccabees 11:39",
+    "1 Maccabees 12:31",
+    "2 Maccabees 5:8",
+    "2 Maccabees 12:10"
+   ]
+  },
+  {
+   "key": "Gerrenians@2Ma.13.24",
+   "name": "Gerrenians",
+   "kind": "other",
+   "names": [
+    "Gerrenians"
+   ],
+   "brief": "People of the region under governor Hegemonides.",
+   "short": "Hegemonides was made governor from Ptolemais to the Gerrenians after Antiochus V made peace with Judas.",
+   "refs": [
+    "2 Maccabees 13:24"
+   ]
+  },
+  {
+   "key": "Hercules@2Ma.4.19",
+   "name": "Hercules",
+   "kind": "other",
+   "names": [
+    "Hercules"
+   ],
+   "brief": "Greek hero-god honoured at Tyre with a sacrifice.",
+   "short": "Jason sent 300 silver drachmas for the sacrifice of Hercules at Tyre, though the envoys refused to use it for idolatry.",
+   "refs": [
+    "2 Maccabees 4:19",
+    "2 Maccabees 4:20"
+   ]
+  },
+  {
+   "key": "Dionysus@2Ma.6.7",
+   "name": "Dionysus",
+   "kind": "other",
+   "names": [
+    "Dionysus",
+    "Dionysia"
+   ],
+   "brief": "Greek god whose festival the Jews were forced to join.",
+   "short": "Jews were compelled to process wearing ivy wreaths at the Dionysia; Nicanor swore by 'Dionysus' in defiance.",
+   "refs": [
+    "2 Maccabees 6:7",
+    "2 Maccabees 14:33"
+   ]
+  },
+  {
+   "key": "Nanaea@2Ma.1.13",
+   "name": "Nanaea",
+   "kind": "other",
+   "names": [
+    "Nanaea"
+   ],
+   "brief": "Persian goddess whose temple trapped Antiochus IV.",
+   "short": "Antiochus came to Nanaea's temple in Persia on the pretext of marrying her, and the priests killed him and his company.",
+   "refs": [
+    "2 Maccabees 1:13",
+    "2 Maccabees 1:15"
+   ]
+  },
+  {
+   "key": "Atergatis@2Ma.12.26",
+   "name": "Atergatis",
+   "kind": "other",
+   "names": [
+    "Atergatis"
+   ],
+   "brief": "Syrian goddess with a temple at Carnaim.",
+   "short": "Judas destroyed the temple of Atergatis at Carnion, where the defeated enemy had fled.",
+   "refs": [
+    "2 Maccabees 12:26"
+   ]
+  },
+  {
+   "key": "Dedication@1Ma.4.52",
+   "name": "Dedication of the Altar (Hanukkah)",
+   "kind": "other",
+   "names": [
+    "Dedication",
+    "feast of the dedication"
+   ],
+   "brief": "Eight-day festival celebrating the temple's rededication in 164 BC.",
+   "short": "Judas and his brothers cleansed the temple and rebuilt the altar on 25 Chislev; they ordained an annual eight-day feast of dedication, which 2 Maccabees calls a feast of tabernacles in Chislev.",
+   "refs": [
+    "1 Maccabees 4:52",
+    "1 Maccabees 4:54",
+    "1 Maccabees 4:56",
+    "1 Maccabees 4:59",
+    "2 Maccabees 1:9",
+    "2 Maccabees 1:18",
+    "2 Maccabees 10:5",
+    "2 Maccabees 10:6",
+    "2 Maccabees 10:7",
+    "2 Maccabees 10:8"
+   ]
+  },
+  {
+   "key": "Tabernacles@2Ma.1.9",
+   "name": "Feast of Tabernacles",
+   "kind": "other",
+   "names": [
+    "feast of tabernacles"
+   ],
+   "brief": "Autumn festival, model for the eight-day rededication feast.",
+   "short": "2 Maccabees links the Chislev celebration to the feast of tabernacles, with wreathed wands and palm fronds.",
+   "refs": [
+    "2 Maccabees 1:9",
+    "2 Maccabees 1:18",
+    "2 Maccabees 10:6"
+   ]
+  },
+  {
+   "key": "Pentecost@2Ma.12.32",
+   "name": "Pentecost",
+   "kind": "other",
+   "names": [
+    "Pentecost"
+   ],
+   "brief": "Jewish feast after which Judas marched against Gorgias.",
+   "short": "After the feast called Pentecost Judas hurried against Gorgias, governor of Idumaea.",
+   "refs": [
+    "2 Maccabees 12:32"
+   ]
+  },
+  {
+   "key": "NicanorDay@1Ma.7.49",
+   "name": "Day of Nicanor",
+   "kind": "other",
+   "names": [
+    "Day of Nicanor"
+   ],
+   "brief": "Feast commemorating the 13 Adar victory over Nicanor.",
+   "short": "The Jews ordained that the thirteenth of Adar, the day Nicanor fell, be kept every year.",
+   "refs": [
+    "1 Maccabees 7:49",
+    "2 Maccabees 15:36"
+   ]
+  },
+  {
+   "key": "MordecaiDay@2Ma.15.36",
+   "name": "Mordecai's Day",
+   "kind": "other",
+   "names": [
+    "Mordecai's day"
+   ],
+   "brief": "Adar festival (Purim) kept the day after Nicanor's Day.",
+   "short": "The day before Mordecai's Day, 13 Adar, was set aside as the day of Nicanor's defeat.",
+   "refs": [
+    "2 Maccabees 15:36"
+   ]
+  },
+  {
+   "key": "Chislev@1Ma.1.54",
+   "name": "Chislev",
+   "kind": "other",
+   "names": [
+    "Chislev"
+   ],
+   "brief": "Ninth Hebrew month of the Maccabean calendar.",
+   "short": "On 15 Chislev 167 BC the abomination of desolation was set on the altar; the altar was rededicated on 25 Chislev 164 BC.",
+   "refs": [
+    "1 Maccabees 1:54",
+    "1 Maccabees 4:52",
+    "1 Maccabees 4:59",
+    "2 Maccabees 1:9",
+    "2 Maccabees 1:18",
+    "2 Maccabees 10:5"
+   ]
+  },
+  {
+   "key": "Adar@1Ma.7.43",
+   "name": "Adar",
+   "kind": "other",
+   "names": [
+    "Adar"
+   ],
+   "brief": "Twelfth Hebrew month, month of Nicanor's defeat.",
+   "short": "Nicanor fell on 13 Adar; the month also hosts Mordecai's Day.",
+   "refs": [
+    "1 Maccabees 7:43",
+    "1 Maccabees 7:49",
+    "2 Maccabees 15:36"
+   ]
+  },
+  {
+   "key": "Elul@1Ma.14.27",
+   "name": "Elul",
+   "kind": "other",
+   "names": [
+    "Elul"
+   ],
+   "brief": "Sixth Hebrew month; date of Simon's bronze tablets.",
+   "short": "The people's decree honouring Simon was recorded on 18 Elul in the 172nd year.",
+   "refs": [
+    "1 Maccabees 14:27"
+   ]
+  },
+  {
+   "key": "Sebat@1Ma.16.14",
+   "name": "Sebat",
+   "kind": "other",
+   "names": [
+    "Sebat"
+   ],
+   "brief": "Eleventh Hebrew month; date of Simon's murder.",
+   "short": "Simon visited Jericho in the 177th year in the month of Sebat, when he was murdered.",
+   "refs": [
+    "1 Maccabees 16:14"
+   ]
+  },
+  {
+   "key": "Xanthicus@2Ma.11.30",
+   "name": "Xanthicus",
+   "kind": "other",
+   "names": [
+    "Xanthicus"
+   ],
+   "brief": "Macedonian month used in royal letters to the Jews.",
+   "short": "The royal letters granting amnesty to the Jews were dated in Xanthicus.",
+   "refs": [
+    "2 Maccabees 11:30",
+    "2 Maccabees 11:33",
+    "2 Maccabees 11:38"
+   ]
+  },
+  {
+   "key": "Dioscorinthius@2Ma.11.21",
+   "name": "Dioscorinthius",
+   "kind": "other",
+   "names": [
+    "Dioscorinthius"
+   ],
+   "brief": "Macedonian month used in Lysias's letter.",
+   "short": "Lysias's letter to the Jews is dated 24 Dioscorinthius in the 148th year.",
+   "refs": [
+    "2 Maccabees 11:21"
+   ]
+  }
+ ]
+}

@@ -2,6 +2,22 @@
   "version": 1,
   "releases": [
     {
+      "id": "1.1.0-1",
+      "version": "1.1.0",
+      "label": "Update",
+      "date": "2026-11-28",
+      "title": "Daily Mass, People & Places, Clause view and the Passage Guide",
+      "changes": [
+        "New Mass tab: today's Mass every day. Choose the Novus Ordo (readings for the General Roman, Australian, Canadian, English & Welsh, Irish or US calendar, in your chosen translation) or the 1962 Latin Mass (full propers in English and Latin). Each day links to the Fathers on its Gospel.",
+        "New Guide tab in Study: everything Patristica has on a verse on one screen.",
+        "New People tab in Study: every named person and place in the Bible, deuterocanon included, with their references, family and a map pin.",
+        "New Clause tab in Study: the sentence structure of the Greek and Hebrew text, with 287 disputed constructions showing each possible reading and which Church Fathers held it.",
+        "New translation: the Persian Old Version (فارسی, 1895), read right to left. Download it in Library.",
+        "NASB: the small asterisks in the text (common in Mark) can now be tapped. They mark a Greek present-tense verb translated as past tense.",
+        "Optional downloads in Library (Reference): People & Places and the Clause View trees, for offline use."
+      ]
+    },
+    {
       "id": "1.0.9-2",
       "version": "1.0.9",
       "label": "Update",

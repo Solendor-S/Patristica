@@ -9,6 +9,8 @@ config.resolver.assetExts.push('db')
 config.resolver.blockList = [
   /\/data\/online\//,
   /\/data\/words\//,
+  // build inputs (MACULA, Missale Meum clones, packs) — hundreds of MB, never bundled
+  /[/\\]temp[/\\]/,
 ]
 
 module.exports = config

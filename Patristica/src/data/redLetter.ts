@@ -216,7 +216,7 @@ export function isRedLetter(book: string, chapter: number, verse: number): boole
   return RED_LETTER_VERSES.has(`${book}|${chapter}|${verse}`)
 }
 
-export interface Segment { t: string; red: boolean; italic?: boolean; caps?: boolean }
+export interface Segment { t: string; red: boolean; italic?: boolean; caps?: boolean; hp?: boolean }
 
 // USFM \nd ...\nd* = "name of Deity": the divine name, which KJV typesets in
 // caps (LORD / GOD). Honour the marker by uppercasing what it wraps rather than

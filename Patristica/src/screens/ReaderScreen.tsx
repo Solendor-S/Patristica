@@ -26,7 +26,7 @@ import { getStrongsConcordance, getPsalmHeading } from '../db/queries'
 import { maybeRequestReview } from '../lib/review'
 import { StrongsConcordanceModal, TranslationVariantsModal } from './WordStudyPanel'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
-import { useTranslation, TRANSLATIONS, GREEK_TRANSLATIONS, OT_ORIGINAL_TRANSLATIONS, OT_ONLY_TRANSLATIONS, OT_TRANSLATIONS, ANNOTATED_TRANSLATIONS, API_TRANSLATIONS } from '../context/TranslationContext'
+import { useTranslation, TRANSLATIONS, GREEK_TRANSLATIONS, OT_ORIGINAL_TRANSLATIONS, OT_ONLY_TRANSLATIONS, OT_TRANSLATIONS, ANNOTATED_TRANSLATIONS, API_TRANSLATIONS, RTL_TRANSLATIONS } from '../context/TranslationContext'
 import { useWordFocus } from '../context/WordFocusContext'
 import { useParallelTranslation } from '../context/ParallelTranslationContext'
 import type { Translation } from '../context/TranslationContext'
@@ -70,7 +70,7 @@ type Props = {
 
 import { HIGHLIGHT_COLORS, type ColorKey, getHighlightBg } from '../theme/highlightColors'
 
-type TaggedWord = { w: string; red: boolean; italic?: boolean; caps?: boolean }
+type TaggedWord = { w: string; red: boolean; italic?: boolean; caps?: boolean; hp?: boolean }
 
 const SUPERSCRIPT: Record<string, string> = {
   a:'ᵃ', b:'ᵇ', c:'ᶜ', d:'ᵈ', e:'ᵉ', f:'ᶠ', g:'ᵍ', h:'ʰ', i:'ⁱ', j:'ʲ',
@@ -251,6 +251,14 @@ function parseKJVPlus(text: string, lazyPush = false): KJVToken[] {
   }
   return tokens
 }
+
+// NASB convention: "*" before a verb = Greek historical present translated as an English past tense.
+// Split each marker into its own segment so it can be drawn faint and explained on tap.
+function splitHistoricalPresent(seg: Segment): Segment[] {
+  if (!seg.t.includes('*')) return [seg]
+  return seg.t.split(/(\*)/).filter(Boolean).map(t => t === '*' ? { ...seg, t, hp: true } : { ...seg, t })
+}
+
 
 function applyItalics(seg: Segment): Segment[] {
   if (!seg.t.includes('{')) return [seg]
@@ -464,7 +472,7 @@ function formatBsbText(stripped: string, foldedOn: boolean): string {
 }
 
 const VerseRow = memo(function VerseRow({
-  verse, text, isSelected, isMirrorSelected, hlColor, onPress, onWordPress, onFnPress, onBsbFnPress, onElxxNotePress, redLetterOn, book, chapter, footnotes, bsbFootnotes, elxxNotes, compareText, compareLabel, isAnnotated, lazyAnnotation, compareIsAnnotated, lazyCompareAnnotation, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter, isEarlyText, onEarlyFnPress, onInlineRefPress, focusMode, crossRefs, onCrossRefPress, isBsb, compareIsBsb, compareBsbFootnotes, bsbFoldedOn = true, otQuoteSpans,
+  verse, text, isSelected, isMirrorSelected, hlColor, onPress, onWordPress, onFnPress, onBsbFnPress, onElxxNotePress, redLetterOn, book, chapter, footnotes, bsbFootnotes, elxxNotes, compareText, compareLabel, isAnnotated, lazyAnnotation, compareIsAnnotated, lazyCompareAnnotation, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter, isEarlyText, onEarlyFnPress, onInlineRefPress, focusMode, crossRefs, onCrossRefPress, onHpPress, isBsb, compareIsBsb, compareBsbFootnotes, bsbFoldedOn = true, otQuoteSpans,
 }: {
   verse: number
   text: string
@@ -499,6 +507,8 @@ const VerseRow = memo(function VerseRow({
   focusMode?: boolean
   crossRefs?: CrossRef[]
   onCrossRefPress?: (ref: CrossRef) => void
+  /** NASB historical-present asterisk tapped */
+  onHpPress?: () => void
   isBsb?: boolean
   compareIsBsb?: boolean
   compareBsbFootnotes?: BsbFootnote[]
@@ -541,6 +551,7 @@ const VerseRow = memo(function VerseRow({
     const base = markerSegs
       ?? (isRL && useHeuristicRedLetter ? splitRedLetterVerse(cleanText) : [{ t: cleanText, red: false }])
     let segs = cleanText.includes('{') ? base.flatMap(applyItalics) : base
+    if (cleanText.includes('*')) segs = segs.flatMap(splitHistoricalPresent)
     if (otQuoteSpans?.length) {
       for (const span of otQuoteSpans) {
         segs = applyOtQuoteCaps(segs, span.word_start, span.word_end)
@@ -717,12 +728,18 @@ const VerseRow = memo(function VerseRow({
 
   if (isSelected) {
     const tagged: TaggedWord[] = segments.flatMap(seg =>
-      seg.t.trim().split(/\s+/).filter(Boolean).map(w => ({ w, red: seg.red, italic: seg.italic, caps: seg.caps }))
+      seg.t.trim().split(/\s+/).filter(Boolean).map(w => ({ w, red: seg.red, italic: seg.italic, caps: seg.caps, hp: seg.hp }))
     )
     const elems: React.ReactNode[] = []
     tagged.forEach((tw, i) => {
       const wordIdx = i + 1
       const hasSpace = i < tagged.length - 1
+      if (tw.hp) {
+        elems.push(
+          <Text key={`w${i}`} onPress={onHpPress} suppressHighlighting style={[styles.verseText, styles.verseTextSelected, styles.hpMarker]}>*</Text>
+        )
+        return
+      }
       elems.push(
         <Text key={`w${i}`} onPress={() => onWordPress(tw.w)} suppressHighlighting
           style={[styles.verseText, hebrewTextStyle, styles.verseTextSelected, tw.red ? styles.redLetterSelected : undefined, tw.italic ? styles.italicText : undefined, tw.caps ? styles.capsText : undefined]}>
@@ -802,7 +819,7 @@ const VerseRow = memo(function VerseRow({
                 ) : (
                   <Text style={[styles.verseText, hebrewTextStyle]}>
                     {segments.map((seg, i) => (
-                      <Text key={i} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined]}>{seg.t}</Text>
+                      <Text key={i} onPress={seg.hp ? onHpPress : undefined} suppressHighlighting={seg.hp} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined, seg.hp ? styles.hpMarker : undefined]}>{seg.t}</Text>
                     ))}
                   </Text>
                 )}
@@ -820,7 +837,7 @@ const VerseRow = memo(function VerseRow({
           ) : (
             <Text style={[styles.verseText, hebrewTextStyle]}>
               {segments.map((seg, i) => (
-                <Text key={i} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined]}>{seg.t}</Text>
+                <Text key={i} onPress={seg.hp ? onHpPress : undefined} suppressHighlighting={seg.hp} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined, seg.hp ? styles.hpMarker : undefined]}>{seg.t}</Text>
               ))}
             </Text>
           )}
@@ -837,6 +854,10 @@ const VerseRow = memo(function VerseRow({
       const key = `${si}-${ti}`
       if (/^\s+$/.test(token) || token === '') {
         elems.push(<Text key={key}>{token}</Text>)
+        return
+      }
+      if (seg.hp) {  // NASB "*" marker: not a word, so footnote positions stay aligned
+        elems.push(<Text key={key} onPress={onHpPress} suppressHighlighting style={styles.hpMarker}>{token}</Text>)
         return
       }
       wordIdx++
@@ -948,7 +969,7 @@ function focusSplit(word: string): [string, string] {
 
 function renderFocusSegments(segments: Segment[], styles: ReturnType<typeof makeStyles>): React.ReactNode[] {
   return segments.flatMap((seg, si) => {
-    const segStyle = [seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined]
+    const segStyle = [seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined, seg.hp ? styles.hpMarker : undefined]
     return seg.t.split(/(\s+)/).map((token, ti) => {
       const key = `f${si}-${ti}`
       if (/^\s+$/.test(token) || !token) return <React.Fragment key={key}>{token}</React.Fragment>
@@ -1504,6 +1525,8 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [crossRefsByVerse, setCrossRefsByVerse] = useState<Map<number, CrossRef[]>>(new Map())
   const [splitCrossRefsByVerse, setSplitCrossRefsByVerse] = useState<Map<number, CrossRef[]>>(new Map())
   const [activeFn, setActiveFn] = useState<Footnote | null>(null)
+  const [hpNoteOpen, setHpNoteOpen] = useState(false)
+  const openHpNote = useCallback(() => setHpNoteOpen(true), [])
   const [activeBsbFn, setActiveBsbFn] = useState<BsbFootnote | null>(null)
   const [activeElxxNote, setActiveElxxNote] = useState<ElxxNote | null>(null)
   const [activeCrossRef, setActiveCrossRef] = useState<CrossRef | null>(null)
@@ -1709,6 +1732,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
     setActiveBsbFn(null)
     setActiveElxxNote(null)
     setActiveCrossRef(null)
+    setHpNoteOpen(false)
     setScripturePreview(null)
 
     if (!isTranslationOnly) {
@@ -2185,7 +2209,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const isOTTrans       = useMemo(() => OT_TRANSLATIONS.has(translation as any), [translation])
   const isAnnotatedTrans = useMemo(() => ANNOTATED_TRANSLATIONS.has(translation as any), [translation])
   const isDss           = translation === 'DSS'
-  const isHebrew        = translation === 'DSS' || translation === 'WLC' || translation === 'TAHOT'
+  const isHebrew        = RTL_TRANSLATIONS.has(translation)  // right-to-left (Hebrew, Persian)
 
   const goChapter = useCallback((delta: number) => {
     if (isApocrypha) {
@@ -2399,6 +2423,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       isMirrorSelected={splitOn && activeSplitPane === 'right' && selectedVerse === item.verse}
       hlColor={highlights[item.verse]}
       onPress={selectVerse}
+      onHpPress={openHpNote}
       onWordPress={openConcordance}
       onFnPress={setActiveFn}
       onBsbFnPress={setActiveBsbFn}
@@ -2457,6 +2482,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       isMirrorSelected={activeSplitPane === 'left' && selectedVerse === item.verse}
       hlColor={undefined}
       onPress={selectSplitVerse}
+      onHpPress={openHpNote}
       onWordPress={openConcordance}
       onFnPress={setActiveFn}
       onBsbFnPress={setActiveBsbFn}
@@ -2474,7 +2500,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       onStrongsPress={openStrongs}
       isDss={splitTranslation === 'DSS'}
       dssAllReadings={dssAllReadings}
-      isHebrew={splitTranslation === 'DSS' || splitTranslation === 'WLC' || splitTranslation === 'TAHOT'}
+      isHebrew={RTL_TRANSLATIONS.has(splitTranslation)}
       useHeuristicRedLetter={false}
       isEarlyText={splitIsEarlyText}
       onEarlyFnPress={openEarlyFn}
@@ -3096,6 +3122,22 @@ export default function ReaderScreen({ navigation, route }: Props) {
         </View>
       )}
 
+      {/* NASB historical-present note (same look as footnotes) */}
+      {hpNoteOpen && (
+        <View style={styles.fnPopup}>
+          <Text style={styles.fnPopupMarker}>*</Text>
+          <View style={styles.fnPopupDivider} />
+          <Text style={styles.fnPopupContent}>
+            <Text style={{ fontWeight: '700', color: colors.textPrimary }}>Historical present{'\n'}</Text>
+            In the Greek this verb is in the present tense ("he comes", "he says"), a vivid storytelling
+            style Mark uses often. The NASB puts it in the English past tense and marks it with an asterisk.
+          </Text>
+          <TouchableOpacity onPress={() => setHpNoteOpen(false)} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+            <Ionicons name="close" size={16} color={colors.textMuted} />
+          </TouchableOpacity>
+        </View>
+      )}
+
       {/* E_LXX note popup */}
       {activeElxxNote && (
         <View style={styles.fnPopup}>
@@ -3619,6 +3661,7 @@ const makeStyles = (c: ThemeColors, verseLineHeight = 28, verseFontSize = 17, fo
   bsbFnMarker: { color: c.accent, fontSize: 13, fontWeight: '700' },
   fnMarkerSelected: { color: '#7ab8e8' },
   crossRefMarker: { color: c.accent, fontSize: 18, fontWeight: '600', paddingHorizontal: 4 },
+  hpMarker: { color: c.textMuted, fontSize: 12 },
   crossRefLink: { color: c.accent, fontWeight: '600', textDecorationLine: 'underline' },
   inlineScriptureRef: { color: c.accent, textDecorationLine: 'underline' },
   fnPopup: {

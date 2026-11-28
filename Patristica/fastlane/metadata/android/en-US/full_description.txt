@@ -1,0 +1,17 @@
+<b>Read the Bible with the early church.</b> Patristica is a Bible study app that pairs Scripture with the writings of the Church Fathers: verse-by-verse patristic commentary, apostolic-era texts, original-language word study, and the historical world of the early church, offline-first.
+
+<b>Bible</b>
+• KJV, ASV, WEB, WEB Catholic, BSB, the Persian Old Version and more, with optional ESV, NASB and NKJV online
+• Catholic or Protestant canon, including the deuterocanon
+• Parallel and split views, highlights, notes, bookmarks, reading plans
+
+<b>Church Fathers</b>
+• Tens of thousands of verse-by-verse comments from the Fathers, linked to their sources
+• Aquinas' Catena Aurea, Doctrine development, councils, creeds, heresies and a timeline
+
+<b>Study tools</b>
+• Passage Guide, People & Places with maps, Gospel parallels
+• Greek and Hebrew word study, interlinear, Clause view of the original-language sentence structure
+• Daily Mass readings (Novus Ordo or 1962 Missal)
+
+Free and open source. Some content downloads as optional packs.

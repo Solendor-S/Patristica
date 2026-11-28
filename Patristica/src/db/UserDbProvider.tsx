@@ -68,6 +68,11 @@ async function initUserDb(db: SQLiteDatabase): Promise<void> {
       chapter      INTEGER NOT NULL,
       completed_at INTEGER
     );
+    CREATE TABLE IF NOT EXISTS mass_cache (
+      key        TEXT PRIMARY KEY,
+      json       TEXT    NOT NULL,
+      fetched_at INTEGER NOT NULL
+    );
   `)
 }
 

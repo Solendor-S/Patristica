@@ -16,6 +16,8 @@ import type { SelectedVerse } from '../types'
 interface Props {
   selected: SelectedVerse | null
   onNavigateToFather?: (name: string) => void
+  /** Biblical places to pin (from People & Places); switches the map to Places mode. */
+  places?: { id: number; name: string; lat: number; lng: number; brief?: string }[] | null
 }
 
 interface CityInfo {
@@ -243,6 +245,50 @@ window._filterTraditions=function(traditions){
 </html>`
 }
 
+function buildPlacesMapHtml(isDark: boolean, pins: NonNullable<Props['places']>): string {
+  const tileUrl = isDark
+    ? `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`
+    : `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`
+  const bodyBg = isDark ? '#0d1117' : '#f0ebe2'
+  const label = isDark ? '#e2e8f0' : '#2a2218'
+  // JSON.stringify can't break out of the <script> unless a name contains "</"; escape it anyway
+  const pinsJson = JSON.stringify(pins).replace(/</g, '\\u003c')
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet-src.js"><\/script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:${bodyBg};overflow:hidden}
+#map{width:100%;height:100%}
+.lbl{background:none;border:none;box-shadow:none;color:${label};font:600 12px sans-serif;text-shadow:0 0 3px ${bodyBg}}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+var PINS=${pinsJson};
+var map=L.map('map',{center:[31.8,35.2],zoom:7,zoomControl:false});
+L.control.zoom({position:'bottomleft'}).addTo(map);
+L.tileLayer('${tileUrl}',{attribution:'&copy; OpenStreetMap &copy; CARTO · places: OpenBible.info',maxZoom:19}).addTo(map);
+var pts=[];
+PINS.forEach(function(p){
+  var m=L.circleMarker([p.lat,p.lng],{radius:7,fillColor:'#c9a227',color:'#fff',weight:1.5,fillOpacity:0.9}).addTo(map);
+  m.bindTooltip(p.name,{permanent:true,direction:'right',className:'lbl',offset:[6,0]});
+  m.on('click',function(){
+    if(window.ReactNativeWebView)window.ReactNativeWebView.postMessage(JSON.stringify({type:'place',name:p.name,description:p.brief||''}));
+  });
+  pts.push([p.lat,p.lng]);
+});
+if(pts.length>1)map.fitBounds(pts,{padding:[40,40],maxZoom:10});
+else if(pts.length===1)map.setView(pts[0],9);
+<\/script>
+</body>
+</html>`
+}
+
 function buildLettersMapHtml(isDark: boolean): string {
   const lettersJson = RESOLVED_LETTERS_JSON
   const tcJson = TRADITION_COLORS_JSON
@@ -346,16 +392,18 @@ window._clearLetterFilter=function(){
 </html>`
 }
 
-export default function MapPanel({ selected, onNavigateToFather }: Props) {
+export default function MapPanel({ selected, onNavigateToFather, places }: Props) {
   const { colors, themeKey } = useTheme()
   const isDark = themeKey !== 'light'
   const styles = useMemo(() => makeStyles(colors, isDark), [colors, isDark])
-  const [mode, setMode] = useState<'journeys' | 'fathers' | 'letters'>('journeys')
+  const [mode, setMode] = useState<'journeys' | 'fathers' | 'letters' | 'places'>(places?.length ? 'places' : 'journeys')
+  useEffect(() => { if (places?.length) setMode('places') }, [places])
   const activeMapHtml = useMemo(
     () => mode === 'journeys' ? buildMapHtml(isDark)
         : mode === 'fathers'  ? buildFatherMapHtml(isDark)
+        : mode === 'places'   ? buildPlacesMapHtml(isDark, places ?? [])
         : buildLettersMapHtml(isDark),
-    [mode, isDark]
+    [mode, isDark, places]
   )
   const webViewRef = useRef<WebView>(null)
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -447,7 +495,7 @@ export default function MapPanel({ selected, onNavigateToFather }: Props) {
   const handleMessage = useCallback((e: WebViewMessageEvent) => {
     try {
       const msg = JSON.parse(e.nativeEvent.data)
-      if (msg.type === 'city') setCityCard({ name: msg.name, description: msg.description })
+      if (msg.type === 'city' || msg.type === 'place') setCityCard({ name: msg.name, description: msg.description })
       else if (msg.type === 'fatherCity') {
         const city = FATHER_CITIES.find(c => c.displayName === msg.city) ?? null
         setPinnedCity(city)
@@ -524,6 +572,16 @@ export default function MapPanel({ selected, onNavigateToFather }: Props) {
             <Ionicons name="mail-outline" size={13} color={mode === 'letters' ? colors.accent : colors.textMuted} />
             <Text style={[styles.modeBtnLabel, mode === 'letters' && styles.modeBtnLabelActive]}>Letters</Text>
           </TouchableOpacity>
+          {!!places?.length && (
+            <TouchableOpacity
+              style={[styles.modeBtn, mode === 'places' && styles.modeBtnActive]}
+              onPress={() => { setMode('places'); setCityCard(null); setLetterCard(null); setPinnedCity(null) }}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="location-outline" size={13} color={mode === 'places' ? colors.accent : colors.textMuted} />
+              <Text style={[styles.modeBtnLabel, mode === 'places' && styles.modeBtnLabelActive]}>Places</Text>
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Journey selector (journeys mode only) */}
@@ -747,7 +805,7 @@ export default function MapPanel({ selected, onNavigateToFather }: Props) {
       </View>
 
       {/* Journey city card */}
-      {mode === 'journeys' && !!cityCard && !selectorOpen && (
+      {(mode === 'journeys' || mode === 'places') && !!cityCard && !selectorOpen && (
         <TouchableOpacity
           style={styles.cityCard}
           onPress={() => setCityCard(null)}

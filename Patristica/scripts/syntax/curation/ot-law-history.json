@@ -1,0 +1,1496 @@
+[
+  {
+    "id": "gen-1-1-bereshit",
+    "book": "Genesis",
+    "chapter": 1,
+    "verse": 1,
+    "words": [
+      "GEN 1:1!1",
+      "GEN 1:1!2"
+    ],
+    "title": "bereshit bara: \"In the beginning God created\" or \"When God began to create\"?",
+    "category": "construction",
+    "summary": "Without vowel-pointing, bereshit can be read as an absolute noun (\"In the beginning\") heading a complete sentence, or as a construct before the verb (\"In the beginning of God's creating\" / \"When God began to create\"), which makes v.1 a temporal clause and the main clause comes later.",
+    "readings": [
+      {
+        "label": "Absolute: \"In the beginning God created\"",
+        "rendering": "In the beginning God created the heavens and the earth.",
+        "grammar": "bereshit as an absolute noun with the preposition bet; v.1 is an independent main clause",
+        "fathers": [
+          {
+            "father": "Basil the Great",
+            "work": "Hexaemeron",
+            "ref": "Homily 1",
+            "year": 370,
+            "commentary": 37692,
+            "url": "https://www.newadvent.org/fathers/32011.htm",
+            "quote": "He first establishes a beginning, so that it might not be supposed that the world never had a beginning."
+          }
+        ],
+        "modern": "LXX, Vulgate, KJV, RSV, ESV, NIV, NAB"
+      },
+      {
+        "label": "Construct: \"When God began to create\"",
+        "rendering": "When God began to create the heavens and the earth, the earth was formless and void...",
+        "grammar": "bereshit in construct with the finite verb bara (cf. Hos 1:2; Jer 26:1); v.1 is a temporal clause",
+        "fathers": [],
+        "modern": "NJPS, NRSV footnote; Rashi, Ibn Ezra; many critical scholars"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree parses 'in beginning created God (et) the heavens...' as a single main clause with bereshit as an adverbial phrase; no subordinate clause is built.",
+    "sources": [
+      "NRSV and NJPS footnotes on Gen 1:1",
+      "Rashi on Gen 1:1",
+      "Wenham, Genesis 1-15 on 1:1"
+    ]
+  },
+  {
+    "id": "gen-1-26-naaseh",
+    "book": "Genesis",
+    "chapter": 1,
+    "verse": 26,
+    "words": [
+      "GEN 1:26!2",
+      "GEN 1:26!3",
+      "GEN 1:26!5"
+    ],
+    "title": "na'aseh: who is the \"us\" in \"Let us make man in our image\"?",
+    "category": "construction",
+    "summary": "The verb is a first-person plural cohortative and the image and likeness suffixes are plural, but the Hebrew does not say who is addressed. Grammar admits address to other divine persons, to a heavenly court, or a plural of self-exhortation. Whichever way the grammar is taken, the Church confesses one God in three Persons (Nicaea, Constantinople I), and the Fathers read this verse of the Father speaking with the Son and Spirit.",
+    "readings": [
+      {
+        "label": "Divine persons: Father addressing Son (and Spirit)",
+        "rendering": "The Father speaks to the Son and Spirit: \"Let us make man in our image.\"",
+        "grammar": "Plural cohortative taken as address to distinct divine persons sharing one image and likeness",
+        "fathers": [
+          {
+            "father": "Irenaeus of Lyons",
+            "work": "Against Heresies",
+            "ref": "Book IV, ch. 20",
+            "year": 180,
+            "commentary": 4819,
+            "url": "https://www.newadvent.org/fathers/0103420.htm",
+            "quote": "For with Him were always present the Word and Wisdom, the Son and the Spirit, by whom and in whom, freely and spontaneously, He made all things, to whom also He speaks, saying, Let Us make man after Our image and likeness;"
+          },
+          {
+            "father": "Hilary of Poitiers",
+            "work": "On the Trinity",
+            "ref": "Book IV, 17",
+            "year": 359,
+            "commentary": 41699,
+            "url": "https://www.newadvent.org/fathers/330204.htm",
+            "quote": "Do you suppose that God spoke those words to Himself? Is it not obvious that He was addressing not Himself, but Another?"
+          }
+        ],
+        "traditions": {
+          "catholic": "Standard Trinitarian reading",
+          "orthodox": "Standard Trinitarian reading"
+        },
+        "modern": "Many Trinitarian commentators; most critical scholars do not find the doctrine in the plural itself"
+      },
+      {
+        "label": "Heavenly court: God addressing angels",
+        "rendering": "God consults the angelic council; man is made in the image shared with the heavenly beings.",
+        "grammar": "Plural cohortative as address to the divine council (cf. 1 Kgs 22:19-22; Isa 6:8; Job 1:6)",
+        "fathers": [],
+        "modern": "Jewish tradition (Genesis Rabbah) and many critical scholars"
+      },
+      {
+        "label": "Plural of deliberation or self-exhortation",
+        "rendering": "God exhorts himself: \"Let us make man in our image.\"",
+        "grammar": "Cohortative plural of self-address (cf. Gen 11:7; Isa 6:8 'who will go for us'); plural suffixes follow",
+        "fathers": [],
+        "modern": "Many modern grammarians (cf. the plural of deliberation in GKC)"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree gives a plain verb 'make' plus 'our' suffixes in a single clause; it does not identify the addressee.",
+    "sources": [
+      "Wenham, Genesis 1-15 on 1:26",
+      "Gesenius-Kautzsch-Cowley sec. 124",
+      "Hilary, De Trinitate IV.17"
+    ]
+  },
+  {
+    "id": "gen-3-5-yodei-tov",
+    "book": "Genesis",
+    "chapter": 3,
+    "verse": 5,
+    "words": [
+      "GEN 3:5!11",
+      "GEN 3:5!12"
+    ],
+    "title": "ke-Elohim yodei tov va-ra: \"like God\" or \"like gods\"?",
+    "category": "construction",
+    "summary": "The participle yodei (\"knowing\") is plural, and elohim can be either the singular God or plural divine beings. Grammar allows \"you shall be like divine beings who know good and evil\" or \"like God, knowing good and evil\" (plural participle by attraction).",
+    "readings": [
+      {
+        "label": "\"Like gods\" (plural divine beings)",
+        "rendering": "you will be like gods, knowing good and evil",
+        "grammar": "Plural participle yodei agrees with elohim taken as plural \"gods / divine beings\"",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "City of God",
+            "ref": "Book XXII, 30",
+            "year": 420,
+            "commentary": 22514,
+            "url": "https://www.newadvent.org/fathers/120122.htm",
+            "quote": "who would have made us as gods, not by deserting Him, but by participating in Him."
+          }
+        ],
+        "modern": "LXX hos theoi; Vulgate sicut dii; KJV 'as gods'; NJPS 'like divine beings'"
+      },
+      {
+        "label": "\"Like God\" (singular)",
+        "rendering": "you will be like God, knowing good and evil",
+        "grammar": "elohim as the singular God; plural yodei by attraction to the plural form of elohim",
+        "fathers": [],
+        "modern": "RSV, NIV, ESV, NET ('like God')"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree glosses 'like God knowing good and evil' as one phrase; the number of elohim is left to the reader.",
+    "sources": [
+      "Wenham, Genesis 1-15 on 3:5",
+      "KJV, RSV, NJPS renderings of Gen 3:5"
+    ]
+  },
+  {
+    "id": "gen-3-15-hu",
+    "book": "Genesis",
+    "chapter": 3,
+    "verse": 15,
+    "words": [
+      "GEN 3:15!9",
+      "GEN 3:15!10",
+      "GEN 3:15!11"
+    ],
+    "title": "hu' yeshufekha: \"he\", \"she\" or \"it\" will strike the serpent's head?",
+    "category": "referent",
+    "summary": "The Hebrew pronoun hu' is masculine and the \"seed\" (zera') is a collective masculine noun, so grammar allows \"he\" (an individual descendant) or \"it/they\" (the offspring collectively); the Vulgate's feminine ipsa makes the woman herself the subject.",
+    "readings": [
+      {
+        "label": "\"He\": the woman's offspring as an individual",
+        "rendering": "he [her offspring, the Messiah] shall strike your head",
+        "grammar": "Masculine hu' with masculine zera' as antecedent; the collective singular read of one descendant (LXX autos)",
+        "fathers": [
+          {
+            "father": "Irenaeus of Lyons",
+            "work": "Against Heresies",
+            "ref": "Book IV, ch. 40",
+            "year": 180,
+            "commentary": 5167,
+            "url": "https://www.newadvent.org/fathers/0103440.htm",
+            "quote": "And the Lord summed up in Himself this enmity, when He was made man from a woman, and trod upon his [the serpent's] head, as I have pointed out in the preceding book."
+          }
+        ],
+        "traditions": {
+          "catholic": "NAB, NABRE 'he'; Fathers following the LXX autos",
+          "protestant": "Messianic protoevangelium; ESV, NIV 'he'"
+        },
+        "modern": "RSV, NRSV, NAB, ESV, NIV 'he'"
+      },
+      {
+        "label": "\"She\": the woman herself",
+        "rendering": "she shall crush your head",
+        "grammar": "Feminine ipsa of the Vulgate; Hebrew hu' read as taking the woman as antecedent",
+        "fathers": [
+          {
+            "father": "Ambrose of Milan",
+            "work": "Commentary on Genesis 3:15 (catena)",
+            "ref": "Genesis 3:15",
+            "year": 390,
+            "legacy": 7242,
+            "url": "http://orthodoxwiki.org/Ambrose_of_Milan",
+            "quote": "She shall watch for your head and you for her heel."
+          }
+        ],
+        "traditions": {
+          "catholic": "Latin Vulgate ipsa conteret; Douay-Rheims 'she'; the Marian reading in the Latin West"
+        }
+      },
+      {
+        "label": "\"It\" / \"they\": the offspring collectively",
+        "rendering": "it [her offspring] shall strike your head",
+        "grammar": "zera' as a collective singular, hu' resuming it as \"it/they\"",
+        "fathers": [],
+        "modern": "KJV 'it'; NJPS 'they'"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree glosses hu' as 'he' (masculine pronoun) in the clause 'he strike your head' but does not mark its antecedent.",
+    "sources": [
+      "Wenham, Genesis 1-15 on 3:15",
+      "Vulgate Gen 3:15 (ipsa)",
+      "KJV, NJPS, RSV renderings"
+    ]
+  },
+  {
+    "id": "gen-4-1-et-yhwh",
+    "book": "Genesis",
+    "chapter": 4,
+    "verse": 1,
+    "words": [
+      "GEN 4:1!11",
+      "GEN 4:1!12",
+      "GEN 4:1!13",
+      "GEN 4:1!14"
+    ],
+    "title": "qaniti ish et-YHWH: \"with the help of the LORD\" or \"a man, the LORD\"?",
+    "category": "construction",
+    "summary": "The particle et can be the preposition \"with\" (\"with the LORD's help\") or the object marker, putting ish and YHWH in apposition (\"a man, namely the LORD\"). The verb qaniti is also debated.",
+    "readings": [
+      {
+        "label": "Preposition: \"with the help of the LORD\"",
+        "rendering": "I have produced a man with the help of the LORD",
+        "grammar": "et as the preposition \"with\" (cf. Gen 5:22 hithalekh et); Eve credits God as co-creator",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On Marriage and Concupiscence",
+            "ref": "Book II, ch. 7",
+            "year": 420,
+            "commentary": 27225,
+            "url": "https://www.newadvent.org/fathers/15072.htm",
+            "quote": "I have obtained a man from God. So that it is evident that he was God's work, and the divine Scripture testifies to his having been received from God."
+          }
+        ],
+        "modern": "NIV, NRSV, NJPS ('with the help of')"
+      },
+      {
+        "label": "Object marker: \"a man, even the LORD\"",
+        "rendering": "I have acquired a man, [who is] the LORD",
+        "grammar": "et as accusative sign: ish and YHWH in apposition (Eve thinks she has borne the promised deliverer)",
+        "fathers": [],
+        "modern": "Luther; Targum Pseudo-Jonathan ('the angel of the LORD'); some later messianic readings"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'gotten man with LORD': et is parsed as a preposition 'with', not as the object marker.",
+    "sources": [
+      "Wenham, Genesis 1-15 on 4:1",
+      "NIV, NRSV, NJPS renderings of Gen 4:1"
+    ]
+  },
+  {
+    "id": "gen-4-7-teshuqah",
+    "book": "Genesis",
+    "chapter": 4,
+    "verse": 7,
+    "words": [
+      "GEN 4:7!11",
+      "GEN 4:7!12",
+      "GEN 4:7!14",
+      "GEN 4:7!15"
+    ],
+    "title": "\"its desire is for you\": whose desire, and who rules whom?",
+    "category": "referent",
+    "summary": "The suffixes on \"its desire\" and \"rule over it\" have no clear antecedent: feminine hattat \"sin\" is crouching, but the masculine suffixes may point to a masculine antecedent, possibly Abel. The imperfect timshol can also be read as promise, command or possibility.",
+    "readings": [
+      {
+        "label": "Sin is the referent: \"it desires you, but you must master it\"",
+        "rendering": "Sin crouches at the door; its desire is for you, but you must rule over it.",
+        "grammar": "Suffixes refer back to hattat (sin), personified as a lurking beast; timshol as obligation (cf. the parallel wording in Gen 3:16)",
+        "fathers": [],
+        "modern": "RSV, NRSV, ESV, NIV, NAB, NET"
+      },
+      {
+        "label": "Abel is the referent: \"his turning is to you, and you shall rule over him\"",
+        "rendering": "His recourse is to you, and you shall rule over him [Abel].",
+        "grammar": "Masculine suffix ('his') resumes Abel; Cain keeps the rights of the firstborn (LXX apostrophe 'turning / recourse')",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Romans",
+            "ref": "Homily 23",
+            "year": 391,
+            "commentary": 52281,
+            "url": "https://www.newadvent.org/fathers/210223.htm",
+            "quote": "To you shall his turning be, and you shall rule over him Genesis 4:7, Septuagint, meaning his brother."
+          }
+        ],
+        "modern": "LXX; KJV margin"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'desire its' and 'master over it', taking the suffixes as pronouns referring to sin ('sin crouching').",
+    "sources": [
+      "Wenham, Genesis 1-15 on 4:7",
+      "LXX Gen 4:7"
+    ]
+  },
+  {
+    "id": "gen-9-6-ba-adam",
+    "book": "Genesis",
+    "chapter": 9,
+    "verse": 6,
+    "words": [
+      "GEN 9:6!3",
+      "GEN 9:6!4"
+    ],
+    "title": "shofekh dam ha-adam ba-adam: \"by man\", \"for man\" or \"within man\"?",
+    "category": "attachment",
+    "summary": "The phrase ba-adam can be attached to the verb \"shall be shed\" as agent (\"by man\"), to the price (\"for/in return for man\"), or to the object \"the blood of man\" (\"who sheds the blood of man who is in man\", the rabbinic reading about a fetus).",
+    "readings": [
+      {
+        "label": "Agent: \"by man shall his blood be shed\"",
+        "rendering": "Whoever sheds the blood of man, by man shall his blood be shed.",
+        "grammar": "bet of agency: ba-adam modifies yishafekh (execution by human authority)",
+        "fathers": [],
+        "modern": "LXX, Vulgate, KJV, RSV, ESV, NIV, NAB"
+      },
+      {
+        "label": "Price or exchange: \"for\" the man killed",
+        "rendering": "Whoever sheds man's blood, for that man his blood shall be shed.",
+        "grammar": "bet of price: ba-adam as the exchange for the person killed",
+        "fathers": [],
+        "modern": "Some modern commentators"
+      },
+      {
+        "label": "Object phrase: \"the blood of man within man\"",
+        "rendering": "Whoever sheds the blood of man that is in man [a fetus], his blood shall be shed.",
+        "grammar": "ba-adam attached to ha-adam: \"man in man\" (Babylonian Talmud, Sanhedrin 57b)",
+        "fathers": [],
+        "modern": "Rabbinic reading; not the plain sense in most modern translations"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'by the man' attached to the passive verb 'shed' (agent).",
+    "sources": [
+      "Babylonian Talmud, Sanhedrin 57b",
+      "Wenham, Genesis 1-15 on 9:6"
+    ]
+  },
+  {
+    "id": "gen-9-27-yishkon",
+    "book": "Genesis",
+    "chapter": 9,
+    "verse": 27,
+    "words": [
+      "GEN 9:27!3",
+      "GEN 9:27!4",
+      "GEN 9:27!5",
+      "GEN 9:27!6"
+    ],
+    "title": "veyishkon be-ohalei Shem: who dwells in Shem's tents?",
+    "category": "referent",
+    "summary": "The subject of \"he shall dwell\" is not stated: it can be Japheth (taking over Shem's lands or sharing his religion) or God (dwelling with Shem).",
+    "readings": [
+      {
+        "label": "Japheth dwells in Shem's tents",
+        "rendering": "May God enlarge Japheth, and let Japheth dwell in the tents of Shem.",
+        "grammar": "Subject of veyishkon is the nearest named person, Japheth (le-Yefet)",
+        "fathers": [
+          {
+            "father": "Justin Martyr",
+            "work": "Dialogue with Trypho",
+            "ref": "ch. 139",
+            "year": 160,
+            "page": "01289",
+            "url": "https://www.newadvent.org/fathers/01289.htm",
+            "quote": "and as the offspring of Shem were decreed first to possess the dwellings of Canaan, and the offspring of Japheth were predicted as in turn receiving the same possessions"
+          }
+        ],
+        "traditions": {
+          "catholic": "Japheth (the Gentiles) enters Shem's tents",
+          "protestant": "Gentiles brought into Israel's covenant"
+        },
+        "modern": "Vulgate, KJV, RSV, ESV, NIV"
+      },
+      {
+        "label": "God dwells in Shem's tents",
+        "rendering": "May God enlarge Japheth, and may God dwell in the tents of Shem.",
+        "grammar": "Subject of veyishkon is Elohim, the subject of yaft: God resides with Shem (Targum Onkelos 'His Shekinah')",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Reply to Faustus",
+            "ref": "Book XII, 24",
+            "year": 400,
+            "page": "140612",
+            "url": "https://www.newadvent.org/fathers/140612.htm",
+            "quote": "Is He not dwelling in the tents of Shem?— that is, in the churches built by the apostles, the sons of the prophets."
+          }
+        ],
+        "modern": "Targum Onkelos; Rashi (alternative); some modern critics"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree gives 'make God for Japheth and dwell in tents Shem' with no explicit subject for 'dwell'.",
+    "sources": [
+      "Targum Onkelos on Gen 9:27",
+      "Rashi on Gen 9:27",
+      "Wenham, Genesis 1-15 on 9:27"
+    ]
+  },
+  {
+    "id": "gen-12-3-nivreku",
+    "book": "Genesis",
+    "chapter": 12,
+    "verse": 3,
+    "words": [
+      "GEN 12:3!5",
+      "GEN 12:3!6"
+    ],
+    "title": "venivrekhu bekha: \"shall be blessed in you\" or \"shall bless themselves by you\"?",
+    "category": "construction",
+    "summary": "The niphal nivreku can be passive (\"will be blessed\") or middle/reflexive (\"will bless themselves\", i.e. take your name as a blessing formula); the preposition bet can be \"in you\" or \"by you\". The same ambiguity recurs at Gen 18:18; 26:4; 28:14.",
+    "readings": [
+      {
+        "label": "Passive: \"in you all the families of the earth shall be blessed\"",
+        "rendering": "in you shall all the families of the earth be blessed",
+        "grammar": "niphal as passive; bet as sphere or means (\"in\" / \"through\"); the nations receive blessing",
+        "fathers": [
+          {
+            "father": "Bede",
+            "work": "Commentary on Genesis 12:3 (catena)",
+            "ref": "Genesis 12:3",
+            "year": 725,
+            "legacy": 7545,
+            "url": "http://orthodoxwiki.org/Bede",
+            "quote": "Therefore when he says, “In you will be blessed all the families of the earth,” it is as if he were saying, “And in your seed will be blessed the families of the earth.”"
+          }
+        ],
+        "traditions": {
+          "catholic": "Fulfilled in Christ (Gal 3:8, 16)",
+          "protestant": "Fulfilled in Christ (Gal 3:8)"
+        },
+        "modern": "LXX eneulogethesontai (cf. Gal 3:8); Vulgate benedicentur; KJV, RSV, ESV, NIV, NAB"
+      },
+      {
+        "label": "Reflexive/middle: \"shall bless themselves by you\"",
+        "rendering": "all the families of the earth shall bless themselves by you",
+        "grammar": "niphal as reflexive: the nations invoke Abram's name in blessing formulas (cf. Gen 48:20)",
+        "fathers": [],
+        "modern": "NJPS; NRSV footnote; many modern Hebraists"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses nivreku as passive 'blessed' with 'in you' (bet).",
+    "sources": [
+      "NRSV and NJPS renderings of Gen 12:3",
+      "Wenham, Genesis 1-15 on 12:3"
+    ]
+  },
+  {
+    "id": "gen-14-20-vayiten",
+    "book": "Genesis",
+    "chapter": 14,
+    "verse": 20,
+    "words": [
+      "GEN 14:20!1",
+      "GEN 14:20!8",
+      "GEN 14:20!9"
+    ],
+    "title": "vayiten lo ma'aser mikol: who gave the tithe to whom?",
+    "category": "referent",
+    "summary": "The verb \"he gave\" has no stated subject, and \"to him\" no stated antecedent. After Melchizedek has just blessed Abram, it can be Abram who gave Melchizedek a tenth (Heb 7:2-6) or Melchizedek who gave Abram a tenth.",
+    "readings": [
+      {
+        "label": "Abram gave a tenth to Melchizedek",
+        "rendering": "And Abram gave him a tenth of everything.",
+        "grammar": "Subject of vayiten is Abram (the subject of the surrounding narrative); lo = Melchizedek (Heb 7:4)",
+        "fathers": [
+          {
+            "father": "Ambrose of Milan",
+            "work": "Commentary on Genesis 14:18 (catena)",
+            "ref": "Genesis 14:18",
+            "year": 390,
+            "legacy": 7621,
+            "url": "http://orthodoxwiki.org/Ambrose_of_Milan",
+            "quote": "he offered a sacrifice and gave tithes; for this reason too, he received the blessing of Melchizedek"
+          }
+        ],
+        "traditions": {
+          "catholic": "Hebrews 7; Melchizedek as type of Christ's priesthood",
+          "protestant": "Hebrews 7; Melchizedek as type of Christ"
+        },
+        "modern": "KJV, RSV, ESV, NIV, NAB"
+      },
+      {
+        "label": "Melchizedek gave a tenth to Abram",
+        "rendering": "And [Melchizedek] gave him a tenth of everything.",
+        "grammar": "Subject of vayiten is the subject of the preceding vayevarekhehu (Melchizedek); lo = Abram",
+        "fathers": [],
+        "modern": "A minority reading in some commentaries"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'then gave to him tenth of everything' with the subject not marked; it takes the narrative subject Abram.",
+    "sources": [
+      "Wenham, Genesis 1-15 on 14:20",
+      "Hebrews 7:4-6"
+    ]
+  },
+  {
+    "id": "gen-15-6-vayachsheveha",
+    "book": "Genesis",
+    "chapter": 15,
+    "verse": 6,
+    "words": [
+      "GEN 15:6!1",
+      "GEN 15:6!3",
+      "GEN 15:6!4"
+    ],
+    "title": "vayachsheveha lo tsedaqah: who counted what as righteousness?",
+    "category": "referent",
+    "summary": "The subject of \"he reckoned\" and the referent of the suffix \"it\" are not stated. God may reckon Abram's faith as righteousness (Rom 4:3), or Abram may reckon God's promise to God as righteousness (an act of God's justice).",
+    "readings": [
+      {
+        "label": "God reckoned Abram's faith as righteousness",
+        "rendering": "He [God] counted it [Abram's faith] to him as righteousness.",
+        "grammar": "Subject of vayachsheveha is YHWH; the suffix \"it\" = Abram's faith; lo = Abram",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Second Corinthians",
+            "ref": "Homily 3",
+            "year": 392,
+            "commentary": 53373,
+            "url": "https://www.newadvent.org/fathers/220203.htm",
+            "quote": "And how too justified he him, if He knew not? For it is written, Abraham believed, and it was counted unto him for righteousness."
+          }
+        ],
+        "traditions": {
+          "catholic": "Faith reckoned for righteousness (Rom 4:3)",
+          "protestant": "Imputed righteousness (Rom 4)"
+        },
+        "modern": "LXX elogisthe; Paul in Rom 4:3; KJV, RSV, ESV, NIV"
+      },
+      {
+        "label": "Abram counted God's promise to God as righteousness",
+        "rendering": "He [Abram] counted it [the promise] to Him [YHWH] as righteousness.",
+        "grammar": "Subject is Abram; lo = YHWH; tsedaqah as God's righteousness (Ramban)",
+        "fathers": [],
+        "modern": "Ramban; some modern interpreters"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'and reckoned it to him righteousness' with 'it' and 'him' as pronouns and the subject unmarked; the standard reading takes the subject as God.",
+    "sources": [
+      "Wenham, Genesis 1-15 on 15:6",
+      "Rom 4:3",
+      "Ramban on Gen 15:6"
+    ]
+  },
+  {
+    "id": "gen-22-8-beni",
+    "book": "Genesis",
+    "chapter": 22,
+    "verse": 8,
+    "words": [
+      "GEN 22:8!3",
+      "GEN 22:8!4",
+      "GEN 22:8!5",
+      "GEN 22:8!8"
+    ],
+    "title": "Elohim yireh-lo hase: \"my son\" as vocative or as the lamb?",
+    "category": "punctuation",
+    "summary": "The final \"my son\" can be a vocative closing the sentence (\"God will provide the lamb, my son\") or stand in apposition (\"God will provide for himself the lamb: my son [is it]\").",
+    "readings": [
+      {
+        "label": "Vocative: \"God will provide the lamb, my son\"",
+        "rendering": "God will provide for Himself the lamb for a burnt offering, my son.",
+        "grammar": "beni as direct address to Isaac closing the sentence (LXX fronts teknon)",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on First Timothy",
+            "ref": "Homily 14",
+            "year": 400,
+            "commentary": 55773,
+            "url": "https://www.newadvent.org/fathers/230614.htm",
+            "quote": "My son, God will provide Himself a lamb for a burnt offering."
+          }
+        ],
+        "modern": "LXX, Vulgate, KJV, RSV, ESV, NIV, NAB"
+      },
+      {
+        "label": "Apposition: \"God will provide the lamb: my son\"",
+        "rendering": "God will provide for Himself the lamb for a burnt offering: my son [is it].",
+        "grammar": "beni in apposition to hase, a double entendre (Genesis Rabbah 56:4: 'if not the lamb, then my son')",
+        "fathers": [],
+        "modern": "Genesis Rabbah 56:4; some modern commentators"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree reads 'God provide for himself the lamb for burnt-offering, son my' with 'my son' last; the Hebrew has no punctuation and the tree assigns no vocative role.",
+    "sources": [
+      "Genesis Rabbah 56:4",
+      "Wenham, Genesis 16-50 on 22:8"
+    ]
+  },
+  {
+    "id": "gen-22-18-hitbarku",
+    "book": "Genesis",
+    "chapter": 22,
+    "verse": 18,
+    "words": [
+      "GEN 22:18!1",
+      "GEN 22:18!2"
+    ],
+    "title": "vehitbarakhu be-zar'akha: \"shall be blessed in your seed\" or \"shall bless themselves by your seed\"?",
+    "category": "construction",
+    "summary": "The hithpael hitbarakhu is reflexive in form (\"bless themselves\") but was rendered passive in the LXX and by Paul; zar'akha (\"your seed\") is a collective singular. Contrast Gen 12:3, which uses the niphal.",
+    "readings": [
+      {
+        "label": "Passive: \"in your seed shall all nations be blessed\"",
+        "rendering": "In your seed shall all the nations of the earth be blessed.",
+        "grammar": "hithpael read as passive; bet as sphere or means; zar'akha singular for Christ (Gal 3:16)",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Letters",
+            "ref": "Letter 88",
+            "year": 406,
+            "commentary": 20409,
+            "url": "https://www.newadvent.org/fathers/1102088.htm",
+            "quote": "the seed of Abraham, in whom all the nations of the earth are blessed,"
+          }
+        ],
+        "traditions": {
+          "catholic": "Fulfilled in Christ (Gal 3:16)",
+          "protestant": "Fulfilled in Christ (Gal 3:16)"
+        },
+        "modern": "LXX eneulogethesontai; Vulgate benedicentur; KJV, ESV, NIV, NAB"
+      },
+      {
+        "label": "Reflexive: \"shall bless themselves by your seed\"",
+        "rendering": "By your offspring all nations shall bless themselves.",
+        "grammar": "hithpael as reflexive: the nations use Abraham's seed as a pattern in blessing formulas; zar'akha collective",
+        "fathers": [],
+        "modern": "NJPS ('bless themselves'); NRSV ('gain blessing for themselves'); most Hebraists"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'and blessed by offspring your all nations': hithpael parsed as passive 'blessed' with bet as 'by'.",
+    "sources": [
+      "NJPS and NRSV renderings of Gen 22:18",
+      "Wenham, Genesis 16-50 on 22:18",
+      "Gal 3:16"
+    ]
+  },
+  {
+    "id": "gen-25-23-rav-yaavod",
+    "book": "Genesis",
+    "chapter": 25,
+    "verse": 23,
+    "words": [
+      "GEN 25:23!15",
+      "GEN 25:23!16",
+      "GEN 25:23!17"
+    ],
+    "title": "verav ya'avod tsa'ir: who serves whom?",
+    "category": "case",
+    "summary": "Hebrew nouns carry no case endings and the object marker et is absent, so rav and tsa'ir can be read either way: \"the elder shall serve the younger\" or \"the elder, the younger shall serve [him]\".",
+    "readings": [
+      {
+        "label": "Elder serves younger",
+        "rendering": "the older shall serve the younger",
+        "grammar": "rav as the subject, tsa'ir as the object of ya'avod",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Enarrations on the Psalms",
+            "ref": "Psalm 89",
+            "year": 410,
+            "commentary": 34926,
+            "url": "https://www.newadvent.org/fathers/1801089.htm",
+            "quote": "Thus also in the case of Esau and Jacob, we find the elder worshipped by the younger, though it is written, The elder shall serve the younger"
+          }
+        ],
+        "traditions": {
+          "catholic": "Romans 9:12; Jacob preferred to Esau",
+          "protestant": "Romans 9:12; election of Jacob"
+        },
+        "modern": "LXX, Vulgate, KJV, RSV, ESV, NIV, NAB; Paul in Rom 9:12"
+      },
+      {
+        "label": "Younger serves elder",
+        "rendering": "the older [shall be served by] the younger",
+        "grammar": "rav as the object (preposed), tsa'ir as the subject; no et to mark the object",
+        "fathers": [],
+        "modern": "Rashi on Gen 25:23 notes the clause can be read either way"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'older serve younger' (rav as subject).",
+    "sources": [
+      "Rashi on Gen 25:23",
+      "Wenham, Genesis 16-50 on 25:23"
+    ]
+  },
+  {
+    "id": "gen-48-16-malakh",
+    "book": "Genesis",
+    "chapter": 48,
+    "verse": 16,
+    "words": [
+      "GEN 48:16!1",
+      "GEN 48:16!2",
+      "GEN 48:16!6"
+    ],
+    "title": "ha-malakh ha-go'el...yevarekh: one divine being or two?",
+    "category": "referent",
+    "summary": "After \"the God who has shepherded me\" Jacob says \"the angel who has redeemed me from all evil bless the boys\". The verb yevarekh is singular, so \"the angel\" can be identified with God (one subject) or be a distinct figure with a singular verb agreeing with the nearer subject.",
+    "readings": [
+      {
+        "label": "One subject: the angel is God",
+        "rendering": "May the God who shepherded me, the Angel who redeemed me, bless the boys.",
+        "grammar": "Singular verb yevarekh with appositional subjects: ha-malakh = the God just named",
+        "fathers": [
+          {
+            "father": "Novatian",
+            "work": "On the Trinity",
+            "ref": "ch. 19",
+            "year": 250,
+            "page": "0511",
+            "url": "https://www.newadvent.org/fathers/0511.htm",
+            "quote": "For if he had meant the one to be understood as God, and the other as an angel, he would have comprised the two persons in the plural number; but now he defined the singular number of one person in the blessing"
+          }
+        ],
+        "traditions": {
+          "catholic": "Angel of the LORD as the pre-incarnate Word",
+          "orthodox": "Angel of the LORD as the Word"
+        }
+      },
+      {
+        "label": "Two subjects: God and a distinct angel",
+        "rendering": "May the God who shepherded me, [and] the angel who redeemed me, bless the boys.",
+        "grammar": "Singular verb agreeing with the nearer of two coordinated subjects; ha-malakh a created angel",
+        "fathers": [],
+        "modern": "Most critical scholars take the angel as a created messenger"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree glosses 'the angel the redeemed me from all harm bless': verb singular, but the tree does not identify the angel with the God of the previous clause.",
+    "sources": [
+      "Wenham, Genesis 16-50 on 48:16",
+      "Novatian, De Trinitate 19"
+    ]
+  },
+  {
+    "id": "gen-49-10-shiloh",
+    "book": "Genesis",
+    "chapter": 49,
+    "verse": 10,
+    "words": [
+      "GEN 49:10!8",
+      "GEN 49:10!9",
+      "GEN 49:10!10",
+      "GEN 49:10!12"
+    ],
+    "title": "ad ki-yavo shiloh: \"until Shiloh comes\", \"he to whom it belongs\", \"to Shiloh\" or \"tribute\"?",
+    "category": "construction",
+    "summary": "The consonants shlh may be read as a proper noun Shiloh (a name or place), as she-lo (\"that which is his / he whose it is\"), or as shay lo (\"tribute to him\"); the clause could also mean \"until he comes to Shiloh\".",
+    "readings": [
+      {
+        "label": "\"Until he comes whose it is\" (shello)",
+        "rendering": "until he comes to whom it belongs / for whom it is reserved",
+        "grammar": "she + lo, \"that which is to him\"; the Messiah as the one to whom the sceptre belongs (LXX ta apokeimena auto, 'the things reserved for him')",
+        "fathers": [
+          {
+            "father": "Justin Martyr",
+            "work": "First Apology",
+            "ref": "ch. 32",
+            "year": 155,
+            "commentary": 5591,
+            "url": "https://www.newadvent.org/fathers/0126.htm",
+            "quote": "until He come for whom it is reserved; and He shall be the desire of the nations"
+          },
+          {
+            "father": "Cyril of Jerusalem",
+            "work": "Catechetical Lectures",
+            "ref": "Lecture 12",
+            "year": 350,
+            "commentary": 38509,
+            "url": "https://www.newadvent.org/fathers/310112.htm",
+            "quote": "A prince shall not fail out of Judah, nor a ruler from his loins, until He come, for whom it is reserved; and He is the expectation, not of the Jews but of the Gentiles."
+          }
+        ],
+        "traditions": {
+          "catholic": "Messianic reading",
+          "orthodox": "Messianic reading (LXX)",
+          "protestant": "Messianic reading"
+        },
+        "modern": "Targum Onkelos ('until the Messiah comes, whose is the kingdom'); RSV 'until he comes to whom it belongs'"
+      },
+      {
+        "label": "\"Until Shiloh comes\" (name or title)",
+        "rendering": "until Shiloh comes",
+        "grammar": "shiloh as a personal name or title of the Messiah (the Peaceful One; Vulgate 'qui mittendus est', 'the one to be sent')",
+        "fathers": [],
+        "modern": "KJV 'until Shiloh come'; ASV; Vulgate"
+      },
+      {
+        "label": "\"Until he comes to Shiloh\" (place)",
+        "rendering": "until he comes to Shiloh",
+        "grammar": "shiloh as the place name Shiloh (Josh 18:1; Judg 21:19) after a verb of motion",
+        "fathers": [],
+        "modern": "Several modern scholars"
+      },
+      {
+        "label": "\"Until tribute comes to him\" (shay lo)",
+        "rendering": "until tribute comes to him",
+        "grammar": "shay + lo (cf. Isa 18:7; Ps 76:12), \"gift for him\"",
+        "fathers": [],
+        "modern": "NRSV 'tribute comes to him'; several modern scholars"
+      }
+    ],
+    "macula_follows": 1,
+    "macula_evidence": "Tree glosses shiloh as a proper noun ('Shiloh', H7886) after 'until when comes', i.e. the proper-name reading.",
+    "sources": [
+      "Wenham, Genesis 16-50 on 49:10",
+      "Targum Onkelos on Gen 49:10",
+      "NRSV, RSV, KJV renderings of Gen 49:10"
+    ]
+  },
+  {
+    "id": "exod-3-14-ehyeh",
+    "book": "Exodus",
+    "chapter": 3,
+    "verse": 14,
+    "words": [
+      "EXO 3:14!5",
+      "EXO 3:14!6",
+      "EXO 3:14!7"
+    ],
+    "title": "ehyeh asher ehyeh: \"I am who I am\" or \"I will be what I will be\"?",
+    "category": "construction",
+    "summary": "The imperfect ehyeh can express present (\"I am\"), future (\"I will be\") or a continuing state, and asher can be \"who\", \"what\" or \"that\". The grammar allows an ontological statement, a promise of presence, or a refusal to be defined.",
+    "readings": [
+      {
+        "label": "Present, ontological: \"I am who I am\" / \"He who is\"",
+        "rendering": "I AM WHO I AM; say to the Israelites, \"I AM\" has sent me to you.",
+        "grammar": "ehyeh as a present-tense statement of being; asher as \"who/that\" (LXX ego eimi ho on, 'I am the One who is')",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "City of God",
+            "ref": "Book VIII, 11",
+            "year": 413,
+            "commentary": 21331,
+            "url": "https://www.newadvent.org/fathers/120108.htm",
+            "quote": "this answer was given: I am who am; and you shall say to the children of Israel, He who is sent me unto you"
+          },
+          {
+            "father": "Irenaeus of Lyons",
+            "work": "Against Heresies",
+            "ref": "Book III, ch. 6",
+            "year": 180,
+            "commentary": 4230,
+            "url": "https://www.newadvent.org/fathers/0103306.htm",
+            "quote": "who also said to Moses, I am that I am. And thus shall you say to the children of Israel: He who is, has sent me unto you;"
+          }
+        ],
+        "traditions": {
+          "catholic": "Metaphysical reading (Being itself); Vulgate ego sum qui sum",
+          "orthodox": "Metaphysical reading (LXX ho on)"
+        },
+        "modern": "LXX, Vulgate, KJV, RSV, NAB, NIV"
+      },
+      {
+        "label": "Future / dynamic: \"I will be what I will be\"",
+        "rendering": "I will be [with you] as who I will be.",
+        "grammar": "ehyeh as imperfect with future sense (cf. Exod 3:12 ehyeh immakh, 'I will be with you'); asher as \"what/as\"",
+        "fathers": [],
+        "modern": "NJPS footnote; NRSV footnote; many modern critics"
+      },
+      {
+        "label": "Refusal to be defined: \"I am that I am\" (evasion)",
+        "rendering": "I am who I am [and need not say].",
+        "grammar": "idem per idem construction (cf. Exod 33:19; 1 Sam 23:13) in which the repeated verb withholds definition",
+        "fathers": [],
+        "modern": "Several modern commentators"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'am who am' (present) rather than 'will be', and takes asher as relative 'who'.",
+    "sources": [
+      "NRSV and NJPS footnotes on Exod 3:14",
+      "Childs, Exodus on 3:14",
+      "LXX Exod 3:14"
+    ]
+  },
+  {
+    "id": "exod-4-24-vayiphgeshehu",
+    "book": "Exodus",
+    "chapter": 4,
+    "verse": 24,
+    "words": [
+      "EXO 4:24!4",
+      "EXO 4:24!6",
+      "EXO 4:24!7",
+      "EXO 4:25!9"
+    ],
+    "title": "vayiphgeshehu...vayevaqesh hamito: whom did the LORD seek to kill?",
+    "category": "referent",
+    "summary": "The text never names the object of \"he met him and sought to kill him\", nor the owner of \"his feet\" that Zipporah touched with the foreskin. Moses, his firstborn son, or the circumcised child are all grammatically possible.",
+    "readings": [
+      {
+        "label": "Moses was the object",
+        "rendering": "The LORD met Moses and sought to kill him; Zipporah touched his [Moses'] feet with the foreskin.",
+        "grammar": "Pronominal suffix \"him\" resumes the last-named male, Moses (Exod 4:20); lraglav = Moses' feet",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Questions on Exodus (catena)",
+            "ref": "Exodus 4:24",
+            "year": 419,
+            "legacy": 8923,
+            "url": "http://orthodoxwiki.org/Augustine_of_Hippo",
+            "quote": "We ask first, whom did the angel wish to kill? Was it Moses, because Scripture says, “The angel approached him and sought to kill him”?"
+          }
+        ],
+        "modern": "Babylonian Talmud, Nedarim 31b-32a (Moses neglected circumcision); some modern commentators"
+      },
+      {
+        "label": "The son was the object",
+        "rendering": "The LORD sought to kill the uncircumcised son; Zipporah touched his [the son's] feet with the foreskin.",
+        "grammar": "Suffix \"him\" resumes the son, introduced in vv.20, 25; lraglav = the boy's feet (euphemism for genitals)",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Questions on Exodus (catena)",
+            "ref": "Exodus 4:24",
+            "year": 419,
+            "legacy": 8923,
+            "url": "http://orthodoxwiki.org/Augustine_of_Hippo",
+            "quote": "Or did the angel seek to kill the boy, whom his mother aided by circumcising him?"
+          }
+        ],
+        "modern": "Many modern commentators"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree glosses 'met him LORD and sought kill him' and 'touched at feet his' with pronouns whose antecedent is not marked.",
+    "sources": [
+      "Augustine, Questions on the Heptateuch (Exodus), catena on Exod 4:24",
+      "Childs, Exodus on 4:24-26"
+    ]
+  },
+  {
+    "id": "exod-6-3-shemi-yhwh",
+    "book": "Exodus",
+    "chapter": 6,
+    "verse": 3,
+    "words": [
+      "EXO 6:3!10",
+      "EXO 6:3!11",
+      "EXO 6:3!12",
+      "EXO 6:3!13"
+    ],
+    "title": "ushmi YHWH lo nodati lahem: statement or rhetorical question?",
+    "category": "punctuation",
+    "summary": "Hebrew has no question mark, and the interrogative particle may be omitted, so \"by my name YHWH I did not make myself known to them\" can be read as a statement or as a rhetorical question expecting the answer \"I did\".",
+    "readings": [
+      {
+        "label": "Statement: \"by my name YHWH I did not make myself known\"",
+        "rendering": "I appeared to Abraham as El Shaddai, but by my name YHWH I did not make myself known to them.",
+        "grammar": "lo nodati as a plain negative statement: the patriarchs did not know the name YHWH",
+        "fathers": [],
+        "modern": "LXX, Vulgate, KJV, RSV, NIV, NAB, ESV"
+      },
+      {
+        "label": "Rhetorical question: \"by my name YHWH did I not make myself known?\"",
+        "rendering": "I appeared as El Shaddai; but by my name YHWH, did I not make myself known to them?",
+        "grammar": "Interrogative without he; lo as the 'did I not?' of a rhetorical question",
+        "fathers": [],
+        "modern": "Some Jewish and modern commentators"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'but name my LORD not make known to them' as a plain negated clause; no interrogative is marked.",
+    "sources": [
+      "Childs, Exodus on 6:3",
+      "Sarna, Exodus (JPS Torah Commentary) on 6:3"
+    ]
+  },
+  {
+    "id": "exod-21-22-yatsu",
+    "book": "Exodus",
+    "chapter": 21,
+    "verse": 22,
+    "words": [
+      "EXO 21:22!7",
+      "EXO 21:22!8",
+      "EXO 21:22!11"
+    ],
+    "title": "veyatsu yeladeha ... lo yihyeh ason: miscarriage or premature birth, and harm to whom?",
+    "category": "construction",
+    "summary": "The verb yatsa' (\"come out\") does not say whether the child is born dead or alive, and ason (\"harm\") has no stated object: it may refer to the mother only, or to mother and child alike.",
+    "readings": [
+      {
+        "label": "Miscarriage, ason refers to the mother: fine for the child, life for life for the mother",
+        "rendering": "if she miscarries but there is no further harm to the woman, a fine; if there is harm, life for life.",
+        "grammar": "yatsa' as a miscarriage (the children come out dead); ason limited to the mother",
+        "fathers": [],
+        "modern": "NASB ('she has a miscarriage'); NRSV ('so that there is a miscarriage')"
+      },
+      {
+        "label": "Premature live birth, ason refers to mother and child",
+        "rendering": "if she gives birth prematurely and there is no harm [to mother or child], a fine; if there is harm, life for life.",
+        "grammar": "yatsa' as a live birth (cf. Gen 25:25-26, where the same verb means live birth); ason covers both",
+        "fathers": [],
+        "modern": "NIV ('gives birth prematurely'); NET; ESV footnote"
+      },
+      {
+        "label": "Formed vs. unformed child (LXX)",
+        "rendering": "if the child is not yet formed, a fine; if it is formed, life for life.",
+        "grammar": "LXX adds exeikonismenon ('formed') in v.22; yeladeha read with a distinction of developmental stage",
+        "fathers": [],
+        "modern": "LXX; Philo; Augustine's discussion in Quaestiones in Heptateuchum 2.80"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree glosses 'so born children her' and 'serious' as an adjective with no explicit object; it does not decide between miscarriage and premature birth.",
+    "sources": [
+      "NASB, NRSV, ESV, NIV renderings of Exod 21:22",
+      "Childs, Exodus on 21:22-25"
+    ]
+  },
+  {
+    "id": "lev-18-18-ishah-el-achotah",
+    "book": "Leviticus",
+    "chapter": 18,
+    "verse": 18,
+    "words": [
+      "LEV 18:18!1",
+      "LEV 18:18!2",
+      "LEV 18:18!3",
+      "LEV 18:18!6"
+    ],
+    "title": "ishah el-achotah lo tiqach litsror: a wife's sister, or a second wife?",
+    "category": "construction",
+    "summary": "The idiom ishah el-achotah (\"a woman to her sister\") can mean literally a wife and her sister, or idiomatically \"one woman to another\" (cf. Exod 26:3, 5-6), making the verse a ban on taking a second wife as a rival. The infinitive litsror (\"to rival / to be a rival\") is also debated.",
+    "readings": [
+      {
+        "label": "Literal: do not marry your wife's sister as a rival",
+        "rendering": "You shall not take a woman as a rival to her sister, uncovering her nakedness while the other is alive.",
+        "grammar": "achotah as a literal sister; the ban holds only during the first wife's lifetime",
+        "fathers": [],
+        "modern": "LXX, Vulgate, KJV, RSV, NRSV, NAB, NIV text"
+      },
+      {
+        "label": "Idiom: do not take one wife in addition to another",
+        "rendering": "You shall not take one wife in addition to another, to rival her.",
+        "grammar": "ishah el-achotah as an idiom for \"one to another\" (as in Exod 26:3, 5, 6, 17): a ban on polygamy",
+        "fathers": [],
+        "modern": "NIV footnote; several modern commentators"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree glosses 'woman to sister her not take as rival': the literal gloss does not decide whether 'sister' is figurative.",
+    "sources": [
+      "NIV footnote on Lev 18:18",
+      "Milgrom, Leviticus 17-22 on 18:18",
+      "Basil, Letter 160 (discusses the verse)"
+    ]
+  },
+  {
+    "id": "lev-19-18-kamokha",
+    "book": "Leviticus",
+    "chapter": 19,
+    "verse": 18,
+    "words": [
+      "LEV 19:18!8",
+      "LEV 19:18!9",
+      "LEV 19:18!10"
+    ],
+    "title": "ve-ahavta le-re'akha kamokha: \"as yourself\" or \"he is like you\"?",
+    "category": "attachment",
+    "summary": "The comparative kamokha (\"like you\") can attach to the manner of loving (\"love your neighbour as you love yourself\") or to the neighbour (\"love your neighbour; he is like you\"). A third reading takes le-re'akha as \"for your neighbour\" rather than a direct object.",
+    "readings": [
+      {
+        "label": "Manner: \"love your neighbour as yourself\"",
+        "rendering": "You shall love your neighbour as yourself.",
+        "grammar": "kamokha as an adverbial comparison with the verb ahavta (the measure of love)",
+        "fathers": [],
+        "traditions": {
+          "catholic": "Mt 22:39; the second great commandment",
+          "orthodox": "Mt 22:39",
+          "protestant": "Mt 22:39"
+        },
+        "modern": "LXX hos seauton; Vulgate sicut te ipsum; KJV, RSV, ESV, NIV, NAB"
+      },
+      {
+        "label": "Apposition: \"love your neighbour; he is like you\"",
+        "rendering": "Love your neighbour; he is [a person] like you.",
+        "grammar": "kamokha attached to le-re'akha as an appositive (Buber and Rosenzweig, 'Liebe deinen Genossen, dir gleich')",
+        "fathers": [],
+        "modern": "Buber-Rosenzweig, Die Schrift; Jewish readings noting the resemblance of the neighbour to oneself"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'love to neighbor your as yourself', taking 'as yourself' as a comparative modifying 'love'.",
+    "sources": [
+      "Buber and Rosenzweig, Die Schrift on Lev 19:18",
+      "Milgrom, Leviticus 17-22 on 19:18"
+    ]
+  },
+  {
+    "id": "deut-6-4-shema",
+    "book": "Deuteronomy",
+    "chapter": 6,
+    "verse": 4,
+    "words": [
+      "DEU 6:4!3",
+      "DEU 6:4!4",
+      "DEU 6:4!5",
+      "DEU 6:4!6"
+    ],
+    "title": "YHWH eloheinu YHWH echad: how do the four words parse?",
+    "category": "punctuation",
+    "summary": "The Shema is a verbless string with no copula, so the four words can be divided into clauses in several ways: \"The LORD our God is one LORD\", \"The LORD is our God, the LORD alone\", \"The LORD our God, the LORD is one\" or \"The LORD is our God, the LORD is one\".",
+    "readings": [
+      {
+        "label": "\"The LORD our God is one LORD\"",
+        "rendering": "Hear, O Israel: the LORD our God is one LORD.",
+        "grammar": "YHWH eloheinu as the subject, YHWH echad as predicate: one LORD, a statement of the unity of the Lord (LXX kyrios ho theos hemon kyrios heis estin)",
+        "fathers": [
+          {
+            "father": "Ambrose of Milan",
+            "work": "On the Holy Spirit",
+            "ref": "Book III, 105",
+            "year": 381,
+            "commentary": 15763,
+            "url": "https://www.newadvent.org/fathers/34023.htm",
+            "quote": "Hear, O Israel, the Lord your God is one Lord, Deuteronomy 6:4 that is, unchangeable, always abiding in unity of power, always the same, and not altered by any accession or diminution."
+          },
+          {
+            "father": "Athanasius",
+            "work": "Letters",
+            "ref": "Letter 11",
+            "year": 339,
+            "commentary": 18986,
+            "url": "https://www.newadvent.org/fathers/2806011.htm",
+            "quote": "Hear, O Israel, the Lord your God is one Lord Deuteronomy 6:4."
+          }
+        ],
+        "traditions": {
+          "catholic": "Unity of God; Mk 12:29",
+          "orthodox": "Unity of God (LXX)",
+          "protestant": "Unity of God; Mk 12:29"
+        },
+        "modern": "LXX, Vulgate, KJV"
+      },
+      {
+        "label": "\"The LORD is our God, the LORD alone\"",
+        "rendering": "Hear, O Israel: the LORD is our God, the LORD alone.",
+        "grammar": "YHWH as subject, eloheinu as predicate, echad as \"alone\" (exclusive worship rather than numerical unity)",
+        "fathers": [],
+        "modern": "NRSV text, NJPS, NAB ('the LORD alone')"
+      },
+      {
+        "label": "\"The LORD our God, the LORD is one\"",
+        "rendering": "Hear, O Israel: the LORD our God, the LORD is one.",
+        "grammar": "YHWH eloheinu as a nominal address followed by the clause YHWH echad",
+        "fathers": [],
+        "modern": "ESV, NIV text"
+      },
+      {
+        "label": "\"The LORD is our God, the LORD is one\"",
+        "rendering": "Hear, O Israel: the LORD is our God; the LORD is one.",
+        "grammar": "Two independent verbless clauses: YHWH eloheinu, YHWH echad",
+        "fathers": [],
+        "modern": "NRSV footnote; NIV footnote"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree lists 'hear Israel Lord God+our Lord one' with no copula or clause boundary; it does not choose among the four divisions.",
+    "sources": [
+      "NRSV and NIV footnotes on Deut 6:4",
+      "NJPS footnote on Deut 6:4",
+      "Tigay, JPS Deuteronomy on 6:4"
+    ]
+  },
+  {
+    "id": "deut-18-15-navi",
+    "book": "Deuteronomy",
+    "chapter": 18,
+    "verse": 15,
+    "words": [
+      "DEU 18:15!1",
+      "DEU 18:15!4"
+    ],
+    "title": "navi miqirbekha ka-moni: one prophet or a line of prophets?",
+    "category": "referent",
+    "summary": "The singular navi (\"a prophet\") can be an individual (the one prophet like Moses, taken by the New Testament as Jesus, Acts 3:22) or a collective/generic singular for the succession of prophets (cf. 18:20-22, which treats prophets as a class).",
+    "readings": [
+      {
+        "label": "Individual prophet like Moses",
+        "rendering": "The LORD will raise up for you one prophet like me.",
+        "grammar": "navi as a singular referring to one person, the final prophet (LXX prophetes; Acts 3:22, 7:37)",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on Galatians",
+            "ref": "Homily 2",
+            "year": 395,
+            "commentary": 56255,
+            "url": "https://www.newadvent.org/fathers/23102.htm",
+            "quote": "Moses says, speaking of Christ, The Lord God will raise up unto you a Prophet from the midst of you of your brethren, like me; unto Him shall you hearken."
+          }
+        ],
+        "traditions": {
+          "catholic": "Christ (Acts 3:22)",
+          "orthodox": "Christ",
+          "protestant": "Christ (Acts 3:22)"
+        },
+        "modern": "Acts 3:22; 7:37; Qumran 4Q175"
+      },
+      {
+        "label": "Collective: a succession of prophets",
+        "rendering": "The LORD will raise up for you a prophet [in each generation] like me.",
+        "grammar": "navi as a generic or collective singular (cf. the collective singular 'the king', 'the priest')",
+        "fathers": [],
+        "modern": "Most modern critical commentators; much Jewish tradition"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree glosses 'prophet from among you from brothers your like me' with a singular noun; number of referents is not encoded.",
+    "sources": [
+      "Tigay, JPS Deuteronomy on 18:15-18",
+      "Acts 3:22; 7:37"
+    ]
+  },
+  {
+    "id": "deut-21-23-qilelat-elohim",
+    "book": "Deuteronomy",
+    "chapter": 21,
+    "verse": 23,
+    "words": [
+      "DEU 21:23!12",
+      "DEU 21:23!13"
+    ],
+    "title": "qilelat Elohim talui: \"cursed by God\" or \"a curse/affront to God\"?",
+    "category": "case",
+    "summary": "The construct chain qilelat Elohim can be a subjective genitive (the hanged man is cursed by God) or an objective genitive (the exposed body is a curse/affront against God, since man is in his image). Paul quotes a different wording at Gal 3:13.",
+    "readings": [
+      {
+        "label": "Subjective genitive: \"cursed by God is he that hangs\"",
+        "rendering": "a hanged man is accursed by God",
+        "grammar": "Genitive of agent: the curse that God pronounces; LXX kekatēramenos hypo theou; Gal 3:13",
+        "fathers": [
+          {
+            "father": "Athanasius",
+            "work": "On the Incarnation of the Word",
+            "ref": "ch. 25",
+            "year": 318,
+            "commentary": 17836,
+            "url": "https://www.newadvent.org/fathers/2802.htm",
+            "quote": "For if He came Himself to bear the curse laid upon us, how else could He have become Galatians 3:13 a curse, unless He received the death set for a curse? And that is the Cross."
+          }
+        ],
+        "traditions": {
+          "catholic": "Gal 3:13; Christ bore the curse of the Law",
+          "protestant": "Gal 3:13; Christ became a curse for us"
+        },
+        "modern": "LXX, Vulgate, KJV, RSV, ESV, NIV, NAB"
+      },
+      {
+        "label": "Objective genitive: \"a curse (insult) against God is the hanged\"",
+        "rendering": "a hanged man is an affront to God",
+        "grammar": "Genitive of object: qelalah as 'contempt, reviling' of God, whose image the human body bears",
+        "fathers": [],
+        "modern": "NJPS ('an affront to God')"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'for curse God’s hung' with God's as a genitive modifier of 'curse'; it does not choose agent or object.",
+    "sources": [
+      "NJPS rendering of Deut 21:23",
+      "Tigay, JPS Deuteronomy on 21:22-23",
+      "Gal 3:13"
+    ]
+  },
+  {
+    "id": "deut-24-1-ki-yiqach",
+    "book": "Deuteronomy",
+    "chapter": 24,
+    "verse": 1,
+    "words": [
+      "DEU 24:1!17",
+      "DEU 24:1!23",
+      "DEU 24:4!1"
+    ],
+    "title": "Deut 24:1-4: where does the \"if\" clause end, and is divorce commanded?",
+    "category": "punctuation",
+    "summary": "The long conditional (\"when a man takes a wife...\") may run through v.3 with the only command in v.4 (\"her former husband may not take her again\"), as most modern translations read, or v.1b-3 may be a chain of imperatives (\"let him write her a bill of divorce\") as in the KJV.",
+    "readings": [
+      {
+        "label": "Protasis through v.3, apodosis in v.4: divorce is presupposed, only remarriage is forbidden",
+        "rendering": "If a man writes her a certificate and sends her away, and she remarries, and he dies or divorces her: her first husband may not take her again.",
+        "grammar": "Series of waw-consecutives in vv.1-3 as part of the protasis; the sole command is lo yukhal in v.4",
+        "fathers": [],
+        "modern": "RSV, NRSV, NIV, ESV, NET, NJPS"
+      },
+      {
+        "label": "Divorce commanded or regulated: \"then let him write her a bill\"",
+        "rendering": "If she finds no favour with him, let him write her a bill of divorcement, and give it in her hand, and send her out of his house.",
+        "grammar": "Waw-consecutives in v.1b as apodosis (imperatival), making the certificate a required step (KJV 'then let him write')",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Deuteronomy 24:1 (catena from Against Faustus)",
+            "ref": "Deuteronomy 24:1",
+            "year": 400,
+            "legacy": 11346,
+            "url": "http://orthodoxwiki.org/Augustine_of_Hippo",
+            "quote": "The Lord explains the intention of the law, which required a bill of divorce in every case where a wife was put away."
+          }
+        ],
+        "traditions": {
+          "catholic": "Mt 19:7-8: Moses allowed divorce for hardness of heart",
+          "protestant": "Mt 19:7-8"
+        },
+        "modern": "KJV, Vulgate (scribet libellum)"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'and writes for her certificate divorce and puts in hand her and sends her' as coordinated clauses inside the opening 'when' clause; the apodosis is placed at 24:4.",
+    "sources": [
+      "Tigay, JPS Deuteronomy on 24:1-4",
+      "Wenham, 'The Restoration of Marriage Reconsidered' (JJS 30)",
+      "Mt 19:7-8"
+    ]
+  },
+  {
+    "id": "deut-26-5-arami-oved",
+    "book": "Deuteronomy",
+    "chapter": 26,
+    "verse": 5,
+    "words": [
+      "DEU 26:5!6",
+      "DEU 26:5!7",
+      "DEU 26:5!8"
+    ],
+    "title": "arami oved avi: \"a wandering Aramean was my father\" or \"an Aramean tried to destroy my father\"?",
+    "category": "construction",
+    "summary": "The participle oved (\"wandering/perishing/destroying\") and the two nouns arami and avi can be assigned different roles: arami as predicate (\"my father was a wandering Aramean\"), or arami as subject and avi as the object of a transitive verb (\"an Aramean [Laban] was destroying my father\").",
+    "readings": [
+      {
+        "label": "Intransitive: \"a wandering/perishing Aramean was my father\"",
+        "rendering": "My father was a wandering Aramean.",
+        "grammar": "Aramean in apposition to avi; oved as intransitive 'wandering' or 'perishing' (cf. Prov 31:6; Ezek 34:4)",
+        "fathers": [],
+        "modern": "KJV ('ready to perish'); RSV, NIV ('wandering'); NJPS ('fugitive')"
+      },
+      {
+        "label": "Transitive: \"an Aramean (Laban) tried to destroy my father\"",
+        "rendering": "An Aramean [Laban] sought to destroy my father.",
+        "grammar": "arami as the subject, oved as transitive 'was destroying', avi as the object (Targum Onkelos and the Passover Haggadah: Laban the Aramean sought to destroy my father)",
+        "fathers": [],
+        "modern": "Targum Onkelos; Passover Haggadah; Rashi"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree glosses 'Aramean wandering father my' as three juxtaposed nouns with no verb role assigned; neither reading is encoded.",
+    "sources": [
+      "Tigay, JPS Deuteronomy on 26:5",
+      "Passover Haggadah"
+    ]
+  },
+  {
+    "id": "judg-11-31-hayotse",
+    "book": "Judges",
+    "chapter": 11,
+    "verse": 31,
+    "words": [
+      "JDG 11:31!2",
+      "JDG 11:31!3",
+      "JDG 11:31!14"
+    ],
+    "title": "hayotse asher yetse...we-ha'alitihu olah: whatever or whoever, and \"and\" or \"or\"?",
+    "category": "referent",
+    "summary": "The relative asher with the participle ha-yotse can be \"whatever\" (any thing, including an animal) or \"whoever\" (a person), and the waw in we-ha'alitihu can be \"and\" or \"or\", yielding \"it shall be the LORD's and I will offer it as a burnt offering\" or \"it shall be the LORD's, or I will offer it\".",
+    "readings": [
+      {
+        "label": "\"Whoever comes out\": a person",
+        "rendering": "Whoever comes out of the doors of my house to meet me ... shall be the LORD's, and I will offer him up as a burnt offering.",
+        "grammar": "Masculine ha-yotse with asher as 'whoever'; the daughter is meant to be sacrificed (cf. 11:39 'he did to her according to his vow')",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Questions on Judges (catena)",
+            "ref": "Judges 49.6",
+            "year": 419,
+            "legacy": 12422,
+            "url": "http://orthodoxwiki.org/Augustine_of_Hippo",
+            "quote": "He says, “I will sacrifice whoever comes out of my house.” Thus, there can be no doubt that he was thinking of nothing else than a human being"
+          }
+        ],
+        "modern": "NRSV ('whoever')"
+      },
+      {
+        "label": "\"Whatever comes out\": an animal or a person",
+        "rendering": "Whatever comes out of the doors of my house to meet me ... shall be the LORD's, and I will offer it up as a burnt offering.",
+        "grammar": "ha-yotse as neuter 'whatever' (KJV, RSV, ESV: 'whatsoever'); the vow assumes an animal",
+        "fathers": [
+          {
+            "father": "Jerome",
+            "work": "Against Jovinianus (catena on Judges 11:31)",
+            "ref": "Book I, 23",
+            "year": 393,
+            "legacy": 12425,
+            "url": "http://orthodoxwiki.org/Jerome",
+            "quote": "Supposing (the Hebrews say) a dog or an ass had met him, what would he have done?"
+          }
+        ],
+        "modern": "KJV ('whatsoever'), RSV, ESV, NIV ('whatever')"
+      },
+      {
+        "label": "\"or\": consecration or sacrifice",
+        "rendering": "It shall be the LORD's, or I will offer it up as a burnt offering.",
+        "grammar": "we-ha'alitihu with waw as disjunctive 'or': a person is consecrated, an animal is offered (Radak, Kimhi)",
+        "fathers": [],
+        "modern": "David Kimhi (Radak); KJV margin ('or I will offer it')"
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "Tree glosses 'the one whatever comes of doors house my ... and offer it burnt' with 'whatever' as the relative and 'and' as the connective.",
+    "sources": [
+      "NRSV, NIV, ESV, KJV renderings and margin of Judg 11:31",
+      "Kimhi (Radak) on Judg 11:31"
+    ]
+  },
+  {
+    "id": "2sam-7-19-torat-haadam",
+    "book": "2 Samuel",
+    "chapter": 7,
+    "verse": 19,
+    "words": [
+      "2SA 7:19!3",
+      "2SA 7:19!14",
+      "2SA 7:19!15"
+    ],
+    "title": "vezot torat ha-adam: question, statement or wish?",
+    "category": "punctuation",
+    "summary": "The clause vezot torat ha-adam (\"and this [is] the instruction of man\") has no verb or interrogative marker: it can be an exclamation of wonder, a question (\"Is this the way people deal?\") or a wish (\"May this be instruction for mankind\"). 1 Chr 17:17 parallels it with \"you have regarded me as a man of high rank\".",
+    "readings": [
+      {
+        "label": "Question: \"Is this your usual way with man?\"",
+        "rendering": "Is this your usual way of dealing with man, O Lord GOD?",
+        "grammar": "Verbless clause read as a rhetorical question, torat as 'custom, manner' (KJV: 'is this the manner of man')",
+        "fathers": [],
+        "modern": "KJV, NIV"
+      },
+      {
+        "label": "Statement or wish: \"this is instruction for mankind\"",
+        "rendering": "This is instruction for mankind, O Lord GOD! / May this be a charter for the people.",
+        "grammar": "Verbless clause with zot as subject and torat ha-adam as predicate; a statement of revelation or wish",
+        "fathers": [],
+        "modern": "ESV, NRSV, NJPS"
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "Tree glosses 'now this instruction the man Lord my GOD' as a verbless clause with no interrogative; the force is not decided.",
+    "sources": [
+      "NRSV, ESV, NIV, KJV renderings of 2 Sam 7:19",
+      "McCarter, II Samuel (Anchor Bible) on 7:19",
+      "1 Chr 17:17"
+    ]
+  }
+]

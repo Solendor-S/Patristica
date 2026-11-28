@@ -108,6 +108,7 @@ export const TRANSLATION_PACK_SLUG: Record<string, string> = {
   ASV:   'asv',
   WEB:   'web',
   WEBC:  'webc',
+  PES:   'pes',
   BSB:   'bsb',
   E_LXX: 'elxx',
   A_LXX: 'elxx',
@@ -1791,7 +1792,7 @@ export interface PlanWithProgress extends ReadingPlan {
   today_completed: number | null
 }
 
-function isoDate(date: Date): string {
+export function isoDate(date: Date): string {
   const y = date.getFullYear()
   const m = String(date.getMonth() + 1).padStart(2, '0')
   const d = String(date.getDate()).padStart(2, '0')

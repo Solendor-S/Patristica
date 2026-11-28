@@ -1,0 +1,2095 @@
+[
+  {
+    "id": "1cor-2-13-pneumatikois-pneumatika",
+    "book": "1 Corinthians",
+    "chapter": 2,
+    "verse": 13,
+    "words": [
+      "1CO 2:13!14",
+      "1CO 2:13!15",
+      "1CO 2:13!16"
+    ],
+    "title": "pneumatikois pneumatika synkrinontes: who or what is compared?",
+    "category": "case",
+    "summary": "pneumatikois can be masculine (\"spiritual people\") or neuter (\"spiritual things/words\"), and synkrinō can mean \"interpret\", \"combine\" or \"compare\". The three words therefore admit several sensible readings.",
+    "readings": [
+      {
+        "label": "Interpreting spiritual truths to spiritual people",
+        "rendering": "interpreting spiritual things to those who are spiritual",
+        "grammar": "pneumatikois masculine dative of indirect object; synkrinō = \"interpret\" (as in LXX Gen 40:8, 16, 22)",
+        "fathers": []
+      },
+      {
+        "label": "Matching spiritual truths with spiritual words",
+        "rendering": "explaining spiritual things in spiritual words",
+        "grammar": "pneumatikois neuter dative of means/accompaniment; synkrinō = \"fit together, combine\"",
+        "fathers": []
+      },
+      {
+        "label": "Comparing spiritual things with spiritual things",
+        "rendering": "comparing spiritual things with spiritual",
+        "grammar": "both datives neuter / the neuter accusative as the thing compared; synkrinō = \"compare\" (Scripture with Scripture, type with fulfilment)",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on 1 Corinthians 2:13 (catena excerpt)",
+            "ref": "Homily 7 on 1 Corinthians",
+            "year": 395,
+            "legacy": 52845,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "Some spiritual truths are unclear and need to be interpreted, but this can be done only by comparing them with other spiritual things."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this: the dative pneumatikois is bare and the gender is not marked.",
+    "sources": [
+      "NET Bible note on 1 Cor 2:13",
+      "Wallace, GGBB (dative of the neuter/masculine ambiguity)",
+      "Thiselton, NIGTC 1 Corinthians, on 2:13"
+    ]
+  },
+  {
+    "id": "1cor-3-9-theou-synergoi",
+    "book": "1 Corinthians",
+    "chapter": 3,
+    "verse": 9,
+    "words": [
+      "1CO 3:9!4",
+      "1CO 3:9!5"
+    ],
+    "title": "theou synergoi: \"God's fellow workers\" or \"fellow workers with God\"?",
+    "category": "case",
+    "summary": "The genitive theou after synergoi may mark possession (\"workers who belong to God\", fellow workers with one another) or the partner (\"God's co-workers\", working together with God). Both are grammatically possible.",
+    "readings": [
+      {
+        "label": "Fellow workers who belong to God",
+        "rendering": "we are fellow workers in God's service",
+        "grammar": "genitive of possession/subordination; synergoi = co-workers with one another (Paul and Apollos)",
+        "modern": "Many modern commentators and the NET note",
+        "fathers": []
+      },
+      {
+        "label": "Fellow workers with God",
+        "rendering": "we are God's co-workers, partners with him in the work",
+        "grammar": "genitive of the partner after a sun- compound; God is the one worked with",
+        "traditions": {
+          "catholic": "Often cited for human cooperation with divine grace (synergy)"
+        },
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this.",
+    "sources": [
+      "NET Bible note on 1 Cor 3:9",
+      "Fee, NICNT 1 Corinthians, on 3:9",
+      "Thiselton, NIGTC 1 Corinthians, on 3:9"
+    ]
+  },
+  {
+    "id": "1cor-3-15-dia-pyros",
+    "book": "1 Corinthians",
+    "chapter": 3,
+    "verse": 15,
+    "words": [
+      "1CO 3:15!9",
+      "1CO 3:15!12",
+      "1CO 3:15!13",
+      "1CO 3:15!14"
+    ],
+    "title": "dia pyros: \"as through fire\" (purifying, punishing, or narrow escape?)",
+    "category": "construction",
+    "summary": "ὡς διὰ πυρός (\"as through fire\") compares the builder's salvation to passing through fire. διά can mean passage through (a means that purifies) or through the midst of (accompanying circumstance, as one who escapes flames), and the comparison particle ὡς may be literal or only an analogy. This verse is a standard text in the purgatory debate.",
+    "readings": [
+      {
+        "label": "Saved through a testing or purifying fire",
+        "rendering": "he will be saved, but only by being purified through fire",
+        "grammar": "διά + genitive of means/instrument; the fire is a real, remedial agent of testing or cleansing",
+        "traditions": {
+          "catholic": "Cited as a scriptural basis for purgatory (CCC 1031)",
+          "protestant": "Generally rejected as a proof text for purgatory"
+        },
+        "fathers": [
+          {
+            "father": "Ambrosiaster",
+            "work": "Commentary on 1 Corinthians 3:15 (catena excerpt)",
+            "ref": "on 1 Cor 3:15",
+            "year": 380,
+            "legacy": 52949,
+            "url": "https://en.wikipedia.org/wiki/Ambrosiaster",
+            "quote": "Even so, however, he may suffer punishments of fire. He will be saved only by being purified through fire."
+          },
+          {
+            "father": "Augustine of Hippo",
+            "work": "City of God",
+            "ref": "XXI.26",
+            "year": 426,
+            "commentary": 22413,
+            "url": "https://www.newadvent.org/fathers/120121.htm",
+            "quote": "Here, then, as seems to me, we have a fire which destroys neither, but enriches the one, brings loss to the other, proves both."
+          }
+        ]
+      },
+      {
+        "label": "Saved, but remaining in a penal fire without being destroyed",
+        "rendering": "he himself will not perish as his works do, but will abide in the fire",
+        "grammar": "διά + genitive of attendant state: he survives within the fire (a punishment), not by it",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on First Corinthians",
+            "ref": "Homily 9",
+            "year": 395,
+            "page": "220109",
+            "url": "https://www.newadvent.org/fathers/220109.htm",
+            "quote": "And his meaning is, He himself shall not perish in the same way as his works, passing into nought, but he shall abide in the fire."
+          }
+        ]
+      },
+      {
+        "label": "Saved as one who barely escapes the flames",
+        "rendering": "he will be saved, but like a man snatched out of a burning house",
+        "grammar": "διά + genitive of passage; ὡς marks a figure of narrow escape, not a literal fire after death",
+        "modern": "Most Protestant commentators (Calvin, Fee, Thiselton)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this: ὡς οὕτως διὰ πυρός is a bare adverbial phrase.",
+    "sources": [
+      "NET Bible note on 1 Cor 3:15",
+      "Thiselton, NIGTC 1 Corinthians, on 3:12-15",
+      "Catechism of the Catholic Church 1031"
+    ]
+  },
+  {
+    "id": "1cor-7-1-peri-hon-egrapsate",
+    "book": "1 Corinthians",
+    "chapter": 7,
+    "verse": 1,
+    "words": [
+      "1CO 7:1!3",
+      "1CO 7:1!4",
+      "1CO 7:1!5",
+      "1CO 7:1!6",
+      "1CO 7:1!7",
+      "1CO 7:1!8",
+      "1CO 7:1!9"
+    ],
+    "title": "\"It is good for a man not to touch a woman\": Paul's view or the Corinthians'?",
+    "category": "punctuation",
+    "summary": "Paul answers \"the things you wrote\" (Περὶ δὲ ὧν ἐγράψατε). The Greek has no quotation marks, so καλὸν ἀνθρώπῳ γυναικὸς μὴ ἅπτεσθαι may be Paul's own judgement or a slogan quoted from the Corinthians' letter that he then qualifies.",
+    "readings": [
+      {
+        "label": "Paul's own statement",
+        "rendering": "Now concerning what you wrote: it is good for a man not to touch a woman",
+        "grammar": "καλόν as a main-clause assertion by Paul; \"not to touch\" an idiom for sexual relations; the following verses are concessions",
+        "modern": "RSV, NASB, ESV (no quotation marks), most Fathers",
+        "fathers": [
+          {
+            "father": "Jerome",
+            "work": "Against Jovinianus",
+            "ref": "I.7",
+            "year": 393,
+            "page": "30091",
+            "url": "https://www.newadvent.org/fathers/30091.htm",
+            "quote": "Let us turn back to the chief point of the evidence: It is good, he says, for a man not to touch a woman. If it is good not to touch a woman, it is bad to touch one: for there is no opposite to goodness but badness."
+          }
+        ]
+      },
+      {
+        "label": "A Corinthian slogan that Paul corrects",
+        "rendering": "\"It is good for a man not to touch a woman,\" you say; but because of immoralities ...",
+        "grammar": "a quoted slogan (\"you write: ...\") that Paul accepts only partly in vv. 2-7",
+        "modern": "NIV (1984), NRSV note, many modern commentators",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "ὧν ἐγράψατε is a relative clause; the clause with καλὸν follows as a separate unmarked clause, not embedded as a quotation.",
+    "sources": [
+      "NET Bible note on 1 Cor 7:1",
+      "Fee, NICNT 1 Corinthians, on 7:1",
+      "Thiselton, NIGTC 1 Corinthians, on 7:1"
+    ]
+  },
+  {
+    "id": "1cor-7-21-alla-ei-kai-mallon-chresai",
+    "book": "1 Corinthians",
+    "chapter": 7,
+    "verse": 21,
+    "words": [
+      "1CO 7:21!6",
+      "1CO 7:21!7",
+      "1CO 7:21!8",
+      "1CO 7:21!9",
+      "1CO 7:21!12",
+      "1CO 7:21!13"
+    ],
+    "title": "mallon chrēsai: \"use freedom\" or \"use your slavery\"?",
+    "category": "construction",
+    "summary": "ἀλλ᾽ εἰ καὶ δύνασαι ἐλεύθερος γενέσθαι, μᾶλλον χρῆσαι leaves its object unstated. The imperative can be completed as \"use [your freedom]\" or \"use [your slavery]\", and εἰ καὶ may be \"if indeed\" or \"even if\".",
+    "readings": [
+      {
+        "label": "Take the opportunity of freedom",
+        "rendering": "but if you can gain your freedom, rather do so (make use of that opportunity)",
+        "grammar": "ellipsis of an object like τῇ ἐλευθερίᾳ; εἰ καὶ \"if indeed\" (real possibility); μᾶλλον \"by all means / rather\"",
+        "modern": "NIV, RSV, ESV (text) and many commentators",
+        "fathers": []
+      },
+      {
+        "label": "Stay in slavery",
+        "rendering": "even if you can gain freedom, rather make use of your slavery",
+        "grammar": "ellipsis of an object like τῇ δουλείᾳ; εἰ καὶ concessive \"even if\"; μᾶλλον \"rather\" contrasting with the freedom offered",
+        "modern": "NRSV (text), ESV margin, Bartchy and others",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on First Corinthians",
+            "ref": "Homily 19",
+            "year": 395,
+            "page": "220119",
+            "url": "https://www.newadvent.org/fathers/220119.htm",
+            "quote": "Now upon what possible ground does he tell the person who might be set free to remain a slave? He means to point out that slavery is no harm but rather an advantage."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this; the verb χρῆσαι has no expressed object.",
+    "sources": [
+      "NET Bible note on 1 Cor 7:21",
+      "Thiselton, NIGTC 1 Corinthians, on 7:21",
+      "Wallace, GGBB on εἰ καί"
+    ]
+  },
+  {
+    "id": "1cor-7-36-ten-parthenon-autou",
+    "book": "1 Corinthians",
+    "chapter": 7,
+    "verse": 36,
+    "words": [
+      "1CO 7:36!7",
+      "1CO 7:36!8",
+      "1CO 7:36!12",
+      "1CO 7:36!22"
+    ],
+    "title": "ten parthenon autou: whose virgin, and who marries?",
+    "category": "referent",
+    "summary": "τὴν παρθένον αὐτοῦ (\"his virgin\") does not say whether she is the man's daughter, his fiancée, or a woman living with him in a celibate \"spiritual marriage\". The verbs γαμίζων/ἐκγαμίζων and the plural γαμείτωσαν depend on that choice, as does ὑπέρακμος (\"past her prime / strong passions\").",
+    "readings": [
+      {
+        "label": "A father and his daughter",
+        "rendering": "if a father thinks he is acting dishonourably toward his unmarried daughter ... let her marry",
+        "grammar": "αὐτοῦ = the father's; γαμίζων/ἐκγαμίζων = \"give in marriage\"; ὑπέρακμος describes the daughter's age",
+        "fathers": []
+      },
+      {
+        "label": "A man and his fiancée",
+        "rendering": "if a man thinks he is not behaving properly toward his betrothed ... let them marry",
+        "grammar": "αὐτοῦ = the man's; γαμείτωσαν \"let them marry\" read literally as the engaged pair; ὑπέρακμος = strong passions",
+        "fathers": []
+      },
+      {
+        "label": "A man and a celibate partner (\"spiritual marriage\")",
+        "rendering": "if a man thinks he is acting dishonourably toward the virgin who lives with him ...",
+        "grammar": "αὐτοῦ marks the relationship (virgo subintroducta); γαμείτωσαν = they may enter full marriage",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this; the tree does not fix the referent of αὐτοῦ.",
+    "sources": [
+      "NET Bible note on 1 Cor 7:36-38",
+      "Fee, NICNT 1 Corinthians, on 7:36-38",
+      "Thiselton, NIGTC 1 Corinthians, on 7:36-38"
+    ]
+  },
+  {
+    "id": "1cor-9-5-adelphen-gynaika",
+    "book": "1 Corinthians",
+    "chapter": 9,
+    "verse": 5,
+    "words": [
+      "1CO 9:5!5",
+      "1CO 9:5!6",
+      "1CO 9:5!7"
+    ],
+    "title": "adelphen gynaika: \"a sister, a wife\" or \"a sister-woman\"?",
+    "category": "attachment",
+    "summary": "ἀδελφὴν γυναῖκα can be taken as a noun in apposition (\"a sister, [that is] a wife\") or as adjective + noun (\"a Christian woman\"). The same Greek word means \"woman\" and \"wife\", so the question is whether Paul claims a right to a wife, or only to a woman helper.",
+    "readings": [
+      {
+        "label": "A wife who is a Christian sister",
+        "rendering": "a believing wife, as the other apostles have",
+        "grammar": "ἀδελφήν in apposition to γυναῖκα, γυναῖκα = \"wife\" (the comparison with Cephas and the Lord's brothers points to married men)",
+        "modern": "NIV, RSV, NRSV, ESV and most modern commentators",
+        "fathers": [
+          {
+            "father": "Clement Of Alexandria",
+            "work": "Stromata (catena excerpt on 1 Cor 9:5)",
+            "ref": "Stromata III.6",
+            "year": 200,
+            "legacy": 53609,
+            "url": "http://orthodoxwiki.org/Clement_of_Alexandria",
+            "quote": "The apostles concentrated on undistracted preaching and took their wives around as Christian sisters rather than as spouses, to be their fellow ministers to the women of the household, so that the gospel would reach them without causing scandal."
+          }
+        ]
+      },
+      {
+        "label": "A sister-woman who supports the apostle",
+        "rendering": "a Christian woman to travel with and support us",
+        "grammar": "ἀδελφὴν γυναῖκα as \"woman who is a sister\"; περιάγειν \"to lead about\" rather than \"to marry\"",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Work of Monks",
+            "ref": "§5",
+            "year": 401,
+            "page": "1314",
+            "url": "https://www.newadvent.org/fathers/1314.htm",
+            "quote": "This thing some not understanding, have interpreted not a woman which is a sister, when he said, Have we not power to lead about a sister a woman; but, a sister a wife. They were misled by the ambiguity of the Greek word, because both wife and woman is expressed in Greek by the same word."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this.",
+    "sources": [
+      "NET Bible note on 1 Cor 9:5",
+      "Fee, NICNT 1 Corinthians, on 9:5",
+      "Augustine, On the Work of Monks 5"
+    ]
+  },
+  {
+    "id": "1cor-11-10-exousian-echein-epi-tes-kephales",
+    "book": "1 Corinthians",
+    "chapter": 11,
+    "verse": 10,
+    "words": [
+      "1CO 11:10!3",
+      "1CO 11:10!6",
+      "1CO 11:10!7",
+      "1CO 11:10!8",
+      "1CO 11:10!9",
+      "1CO 11:10!10"
+    ],
+    "title": "exousian echein epi tes kephales: whose authority?",
+    "category": "construction",
+    "summary": "ἐξουσίαν ἔχειν ἐπὶ τῆς κεφαλῆς is literally \"to have authority on/over the head\". It can mean the woman has authority over her own head, or that she should wear on her head a sign of the authority (of the man, or of God) to which she is subject.",
+    "readings": [
+      {
+        "label": "The woman has authority over her own head",
+        "rendering": "a woman ought to exercise her own right/authority over her head",
+        "grammar": "ἐξουσίαν ἔχειν + ἐπί + genitive, active: she has the right (to decide) concerning her head",
+        "modern": "Hooker, Fee and several others",
+        "fathers": []
+      },
+      {
+        "label": "A sign of authority on her head",
+        "rendering": "a woman ought to have a sign of (man's) authority on her head",
+        "grammar": "ἐξουσία by metonymy for the veil (a sign of authority exercised over her); ἐπί = \"on\"",
+        "modern": "KJV (\"power\"), RSV, NASB (a symbol of authority) and the older tradition",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on First Corinthians",
+            "ref": "Homily 26",
+            "year": 395,
+            "legacy": 53990,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "It follows that being covered is a mark of subjection and authority. For it induces her to look down and be ashamed and preserve entire her proper virtue."
+          },
+          {
+            "father": "Ambrosiaster",
+            "work": "Commentary on 1 Corinthians 11:10 (catena excerpt)",
+            "ref": "on 1 Cor 11:10",
+            "year": 380,
+            "legacy": 53985,
+            "url": "https://en.wikipedia.org/wiki/Ambrosiaster",
+            "quote": "The veil signifies power, and the angels are bishops."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this.",
+    "sources": [
+      "NET Bible note on 1 Cor 11:10",
+      "Thiselton, NIGTC 1 Corinthians, on 11:10",
+      "Fee, NICNT 1 Corinthians, on 11:10"
+    ]
+  },
+  {
+    "id": "1cor-11-27-e-pine",
+    "book": "1 Corinthians",
+    "chapter": 11,
+    "verse": 27,
+    "words": [
+      "1CO 11:27!4",
+      "1CO 11:27!7",
+      "1CO 11:27!8",
+      "1CO 11:27!14"
+    ],
+    "title": "\"eats the bread or drinks the cup\": a real disjunction?",
+    "category": "construction",
+    "summary": "ἢ (\"or\") joins ἐσθίῃ τὸν ἄρτον and πίνῃ τὸ ποτήριον. It can be a strict disjunction (either act alone suffices for the guilt) or a loose \"and/or\" for one act of partaking in both elements. The verse is used in the debate over communion in one kind.",
+    "readings": [
+      {
+        "label": "Strict disjunction: either element alone",
+        "rendering": "whoever eats the bread or drinks the cup of the Lord unworthily is guilty of the body and the blood",
+        "grammar": "ἢ as a real alternative; eating alone or drinking alone is already a sharing in the Lord's body and blood",
+        "traditions": {
+          "catholic": "Cited (e.g. in Haydock's note on the Douay-Rheims) as showing that communion under one kind is real communion"
+        },
+        "fathers": []
+      },
+      {
+        "label": "Inclusive \"or\": one act of partaking in both",
+        "rendering": "whoever eats the bread and drinks the cup unworthily ...",
+        "grammar": "ἢ as a loose connective of two parts of one meal; vv. 26 and 28 use \"and\" and the variant καί exists in some witnesses",
+        "traditions": {
+          "protestant": "Taken as presupposing both elements in the Supper (cf. v. 26, v. 28)"
+        },
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree coordinates ἐσθίῃ and πίνῃ with ἢ under a single ὃς ἂν subject; it records a disjunction without deciding whether each element is sufficient.",
+    "sources": [
+      "Haydock/Challoner note on 1 Cor 11:27 (Douay-Rheims)",
+      "Thiselton, NIGTC 1 Corinthians, on 11:27",
+      "Wallace, GGBB on ἤ"
+    ]
+  },
+  {
+    "id": "1cor-12-13-en-heni-pneumati",
+    "book": "1 Corinthians",
+    "chapter": 12,
+    "verse": 13,
+    "words": [
+      "1CO 12:13!3",
+      "1CO 12:13!4",
+      "1CO 12:13!5",
+      "1CO 12:13!8",
+      "1CO 12:13!9",
+      "1CO 12:13!10",
+      "1CO 12:13!11"
+    ],
+    "title": "en heni pneumati ebaptisthemen: baptized by, in, or with the Spirit?",
+    "category": "case",
+    "summary": "ἐν ἑνὶ πνεύματι ... ἐβαπτίσθημεν can take ἐν as agency (\"by one Spirit\"), sphere/element (\"in one Spirit\", as in \"baptized in the Holy Spirit\"), or means. The choice affects whether Spirit baptism is distinct from water baptism and who the baptizer is.",
+    "readings": [
+      {
+        "label": "The Spirit is the agent: \"by one Spirit\"",
+        "rendering": "by one Spirit we were all baptized into one body",
+        "grammar": "ἐν + dative of agency/means with a passive verb; the Spirit forms the one body",
+        "modern": "RSV, NRSV, NIV, ESV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on First Corinthians",
+            "ref": "Homily 30",
+            "year": 395,
+            "legacy": 54204,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "Now his meaning is this: that which established us to become one body and regenerated us, is one Spirit: for not in one Spirit was one baptized, and another another."
+          }
+        ]
+      },
+      {
+        "label": "The Spirit is the element: \"in one Spirit\"",
+        "rendering": "in one Spirit we were all baptized into one body",
+        "grammar": "ἐν + dative of sphere/element (cf. Mark 1:8, Acts 1:5); Christ is the baptizer and the Spirit the medium",
+        "modern": "Dunn (Baptism in the Holy Spirit) and some evangelical commentators",
+        "fathers": [
+          {
+            "father": "Ambrose of Milan",
+            "work": "On the Holy Spirit",
+            "ref": "I.45",
+            "year": 381,
+            "commentary": 15289,
+            "url": "https://www.newadvent.org/fathers/34021.htm",
+            "quote": "Scripture indicates that we can also be rightly baptized in the Spirit, when the Lord says: But you shall be baptized in the Holy Spirit. Acts 1:5 And in another place the Apostle says: For we were all baptized in the body itself into one Spirit. 1 Corinthians 12:13"
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this: ἐν ἑνὶ πνεύματι is a bare phrase in the clause.",
+    "sources": [
+      "NET Bible note on 1 Cor 12:13",
+      "Wallace, GGBB 373-5 (ἐν with πνεύματι)",
+      "Fee, NICNT 1 Corinthians, on 12:13"
+    ]
+  },
+  {
+    "id": "1cor-13-10-to-teleion",
+    "book": "1 Corinthians",
+    "chapter": 13,
+    "verse": 10,
+    "words": [
+      "1CO 13:10!4",
+      "1CO 13:10!5",
+      "1CO 13:10!6",
+      "1CO 13:10!7",
+      "1CO 13:10!8"
+    ],
+    "title": "to teleion: what is \"the perfect\" that comes?",
+    "category": "referent",
+    "summary": "τὸ τέλειον is a neuter adjective used as a noun and has no stated referent. It may be \"the complete\" (the end-time or the vision of God), the completed revelation, or maturity. The reading also decides when \"the partial\" (prophecy, tongues, knowledge) ends.",
+    "readings": [
+      {
+        "label": "The final state: the vision of God at the end",
+        "rendering": "when the perfect (the final fulfilment, seeing face to face) comes",
+        "grammar": "τὸ τέλειον = the eschatological completion; contrasted with the \"face to face\" of v. 12",
+        "modern": "Most commentators",
+        "fathers": [
+          {
+            "father": "Ambrose of Milan",
+            "work": "Commentary on 1 Corinthians 13:10 (catena excerpt)",
+            "ref": "on 1 Cor 13:10",
+            "year": 385,
+            "legacy": 54348,
+            "url": "http://orthodoxwiki.org/Ambrose_of_Milan",
+            "quote": "But then we shall be able to comprehend what is perfect, when not the shadow but the reality of the majesty and eternity of God shall begin to shine and to reveal itself unveiled before our eyes."
+          },
+          {
+            "father": "Methodius of Olympus",
+            "work": "Commentary on 1 Corinthians 13:10 (catena excerpt)",
+            "ref": "on 1 Cor 13:10",
+            "year": 290,
+            "legacy": 54354,
+            "url": "http://orthodoxwiki.org/Methodius_of_Olympus",
+            "quote": "Since that which is perfect has not yet come to us; namely, the kingdom of heaven and the resurrection, when \"that which is in part shall be done away.\""
+          }
+        ]
+      },
+      {
+        "label": "The completed canon of Scripture",
+        "rendering": "when the completed New Testament revelation comes",
+        "grammar": "τὸ τέλειον = the \"complete\" body of revelation; ἐκ μέρους = partial gifts that cease",
+        "modern": "Cessationist interpreters",
+        "fathers": []
+      },
+      {
+        "label": "Spiritual maturity",
+        "rendering": "when the church reaches maturity",
+        "grammar": "τέλειον in its sense \"mature\" (cf. v. 11 νήπιος); a gradual rather than final change",
+        "modern": "A minority view",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this: τὸ τέλειον stands without a stated referent.",
+    "sources": [
+      "NET Bible note on 1 Cor 13:10",
+      "Thiselton, NIGTC 1 Corinthians, on 13:10",
+      "Wallace, GGBB on neuter substantive adjectives"
+    ]
+  },
+  {
+    "id": "1cor-14-33-hos-en-pasais-tais-ekklesiais",
+    "book": "1 Corinthians",
+    "chapter": 14,
+    "verse": 33,
+    "words": [
+      "1CO 14:33!9",
+      "1CO 14:33!10",
+      "1CO 14:33!11",
+      "1CO 14:33!12",
+      "1CO 14:33!13",
+      "1CO 14:33!14",
+      "1CO 14:33!15"
+    ],
+    "title": "\"As in all the churches of the saints\": which sentence does it belong to?",
+    "category": "attachment",
+    "summary": "The phrase ὡς ἐν πάσαις ταῖς ἐκκλησίαις τῶν ἁγίων can close v. 33a (\"God is not a God of disorder but of peace, as in all the churches\") or begin v. 34 (\"As in all the churches of the saints, let the women be silent\"). The Greek has no punctuation.",
+    "readings": [
+      {
+        "label": "It ends v. 33a",
+        "rendering": "God is a God of peace, as in all the churches of the saints. Let the women ...",
+        "grammar": "the ὡς-clause modifies \"peace\" in the preceding clause; v. 34 then begins independently",
+        "modern": "KJV, NIV, NASB",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on First Corinthians",
+            "ref": "Homily 37",
+            "year": 395,
+            "page": "220137",
+            "url": "https://www.newadvent.org/fathers/220137.htm",
+            "quote": "And again, God is not a God of confusion, but of peace, as in all the Churches of the saints."
+          }
+        ]
+      },
+      {
+        "label": "It begins v. 34",
+        "rendering": "As in all the churches of the saints, let the women be silent ...",
+        "grammar": "the ὡς-clause qualifies the command of v. 34 (the custom of all churches)",
+        "modern": "RSV, ESV, NRSV",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree attaches ὡς ἐν πάσαις ταῖς ἐκκλησίαις τῶν ἁγίων as an adverbial to the ἀλλὰ εἰρήνης clause of v. 33, and begins a new unit at Αἱ γυναῖκες.",
+    "sources": [
+      "NET Bible note on 1 Cor 14:33",
+      "Fee, NICNT 1 Corinthians, on 14:33-36",
+      "Thiselton, NIGTC 1 Corinthians, on 14:33-36"
+    ]
+  },
+  {
+    "id": "1cor-15-19-monon",
+    "book": "1 Corinthians",
+    "chapter": 15,
+    "verse": 19,
+    "words": [
+      "1CO 15:19!2",
+      "1CO 15:19!4",
+      "1CO 15:19!8",
+      "1CO 15:19!9",
+      "1CO 15:19!10",
+      "1CO 15:19!11"
+    ],
+    "title": "monon in 15:19: which phrase does \"only\" limit?",
+    "category": "attachment",
+    "summary": "The adverb μόνον stands before ἐλεεινότεροι and can be read with \"in this life\" (hope limited to this life), with ἠλπικότες (\"have merely hoped\"), or with \"in Christ\".",
+    "readings": [
+      {
+        "label": "Hope confined to this life",
+        "rendering": "if in this life only we have hoped in Christ",
+        "grammar": "μόνον modifies ἐν τῇ ζωῇ ταύτῃ; the hope has no object beyond death",
+        "modern": "KJV, RSV, NIV, ESV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on First Corinthians",
+            "ref": "Homily 39",
+            "year": 395,
+            "legacy": 54639,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "What do you say, O Paul? How in this life only have we hope, if our bodies be not raised, the soul abiding and being immortal? Because even if the soul abide, even if it be infinitely immortal, as indeed it is, without the flesh it shall not receive those hidden good things, as neither truly shall it be punished."
+          }
+        ]
+      },
+      {
+        "label": "Mere hope, never fulfilled",
+        "rendering": "if we have only hoped in Christ (and it is never fulfilled), we are most pitiable",
+        "grammar": "μόνον modifies the perfect participle ἠλπικότες ἐσμέν: a hope that stays hope and never receives anything",
+        "modern": "A minority reading noted by several grammarians and commentaries",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree places μόνον inside the εἰ-clause with the periphrastic ἠλπικότες ἐσμέν and does not mark which phrase it governs.",
+    "sources": [
+      "NET Bible note on 1 Cor 15:19",
+      "Thiselton, NIGTC 1 Corinthians, on 15:19",
+      "Fee, NICNT 1 Corinthians, on 15:19"
+    ]
+  },
+  {
+    "id": "1cor-15-29-hyper-ton-nekron",
+    "book": "1 Corinthians",
+    "chapter": 15,
+    "verse": 29,
+    "words": [
+      "1CO 15:29!5",
+      "1CO 15:29!6",
+      "1CO 15:29!7",
+      "1CO 15:29!8",
+      "1CO 15:29!16",
+      "1CO 15:29!17",
+      "1CO 15:29!18"
+    ],
+    "title": "baptizomenoi hyper ton nekron: what does \"for the dead\" mean?",
+    "category": "case",
+    "summary": "ὑπέρ + genitive can mean \"on behalf of\" (vicarious), \"for the sake of / out of regard for\", or \"with a view to\". Together with the unclear referent of τῶν νεκρῶν and αὐτῶν, this yields several readings of the verse.",
+    "readings": [
+      {
+        "label": "Vicarious baptism for dead persons",
+        "rendering": "what will those do who are baptized on behalf of the dead?",
+        "grammar": "ὑπέρ = \"in place of, on behalf of\"; τῶν νεκρῶν = deceased people (the Fathers cited here report it only as a heterodox practice and reject it)",
+        "modern": "Most modern critical commentators take this as the plain sense",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on First Corinthians",
+            "ref": "Homily 40 (describing the Marcionite practice)",
+            "year": 395,
+            "legacy": 54732,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "when any Catechumen departs among them, having concealed the living man under the couch of the dead, they approach the corpse and talk with him, and ask him if he wishes to receive baptism; then when he makes no answer, he that is concealed underneath says in his stead that of course he should wish to be baptized; and so they baptize him instead of the departed, like men jesting upon the stage."
+          },
+          {
+            "father": "Didymus the Blind",
+            "work": "Commentary on 1 Corinthians 15:29 (catena excerpt)",
+            "ref": "on 1 Cor 15:29",
+            "year": 380,
+            "legacy": 54730,
+            "url": "https://orthodoxwiki.org/Didymus_the_Blind",
+            "quote": "The Marcionites baptize the living on behalf of dead unbelievers, not knowing that baptism saves only the person who receives it."
+          }
+        ]
+      },
+      {
+        "label": "Baptized in view of the resurrection of the (dead) body",
+        "rendering": "what will they do who are baptized for (the hope of raising) the dead?",
+        "grammar": "ὑπέρ = \"for the sake of / with a view to\"; τῶν νεκρῶν = the dead bodies that will rise",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on First Corinthians",
+            "ref": "Homily 40",
+            "year": 395,
+            "legacy": 54733,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "Sin has brought death into the world, and we are baptized in the hope that our dead bodies will be raised again in the resurrection."
+          }
+        ]
+      },
+      {
+        "label": "A figurative baptism (suffering or martyrdom)",
+        "rendering": "why do they undergo trials for the dead?",
+        "grammar": "βαπτίζομαι metaphorically (\"be overwhelmed by suffering\"), ὑπέρ = \"for the sake of\"",
+        "modern": "Several older Catholic commentators (Haydock lists this among the options)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree keeps ὑπὲρ τῶν νεκρῶν inside the participial phrase; it does not choose a sense of ὑπέρ.",
+    "sources": [
+      "NET Bible note on 1 Cor 15:29",
+      "Thiselton, NIGTC 1 Corinthians, on 15:29",
+      "Wallace, GGBB 383-4"
+    ]
+  },
+  {
+    "id": "1cor-16-22-marana-tha",
+    "book": "1 Corinthians",
+    "chapter": 16,
+    "verse": 22,
+    "words": [
+      "1CO 16:22!9",
+      "1CO 16:22!10"
+    ],
+    "title": "Marana tha: \"Our Lord, come!\" or \"Our Lord has come\"?",
+    "category": "construction",
+    "summary": "The Aramaic μαράνα θά can be divided marana tha (imperative: \"Our Lord, come!\") or maran atha (perfect: \"Our Lord has come\"). The division changes both mood/tense and the sense: a prayer for the Parousia, or a statement that the Lord has come.",
+    "readings": [
+      {
+        "label": "Prayer: marana tha, \"Our Lord, come!\"",
+        "rendering": "Our Lord, come!",
+        "grammar": "maranâ thâ, imperative of the verb \"to come\" with \"our Lord\" in the vocative; compare Rev 22:20",
+        "modern": "Nearly all modern scholars (Didache 10.6 and Rev 22:20 support it)",
+        "fathers": []
+      },
+      {
+        "label": "Statement: maran atha, \"Our Lord has come\"",
+        "rendering": "Our Lord has come",
+        "grammar": "maran atâ, perfect of \"to come\"; an assertion that the Lord has come (the Incarnation)",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on First Corinthians",
+            "ref": "Homily 44",
+            "year": 397,
+            "legacy": 55036,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "But what is the meaning of Maran atha? Our Lord has come. For what reason then does he use this phrase in particular? To confirm the doctrine of the Economy"
+          },
+          {
+            "father": "Ambrosiaster",
+            "work": "Commentary on 1 Corinthians 16:22 (catena excerpt)",
+            "ref": "on 1 Cor 16:22",
+            "year": 380,
+            "legacy": 55030,
+            "url": "https://en.wikipedia.org/wiki/Ambrosiaster",
+            "quote": "Paul is referring to the Jews, who were accursed because they said that the Lord had not yet come."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this: μαράνα θά are two transliterated Aramaic tokens.",
+    "sources": [
+      "NET Bible note on 1 Cor 16:22",
+      "Thiselton, NIGTC 1 Corinthians, on 16:22",
+      "Fee, NICNT 1 Corinthians, on 16:22"
+    ]
+  },
+  {
+    "id": "2cor-3-14-hoti-en-christo-katargeitai",
+    "book": "2 Corinthians",
+    "chapter": 3,
+    "verse": 14,
+    "words": [
+      "2CO 3:14!11",
+      "2CO 3:14!12",
+      "2CO 3:14!13",
+      "2CO 3:14!19",
+      "2CO 3:14!20",
+      "2CO 3:14!23",
+      "2CO 3:14!24",
+      "2CO 3:14!25",
+      "2CO 3:14!26"
+    ],
+    "title": "hoti en Christo katargeitai: what is set aside in Christ?",
+    "category": "referent",
+    "summary": "In \"the same veil remains ... unlifted, because (or: which) in Christ it is set aside\", the subject of καταργεῖται is unstated. It can be the veil, the old covenant, or the whole system of reading. ὅτι can also be causal or relative-like.",
+    "readings": [
+      {
+        "label": "The veil is removed in Christ",
+        "rendering": "the same veil remains, not lifted, because it is taken away only in Christ",
+        "grammar": "subject of καταργεῖται = κάλυμμα (nearest neuter noun); ὅτι = \"because/for\"",
+        "modern": "KJV, NIV, NET",
+        "fathers": []
+      },
+      {
+        "label": "The old covenant is set aside in Christ",
+        "rendering": "the veil remains unlifted [as one reads the old covenant], which is abolished in Christ",
+        "grammar": "subject of καταργεῖται = ἡ παλαιὰ διαθήκη (the covenant, abolished in Christ); ὅτι \"that/which\"",
+        "modern": "Noted as a possibility by several commentators",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this; the subject of καταργεῖται is not given.",
+    "sources": [
+      "NET Bible note on 2 Cor 3:14",
+      "Harris, NIGTC 2 Corinthians, on 3:14",
+      "Thrall, ICC 2 Corinthians, on 3:14"
+    ]
+  },
+  {
+    "id": "2cor-3-17-o-kyrios-to-pneuma-estin",
+    "book": "2 Corinthians",
+    "chapter": 3,
+    "verse": 17,
+    "words": [
+      "2CO 3:17!1",
+      "2CO 3:17!3",
+      "2CO 3:17!4",
+      "2CO 3:17!5",
+      "2CO 3:17!6"
+    ],
+    "title": "o de kyrios to pneuma estin: who is \"the Lord\"?",
+    "category": "referent",
+    "summary": "In \"the Lord is the Spirit\" the article marks both nouns as definite, so either could be subject. κύριος may be Yahweh of Ex 34:34 (quoted in v. 16), Christ, or the Spirit himself, and πνεῦμα the Holy Spirit, the \"spirit\" (versus letter) sense of Scripture, or God's spiritual nature.",
+    "readings": [
+      {
+        "label": "\"The Lord\" = the Holy Spirit",
+        "rendering": "the Lord of whom I speak is the Spirit (the Spirit is Lord)",
+        "grammar": "article with both nouns: subject and predicate interchangeable; κύριος titles the Spirit, supported by \"the Spirit of the Lord\" in the same verse",
+        "traditions": {
+          "catholic": "Standard Trinitarian reading (e.g. Ambrose)",
+          "orthodox": "Greek Fathers (e.g. Chrysostom) read it as naming the Spirit"
+        },
+        "fathers": [
+          {
+            "father": "Ambrose of Milan",
+            "work": "On the Holy Spirit",
+            "ref": "III.101",
+            "year": 381,
+            "commentary": 15754,
+            "url": "https://www.newadvent.org/fathers/34023.htm",
+            "quote": "Which the course of the whole passage shows to have been certainly said of the Holy Spirit."
+          },
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on 2 Corinthians 3:17 (catena excerpt)",
+            "ref": "Homily 7 on 2 Corinthians",
+            "year": 400,
+            "legacy": 55355,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "And that you may know that he is speaking of the Paraclete, he added, And where the Spirit of the Lord is, there is liberty."
+          }
+        ]
+      },
+      {
+        "label": "\"The Lord\" = God/Christ; \"spirit\" = divine nature or spiritual sense",
+        "rendering": "the Lord (of Ex 34:34, i.e. Christ/God) is spirit; the spirit of the passage is the Lord",
+        "grammar": "πνεῦμα as predicate of nature (\"God is spirit\") or the \"spiritual\" meaning as opposed to the letter; κύριος refers back to Ex 34:34 (v. 16)",
+        "modern": "Dunn, Hafemann and others (with different identifications of \"the Lord\")",
+        "fathers": [
+          {
+            "father": "Hilary of Poitiers",
+            "work": "On the Trinity",
+            "ref": "II.32",
+            "year": 356,
+            "commentary": 41636,
+            "url": "https://www.newadvent.org/fathers/330202.htm",
+            "quote": "Thus when he says, The Lord is Spirit he reveals the infinity of God;"
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this; the tree reads ὁ κύριος as subject and τὸ πνεῦμα as predicate without further analysis.",
+    "sources": [
+      "NET Bible note on 2 Cor 3:17",
+      "Harris, NIGTC 2 Corinthians, on 3:17-18",
+      "Thrall, ICC 2 Corinthians, on 3:17"
+    ]
+  },
+  {
+    "id": "2cor-3-18-apo-kyriou-pneumatos",
+    "book": "2 Corinthians",
+    "chapter": 3,
+    "verse": 18,
+    "words": [
+      "2CO 3:18!18",
+      "2CO 3:18!19",
+      "2CO 3:18!20",
+      "2CO 3:18!21"
+    ],
+    "title": "kathaper apo kyriou pneumatos: \"from the Lord, the Spirit\" or \"from the Spirit of the Lord\"?",
+    "category": "case",
+    "summary": "κυρίου πνεύματος is two genitives with no article and no linking word. It can be apposition (\"from the Lord who is the Spirit\"), a genitive of possession (\"from the Spirit of the Lord\"), or \"from the Lord of the Spirit\".",
+    "readings": [
+      {
+        "label": "Apposition: \"from the Lord who is the Spirit\"",
+        "rendering": "as from the Lord, the Spirit",
+        "grammar": "πνεύματος in apposition to κυρίου (continuing \"the Lord is the Spirit\" of v. 17)",
+        "modern": "RSV, NRSV, ESV, NIV, NASB and most modern commentators",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on 2 Corinthians 3:18 (catena excerpt)",
+            "ref": "Homily 7 on 2 Corinthians",
+            "year": 400,
+            "legacy": 55363,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "Are transformed into the same image from glory to glory, even as from the Lord the Spirit. Do you see how again he places the Spirit in the rank of God,"
+          },
+          {
+            "father": "Ambrose of Milan",
+            "work": "On the Holy Spirit",
+            "ref": "III.102",
+            "year": 381,
+            "commentary": 15758,
+            "url": "https://www.newadvent.org/fathers/34023.htm",
+            "quote": "Therefore since it is the Lord to Whom we are converted, but the Lord is that Spirit by Whom we are formed anew, who are converted to the Lord, assuredly the Holy Ghost is pointed out,"
+          }
+        ]
+      },
+      {
+        "label": "Genitive: \"from the Spirit of the Lord\"",
+        "rendering": "as from the Spirit of the Lord",
+        "grammar": "κυρίου as possessive genitive of πνεύματος (Vulgate: a Domini Spiritu)",
+        "modern": "KJV, Vulgate (a Domini Spiritu)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this; καθάπερ ἀπὸ κυρίου πνεύματος is a bare adverbial phrase.",
+    "sources": [
+      "NET Bible note on 2 Cor 3:18",
+      "Harris, NIGTC 2 Corinthians, on 3:18",
+      "Thrall, ICC 2 Corinthians, on 3:18"
+    ]
+  },
+  {
+    "id": "2cor-4-4-o-theos-tou-aionos-toutou",
+    "book": "2 Corinthians",
+    "chapter": 4,
+    "verse": 4,
+    "words": [
+      "2CO 4:4!3",
+      "2CO 4:4!4",
+      "2CO 4:4!5",
+      "2CO 4:4!6",
+      "2CO 4:4!7",
+      "2CO 4:4!8",
+      "2CO 4:4!11",
+      "2CO 4:4!12"
+    ],
+    "title": "o theos tou aionos toutou: \"the god of this age\", or \"God ... of the unbelievers of this age\"?",
+    "category": "attachment",
+    "summary": "τοῦ αἰῶνος τούτου can modify ὁ θεός (\"the god of this age\", usually Satan), or, by a transposition, τῶν ἀπίστων (\"God blinded the minds of the unbelievers of this age\"). In the second case \"god\" is the true God, as the Fathers argued against Marcionites and Manichaeans.",
+    "readings": [
+      {
+        "label": "\"The god of this age\" = Satan",
+        "rendering": "the god of this age (the devil) has blinded the minds of unbelievers",
+        "grammar": "τοῦ αἰῶνος τούτου genitive of dominion on θεός; \"god\" used of a usurping power",
+        "modern": "Nearly all modern translations and commentators (NIV, RSV, ESV, NET)",
+        "fathers": [
+          {
+            "father": "Origen",
+            "work": "Commentary on Matthew (Book XI)",
+            "ref": "XI",
+            "year": 245,
+            "legacy": 78444,
+            "url": "http://ccel.org/fathers2/ANF-10/anf10-47.htm#P7688_1611417",
+            "quote": "by him who is deified by the sons of this world, and on this account is called by Paul the god of this world."
+          }
+        ]
+      },
+      {
+        "label": "God has blinded \"the unbelievers of this age\"",
+        "rendering": "God has blinded the minds of the unbelievers of this world",
+        "grammar": "τοῦ αἰῶνος τούτου belongs with τῶν ἀπίστων (hyperbaton); ὁ θεός = the true God; compare Rom 11:8",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Second Corinthians",
+            "ref": "Homily 8",
+            "year": 400,
+            "legacy": 55393,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "The \"god of this world\" may refer neither to the devil nor to another creator, as the Manichaeans say, but to the God of the universe, who has blinded the minds of the unbelievers of this world."
+          }
+        ]
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree makes ὁ θεὸς τοῦ αἰῶνος τούτου the subject of ἐτύφλωσεν, with the genitive inside the subject phrase; the transposed reading would need τοῦ αἰῶνος τούτου to be re-attached.",
+    "sources": [
+      "NET Bible note on 2 Cor 4:4",
+      "Harris, NIGTC 2 Corinthians, on 4:4",
+      "Irenaeus, Against Heresies III.7.1"
+    ]
+  },
+  {
+    "id": "2cor-5-14-he-agape-tou-christou",
+    "book": "2 Corinthians",
+    "chapter": 5,
+    "verse": 14,
+    "words": [
+      "2CO 5:14!1",
+      "2CO 5:14!3",
+      "2CO 5:14!4",
+      "2CO 5:14!5",
+      "2CO 5:14!6"
+    ],
+    "title": "he agape tou Christou: whose love?",
+    "category": "case",
+    "summary": "The genitive τοῦ Χριστοῦ after ἀγάπη may be subjective (Christ's love for us) or objective (our love for Christ). A third option is a qualitative genitive (\"Christlike love\").",
+    "readings": [
+      {
+        "label": "Subjective: Christ's love for us",
+        "rendering": "the love Christ has for us compels us",
+        "grammar": "τοῦ Χριστοῦ as subject of the implied loving; the following clause \"one died for all\" gives the content of that love",
+        "modern": "NIV, NRSV, ESV and most modern commentators",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on 2 Corinthians 5:14 (catena excerpt)",
+            "ref": "Homily 11 on 2 Corinthians",
+            "year": 400,
+            "legacy": 55582,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "For great was the excess of that love, both to die for a world of such extent , and dying for it when in such a state."
+          }
+        ]
+      },
+      {
+        "label": "Objective: our love for Christ",
+        "rendering": "our love for Christ compels us",
+        "grammar": "τοῦ Χριστοῦ as object of ἀγάπη; Paul's own devotion as the motive",
+        "modern": "Some older commentators and a few modern ones",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this.",
+    "sources": [
+      "NET Bible note on 2 Cor 5:14",
+      "Harris, NIGTC 2 Corinthians, on 5:14",
+      "Wallace, GGBB 112-6 (subjective/objective genitive)"
+    ]
+  },
+  {
+    "id": "2cor-5-16-kata-sarka",
+    "book": "2 Corinthians",
+    "chapter": 5,
+    "verse": 16,
+    "words": [
+      "2CO 5:16!8",
+      "2CO 5:16!9",
+      "2CO 5:16!12",
+      "2CO 5:16!13",
+      "2CO 5:16!14",
+      "2CO 5:16!15"
+    ],
+    "title": "kata sarka in 5:16: does it qualify the knowing or the Christ?",
+    "category": "attachment",
+    "summary": "In εἰ καὶ ἐγνώκαμεν κατὰ σάρκα Χριστόν the phrase κατὰ σάρκα can modify the verb (\"we once judged by worldly standards\") or the object (\"we once knew Christ as he was in the flesh\"). The two readings differ on whether Paul once met or merely misjudged Christ.",
+    "readings": [
+      {
+        "label": "Adverbial: knowing \"from a worldly standpoint\"",
+        "rendering": "even if we once judged Christ by merely human standards",
+        "grammar": "κατὰ σάρκα modifies ἐγνώκαμεν; \"flesh\" = the old human way of evaluating",
+        "modern": "NIV, RSV, ESV, NET and most modern commentators",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on 2 Corinthians 5:16 (catena excerpt)",
+            "ref": "Homily 11 on 2 Corinthians",
+            "year": 400,
+            "legacy": 55596,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "For what if even they be in the flesh? Yet is that fleshly life destroyed, and we are born again by the Spirit, and have learned another deportment and rule and life and condition , that, namely, in the heavens."
+          }
+        ]
+      },
+      {
+        "label": "Adjectival: \"Christ according to the flesh\"",
+        "rendering": "even if we once knew Christ as he was in his earthly existence",
+        "grammar": "κατὰ σάρκα modifies Χριστόν: Christ in his pre-resurrection mode",
+        "modern": "Older commentators and some modern ones",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on 2 Corinthians 5:16 (catena excerpt)",
+            "ref": "Homily 11 on 2 Corinthians",
+            "year": 400,
+            "legacy": 55597,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "There was a time when we knew him in his earthly life, but now we know him in the perfection of his resurrection."
+          }
+        ]
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree sets κατὰ σάρκα as a sister of ἐγνώκαμεν inside the concessive clause, not nested under Χριστόν, which is the adverbial reading.",
+    "sources": [
+      "NET Bible note on 2 Cor 5:16",
+      "Harris, NIGTC 2 Corinthians, on 5:16",
+      "Thrall, ICC 2 Corinthians, on 5:16"
+    ]
+  },
+  {
+    "id": "2cor-5-17-ei-tis-en-christo-kaine-ktisis",
+    "book": "2 Corinthians",
+    "chapter": 5,
+    "verse": 17,
+    "words": [
+      "2CO 5:17!2",
+      "2CO 5:17!3",
+      "2CO 5:17!4",
+      "2CO 5:17!5",
+      "2CO 5:17!6",
+      "2CO 5:17!7"
+    ],
+    "title": "ei tis en Christo kaine ktisis: \"he is a new creation\" or \"there is a new creation\"?",
+    "category": "construction",
+    "summary": "εἴ τις ἐν Χριστῷ, καινὴ κτίσις has no verb. It can be supplied as \"he is a new creation\" (the person) or \"there is a new creation\" (a new world order). The same ellipsis appears in Gal 6:15.",
+    "readings": [
+      {
+        "label": "The believer is a new creation",
+        "rendering": "if anyone is in Christ, he is a new creation",
+        "grammar": "supply ἐστίν with the person as subject; κτίσις = \"creature/creation\"",
+        "modern": "KJV, RSV, NIV, ESV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on 2 Corinthians 5:17 (catena excerpt)",
+            "ref": "Homily 11 on 2 Corinthians",
+            "year": 400,
+            "legacy": 55610,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "If any, says he, have believed in Him, he has come to another creation, for he has been born again by the Spirit."
+          }
+        ]
+      },
+      {
+        "label": "A new creation has come into being",
+        "rendering": "if anyone is in Christ: new creation!",
+        "grammar": "no personal subject; καινὴ κτίσις as an exclamation of the new age, as in Gal 6:15",
+        "modern": "NRSV, NEB, many modern commentators",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this: the tree gives no verb.",
+    "sources": [
+      "NET Bible note on 2 Cor 5:17",
+      "Harris, NIGTC 2 Corinthians, on 5:17",
+      "Thrall, ICC 2 Corinthians, on 5:17"
+    ]
+  },
+  {
+    "id": "2cor-5-19-theos-en-en-christo",
+    "book": "2 Corinthians",
+    "chapter": 5,
+    "verse": 19,
+    "words": [
+      "2CO 5:19!1",
+      "2CO 5:19!2",
+      "2CO 5:19!3",
+      "2CO 5:19!4",
+      "2CO 5:19!5",
+      "2CO 5:19!6",
+      "2CO 5:19!8"
+    ],
+    "title": "theos en en Christo katallasson: \"was in Christ reconciling\" or \"was reconciling in Christ\"?",
+    "category": "construction",
+    "summary": "ἦν ... καταλλάσσων can be a periphrastic imperfect (\"was reconciling\") or ἦν can stand alone (\"God was in Christ\") with the participle added (\"reconciling\"). ἐν Χριστῷ may then be place/indwelling or means.",
+    "readings": [
+      {
+        "label": "Periphrastic: \"God was reconciling the world to himself in Christ\"",
+        "rendering": "God was reconciling the world to himself through Christ",
+        "grammar": "ἦν καταλλάσσων a periphrastic imperfect; ἐν Χριστῷ instrumental/sphere",
+        "modern": "NRSV, NIV, ESV, NET and most modern commentators",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on 2 Corinthians 5:19 (catena excerpt)",
+            "ref": "Homily 11 on 2 Corinthians",
+            "year": 400,
+            "legacy": 55623,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "wherefore he said, that, God was reconciling the world unto Himself in Christ: that is, by Christ."
+          }
+        ]
+      },
+      {
+        "label": "\"God was in Christ, reconciling\"",
+        "rendering": "God was in Christ, and in him reconciling the world",
+        "grammar": "ἦν a separate verb (\"was present in\") with a participle: the Father indwelling the Son",
+        "modern": "KJV, RV; some older Trinitarian readings",
+        "fathers": [
+          {
+            "father": "Ambrosiaster",
+            "work": "Commentary on 2 Corinthians 5:19 (catena excerpt)",
+            "ref": "on 2 Cor 5:19",
+            "year": 380,
+            "legacy": 55620,
+            "url": "https://en.wikipedia.org/wiki/Ambrosiaster",
+            "quote": "God was in Christ, that is to say, the Father was in the Son, reconciling the world to himself, not counting their sins against them."
+          }
+        ]
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree encodes ἦν ... καταλλάσσων as a periphrastic (one clause, \"was reconciling\"), with ἐν Χριστῷ as a modifier of the participle.",
+    "sources": [
+      "NET Bible note on 2 Cor 5:19",
+      "Harris, NIGTC 2 Corinthians, on 5:19",
+      "Wallace, GGBB 647-9 (periphrastic imperfect)"
+    ]
+  },
+  {
+    "id": "2cor-5-21-dikaiosyne-theou",
+    "book": "2 Corinthians",
+    "chapter": 5,
+    "verse": 21,
+    "words": [
+      "2CO 5:21!10",
+      "2CO 5:21!11",
+      "2CO 5:21!12",
+      "2CO 5:21!13",
+      "2CO 5:21!14",
+      "2CO 5:21!15"
+    ],
+    "title": "dikaiosyne theou: what kind of genitive?",
+    "category": "case",
+    "summary": "The genitive θεοῦ after δικαιοσύνη may be source (the righteousness God gives), attribute (God's own righteousness) or subject (God's covenant faithfulness / saving justice). It is the Protestant-Catholic debate about imputed versus infused righteousness.",
+    "readings": [
+      {
+        "label": "Genitive of source: righteousness from God (given to us)",
+        "rendering": "that we might become the righteousness that comes from God",
+        "grammar": "θεοῦ as genitive of origin; the righteousness is God's gift (cf. Rom 3:21-22, Phil 3:9)",
+        "traditions": {
+          "catholic": "Righteousness as a gift that makes the believer just (Augustine; Trent, Sess. 6)",
+          "protestant": "Righteousness imputed to the believer in Christ"
+        },
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Spirit and the Letter",
+            "ref": "ch. 15 (on Rom 3:21-22)",
+            "year": 412,
+            "page": "1502",
+            "url": "https://www.newadvent.org/fathers/1502.htm",
+            "quote": "But righteousness of God by faith of Jesus Christ, that is by the faith wherewith one believes in Christ for just as there is not meant the faith with which Christ Himself believes, so also there is not meant the righteousness whereby God is Himself righteous. Both no doubt are ours, but yet they are called God's, and Christ's, because it is by their bounty that these gifts are bestowed upon us."
+          },
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on 2 Corinthians 5:21 (catena excerpt)",
+            "ref": "Homily 11 on 2 Corinthians",
+            "year": 400,
+            "legacy": 55644,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "This is God's righteousness, that we are not justified by works (for then they would have to be perfect, which is impossible), but by grace, in which case all our sin is removed."
+          }
+        ]
+      },
+      {
+        "label": "Genitive of attribute/subject: God's own righteousness (covenant faithfulness)",
+        "rendering": "that we might embody God's own righteousness (covenant faithfulness)",
+        "grammar": "θεοῦ as subjective/attributive genitive; believers are ambassadors in whom God's righteousness is displayed (v. 20)",
+        "modern": "N. T. Wright and others",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this.",
+    "sources": [
+      "NET Bible note on 2 Cor 5:21",
+      "Harris, NIGTC 2 Corinthians, on 5:21",
+      "Wallace, GGBB on the genitive of source"
+    ]
+  },
+  {
+    "id": "gal-1-16-en-emoi",
+    "book": "Galatians",
+    "chapter": 1,
+    "verse": 16,
+    "words": [
+      "GAL 1:16!1",
+      "GAL 1:16!5",
+      "GAL 1:16!6"
+    ],
+    "title": "apokalupsai ton huion autou en emoi: \"in me\" or \"to me\"?",
+    "category": "case",
+    "summary": "ἐν ἐμοί can be sphere (\"in me\": an inner revelation) or an instrument/dative of reception (\"to me\" / \"through me\", a revelation to others through Paul). A Hebraism-like ἐν for the dative is also suggested.",
+    "readings": [
+      {
+        "label": "\"In me\": an inward revelation",
+        "rendering": "to reveal his Son within me",
+        "grammar": "ἐν + dative of sphere; the revelation is interior, a transformation",
+        "modern": "KJV, NASB, NIV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on Galatians 1:16 (catena excerpt)",
+            "ref": "Commentary on Galatians, ch. 1",
+            "year": 395,
+            "legacy": 41548,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "But why does he say, to reveal His Son in me, and not to me? it is to signify, that he had not only been instructed in the faith by words, but that he was richly endowed with the Spirit—that the revelation had enlightened his whole soul, and that he had Christ speaking within him."
+          },
+          {
+            "father": "Jerome",
+            "work": "Commentary on Galatians 1:16 (catena excerpt)",
+            "ref": "Commentary on Galatians I.1.16",
+            "year": 387,
+            "legacy": 41546,
+            "url": "http://orthodoxwiki.org/Jerome",
+            "quote": "If something is revealed to someone, that may be revealed to him which was not in him before; but if it is revealed in him, that is revealed which was previously in him and had been subsequently revealed"
+          }
+        ]
+      },
+      {
+        "label": "\"To me\": a revelation made to Paul",
+        "rendering": "to reveal his Son to me",
+        "grammar": "ἐν for the dative of indirect object (cf. 1 Cor 14:11); the revelation is a vision or disclosure",
+        "modern": "RSV, NRSV, ESV",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this.",
+    "sources": [
+      "NET Bible note on Gal 1:16",
+      "Longenecker, WBC Galatians, on 1:16",
+      "Betz, Hermeneia Galatians, on 1:16"
+    ]
+  },
+  {
+    "id": "gal-1-19-ei-me-iakobon",
+    "book": "Galatians",
+    "chapter": 1,
+    "verse": 19,
+    "words": [
+      "GAL 1:19!1",
+      "GAL 1:19!3",
+      "GAL 1:19!4",
+      "GAL 1:19!5",
+      "GAL 1:19!7",
+      "GAL 1:19!8",
+      "GAL 1:19!9"
+    ],
+    "title": "ei me Iakobon: was James an apostle?",
+    "category": "construction",
+    "summary": "ἕτερον τῶν ἀποστόλων οὐκ εἶδον εἰ μὴ Ἰάκωβον: εἰ μὴ may limit the whole statement (\"I saw no other apostle, except James [who was one]\") or only the verb (\"I saw no other apostle; I saw only James, who was not one\"). Both are grammatical.",
+    "readings": [
+      {
+        "label": "James counts as an apostle",
+        "rendering": "I saw no other of the apostles, except James the Lord's brother (also an apostle)",
+        "grammar": "εἰ μὴ introduces an exception to the whole clause: James is within the class τῶν ἀποστόλων",
+        "modern": "NIV, RSV, NRSV, ESV, NET, most commentators",
+        "fathers": [
+          {
+            "father": "Jerome",
+            "work": "Against Helvidius (The Perpetual Virginity of Mary)",
+            "ref": "§14",
+            "year": 383,
+            "page": "3007",
+            "url": "https://www.newadvent.org/fathers/3007.htm",
+            "quote": "Notice, moreover, that the Lord's brother is an apostle, since Paul says, Then after three years I went up to Jerusalem to visit Cephas, and tarried with him fifteen days. But other of the Apostles saw I none, save James the Lord's brother."
+          },
+          {
+            "father": "Jerome",
+            "work": "Commentary on Galatians 1:19 (catena excerpt)",
+            "ref": "Commentary on Galatians I.1.19",
+            "year": 387,
+            "legacy": 41568,
+            "url": "http://orthodoxwiki.org/Jerome",
+            "quote": "That some were called apostles apart from the twelve is a consequence of the fact that all who had seen the Lord and subsequently preached him were called apostles."
+          }
+        ]
+      },
+      {
+        "label": "James is not counted as an apostle",
+        "rendering": "I saw no other apostle; I saw James the Lord's brother (not an apostle) only",
+        "grammar": "εἰ μὴ limits the verb (\"I saw no apostle other than Peter, except James, who is distinguished from them\")",
+        "modern": "Rare; noted as grammatically possible",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree attaches εἰ μὴ Ἰάκωβον to the clause as a whole; it does not say whether Ἰάκωβον falls inside τῶν ἀποστόλων.",
+    "sources": [
+      "NET Bible note on Gal 1:19",
+      "Longenecker, WBC Galatians, on 1:19",
+      "Wallace, GGBB on εἰ μή"
+    ]
+  },
+  {
+    "id": "gal-2-14-where-the-speech-ends",
+    "book": "Galatians",
+    "chapter": 2,
+    "verse": 14,
+    "words": [
+      "GAL 2:14!12",
+      "GAL 2:14!13",
+      "GAL 2:14!14",
+      "GAL 2:14!17"
+    ],
+    "title": "Where does Paul's speech to Peter end?",
+    "category": "punctuation",
+    "summary": "εἶπον τῷ Κηφᾷ ἔμπροσθεν πάντων: Εἰ σὺ ... introduces Paul's words to Peter, but the Greek has no quotation marks. They may end at v. 14 or continue through v. 21, which changes whether 2:15-21 is addressed to Peter or to the Galatians. Translations differ on where the quotation closes.",
+    "readings": [
+      {
+        "label": "The quotation ends at v. 14",
+        "rendering": "\"If you, a Jew, live like a Gentile ...\" ends the speech; vv. 15-21 are Paul's comment to the Galatians",
+        "grammar": "the direct speech is limited to v. 14; vv. 15-21 are Paul's direct instruction",
+        "fathers": []
+      },
+      {
+        "label": "The speech continues through v. 21",
+        "rendering": "Paul's words to Peter run through 2:21, and the Galatians overhear them",
+        "grammar": "the quotation continues to v. 21; the Galatians overhear Paul's words to Peter",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this: the tree stops the clause at v. 14.",
+    "sources": [
+      "NET Bible note on Gal 2:14",
+      "Longenecker, WBC Galatians, on 2:14-21",
+      "Betz, Hermeneia Galatians, on 2:15-21"
+    ]
+  },
+  {
+    "id": "gal-2-16-pistis-iesou-christou",
+    "book": "Galatians",
+    "chapter": 2,
+    "verse": 16,
+    "words": [
+      "GAL 2:16!12",
+      "GAL 2:16!13",
+      "GAL 2:16!14",
+      "GAL 2:16!15",
+      "GAL 2:16!24",
+      "GAL 2:16!25",
+      "GAL 2:16!26"
+    ],
+    "title": "dia pisteos Iesou Christou: \"faith in Christ\" or \"the faith(fulness) of Christ\"?",
+    "category": "case",
+    "summary": "The genitive Ἰησοῦ Χριστοῦ after πίστις may be objective (\"faith in Jesus Christ\") or subjective (\"the faithfulness of Jesus Christ\"). The same phrase recurs in Rom 3:22, Gal 2:20, 3:22, Phil 3:9.",
+    "readings": [
+      {
+        "label": "Objective genitive: faith in Christ",
+        "rendering": "a person is justified through faith in Jesus Christ",
+        "grammar": "Χριστοῦ as object of πίστις; confirmed by εἰς Χριστὸν ... ἐπιστεύσαμεν in the same verse",
+        "traditions": {
+          "catholic": "Faith in Christ (Augustine); the standard reading",
+          "protestant": "Faith in Christ (Luther, Calvin) and the traditional reading"
+        },
+        "modern": "KJV, NIV, NASB, ESV (text)",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Spirit and the Letter",
+            "ref": "ch. 15 (on Rom 3:21-22)",
+            "year": 412,
+            "page": "1502",
+            "url": "https://www.newadvent.org/fathers/1502.htm",
+            "quote": "But righteousness of God by faith of Jesus Christ, that is by the faith wherewith one believes in Christ for just as there is not meant the faith with which Christ Himself believes, so also there is not meant the righteousness whereby God is Himself righteous. Both no doubt are ours, but yet they are called God's, and Christ's, because it is by their bounty that these gifts are bestowed upon us."
+          }
+        ]
+      },
+      {
+        "label": "Subjective genitive: the faithfulness of Christ",
+        "rendering": "a person is justified through the faithfulness of Jesus Christ",
+        "grammar": "Χριστοῦ as subject: Christ's own faithful obedience; the two later ἐκ πίστεως Χριστοῦ phrases are parallel",
+        "modern": "NET text, ESV/NRSV/NIV margins, Hays, Wright, Campbell and others",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this: the genitive after πίστις is not marked as subjective or objective.",
+    "sources": [
+      "NET Bible note on Gal 2:16",
+      "Wallace, GGBB 114-6",
+      "Longenecker, WBC Galatians, on 2:16"
+    ]
+  },
+  {
+    "id": "gal-2-20-pistei-tei-tou-huiou-tou-theou",
+    "book": "Galatians",
+    "chapter": 2,
+    "verse": 20,
+    "words": [
+      "GAL 2:20!16",
+      "GAL 2:20!17",
+      "GAL 2:20!19",
+      "GAL 2:20!20",
+      "GAL 2:20!21",
+      "GAL 2:20!22",
+      "GAL 2:20!23"
+    ],
+    "title": "en pistei te tou huiou tou theou: \"faith in\" or \"faith of\" the Son of God?",
+    "category": "case",
+    "summary": "The phrase πίστει τῇ τοῦ υἱοῦ τοῦ θεοῦ can mean \"by faith in the Son of God\" (objective) or \"by the faith(fulness) of the Son of God\" (subjective). It is the same question as 2:16 but with an article.",
+    "readings": [
+      {
+        "label": "Objective: faith in the Son of God",
+        "rendering": "I live by faith in the Son of God, who loved me and gave himself for me",
+        "grammar": "τοῦ υἱοῦ as object of the article-modified πίστει",
+        "modern": "KJV, NIV, NASB, ESV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on Galatians 2:20 (catena excerpt)",
+            "ref": "Commentary on Galatians, ch. 2",
+            "year": 395,
+            "legacy": 41739,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "And that life which I now live in the flesh, I live in faith, the faith which is in the Son of God. The foregoing, says he, relates to our spiritual life, but this life of sense too, if considered, will be found owing to my faith in Christ."
+          }
+        ]
+      },
+      {
+        "label": "Subjective: the faithfulness of the Son of God",
+        "rendering": "I live by the faithfulness of the Son of God, who loved me and gave himself for me",
+        "grammar": "τοῦ υἱοῦ as subject: \"who loved me and gave himself\" follows as the content of that faithfulness",
+        "modern": "NET margin, NRSV margin, Hays, Wright and others",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this.",
+    "sources": [
+      "NET Bible note on Gal 2:20",
+      "Longenecker, WBC Galatians, on 2:20",
+      "Wallace, GGBB 114-6"
+    ]
+  },
+  {
+    "id": "gal-3-2-akoes-pisteos",
+    "book": "Galatians",
+    "chapter": 3,
+    "verse": 2,
+    "words": [
+      "GAL 3:2!13",
+      "GAL 3:2!14",
+      "GAL 3:2!15",
+      "GAL 3:2!16"
+    ],
+    "title": "ex akoes pisteos: \"hearing with faith\" or \"the message that is believed\"?",
+    "category": "case",
+    "summary": "ἀκοῆς πίστεως has two nouns joined by a genitive. ἀκοή can be the act of hearing or what is heard (a report), and πίστεως may be a genitive of apposition/content (\"the message of faith\"), means (\"hearing accompanied by faith\"), or source.",
+    "readings": [
+      {
+        "label": "Hearing that is accompanied by faith",
+        "rendering": "by hearing with faith",
+        "grammar": "πίστεως as a qualitative genitive: faith-filled hearing (the act of hearing)",
+        "modern": "KJV, RSV, NASB, ESV",
+        "fathers": []
+      },
+      {
+        "label": "The message that calls for faith",
+        "rendering": "by the message of faith (the gospel that is believed)",
+        "grammar": "ἀκοή = what is heard (cf. Rom 10:16-17); πίστεως = the content: the gospel",
+        "modern": "NIV (\"believing what you heard\"), Hays",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this.",
+    "sources": [
+      "NET Bible note on Gal 3:2",
+      "Longenecker, WBC Galatians, on 3:2",
+      "Hays, The Faith of Jesus Christ (2nd ed.)"
+    ]
+  },
+  {
+    "id": "gal-3-11-o-dikaios-ek-pisteos",
+    "book": "Galatians",
+    "chapter": 3,
+    "verse": 11,
+    "words": [
+      "GAL 3:11!11",
+      "GAL 3:11!12",
+      "GAL 3:11!13",
+      "GAL 3:11!14",
+      "GAL 3:11!15",
+      "GAL 3:11!16"
+    ],
+    "title": "Hab 2:4 in Gal 3:11: \"the righteous by faith shall live\", or \"the one righteous by faith shall live\"?",
+    "category": "attachment",
+    "summary": "ἐκ πίστεως can attach to ὁ δίκαιος (\"the person who is righteous by faith will live\") or to ζήσεται (\"the righteous will live by faith\"). The attachment decides whether faith is the basis of righteousness or the way of life of those already righteous. The same issue is in Rom 1:17.",
+    "readings": [
+      {
+        "label": "\"The righteous will live by faith\"",
+        "rendering": "the righteous one will live by faith",
+        "grammar": "ἐκ πίστεως modifies ζήσεται; faith is the way the righteous live",
+        "modern": "KJV, NIV, NASB, ESV, NRSV",
+        "fathers": []
+      },
+      {
+        "label": "\"The one who is righteous by faith will live\"",
+        "rendering": "the one who is righteous by faith shall live",
+        "grammar": "ἐκ πίστεως modifies ὁ δίκαιος; justification by faith leads to life",
+        "modern": "RSV; Cranfield and others (on Rom 1:17)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this: ἐκ πίστεως is placed between ὁ δίκαιος and ζήσεται with no structure.",
+    "sources": [
+      "NET Bible note on Gal 3:11",
+      "Longenecker, WBC Galatians, on 3:11",
+      "Wallace, GGBB on ἐκ πίστεως"
+    ]
+  },
+  {
+    "id": "gal-3-16-to-spermati-autou",
+    "book": "Galatians",
+    "chapter": 3,
+    "verse": 16,
+    "words": [
+      "GAL 3:16!9",
+      "GAL 3:16!15",
+      "GAL 3:16!22",
+      "GAL 3:16!24",
+      "GAL 3:16!25",
+      "GAL 3:16!29"
+    ],
+    "title": "to spermati autou: one seed (Christ), or the seed as a collective?",
+    "category": "referent",
+    "summary": "Paul argues from the singular σπέρματι (\"seed\") that the promise refers to \"one\", Christ (3:16), yet 3:29 says \"if you belong to Christ you are Abraham's seed\". Σπέρμα can be singular of an individual or a collective singular (\"offspring\"). The referent decides whether the promise is to Christ alone or to Christ and those united to him.",
+    "readings": [
+      {
+        "label": "The singular seed is Christ himself",
+        "rendering": "and to your seed, which is Christ",
+        "grammar": "σπέρμα as an individual referent; the singular is pressed against σπέρματα",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on Galatians 3:16 (catena excerpt)",
+            "ref": "Commentary on Galatians, ch. 3",
+            "year": 395,
+            "legacy": 41839,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "It was promised Abraham that by his seed the heathen should be blessed; and his seed according to the flesh is Christ;"
+          }
+        ]
+      },
+      {
+        "label": "The seed is Christ together with his body (collective)",
+        "rendering": "and to your seed (Christ and those who are in him)",
+        "grammar": "σπέρμα as a collective singular; \"Christ\" in 3:16 = Christ as head with the body (cf. 3:29, 1 Cor 12:12)",
+        "modern": "Wright and others",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Tractates on the Gospel of John",
+            "ref": "Tractate 108",
+            "year": 417,
+            "page": "1701108",
+            "url": "https://www.newadvent.org/fathers/1701108.htm",
+            "quote": "the head and body are one Christ, as the apostle teaches when he says of the seed of Abraham, And if you be Christ's, then are you Abraham's seed, after having said before, He says not, And to seeds, as in many, but as in one, And to your seed, which is Christ."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this: the tree does not mark the referent of σπέρματι.",
+    "sources": [
+      "NET Bible note on Gal 3:16",
+      "Longenecker, WBC Galatians, on 3:16",
+      "Wright, Climax of the Covenant, ch. 8"
+    ]
+  },
+  {
+    "id": "gal-3-20-o-mesites-henos",
+    "book": "Galatians",
+    "chapter": 3,
+    "verse": 20,
+    "words": [
+      "GAL 3:20!1",
+      "GAL 3:20!3",
+      "GAL 3:20!4",
+      "GAL 3:20!5",
+      "GAL 3:20!6",
+      "GAL 3:20!10"
+    ],
+    "title": "ho mesites henos ouk estin: whose mediator?",
+    "category": "case",
+    "summary": "\"A mediator is not of one, but God is one\" has a bare genitive henos (\"of one\") and an unstated identity for \"the mediator\". The verse has been given hundreds of interpretations; the main fork is whether the mediator is Moses/the angelic mediation of the law or Christ.",
+    "readings": [
+      {
+        "label": "The mediator is Christ, between God and men",
+        "rendering": "Christ, the mediator of God and men, as the Giver of the Law",
+        "grammar": "ὁ μεσίτης = Christ (cf. 1 Tim 2:5); ἑνός = of one party, so the Law was given by the mediator",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on Galatians 3:20 (catena excerpt)",
+            "ref": "Commentary on Galatians, ch. 3",
+            "year": 395,
+            "legacy": 41859,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "Now a mediator, says he, is between two parties; of whom then is Christ the Mediator? Plainly of God and of men."
+          },
+          {
+            "father": "Ambrosiaster",
+            "work": "Commentary on Galatians 3:20 (catena excerpt)",
+            "ref": "on Gal 3:20",
+            "year": 380,
+            "legacy": 41857,
+            "url": "https://en.wikipedia.org/wiki/Ambrosiaster",
+            "quote": "Without doubt, a mediator, that is, arbiter, is not of one but two. For when two peoples were contending against one another, always at odds and enemies because of the disparity in their doctrines, the Savior came as their Mediator,"
+          }
+        ]
+      },
+      {
+        "label": "The mediator is Moses (the Law was mediated, the promise was direct)",
+        "rendering": "the Law came through a go-between (Moses/angels); the promise came from God alone",
+        "grammar": "ὁ μεσίτης = Moses (v. 19); ἑνός = \"of one party\"; God, being one, gave the promise directly",
+        "modern": "Most modern commentators",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this.",
+    "sources": [
+      "NET Bible note on Gal 3:20",
+      "Longenecker, WBC Galatians, on 3:20",
+      "Lightfoot, Galatians, excursus on 3:20"
+    ]
+  },
+  {
+    "id": "gal-3-22-pistis-iesou-christou-3",
+    "book": "Galatians",
+    "chapter": 3,
+    "verse": 22,
+    "words": [
+      "GAL 3:22!12",
+      "GAL 3:22!13",
+      "GAL 3:22!14",
+      "GAL 3:22!15",
+      "GAL 3:22!18"
+    ],
+    "title": "ek pisteos Iesou Christou: \"by faith in\" or \"by the faithfulness of\" Jesus Christ?",
+    "category": "case",
+    "summary": "The same genitive question as 2:16, where the dative τοῖς πιστεύουσιν (\"to those who believe\") follows. That redundancy (faith ... to those who believe) is argued both for the subjective reading (the believer's faith is mentioned separately) and for the objective reading (it just repeats it).",
+    "readings": [
+      {
+        "label": "Objective: faith in Jesus Christ",
+        "rendering": "the promise might be given by faith in Jesus Christ to those who believe",
+        "grammar": "Χριστοῦ as object; τοῖς πιστεύουσιν names the recipients",
+        "modern": "KJV, NIV, NASB, ESV",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Spirit and the Letter",
+            "ref": "ch. 15 (on Rom 3:21-22)",
+            "year": 412,
+            "page": "1502",
+            "url": "https://www.newadvent.org/fathers/1502.htm",
+            "quote": "But righteousness of God by faith of Jesus Christ, that is by the faith wherewith one believes in Christ for just as there is not meant the faith with which Christ Himself believes, so also there is not meant the righteousness whereby God is Himself righteous. Both no doubt are ours, but yet they are called God's, and Christ's, because it is by their bounty that these gifts are bestowed upon us."
+          }
+        ]
+      },
+      {
+        "label": "Subjective: the faithfulness of Jesus Christ",
+        "rendering": "the promise might be given through the faithfulness of Jesus Christ to those who believe",
+        "grammar": "Χριστοῦ as subject; τοῖς πιστεύουσιν distinguishes the believers' faith from Christ's",
+        "modern": "NET text, NRSV margin, Hays, Wright and others",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this.",
+    "sources": [
+      "NET Bible note on Gal 3:22",
+      "Longenecker, WBC Galatians, on 3:22",
+      "Hays, The Faith of Jesus Christ (2nd ed.)"
+    ]
+  },
+  {
+    "id": "gal-3-24-eis-christon",
+    "book": "Galatians",
+    "chapter": 3,
+    "verse": 24,
+    "words": [
+      "GAL 3:24!1",
+      "GAL 3:24!2",
+      "GAL 3:24!3",
+      "GAL 3:24!4",
+      "GAL 3:24!7",
+      "GAL 3:24!8"
+    ],
+    "title": "paidagogos eis Christon: \"until Christ\" or \"to lead us to Christ\"?",
+    "category": "construction",
+    "summary": "εἰς Χριστόν can be temporal (\"until Christ came\", the law as a guardian for a time) or purposive/directional (\"to Christ\", the law as a guide that leads us to him). The difference changes the law's role: a stage that has ended or a means to bring people to Christ.",
+    "readings": [
+      {
+        "label": "Directional: the law leads us to Christ",
+        "rendering": "the law was our custodian to bring us to Christ",
+        "grammar": "εἰς of direction/purpose; the paidagogos escorts the child to the teacher",
+        "modern": "KJV, NIV, NASB",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on Galatians",
+            "ref": "ch. 3",
+            "year": 395,
+            "page": "23103",
+            "url": "https://www.newadvent.org/fathers/23103.htm",
+            "quote": "Now the Tutor is not opposed to the Preceptor, but cooperates with him, ridding the youth from all vice, and having all leisure to fit him for receiving instructions from his Preceptor."
+          }
+        ]
+      },
+      {
+        "label": "Temporal: the law was in charge until Christ",
+        "rendering": "the law was our custodian until Christ came",
+        "grammar": "εἰς of time (\"until\"); the paidagogos supervises during minority",
+        "modern": "RSV, NRSV, ESV, NET",
+        "fathers": [
+          {
+            "father": "Jerome",
+            "work": "Commentary on Galatians 3:24 (catena excerpt)",
+            "ref": "Commentary on Galatians II.3.24",
+            "year": 387,
+            "legacy": 41880,
+            "url": "http://orthodoxwiki.org/Jerome",
+            "quote": "The custodian guards another person's son and will depart from him when the lawful time of inheritance arrives."
+          }
+        ]
+      }
+    ],
+    "macula_follows": 1,
+    "macula_evidence": "MACULA glosses εἰς Χριστόν as \"until Christ\" on a clause with παιδαγωγὸς ... γέγονεν, which is the temporal reading; the tree itself does not parse a purpose clause there.",
+    "sources": [
+      "NET Bible note on Gal 3:24",
+      "Longenecker, WBC Galatians, on 3:24",
+      "Betz, Hermeneia Galatians, on 3:24"
+    ]
+  },
+  {
+    "id": "gal-5-1-te-eleutheria",
+    "book": "Galatians",
+    "chapter": 5,
+    "verse": 1,
+    "words": [
+      "GAL 5:1!1",
+      "GAL 5:1!2",
+      "GAL 5:1!3",
+      "GAL 5:1!4",
+      "GAL 5:1!5"
+    ],
+    "title": "te eleutheria hemas Christos eleutherosen: what is the dative?",
+    "category": "case",
+    "summary": "The article-led dative τῇ ἐλευθερίᾳ before the verb can be a dative of purpose/advantage (\"for freedom Christ freed us\"), manner or means (\"with freedom\"), or a locative (\"in freedom\"). A textual variant (\"stand firm in the freedom with which Christ freed us\") complicates the sentence.",
+    "readings": [
+      {
+        "label": "Dative of purpose: \"for freedom\"",
+        "rendering": "for freedom Christ has set us free",
+        "grammar": "τῇ ἐλευθερίᾳ as dative of advantage/purpose",
+        "modern": "RSV, NRSV, ESV, NIV",
+        "fathers": []
+      },
+      {
+        "label": "Dative of manner/means: \"with freedom\"",
+        "rendering": "with freedom Christ has set us free; stand firm ...",
+        "grammar": "τῇ ἐλευθερίᾳ as dative of means/manner; compare the relative construction in the variant reading (ᾗ)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this.",
+    "sources": [
+      "NET Bible note on Gal 5:1",
+      "Longenecker, WBC Galatians, on 5:1",
+      "Betz, Hermeneia Galatians, on 5:1"
+    ]
+  },
+  {
+    "id": "gal-5-6-pistis-di-agapes-energoumene",
+    "book": "Galatians",
+    "chapter": 5,
+    "verse": 6,
+    "words": [
+      "GAL 5:6!12",
+      "GAL 5:6!13",
+      "GAL 5:6!14",
+      "GAL 5:6!15"
+    ],
+    "title": "pistis di' agapes energoumene: active or passive?",
+    "category": "construction",
+    "summary": "ἐνεργουμένη is middle or passive in form. It can be middle (\"faith working through love\", faith itself active in love) or passive (\"faith made effective through love\", love being the energizing force). The choice bears on the Catholic and Protestant understanding of faith and works.",
+    "readings": [
+      {
+        "label": "Middle/active: \"faith working through love\"",
+        "rendering": "faith that expresses itself in love",
+        "grammar": "ἐνεργέομαι as a middle (\"be active\"); faith is the subject who works",
+        "traditions": {
+          "catholic": "Faith formed by charity (fides caritate formata), cited from Augustine through Aquinas",
+          "protestant": "Faith that is shown or evidenced through love (Luther, Calvin)"
+        },
+        "modern": "RSV, NIV, ESV, NET",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "On the Spirit and the Letter",
+            "ref": "ch. 56",
+            "year": 412,
+            "page": "1502",
+            "url": "https://www.newadvent.org/fathers/1502.htm",
+            "quote": "This, in short, is the faith which works not by fear, but by love;"
+          }
+        ]
+      },
+      {
+        "label": "Passive: \"faith made effective by love\"",
+        "rendering": "faith that is made effective by love",
+        "grammar": "ἐνεργουμένη passive: love is the instrument through which faith is empowered",
+        "modern": "Discussed as a possibility in standard commentaries",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this: ἐνεργουμένη is morphologically ambiguous between middle and passive.",
+    "sources": [
+      "NET Bible note on Gal 5:6",
+      "Longenecker, WBC Galatians, on 5:6",
+      "Wallace, GGBB 420-1 (middle voice)"
+    ]
+  },
+  {
+    "id": "gal-5-17-hina-me-ha-ean-thelete",
+    "book": "Galatians",
+    "chapter": 5,
+    "verse": 17,
+    "words": [
+      "GAL 5:17!14",
+      "GAL 5:17!16",
+      "GAL 5:17!17",
+      "GAL 5:17!18",
+      "GAL 5:17!19",
+      "GAL 5:17!21",
+      "GAL 5:17!22",
+      "GAL 5:17!24"
+    ],
+    "title": "hina me ha ean thelete tauta poiete: purpose or result?",
+    "category": "construction",
+    "summary": "ἵνα μή ... can be purposive (\"the Spirit and the flesh are opposed in order that you may not do what you want\") or consecutive/result (\"so that you cannot do what you want\"), and \"what you want\" may be good or evil. The reading decides whether the flesh blocks the good or the Spirit blocks the flesh.",
+    "readings": [
+      {
+        "label": "Purpose or result: the flesh prevents the good you would do",
+        "rendering": "these oppose each other so that you cannot do what you want (to do the good)",
+        "grammar": "ἵνα + subjunctive with consecutive force; ἃ ἐὰν θέλητε refers to good desires",
+        "fathers": []
+      },
+      {
+        "label": "The Spirit prevents the evil you would do",
+        "rendering": "these oppose each other so that you do not do what you want (the desires of the flesh)",
+        "grammar": "ἵνα + subjunctive as purpose; ἃ ἐὰν θέλητε refers to the flesh's desires",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "MACULA gives a flat clause outline; it does not decide this.",
+    "sources": [
+      "NET Bible note on Gal 5:17",
+      "Longenecker, WBC Galatians, on 5:17",
+      "Wallace, GGBB on ἵνα clauses"
+    ]
+  },
+  {
+    "id": "gal-6-16-kai-epi-ton-israel-tou-theou",
+    "book": "Galatians",
+    "chapter": 6,
+    "verse": 16,
+    "words": [
+      "GAL 6:16!10",
+      "GAL 6:16!11",
+      "GAL 6:16!12",
+      "GAL 6:16!13",
+      "GAL 6:16!14",
+      "GAL 6:16!15",
+      "GAL 6:16!16",
+      "GAL 6:16!17"
+    ],
+    "title": "kai epi ton Israel tou theou: who is \"the Israel of God\"?",
+    "category": "construction",
+    "summary": "In εἰρήνη ἐπ᾽ αὐτοὺς καὶ ἔλεος καὶ ἐπὶ τὸν Ἰσραὴλ τοῦ θεοῦ, the second καί can add a separate group (\"and also upon the Israel of God\", Jewish Christians or believing Israel) or be epexegetic (\"even upon the Israel of God\", those who follow the rule, the church). The repeated ἐπί also bears on this.",
+    "readings": [
+      {
+        "label": "Additive: a second group, \"and upon the Israel of God\"",
+        "rendering": "peace and mercy upon them, and upon the Israel of God",
+        "grammar": "καί additive: αὐτούς (those who follow this rule) and ὁ Ἰσραὴλ τοῦ θεοῦ (Israel) are different sets",
+        "modern": "NET, ESV (text), many modern commentators (Burton, Longenecker, Mussner)",
+        "fathers": []
+      },
+      {
+        "label": "Epexegetic: \"even upon the Israel of God\"",
+        "rendering": "peace and mercy upon them, namely the Israel of God",
+        "grammar": "καί explanatory: Ἰσραὴλ τοῦ θεοῦ = the church of Jews and Gentiles",
+        "traditions": {
+          "catholic": "Church as the new or true Israel (Augustine)",
+          "protestant": "Church as spiritual Israel (Calvin) in covenant theology"
+        },
+        "modern": "RSV, NIV, NRSV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Commentary on Galatians 6:16 (catena excerpt)",
+            "ref": "Commentary on Galatians, ch. 6",
+            "year": 395,
+            "legacy": 42376,
+            "url": "http://orthodoxwiki.org/Chrysostom",
+            "quote": "Those who pursue this new creation will enjoy peace and goodness, and truly deserve to be called by the name of the true Israel."
+          },
+          {
+            "father": "Augustine of Hippo",
+            "work": "Commentary on Galatians 6:16 (catena excerpt)",
+            "ref": "Commentary on the Letter to the Galatians 6.16",
+            "year": 394,
+            "legacy": 42374,
+            "url": "http://orthodoxwiki.org/Augustine_of_Hippo",
+            "quote": "Paul means those who are truly prepared for the vision of God."
+          }
+        ]
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree reads καὶ as a plain coordinating conjunction linking ἐπ᾽ αὐτούς and ἐπὶ τὸν Ἰσραὴλ τοῦ θεοῦ, which is the additive coordination (an epexegetic καί would need to be marked as apposition).",
+    "sources": [
+      "NET Bible note on Gal 6:16",
+      "Longenecker, WBC Galatians, on 6:16",
+      "Wallace, GGBB on epexegetic καί"
+    ]
+  }
+]

@@ -1,0 +1,2152 @@
+[
+  {
+    "id": "eph-1-4-en-agape",
+    "book": "Ephesians",
+    "chapter": 1,
+    "verse": 4,
+    "words": [
+      "EPH 1:4!9",
+      "EPH 1:4!11",
+      "EPH 1:4!13",
+      "EPH 1:4!16",
+      "EPH 1:4!17"
+    ],
+    "title": "en agapē: \"holy in love\" or \"predestined in love\"?",
+    "category": "attachment",
+    "summary": "Greek has no punctuation, so the phrase \"in love\" can close v. 4 (holy and blameless before him in love) or open v. 5 (in love he predestined us). Translations and the Vulgate divide on where the sentence break falls.",
+    "readings": [
+      {
+        "label": "With \"holy and blameless before him\"",
+        "rendering": "that we should be holy and blameless before him in love. He predestined us...",
+        "grammar": "ἐν ἀγάπῃ closes the εἶναι ἡμᾶς ἁγίους καὶ ἀμώμους κατενώπιον αὐτοῦ clause; προορίσας then begins the next phrase. \"Love\" is then the believers' love (or the sphere of their holiness).",
+        "modern": "KJV, NRSV, Vulgate punctuation",
+        "fathers": [
+          {
+            "father": "Ambrosiaster",
+            "work": "Commentary on Ephesians",
+            "ref": "on Eph 1:4",
+            "year": 370,
+            "legacy": 42415,
+            "url": "https://catenabible.com/eph/1/4",
+            "quote": "These are the ones whom he elected before the world in Christ, so that they might be blameless before God through love"
+          }
+        ]
+      },
+      {
+        "label": "With \"predestined us\"",
+        "rendering": "In love he predestined us to adoption as sons...",
+        "grammar": "ἐν ἀγάπῃ is placed before the participle προορίσας: God's love is the manner or motive of predestination.",
+        "modern": "NIV, ESV, NASB, NAB",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Ephesians",
+            "ref": "Homily 1 on Eph 1:4-5",
+            "year": 400,
+            "page": "230101",
+            "url": "https://www.newadvent.org/fathers/230101.htm",
+            "quote": "In love, says he, having predestinated us. Because this comes not of any pains, nor of any good works of ours, but of love;"
+          }
+        ]
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree places ἐν ἀγάπῃ inside the εἶναι... κατενώπιον αὐτοῦ phrase, with προορίσας ἡμᾶς as a separate adverbial clause: it encodes the \"holy in love\" attachment.",
+    "sources": [
+      "NET Bible note on Eph 1:4",
+      "Hoehner, Ephesians 178-81",
+      "Lincoln, Ephesians (WBC) 23-25"
+    ]
+  },
+  {
+    "id": "eph-1-18-inheritance-in-saints",
+    "book": "Ephesians",
+    "chapter": 1,
+    "verse": 18,
+    "words": [
+      "EPH 1:18!24",
+      "EPH 1:18!25",
+      "EPH 1:18!26",
+      "EPH 1:18!27",
+      "EPH 1:18!28"
+    ],
+    "title": "\"His inheritance in the saints\": whose inheritance?",
+    "category": "case",
+    "summary": "The genitive \"his inheritance\" with \"in the saints\" can describe the inheritance God possesses in his people (subjective) or the inheritance he gives, whose riches are found among the saints (the believers' future share).",
+    "readings": [
+      {
+        "label": "God's inheritance in the saints",
+        "rendering": "the riches of the glory of God's own inheritance, which is the saints",
+        "grammar": "αὐτοῦ is a possessive/subjective genitive: God is the heir; ἐν τοῖς ἁγίοις locates his possession among the holy ones (cf. Deut 32:9).",
+        "modern": "Held by many modern commentators (e.g. Lincoln, Best)",
+        "fathers": []
+      },
+      {
+        "label": "The inheritance God gives to the saints",
+        "rendering": "the riches of the glory of the inheritance he gives, in the saints",
+        "grammar": "αὐτοῦ is a genitive of source: the inheritance comes from God and is the believers' hope; ἐν τοῖς ἁγίοις is read as \"among/for the saints\".",
+        "fathers": [
+          {
+            "father": "Tertullian",
+            "work": "Against Marcion",
+            "ref": "on Eph 1:18",
+            "year": 207,
+            "legacy": 42508,
+            "url": "https://catenabible.com/eph/1/18",
+            "quote": "He likewise will grant \"the enlightenment of the eyes of the understanding\". In His gift, too, are \"the riches (of the glory) of His inheritance in the saints\""
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree attaches αὐτοῦ to κληρονομίας and ἐν τοῖς ἁγίοις to the same noun phrase but does not say whose inheritance or whether ἐν is locative.",
+    "sources": [
+      "NET Bible note on Eph 1:18",
+      "Hoehner, Ephesians 267-70"
+    ]
+  },
+  {
+    "id": "eph-1-23-pleroumenou",
+    "book": "Ephesians",
+    "chapter": 1,
+    "verse": 23,
+    "words": [
+      "EPH 1:23!7",
+      "EPH 1:23!8",
+      "EPH 1:23!13"
+    ],
+    "title": "plērōma and plēroumenou: who fills whom?",
+    "category": "construction",
+    "summary": "πληρουμένου can be passive (Christ is being filled) or middle (Christ fills for himself everything everywhere); πλήρωμα itself can mean \"that which fills up/completes\" or \"that which is filled\". The church is \"the fullness\" of Christ in one of these senses.",
+    "readings": [
+      {
+        "label": "Passive: the church completes Christ",
+        "rendering": "the fullness of him who is filled all in all",
+        "grammar": "πληρουμένου passive; πλήρωμα in the sense of \"complement\": Christ the head is filled up by his body.",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Ephesians",
+            "ref": "Homily 3 on Eph 1:22-23",
+            "year": 400,
+            "page": "230103",
+            "url": "https://www.newadvent.org/fathers/230103.htm",
+            "quote": "It is by all then that His body is filled up. Then is the head filled up, then is the body rendered perfect, when we are all knit together and united."
+          }
+        ]
+      },
+      {
+        "label": "Middle: Christ fills everything",
+        "rendering": "the fullness of him who fills all in all",
+        "grammar": "πληρουμένου middle voice with active force (as in Eph 4:10, \"fills all things\"); the church is the sphere in which Christ's fullness is present.",
+        "modern": "NIV, ESV, NRSV",
+        "fathers": [
+          {
+            "father": "Gaius Marius Victorinus",
+            "work": "Commentary on Ephesians",
+            "ref": "on Eph 1:23",
+            "year": 360,
+            "legacy": 42536,
+            "url": "https://catenabible.com/eph/1/23",
+            "quote": "Having recovered all things again through the mystery of salvation and saved the full number of souls, Christ is filling all in all."
+          }
+        ]
+      }
+    ],
+    "macula_follows": 1,
+    "macula_evidence": "The tree glosses πληρουμένου as \"fills\" (middle/active sense) in a relative clause modifying the Christ-referent.",
+    "sources": [
+      "NET Bible note on Eph 1:23",
+      "Wallace, GGBB 419-20",
+      "Hoehner, Ephesians 294-9"
+    ]
+  },
+  {
+    "id": "eph-2-2-tou-pneumatos",
+    "book": "Ephesians",
+    "chapter": 2,
+    "verse": 2,
+    "words": [
+      "EPH 2:2!13",
+      "EPH 2:2!14",
+      "EPH 2:2!15",
+      "EPH 2:2!17",
+      "EPH 2:2!19"
+    ],
+    "title": "\"The ruler of the power of the air, of the spirit\": what is \"the spirit\"?",
+    "category": "case",
+    "summary": "τοῦ πνεύματος is genitive after \"ruler\" or after \"authority\"/\"air\". It can be in apposition to the ruler (the devil is the spirit), or name the spirit-force (disposition, realm) over which he has authority.",
+    "readings": [
+      {
+        "label": "Apposition: the ruler is the spirit",
+        "rendering": "the ruler... the spirit now at work in the sons of disobedience",
+        "grammar": "τοῦ πνεύματος loosely in apposition to τὸν ἄρχοντα (case attraction): the devil himself is the spirit at work.",
+        "fathers": [
+          {
+            "father": "Gaius Marius Victorinus",
+            "work": "Commentary on Ephesians",
+            "ref": "on Eph 2:2",
+            "year": 360,
+            "legacy": 42549,
+            "url": "https://catenabible.com/eph/2/2",
+            "quote": "He is therefore that spirit now at work through material means among the children of disobedience."
+          }
+        ]
+      },
+      {
+        "label": "A spirit-force under his authority",
+        "rendering": "the ruler of the realm of the air, of the spirit (force) now at work",
+        "grammar": "τοῦ πνεύματος dependent on ἐξουσίας: the realm of authority is the spirit-world or the pervading disposition of the age.",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Ephesians",
+            "ref": "on Eph 2:2",
+            "year": 400,
+            "legacy": 42555,
+            "url": "https://catenabible.com/eph/2/2",
+            "quote": "Here again he means, that Satan occupies the space under Heaven, and that the incorporeal powers are spirits of the air, under his operation."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses \"ruler the power the air the spirit\" in one chain and hangs the \"now at work\" relative clause on πνεύματος; it does not state whether the last genitive is apposition or dependent.",
+    "sources": [
+      "NET Bible note on Eph 2:2",
+      "Wallace, GGBB 99-100",
+      "Hoehner, Ephesians 311-15"
+    ]
+  },
+  {
+    "id": "eph-2-8-touto",
+    "book": "Ephesians",
+    "chapter": 2,
+    "verse": 8,
+    "words": [
+      "EPH 2:8!3",
+      "EPH 2:8!7",
+      "EPH 2:8!8",
+      "EPH 2:8!9"
+    ],
+    "title": "touto: what is \"not of yourselves\"?",
+    "category": "referent",
+    "summary": "\"This\" (neuter τοῦτο) cannot agree grammatically with feminine πίστις, so it may point back to the whole statement (\"you are saved by grace through faith\") or loosely to faith itself. The question is what is the \"gift of God\".",
+    "readings": [
+      {
+        "label": "Faith is the gift",
+        "rendering": "and this faith is not from yourselves; it is God's gift",
+        "grammar": "τοῦτο refers to πίστεως by sense (a neuter demonstrative may refer to a feminine antecedent in sense).",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Ephesians",
+            "ref": "Homily 4 on Eph 2:8",
+            "year": 400,
+            "page": "230104",
+            "url": "https://www.newadvent.org/fathers/230104.htm",
+            "quote": "Neither is faith, he means, of ourselves. Because had He not come, had He not called us, how had we been able to believe? For how, says he, shall they believe, unless they hear? So that the work of faith itself is not our own."
+          }
+        ]
+      },
+      {
+        "label": "The whole salvation is the gift",
+        "rendering": "and this salvation (by grace through faith) is not from yourselves",
+        "grammar": "neuter τοῦτο has as antecedent the entire clause σεσῳσμένοι διὰ πίστεως; no gender mismatch.",
+        "modern": "Most modern grammarians and commentators (Wallace, Hoehner, NET)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree makes καὶ τοῦτο οὐκ ἐξ ὑμῶν a separate clause with τοῦτο as subject; it does not identify the antecedent.",
+    "sources": [
+      "Wallace, GGBB 334-5",
+      "NET Bible note on Eph 2:8",
+      "Hoehner, Ephesians 342-7"
+    ]
+  },
+  {
+    "id": "eph-2-20-foundation-of-apostles",
+    "book": "Ephesians",
+    "chapter": 2,
+    "verse": 20,
+    "words": [
+      "EPH 2:20!4",
+      "EPH 2:20!5",
+      "EPH 2:20!6",
+      "EPH 2:20!7",
+      "EPH 2:20!8",
+      "EPH 2:20!9",
+      "EPH 2:20!10"
+    ],
+    "title": "\"The foundation of the apostles and prophets\": what kind of genitive?",
+    "category": "case",
+    "summary": "The genitive \"of the apostles and prophets\" can say the apostles and prophets are themselves the foundation (apposition), or that the foundation is what they laid or taught (source/agent), with Christ then the cornerstone.",
+    "readings": [
+      {
+        "label": "Apposition: the apostles and prophets are the foundation",
+        "rendering": "built on the foundation which is the apostles and prophets",
+        "grammar": "τῶν ἀποστόλων καὶ προφητῶν is a genitive of apposition/epexegesis: the persons are the foundation, with Christ as ἀκρογωνιαῖος.",
+        "modern": "Most modern commentators (e.g. Lincoln, Hoehner)",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Ephesians",
+            "ref": "Homily 5 on Eph 2:20",
+            "year": 400,
+            "legacy": 42664,
+            "url": "https://catenabible.com/eph/2/20",
+            "quote": "that is, the Apostles and Prophets are a foundation, and he places the Apostles first, though they are in order of time last, doubtless to represent and express this, that both the one and the other are alike a foundation, and that the whole is one building, and that there is one root."
+          }
+        ]
+      },
+      {
+        "label": "Source: the foundation they laid (their teaching)",
+        "rendering": "built on the foundation laid by the apostles and prophets, namely Christ and their witness",
+        "grammar": "τῶν ἀποστόλων καὶ προφητῶν is a genitive of source/agency: the teaching or witness the apostles and prophets gave, resting on Christ.",
+        "fathers": [
+          {
+            "father": "Gaius Marius Victorinus",
+            "work": "Commentary on Ephesians",
+            "ref": "on Eph 2:20",
+            "year": 360,
+            "legacy": 42662,
+            "url": "https://catenabible.com/eph/2/20",
+            "quote": "This foundation is the teaching of the apostles, which is also heard in the word of the prophets."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree attaches the genitive to θεμελίῳ and does not classify it; ὄντος ἀκρογωνιαίου αὐτοῦ Χριστοῦ Ἰησοῦ is a separate adverbial phrase.",
+    "sources": [
+      "Wallace, GGBB 100-1",
+      "NET Bible note on Eph 2:20",
+      "Hoehner, Ephesians 405-9"
+    ]
+  },
+  {
+    "id": "eph-2-21-pasa-oikodome",
+    "book": "Ephesians",
+    "chapter": 2,
+    "verse": 21,
+    "words": [
+      "EPH 2:21!3",
+      "EPH 2:21!4"
+    ],
+    "title": "pasa oikodomē: \"every building\" or \"the whole building\"?",
+    "category": "article",
+    "summary": "Anarthrous πᾶσα with a singular noun normally means \"every\", but with some nouns (and in Koine) \"whole\". Here it decides whether each local community is a growing temple or the whole church is one.",
+    "readings": [
+      {
+        "label": "\"Every building\" (each part or local church)",
+        "rendering": "in whom every building, being fitted together, grows into a holy temple",
+        "grammar": "πᾶσα without the article distributes: each structure or stage of construction.",
+        "modern": "RV/ASV (\"each several building\")",
+        "fathers": []
+      },
+      {
+        "label": "\"The whole building\"",
+        "rendering": "in whom the whole building, being fitted together, grows into a holy temple",
+        "grammar": "πᾶσα with a singular noun can mean \"the whole, all\" in later Greek; the unit is the single household/temple of v. 19-22.",
+        "modern": "NIV, ESV, NRSV, NASB",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 1,
+    "macula_evidence": "The tree glosses πᾶσα οἰκοδομή as \"whole building\".",
+    "sources": [
+      "Wallace, GGBB 271",
+      "NET Bible note on Eph 2:21",
+      "Hoehner, Ephesians 411-13"
+    ]
+  },
+  {
+    "id": "eph-3-12-pistis-autou",
+    "book": "Ephesians",
+    "chapter": 3,
+    "verse": 12,
+    "words": [
+      "EPH 3:12!10",
+      "EPH 3:12!11",
+      "EPH 3:12!12",
+      "EPH 3:12!13"
+    ],
+    "title": "dia tēs pisteōs autou: faith in him or his faithfulness?",
+    "category": "case",
+    "summary": "The genitive \"his faith\" can be objective (faith directed to Christ) or subjective (Christ's own faithfulness), the same question that surrounds pistis Christou in Romans and Galatians.",
+    "readings": [
+      {
+        "label": "Objective genitive: faith in him",
+        "rendering": "access with confidence through faith in him",
+        "grammar": "αὐτοῦ is an objective genitive: πίστις is the believer's trust in Christ.",
+        "modern": "NIV, ESV, NASB, NAB",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Ephesians",
+            "ref": "on Eph 3:12",
+            "year": 400,
+            "legacy": 42726,
+            "url": "https://catenabible.com/eph/3/12",
+            "quote": "we have even boldness with confidence, that is, accompanied with cheerful trust; arising from what source? through our faith in Him."
+          }
+        ]
+      },
+      {
+        "label": "Subjective genitive: his faithfulness",
+        "rendering": "access with confidence through his (Christ's) faithfulness",
+        "grammar": "αὐτοῦ is a subjective genitive: the faithfulness Christ himself showed gives access.",
+        "modern": "Proponents of the \"faithfulness of Christ\" reading of pistis Christou (e.g. Hays; NET alternative)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses the phrase \"faith his\" without classifying the genitive.",
+    "sources": [
+      "NET Bible note on Eph 3:12",
+      "Wallace, GGBB 115-16",
+      "Hoehner, Ephesians 480-2"
+    ]
+  },
+  {
+    "id": "eph-4-9-lower-parts",
+    "book": "Ephesians",
+    "chapter": 4,
+    "verse": 9,
+    "words": [
+      "EPH 4:9!11",
+      "EPH 4:9!12",
+      "EPH 4:9!13",
+      "EPH 4:9!14",
+      "EPH 4:9!15",
+      "EPH 4:9!16"
+    ],
+    "title": "\"The lower parts of the earth\": apposition or partitive?",
+    "category": "case",
+    "summary": "τῆς γῆς can be a genitive of apposition (\"the lower parts, namely the earth\"), or partitive (\"the lower regions within/of the earth\", Hades), or comparative (\"lower than the earth\"). The choice decides whether the verse speaks of the incarnation or a descent to the dead.",
+    "readings": [
+      {
+        "label": "Apposition: the earth itself",
+        "rendering": "he descended into the lower regions, that is, the earth (incarnation, death)",
+        "grammar": "τῆς γῆς in apposition to τὰ κατώτερα μέρη: the descent is from heaven to earth.",
+        "modern": "Held by many Protestant and some Catholic commentators",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Ephesians",
+            "ref": "Homily 11 on Eph 4:9",
+            "year": 400,
+            "legacy": 42823,
+            "url": "https://catenabible.com/eph/4/9",
+            "quote": "When you hear these words, think not of a mere removal from one place to another; for what Paul establishes in the Epistle to the Philippians Philippians 2:5-8, that very argument is he also insisting upon here. In the same way as there, when exhorting them concerning lowliness, he brings forward Christ as an example, so does he here also, saying, He descended into the lower parts of the earth. For were not this so, this expression which he uses, He became obedient even unto death Philippians 2:8-9, were superfluous; whereas from His ascending, he implies His descent, and by the lower parts of the earth, he means death"
+          }
+        ]
+      },
+      {
+        "label": "Partitive: the underworld within the earth",
+        "rendering": "he descended into the lower parts of the earth (Hades)",
+        "grammar": "τῆς γῆς partitive: the lower regions belonging to the earth, i.e. the realm of the dead.",
+        "traditions": {
+          "catholic": "Often cited with 1 Pet 3:19 for the descent into Hades in the Creed"
+        },
+        "fathers": [
+          {
+            "father": "Ambrosiaster",
+            "work": "Commentary on Ephesians",
+            "ref": "on Eph 4:9",
+            "year": 370,
+            "legacy": 42817,
+            "url": "https://catenabible.com/eph/4/9",
+            "quote": "Therefore, after his triumph over the devil, he descended to the heart of the world, so that he might preach to the dead, that all who desired him might be set free."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree reads εἰς τὰ κατώτερα μέρη τῆς γῆς as one prepositional phrase and gives no classification of the genitive.",
+    "sources": [
+      "NET Bible note on Eph 4:9",
+      "Wallace, GGBB 99-100",
+      "Hoehner, Ephesians 533-41"
+    ]
+  },
+  {
+    "id": "eph-4-12-pros-eis",
+    "book": "Ephesians",
+    "chapter": 4,
+    "verse": 12,
+    "words": [
+      "EPH 4:12!1",
+      "EPH 4:12!3",
+      "EPH 4:12!6",
+      "EPH 4:12!8",
+      "EPH 4:12!9"
+    ],
+    "title": "Eph 4:12: three parallel goals, or saints equipped for ministry?",
+    "category": "punctuation",
+    "summary": "The three prepositional phrases (πρὸς... εἰς... εἰς...) can be coordinate purposes of the gifted offices, or the first is the main goal with the next two subordinate (equip the saints so that they do the ministry).",
+    "readings": [
+      {
+        "label": "Three coordinate goals of the offices",
+        "rendering": "to perfect the saints, to do the work of ministry, to build up the body",
+        "grammar": "Comma after ἁγίων; πρὸς, εἰς, εἰς are parallel: the apostles, prophets and pastors perfect, minister and edify.",
+        "modern": "KJV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Ephesians",
+            "ref": "Homily 11 on Eph 4:11-12",
+            "year": 400,
+            "page": "230111",
+            "url": "https://www.newadvent.org/fathers/230111.htm",
+            "quote": "For the perfecting of the saints unto the work of ministering, unto the building up of the body of Christ. Perceive ye the dignity of the office? Each one edifies, each one perfects, each one ministers."
+          }
+        ]
+      },
+      {
+        "label": "Equipping the saints for ministry",
+        "rendering": "to equip the saints for the work of ministry, for building up the body",
+        "grammar": "No comma after ἁγίων: εἰς ἔργον διακονίας is subordinate to πρὸς τὸν καταρτισμὸν τῶν ἁγίων; the saints are the ministers.",
+        "modern": "NIV, ESV, NRSV, NASB, NAB",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree sets πρὸς τὸν καταρτισμόν, εἰς ἔργον and εἰς οἰκοδομήν as sister phrases under ἔδωκεν, encoding the coordinate (comma) reading.",
+    "sources": [
+      "NET Bible note on Eph 4:12",
+      "Hoehner, Ephesians 549-55"
+    ]
+  },
+  {
+    "id": "eph-5-21-submitting",
+    "book": "Ephesians",
+    "chapter": 5,
+    "verse": 21,
+    "words": [
+      "EPH 5:21!1",
+      "EPH 5:21!2",
+      "EPH 5:22!1",
+      "EPH 5:22!2"
+    ],
+    "title": "Eph 5:21-22: does the household code borrow its verb from v. 21?",
+    "category": "construction",
+    "summary": "Verse 22 has no verb. Either it borrows \"submit\" from the participle ὑποτασσόμενοι in v. 21, which then heads the household code (mutual submission), or v. 21 closes the Spirit-filled participle chain of vv. 18-21 and v. 22 supplies its own implied verb.",
+    "readings": [
+      {
+        "label": "v. 21 heads the household code (mutual submission)",
+        "rendering": "Submit to one another out of reverence for Christ. Wives, (submit) to your own husbands",
+        "grammar": "ὑποτασσόμενοι governs v. 22 by ellipsis; ἀλλήλοις makes submission mutual, the husband's role then defined by love.",
+        "modern": "NIV, NRSV paragraph break",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Ephesians",
+            "ref": "Homily 20 on Eph 5:21-22",
+            "year": 400,
+            "page": "230120",
+            "url": "https://www.newadvent.org/fathers/230120.htm",
+            "quote": "He says, submitting yourselves one to another in the fear of Christ. And what then if another submit not himself? Still obey thou the law of God."
+          }
+        ]
+      },
+      {
+        "label": "v. 21 ends the participle chain; v. 22 starts a new unit",
+        "rendering": "Be filled with the Spirit... submitting to one another. Wives, (be subject) to your own husbands",
+        "grammar": "ὑποτασσόμενοι is the last of the participles dependent on πληροῦσθε (v. 18); v. 22 implies a new imperative, so submission in vv. 22ff is asymmetrical.",
+        "modern": "UBS/NA paragraphing; many complementarian commentators",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 1,
+    "macula_evidence": "The tree attaches ὑποτασσόμενοι to the participle chain under πληροῦσθε ἐν πνεύματι and treats v. 22 as a separate verbless clause.",
+    "sources": [
+      "NET Bible note on Eph 5:21",
+      "Wallace, GGBB 650-1",
+      "Hoehner, Ephesians 716-24"
+    ]
+  },
+  {
+    "id": "eph-5-26-en-rhemati",
+    "book": "Ephesians",
+    "chapter": 5,
+    "verse": 26,
+    "words": [
+      "EPH 5:26!4",
+      "EPH 5:26!5",
+      "EPH 5:26!6",
+      "EPH 5:26!7",
+      "EPH 5:26!8",
+      "EPH 5:26!9",
+      "EPH 5:26!10"
+    ],
+    "title": "\"The washing of water by the word\": what is \"the word\"?",
+    "category": "attachment",
+    "summary": "ἐν ῥήματι can modify λουτρῷ (the washing with the spoken word, the baptismal formula) or καθαρίσας/ἁγιάσῃ (cleansing by the gospel word of faith); and ῥῆμα can mean the formula spoken over the water or the preached message.",
+    "readings": [
+      {
+        "label": "The baptismal formula",
+        "rendering": "cleansing her by the washing of water with the word (spoken in baptism)",
+        "grammar": "ἐν ῥήματι attaches to τῷ λουτρῷ τοῦ ὕδατος: the word is the invocation or confession pronounced at baptism.",
+        "traditions": {
+          "catholic": "Word as the baptismal form (Trinitarian invocation)",
+          "orthodox": "Word as the baptismal formula"
+        },
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Ephesians",
+            "ref": "Homily 20 on Eph 5:26",
+            "year": 400,
+            "page": "230120",
+            "url": "https://www.newadvent.org/fathers/230120.htm",
+            "quote": "By the washing or laver He washes her uncleanness. By the word, says he. What word? In the Name of the Father, and of the Son, and of the Holy Ghost."
+          },
+          {
+            "father": "Augustine of Hippo",
+            "work": "Tractates on the Gospel of John",
+            "ref": "Tractate 15 (citing Eph 5:26)",
+            "year": 416,
+            "page": "1701015",
+            "url": "https://www.newadvent.org/fathers/1701015.htm",
+            "quote": "Take away the water, it is no baptism; take away the Word, it is no baptism."
+          }
+        ]
+      },
+      {
+        "label": "The gospel word of faith",
+        "rendering": "cleansing her by the washing of water through the word (the gospel preached and believed)",
+        "grammar": "ἐν ῥήματι is instrumental with καθαρίσας: the spoken or preached message is the means of cleansing, with the water as accompaniment.",
+        "traditions": {
+          "protestant": "Often read as the gospel word received by faith"
+        },
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree reads \"cleansing the washing of the water by word\" as a single phrase under καθαρίσας, without deciding the attachment of ἐν ῥήματι.",
+    "sources": [
+      "NET Bible note on Eph 5:26",
+      "Hoehner, Ephesians 752-5"
+    ]
+  },
+  {
+    "id": "eph-5-32-touto-musterion",
+    "book": "Ephesians",
+    "chapter": 5,
+    "verse": 32,
+    "words": [
+      "EPH 5:32!2",
+      "EPH 5:32!3",
+      "EPH 5:32!9",
+      "EPH 5:32!10",
+      "EPH 5:32!12",
+      "EPH 5:32!14"
+    ],
+    "title": "\"This mystery is great\": which mystery?",
+    "category": "referent",
+    "summary": "τὸ μυστήριον τοῦτο can point back to the one-flesh union of Gen 2:24 in marriage (hence the Latin sacramentum), or to the union of Christ and the church as the real meaning of that text; εἰς Χριστόν can mean \"in reference to\" or \"toward\".",
+    "readings": [
+      {
+        "label": "The mystery is marriage (as a sign of Christ and the church)",
+        "rendering": "this sacrament (marriage) is great; I speak in reference to Christ and the church",
+        "grammar": "τοῦτο refers to the quoted one-flesh union (v. 31) as itself a mystery; εἰς Χριστόν indicates what it signifies.",
+        "traditions": {
+          "catholic": "Vulgate sacramentum; cited at Trent (Sess. 24) for the sacrament of matrimony",
+          "orthodox": "Marriage as a mystery of the Church"
+        },
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Catena excerpt (Ancient Christian Commentary)",
+            "ref": "on Eph 5:32",
+            "year": 415,
+            "legacy": 59977,
+            "url": "https://catenabible.com/eph/5/32",
+            "quote": "The apostle speaks of a great mystery in the relation of Christ and the church. That which is great in respect of Christ and the church may seem less auspicious in the relation between husbands and wives. But in marriage it still represents the mystery of an inseparable bond."
+          }
+        ]
+      },
+      {
+        "label": "The mystery is Christ and the church; marriage only a type",
+        "rendering": "this mystery is great, and I mean it of Christ and the church",
+        "grammar": "τοῦτο refers to the true sense of Gen 2:24, which concerns Christ and the church; ἐγὼ δὲ λέγω εἰς Χριστόν limits the meaning.",
+        "traditions": {
+          "protestant": "Reformers read it as typology of Christ and the church, not a sacrament"
+        },
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Ephesians",
+            "ref": "Homily 20 on Eph 5:32",
+            "year": 400,
+            "page": "230120",
+            "url": "https://www.newadvent.org/fathers/230120.htm",
+            "quote": "For the present, however, says he, I speak regarding Christ, that having left the Father, He came down, and came to the Bride, and became one Spirit. For he that is joined unto the Lord is one Spirit. And well says he, it is a great mystery."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses εἰς Χριστὸν καὶ εἰς τὴν ἐκκλησίαν as \"as to Christ and the church\" but does not say what τοῦτο points back to.",
+    "sources": [
+      "NET Bible note on Eph 5:32",
+      "Wallace, GGBB 334",
+      "Hoehner, Ephesians 778-82"
+    ]
+  },
+  {
+    "id": "phil-2-5-touto-phroneite",
+    "book": "Philippians",
+    "chapter": 2,
+    "verse": 5,
+    "words": [
+      "PHP 2:5!1",
+      "PHP 2:5!2",
+      "PHP 2:5!3",
+      "PHP 2:5!4",
+      "PHP 2:5!5",
+      "PHP 2:5!7",
+      "PHP 2:5!8"
+    ],
+    "title": "Phil 2:5: \"which was also in Christ Jesus\" or \"which is yours in Christ Jesus\"?",
+    "category": "construction",
+    "summary": "The clause \"which also in Christ Jesus\" has no verb. Supplying \"was\" makes Christ's mindset the example to imitate; supplying \"is\" (or \"you have\") makes \"in Christ Jesus\" the believers' sphere of life, with the hymn that follows as grounding rather than model.",
+    "readings": [
+      {
+        "label": "Christ is the example (supply \"was\")",
+        "rendering": "Have this mind among you which was also in Christ Jesus",
+        "grammar": "ὃ καὶ ἐν Χριστῷ Ἰησοῦ with ἦν understood: the pre-existent and incarnate Christ's attitude is the pattern.",
+        "modern": "NRSV, NIV, ESV, NASB",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Philippians",
+            "ref": "Homily 6 on Phil 2:5-8",
+            "year": 400,
+            "page": "230206",
+            "url": "https://www.newadvent.org/fathers/230206.htm",
+            "quote": "Our Lord Jesus Christ, when exhorting His disciples to great actions, places before them Himself, and the Father, and the Prophets, as examples;"
+          },
+          {
+            "father": "Gaius Marius Victorinus",
+            "work": "Commentary on Philippians",
+            "ref": "on Phil 2:5",
+            "year": 360,
+            "legacy": 43274,
+            "url": "https://catenabible.com/php/2/5",
+            "quote": "For the first, his humility, is manifest, since Christ humbled himself and assumed the character of a slave."
+          }
+        ]
+      },
+      {
+        "label": "\"In Christ\" is the believers' sphere (supply \"is yours\")",
+        "rendering": "Have this mind among you, which is yours in Christ Jesus",
+        "grammar": "ἐν ὑμῖν = \"among you\" and ἐν Χριστῷ Ἰησοῦ = \"in the community of Christ\"; the verb supplied is ἐστιν/ὑμῖν.",
+        "modern": "Käsemann and others (the ethical-in-Christ reading)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree gives ὃ καὶ ἐν Χριστῷ Ἰησοῦ as a separate verbless clause; it does not supply a verb or decide between \"was\" and \"is\".",
+    "sources": [
+      "Wallace, GGBB 658",
+      "NET Bible note on Phil 2:5",
+      "Hawthorne, Philippians (WBC) 79-81"
+    ]
+  },
+  {
+    "id": "phil-2-6-harpagmon",
+    "book": "Philippians",
+    "chapter": 2,
+    "verse": 6,
+    "words": [
+      "PHP 2:6!5",
+      "PHP 2:6!6",
+      "PHP 2:6!7",
+      "PHP 2:6!8",
+      "PHP 2:6!9",
+      "PHP 2:6!10"
+    ],
+    "title": "harpagmon: \"a thing to be grasped,\" \"to be held onto,\" or \"robbery\"?",
+    "category": "construction",
+    "summary": "ἁρπαγμός is rare. With οὐχ ... ἡγήσατο, equality with God, which was already his, is either (a) not something to be clung to or exploited, or (b), in the Latin tradition, no usurpation because it was his by nature. Either way the Son is equal to the Father (Nicaea, 325).",
+    "readings": [
+      {
+        "label": "Res retinenda: equality possessed but not clung to",
+        "rendering": "did not consider equality with God something to be exploited or clung to",
+        "grammar": "ἁρπαγμός = res retinenda / \"an advantage to be used\"; οὐχ ... ἀλλά contrasts equality retained with self-emptying; ὑπάρχων is concessive.",
+        "modern": "Most modern scholars after Hoover (1971): NRSV, ESV, NIV, NAB",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Philippians",
+            "ref": "Homily 7 on Phil 2:6",
+            "year": 400,
+            "page": "230207",
+            "url": "https://www.newadvent.org/fathers/230207.htm",
+            "quote": "Whatsoever a man robs, and takes contrary to his right, he dares not lay aside, from fear lest it perish, and fall from his possession, but he keeps hold of it continually."
+          }
+        ]
+      },
+      {
+        "label": "\"Not robbery\": equality was his by nature",
+        "rendering": "did not think it robbery to be equal with God",
+        "grammar": "ἁρπαγμός understood as \"a seizure/usurpation\"; οὐχ ἁρπαγμὸν ἡγήσατο = he did not consider equality a usurpation (Latin non rapinam arbitratus).",
+        "modern": "KJV, Vulgate, Douay: \"thought it not robbery\"",
+        "fathers": [
+          {
+            "father": "Quodvultdeus",
+            "work": "Catena excerpt (Ancient Christian Commentary)",
+            "ref": "on Phil 2:6",
+            "year": 440,
+            "legacy": 43304,
+            "url": "https://catenabible.com/php/2/6",
+            "quote": "He did not rob, because who he was, he was by nature."
+          },
+          {
+            "father": "Gaius Marius Victorinus",
+            "work": "Commentary on Philippians",
+            "ref": "on Phil 2:6",
+            "year": 360,
+            "legacy": 43291,
+            "url": "https://catenabible.com/php/2/6",
+            "quote": "It would be a kind of robbery if two things were not equal by nature but were forced to be made equal or made equal through some accident."
+          }
+        ]
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree glosses οὐχ ἁρπαγμὸν ἡγήσατο as \"not something to be exploited\" with τὸ εἶναι ἴσα θεῷ as object, matching the res retinenda reading.",
+    "sources": [
+      "Hoover, \"The Harpagmos Enigma,\" HTR 64 (1971)",
+      "Wallace, GGBB 449-52",
+      "NET Bible note on Phil 2:6"
+    ]
+  },
+  {
+    "id": "phil-3-9-pistis-christou",
+    "book": "Philippians",
+    "chapter": 3,
+    "verse": 9,
+    "words": [
+      "PHP 3:9!14",
+      "PHP 3:9!15",
+      "PHP 3:9!16"
+    ],
+    "title": "dia pisteōs Christou: faith in Christ or Christ's faithfulness?",
+    "category": "case",
+    "summary": "The genitive Χριστοῦ after πίστεως can be objective (faith placed in Christ) or subjective (the faithfulness of Christ), parallel to Rom 3:22 and Gal 2:16. The following phrase \"on the basis of faith\" (ἐπὶ τῇ πίστει) is taken as support for either.",
+    "readings": [
+      {
+        "label": "Objective genitive: faith in Christ",
+        "rendering": "through faith in Christ, the righteousness from God that depends on faith",
+        "grammar": "Χριστοῦ is an objective genitive; πίστις is the believer's trust, and ἐπὶ τῇ πίστει repeats it.",
+        "modern": "Traditional view: KJV \"faith of Christ\" read objectively; NIV, ESV, NASB",
+        "fathers": []
+      },
+      {
+        "label": "Subjective genitive: the faithfulness of Christ",
+        "rendering": "through the faithfulness of Christ, the righteousness from God that depends on faith",
+        "grammar": "Χριστοῦ is a subjective genitive; Christ's obedient faithfulness grounds justification, and ἐπὶ τῇ πίστει then gives the believer's response.",
+        "modern": "NET text, NRSV margin; Hays, Wright, Campbell",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree attaches Χριστοῦ to πίστεως and gives no case classification.",
+    "sources": [
+      "Wallace, GGBB 114-16",
+      "NET Bible note on Phil 3:9",
+      "Hawthorne, Philippians (WBC) 140-3"
+    ]
+  },
+  {
+    "id": "col-1-15-prototokos-pases-ktiseos",
+    "book": "Colossians",
+    "chapter": 1,
+    "verse": 15,
+    "words": [
+      "COL 1:15!8",
+      "COL 1:15!9",
+      "COL 1:15!10"
+    ],
+    "title": "\"Firstborn of all creation\": what kind of genitive?",
+    "category": "case",
+    "summary": "πάσης κτίσεως after πρωτότοκος can be a genitive of comparison (begotten before all creation), of rank (heir and sovereign over creation), or, as Gregory of Nyssa read it, of the new creation in which the incarnate Son is firstborn. The Son is not a creature (Nicaea): v. 16 says all things were created in him.",
+    "readings": [
+      {
+        "label": "Comparative: born before all creation",
+        "rendering": "begotten before all creation",
+        "grammar": "πάσης κτίσεως is a genitive of comparison (πρῶτος in a comparative sense = prior to); the next verse says all things were created in him, so he cannot be one of them.",
+        "modern": "Many Nicene-tradition commentators; NIV \"over all creation\" with note",
+        "fathers": [
+          {
+            "father": "Athanasius",
+            "work": "Orations against the Arians",
+            "ref": "on Col 1:15",
+            "year": 360,
+            "legacy": 43684,
+            "url": "https://catenabible.com/col/1/15",
+            "quote": "demonstrates that the Son of God is other than the whole creation and not a creature"
+          },
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Colossians",
+            "ref": "on Col 1:15",
+            "year": 400,
+            "legacy": 43696,
+            "url": "https://catenabible.com/col/1/15",
+            "quote": "For the word firstborn is not expressive of dignity and honor, nor of anything else, but of time only"
+          },
+          {
+            "father": "Ambrose of Milan",
+            "work": "On the Christian Faith",
+            "ref": "on Col 1:15",
+            "year": 380,
+            "legacy": 43682,
+            "url": "https://catenabible.com/col/1/15",
+            "quote": "Firstborn, mark you, not first created, in order that he may be believed to be both begotten, in virtue of his nature, and the first in virtue of his eternity."
+          }
+        ]
+      },
+      {
+        "label": "Rank: heir and ruler over creation",
+        "rendering": "the firstborn, the heir and sovereign over all creation",
+        "grammar": "πρωτότοκος as a title of rank (Ps 89:27); the genitive is a genitive of subordination: the firstborn has priority over, not temporal precedence before.",
+        "modern": "Common among modern commentators (cf. Exod 4:22, Ps 89:27)",
+        "fathers": []
+      },
+      {
+        "label": "New creation: firstborn of the renewed creation, in the humanity he assumed",
+        "rendering": "the firstborn of the new creation (as man)",
+        "grammar": "πάσης κτίσεως read of the new creation (cf. 2 Cor 5:17): the eternal Word, made man, is the firstborn of renewed humanity, as Gregory of Nyssa argued against Eunomius. Reading it as making the Son himself a creature was the Arian argument rejected at Nicaea; v. 16 says all things were created in him.",
+        "fathers": [
+          {
+            "father": "Gregory of Nyssa",
+            "work": "Catena excerpt (Ancient Christian Commentary)",
+            "ref": "on Col 1:15",
+            "year": 380,
+            "legacy": 43692,
+            "url": "https://catenabible.com/col/1/15",
+            "quote": "we recognize a twofold creation of our nature, the first that of our conception and birth, the second that of our new creation."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree attaches πάσης κτίσεως to πρωτότοκος as a genitive; the semantic class is not marked.",
+    "sources": [
+      "Wallace, GGBB 103-4, 127",
+      "NET Bible note on Col 1:15",
+      "Lightfoot, Colossians 144-50"
+    ]
+  },
+  {
+    "id": "col-1-16-en-auto",
+    "book": "Colossians",
+    "chapter": 1,
+    "verse": 16,
+    "words": [
+      "COL 1:16!2",
+      "COL 1:16!3",
+      "COL 1:16!4",
+      "COL 1:16!29",
+      "COL 1:16!30"
+    ],
+    "title": "en autō ektisthē ta panta: \"in him\" as sphere, ground or agent?",
+    "category": "case",
+    "summary": "ἐν αὐτῷ with the passive ἐκτίσθη can express agency (\"by him\"), sphere or ground (\"within the scope of his person\"), or the place of the creative plan. The following δι᾽ αὐτοῦ keeps the instrument distinct.",
+    "readings": [
+      {
+        "label": "Instrumental or agent: created by him",
+        "rendering": "in (by) him all things were created",
+        "grammar": "ἐν = ἐν instrumental/agent, parallel to δι᾽ αὐτοῦ; Christ is the creator.",
+        "modern": "NIV \"by him\"",
+        "fathers": [
+          {
+            "father": "Ambrose of Milan",
+            "work": "On the Christian Faith",
+            "ref": "on Col 1:16",
+            "year": 380,
+            "legacy": 43710,
+            "url": "https://catenabible.com/col/1/16",
+            "quote": "has also plainly said that all things were made in the Son"
+          }
+        ]
+      },
+      {
+        "label": "Locative or ground: in him as the sphere or source of creative power",
+        "rendering": "in him (as the sphere of the creative wisdom) all things were created",
+        "grammar": "ἐν locative/causal; ἐν αὐτῷ names the ground within which creation happens, distinct from δι᾽ αὐτοῦ (agent) and εἰς αὐτόν (goal).",
+        "modern": "NRSV, ESV \"in him\"",
+        "fathers": [
+          {
+            "father": "Ambrosiaster",
+            "work": "Commentary on Colossians",
+            "ref": "on Col 1:16",
+            "year": 370,
+            "legacy": 43711,
+            "url": "https://catenabible.com/col/1/16",
+            "quote": "He is saying that the potency of all things may be believed to be in him"
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses ἐν αὐτῷ ἐκτίσθη as \"in him ... created\" with no choice between agency and sphere.",
+    "sources": [
+      "Wallace, GGBB 372-4",
+      "NET Bible note on Col 1:16"
+    ]
+  },
+  {
+    "id": "col-1-19-eudokesen",
+    "book": "Colossians",
+    "chapter": 1,
+    "verse": 19,
+    "words": [
+      "COL 1:19!2",
+      "COL 1:19!3",
+      "COL 1:19!4",
+      "COL 1:19!5",
+      "COL 1:19!6",
+      "COL 1:19!7",
+      "COL 1:19!8"
+    ],
+    "title": "Col 1:19: who \"was pleased\" for the fullness to dwell?",
+    "category": "construction",
+    "summary": "εὐδόκησεν has no stated subject. Either πᾶν τὸ πλήρωμα is the subject of both εὐδόκησεν and κατοικῆσαι (\"all the fullness was pleased to dwell\"), or God is the implied subject (\"[God] was pleased that all the fullness should dwell\").",
+    "readings": [
+      {
+        "label": "The fullness is the subject",
+        "rendering": "all the fullness (of God) was pleased to dwell in him",
+        "grammar": "πᾶν τὸ πλήρωμα is subject of εὐδόκησεν and the infinitive κατοικῆσαι (the fullness is personified).",
+        "modern": "NASB, ESV",
+        "fathers": []
+      },
+      {
+        "label": "God is the implied subject",
+        "rendering": "(God) was pleased for all the fullness to dwell in him",
+        "grammar": "The subject of εὐδόκησεν is understood from context (God); πᾶν τὸ πλήρωμα is the subject of the infinitive.",
+        "modern": "NIV, NRSV, NET",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 1,
+    "macula_evidence": "The tree treats εὐδόκησεν as a verb with no subject of its own and makes the clause ἐν αὐτῷ πᾶν τὸ πλήρωμα κατοικῆσαι its object.",
+    "sources": [
+      "Wallace, GGBB 192",
+      "NET Bible note on Col 1:19",
+      "Moo, Colossians 130-3"
+    ]
+  },
+  {
+    "id": "col-1-24-afflictions-of-christ",
+    "book": "Colossians",
+    "chapter": 1,
+    "verse": 24,
+    "words": [
+      "COL 1:24!9",
+      "COL 1:24!10",
+      "COL 1:24!11",
+      "COL 1:24!12",
+      "COL 1:24!13",
+      "COL 1:24!14",
+      "COL 1:24!15",
+      "COL 1:24!16",
+      "COL 1:24!17",
+      "COL 1:24!18"
+    ],
+    "title": "\"What is lacking in Christ's afflictions\": whose afflictions, and lacking how?",
+    "category": "case",
+    "summary": "τῶν θλίψεων τοῦ Χριστοῦ can be a genitive of possession (Christ himself suffers in his body the church), of cause or association (sufferings borne for Christ's cause), or of the Messiah's allotted woes. This determines in what sense something is \"lacking\" (ὑστερήματα).",
+    "readings": [
+      {
+        "label": "Possession: Christ suffers in his body",
+        "rendering": "what is lacking in the afflictions that Christ endures in his body, the church",
+        "grammar": "τοῦ Χριστοῦ is a genitive of possession/identification (head and body are one Christ); ὑστέρημα is the body's share still to be borne.",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Catena excerpt (Ancient Christian Commentary)",
+            "ref": "on Col 1:24",
+            "year": 410,
+            "legacy": 43770,
+            "url": "https://catenabible.com/col/1/24",
+            "quote": "thus showing that what he was suffering was part and parcel of the afflictions of Christ."
+          },
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Colossians",
+            "ref": "on Col 1:24",
+            "year": 400,
+            "legacy": 43774,
+            "url": "https://catenabible.com/col/1/24",
+            "quote": "it is he himself who suffers."
+          }
+        ]
+      },
+      {
+        "label": "Cause or association: sufferings for Christ's cause",
+        "rendering": "what is lacking in the afflictions that come on account of Christ and his gospel",
+        "grammar": "τοῦ Χριστοῦ is a genitive of cause/association: sufferings arising from preaching Christ, like his.",
+        "fathers": [
+          {
+            "father": "Severian of Gabala",
+            "work": "Pauline Commentary from the Greek Church",
+            "ref": "on Col 1:24",
+            "year": 400,
+            "legacy": 43775,
+            "url": "https://catenabible.com/col/1/24",
+            "quote": "Because in order to preach to you, I have had to suffer."
+          }
+        ]
+      },
+      {
+        "label": "The Messiah's appointed quota of woes",
+        "rendering": "what remains of the messianic afflictions appointed before the end",
+        "grammar": "θλίψεις τοῦ Χριστοῦ as the eschatological \"birth pangs\" belonging to the Messiah's people; ὑστερήματα is a quantity that must be completed.",
+        "modern": "A common critical-scholarly view (eschatological woes)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses ἀνταναπληρῶ τὰ ὑστερήματα τῶν θλίψεων τοῦ Χριστοῦ as \"fill up what ... Christ's\" and takes ἐν τῇ σαρκί μου with the verb; the genitive is not classified.",
+    "sources": [
+      "Wallace, GGBB 114-16",
+      "NET Bible note on Col 1:24",
+      "Moo, Colossians 148-52"
+    ]
+  },
+  {
+    "id": "col-1-27-en-humin",
+    "book": "Colossians",
+    "chapter": 1,
+    "verse": 27,
+    "words": [
+      "COL 1:27!19",
+      "COL 1:27!20",
+      "COL 1:27!21"
+    ],
+    "title": "\"Christ in you\": within each person or among you Gentiles?",
+    "category": "case",
+    "summary": "ἐν ὑμῖν can be \"in you\" (indwelling) or \"among you\" (presence in the community), and since the relative ὅ refers to the mystery \"among the Gentiles\", the two prepositions may be parallel or contrasting.",
+    "readings": [
+      {
+        "label": "\"In you\": the indwelling Christ",
+        "rendering": "the mystery, which is Christ in you, the hope of glory",
+        "grammar": "ἐν ὑμῖν individual or corporate locative = \"within you\"; ὅ = the mystery, Christ himself.",
+        "modern": "KJV, NIV, ESV",
+        "fathers": []
+      },
+      {
+        "label": "\"Among you\": Christ present among the Gentiles",
+        "rendering": "the mystery, which is Christ among you, the hope of glory",
+        "grammar": "ἐν ὑμῖν parallel to ἐν τοῖς ἔθνεσιν (v. 27a): Christ present among the Gentile community.",
+        "modern": "NET alternative; Dunn, Moo",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses ἐν ὑμῖν as \"in you\" but does not choose between locative \"within\" and \"among\".",
+    "sources": [
+      "NET Bible note on Col 1:27",
+      "Moo, Colossians 158-9"
+    ]
+  },
+  {
+    "id": "col-2-15-apekdusamenos",
+    "book": "Colossians",
+    "chapter": 2,
+    "verse": 15,
+    "words": [
+      "COL 2:15!1",
+      "COL 2:15!2",
+      "COL 2:15!3",
+      "COL 2:15!4",
+      "COL 2:15!5",
+      "COL 2:15!6",
+      "COL 2:15!7",
+      "COL 2:15!10"
+    ],
+    "title": "apekdusamenos: stripping off whom? and who is the subject?",
+    "category": "construction",
+    "summary": "ἀπεκδυσάμενος is a middle participle of a compound \"strip off\". It can be reflexive (Christ stripped off from himself the powers/flesh) or have an active sense (stripped the powers of their authority, disarmed them), and the subject can be Christ or God.",
+    "readings": [
+      {
+        "label": "Middle: Christ put off from himself the powers (or the flesh)",
+        "rendering": "having put off from himself the principalities and powers",
+        "grammar": "ἀπεκδυσάμενος genuinely middle: reflexive \"strip off from oneself\"; the powers (or the flesh) were as a garment.",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Colossians",
+            "ref": "on Col 2:15",
+            "year": 400,
+            "legacy": 43873,
+            "url": "https://catenabible.com/col/2/15",
+            "quote": "When he became man he put away from himself that hold."
+          },
+          {
+            "father": "Severian of Gabala",
+            "work": "Pauline Commentary from the Greek Church",
+            "ref": "on Col 2:15",
+            "year": 400,
+            "legacy": 43876,
+            "url": "https://catenabible.com/col/2/15",
+            "quote": "Through the exposing and putting off of the flesh Christ subdued the opposing powers"
+          }
+        ]
+      },
+      {
+        "label": "Active sense: stripped/disarmed the powers",
+        "rendering": "disarming the principalities and powers",
+        "grammar": "ἀπεκδυσάμενος with transitive force: the powers are stripped of their weapons and authority (a middle with active sense, as in 2:11).",
+        "modern": "NIV, ESV, NRSV: \"disarmed\"",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 1,
+    "macula_evidence": "The tree glosses ἀπεκδυσάμενος τὰς ἀρχὰς καὶ τὰς ἐξουσίας as \"disarmed the rulers and the authorities\".",
+    "sources": [
+      "Wallace, GGBB 420-1",
+      "NET Bible note on Col 2:15",
+      "Moo, Colossians 206-9"
+    ]
+  },
+  {
+    "id": "col-2-15-en-auto",
+    "book": "Colossians",
+    "chapter": 2,
+    "verse": 15,
+    "words": [
+      "COL 2:15!10",
+      "COL 2:15!11",
+      "COL 2:15!12",
+      "COL 2:15!13"
+    ],
+    "title": "Col 2:15: \"triumphing over them in it/him\": the cross or Christ?",
+    "category": "referent",
+    "summary": "αὐτῷ at the end of the verse can be masculine (Christ, the nearest personal subject) or neuter (the cross of v. 14), changing where the triumph takes place.",
+    "readings": [
+      {
+        "label": "\"In it\": the cross",
+        "rendering": "triumphing over them in (by) the cross",
+        "grammar": "αὐτῷ neuter, referring to τῷ σταυρῷ in v. 14.",
+        "modern": "NIV \"by the cross\", NRSV \"in it\"",
+        "fathers": []
+      },
+      {
+        "label": "\"In him\": Christ",
+        "rendering": "triumphing over them in him (Christ)",
+        "grammar": "αὐτῷ masculine, referring to Christ, the subject of the whole sentence.",
+        "modern": "ESV, NASB (marginal \"in it\")",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Catena excerpt (Ancient Christian Commentary)",
+            "ref": "on Col 2:15",
+            "year": 400,
+            "legacy": 43870,
+            "url": "https://catenabible.com/col/2/15",
+            "quote": "and therefore he openly exposed the principalities and the powers, confidently triumphing over them in himself."
+          }
+        ]
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree glosses αὐτῷ as \"in it\", taking the cross as antecedent.",
+    "sources": [
+      "NET Bible note on Col 2:15",
+      "Moo, Colossians 210-11"
+    ]
+  },
+  {
+    "id": "col-2-18-threskeia-angelon",
+    "book": "Colossians",
+    "chapter": 2,
+    "verse": 18,
+    "words": [
+      "COL 2:18!8",
+      "COL 2:18!9",
+      "COL 2:18!10"
+    ],
+    "title": "threskeia tōn angelōn: worship of angels, or worship by angels?",
+    "category": "case",
+    "summary": "The genitive can be objective (worship directed to angels) or subjective (the worship the angels offer, which the opponents claim to share through visions). The word θρησκεία itself is not in dispute.",
+    "readings": [
+      {
+        "label": "Objective genitive: worship of angels",
+        "rendering": "delighting in humility and the worship of angels",
+        "grammar": "τῶν ἀγγέλων objective: the opponents offered cult to angels as mediators.",
+        "modern": "KJV, NIV, ESV, NRSV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Colossians",
+            "ref": "on Col 2:18",
+            "year": 400,
+            "legacy": 43895,
+            "url": "https://catenabible.com/col/2/18",
+            "quote": "There are some who maintain that we must be brought near by angels, not by Christ; for Christ to do so would seem too great an act on our behalf."
+          },
+          {
+            "father": "Severian of Gabala",
+            "work": "Pauline Commentary from the Greek Church",
+            "ref": "on Col 2:18",
+            "year": 400,
+            "legacy": 43896,
+            "url": "https://catenabible.com/col/2/18",
+            "quote": "Since, then, we cannot get near him, it is through his angels that propitiation comes and we may draw near him."
+          }
+        ]
+      },
+      {
+        "label": "Subjective genitive: the worship angels offer",
+        "rendering": "delighting in humility and the angelic worship (which he claims to join)",
+        "grammar": "τῶν ἀγγέλων subjective: the opponents claimed visionary participation in the heavenly liturgy.",
+        "modern": "Francis, Dunn and others",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses θρησκείᾳ τῶν ἀγγέλων as \"worship the angels\" without stating the genitive relation.",
+    "sources": [
+      "Wallace, GGBB 113-14",
+      "NET Bible note on Col 2:18",
+      "Moo, Colossians 224-8"
+    ]
+  },
+  {
+    "id": "col-3-16-en-pase-sophia",
+    "book": "Colossians",
+    "chapter": 3,
+    "verse": 16,
+    "words": [
+      "COL 3:16!9",
+      "COL 3:16!10",
+      "COL 3:16!11",
+      "COL 3:16!12"
+    ],
+    "title": "Col 3:16: \"in all wisdom\" with \"dwell richly\" or with \"teaching and admonishing\"?",
+    "category": "attachment",
+    "summary": "ἐν πάσῃ σοφίᾳ can close the first clause (let the word dwell in you richly in all wisdom) or lead into the participles (in all wisdom teaching and admonishing one another).",
+    "readings": [
+      {
+        "label": "With \"let the word dwell richly\"",
+        "rendering": "Let the word of Christ dwell in you richly in all wisdom, teaching and admonishing one another",
+        "grammar": "ἐν πάσῃ σοφίᾳ modifies ἐνοικείτω; the participles διδάσκοντες καὶ νουθετοῦντες begin a new phrase.",
+        "modern": "KJV, RSV, NASB",
+        "fathers": []
+      },
+      {
+        "label": "With \"teaching and admonishing\"",
+        "rendering": "Let the word of Christ dwell in you richly; in all wisdom teach and admonish one another",
+        "grammar": "ἐν πάσῃ σοφίᾳ modifies the participles διδάσκοντες καὶ νουθετοῦντες (the manner of mutual teaching).",
+        "modern": "NIV, NRSV, ESV",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 1,
+    "macula_evidence": "The tree places ἐν πάσῃ σοφίᾳ with διδάσκοντες and νουθετοῦντες as an adverbial unit, separate from ἐνοικείτω.",
+    "sources": [
+      "NET Bible note on Col 3:16",
+      "Moo, Colossians 286-8"
+    ]
+  },
+  {
+    "id": "1-thess-4-14-dia-tou-iesou",
+    "book": "1 Thessalonians",
+    "chapter": 4,
+    "verse": 14,
+    "words": [
+      "1TH 4:14!14",
+      "1TH 4:14!15",
+      "1TH 4:14!16",
+      "1TH 4:14!17",
+      "1TH 4:14!18"
+    ],
+    "title": "dia tou Iēsou: \"asleep through Jesus\" or \"God will bring through Jesus\"?",
+    "category": "attachment",
+    "summary": "The phrase \"through Jesus\" can modify the participle (those who fell asleep through/in Jesus) or the main verb ἄξει (God will bring them through Jesus, with him).",
+    "readings": [
+      {
+        "label": "With \"those who have fallen asleep\"",
+        "rendering": "those who have fallen asleep in Jesus, God will bring with him",
+        "grammar": "διὰ τοῦ Ἰησοῦ modifies τοὺς κοιμηθέντας: death endured in Jesus (as believers).",
+        "modern": "KJV, NIV, ESV, NRSV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on 1 Thessalonians",
+            "ref": "on 1 Thess 4:14",
+            "year": 400,
+            "legacy": 56627,
+            "url": "https://catenabible.com/1th/4/14",
+            "quote": "even so God will bring with him those also who sleep in Jesus."
+          }
+        ]
+      },
+      {
+        "label": "With \"will bring\"",
+        "rendering": "God will, through Jesus, bring with him those who have fallen asleep",
+        "grammar": "διὰ τοῦ Ἰησοῦ modifies ἄξει: Jesus is the means by which God brings the dead.",
+        "modern": "Some commentators (e.g. Best)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree attaches διὰ τοῦ Ἰησοῦ to κοιμηθέντας (\"fallen asleep through Jesus\").",
+    "sources": [
+      "NET Bible note on 1 Thess 4:14",
+      "Wanamaker, Thessalonians 170"
+    ]
+  },
+  {
+    "id": "2-thess-1-12-sharp",
+    "book": "2 Thessalonians",
+    "chapter": 1,
+    "verse": 12,
+    "words": [
+      "2TH 1:12!18",
+      "2TH 1:12!19",
+      "2TH 1:12!20",
+      "2TH 1:12!21",
+      "2TH 1:12!22",
+      "2TH 1:12!23",
+      "2TH 1:12!24"
+    ],
+    "title": "\"The grace of our God and Lord Jesus Christ\": one person or two?",
+    "category": "article",
+    "summary": "One article governs \"God\" and \"Lord\" joined by καί (Granville Sharp construction), which would make Jesus Christ \"our God and Lord\"; but θεός is sometimes treated as a quasi-proper name, and ἡμῶν after the first noun leaves room for two persons. Whichever way the grammar is taken, the Church confesses Christ as true God, of one substance with the Father (Nicaea, 325), and the Fathers read this verse of Christ.",
+    "readings": [
+      {
+        "label": "One person: Jesus is our God and Lord",
+        "rendering": "the grace of our God and Lord, Jesus Christ",
+        "grammar": "τοῦ θεοῦ ἡμῶν καὶ κυρίου Ἰησοῦ Χριστοῦ: one article, two singular personal nouns of the same case, so one referent (Sharp).",
+        "modern": "NET, NIV footnote; Wallace argues probable",
+        "fathers": []
+      },
+      {
+        "label": "Two persons: God (the Father) and the Lord Jesus Christ",
+        "rendering": "the grace of our God and of the Lord Jesus Christ",
+        "grammar": "The article with θεοῦ is not bound to κυρίου because θεός is treated as a quasi-proper name, or because Paul regularly distinguishes \"God the Father\" and \"the Lord Jesus Christ\".",
+        "modern": "NIV, ESV, NRSV text",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree parses \"the grace of the God our and Lord Jesus Christ\" without marking whether θεοῦ and κυρίου share a referent.",
+    "sources": [
+      "Wallace, GGBB 270-1, 276-7",
+      "NET Bible note on 2 Thess 1:12"
+    ]
+  },
+  {
+    "id": "2-thess-2-6-7-katechon",
+    "book": "2 Thessalonians",
+    "chapter": 2,
+    "verse": 6,
+    "words": [
+      "2TH 2:6!3",
+      "2TH 2:6!4",
+      "2TH 2:7!9",
+      "2TH 2:7!10"
+    ],
+    "title": "to katechon / ho katechōn: who or what restrains the lawless one?",
+    "category": "referent",
+    "summary": "κατέχω can mean \"restrain\" or \"hold sway/hold fast\". The neuter τὸ κατέχον (v. 6) and the masculine ὁ κατέχων (v. 7) refer to an unnamed restrainer (neuter then person), and Paul says the readers knew.",
+    "readings": [
+      {
+        "label": "The Roman Empire (and its emperor)",
+        "rendering": "what restrains is the Roman power; he who restrains is the emperor",
+        "grammar": "Neuter and masculine participle = an institution and its head, transitive κατέχω = \"restrain\".",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on 2 Thessalonians",
+            "ref": "on 2 Thess 2:6",
+            "year": 400,
+            "legacy": 56839,
+            "url": "https://catenabible.com/2th/2/6",
+            "quote": "Some indeed say, the grace of the Spirit, but others the Roman empire, to whom I most of all accede."
+          },
+          {
+            "father": "Tertullian",
+            "work": "Apology",
+            "ref": "on 2 Thess 2:6-7",
+            "year": 197,
+            "legacy": 56843,
+            "url": "https://catenabible.com/2th/2/6",
+            "quote": "is arrested for a time by the continued existence of the Roman Empire."
+          }
+        ]
+      },
+      {
+        "label": "The Holy Spirit (or the grace of the Spirit)",
+        "rendering": "what restrains is the grace of the Holy Spirit",
+        "grammar": "Neuter τὸ κατέχον as the Spirit (πνεῦμα is neuter), masculine ὁ κατέχων as the Spirit personally.",
+        "modern": "Held by a minority of modern interpreters",
+        "fathers": [
+          {
+            "father": "Severian of Gabala",
+            "work": "Pauline Commentary from the Greek Church",
+            "ref": "on 2 Thess 2:6",
+            "year": 400,
+            "legacy": 56842,
+            "url": "https://catenabible.com/2th/2/6",
+            "quote": "that which restrains is the grace of the Holy Spirit."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree parses τὸ κατέχον and ὁ κατέχων as participles (\"the one restraining\") with no antecedent supplied.",
+    "sources": [
+      "NET Bible note on 2 Thess 2:6",
+      "Wanamaker, Thessalonians 249-58"
+    ]
+  },
+  {
+    "id": "1-tim-2-12-oude-authentein",
+    "book": "1 Timothy",
+    "chapter": 2,
+    "verse": 12,
+    "words": [
+      "1TI 2:12!1",
+      "1TI 2:12!6",
+      "1TI 2:12!7"
+    ],
+    "title": "didaskein oude authentein: two prohibitions or one?",
+    "category": "construction",
+    "summary": "οὐδέ can join two separate prohibitions (to teach, and to exercise authority) or two elements of a single idea (to teach in a domineering manner). The meaning of αὐθεντεῖν is a related, separate lexical dispute.",
+    "readings": [
+      {
+        "label": "Two prohibitions",
+        "rendering": "I do not permit a woman to teach or to exercise authority over a man",
+        "grammar": "οὐδέ coordinates two infinitives, each negated by οὐκ ἐπιτρέπω; both are forbidden.",
+        "modern": "NIV, ESV, NRSV; Köstenberger",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on 1 Timothy",
+            "ref": "Homily 9 on 1 Tim 2:12",
+            "year": 400,
+            "legacy": 57233,
+            "url": "https://catenabible.com/1ti/2/12",
+            "quote": "let them not teach, but occupy the station of learners."
+          }
+        ]
+      },
+      {
+        "label": "One idea: teaching in a domineering way",
+        "rendering": "I do not permit a woman to teach in a way that usurps authority over a man",
+        "grammar": "οὐδέ links two terms forming a single prohibition (hendiadys); αὐθεντεῖν qualifies διδάσκειν.",
+        "modern": "KJV \"usurp authority\"; Baldwin and others",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree sets διδάσκειν and οὐδὲ αὐθεντεῖν ἀνδρός as two coordinate infinitives.",
+    "sources": [
+      "NET Bible note on 1 Tim 2:12",
+      "Wallace, GGBB 672-4"
+    ]
+  },
+  {
+    "id": "1-tim-2-15-dia-tes-teknogonias",
+    "book": "1 Timothy",
+    "chapter": 2,
+    "verse": 15,
+    "words": [
+      "1TI 2:15!1",
+      "1TI 2:15!3",
+      "1TI 2:15!4",
+      "1TI 2:15!5"
+    ],
+    "title": "\"Saved through childbearing\": which childbearing, and what salvation?",
+    "category": "construction",
+    "summary": "διὰ τῆς τεκνογονίας has the article; it can mean \"through bearing (and raising) children\", \"through the Childbirth\" (of the Messiah), or spiritual rebirth; διά can also mean \"through the pain of\" (attendant circumstance).",
+    "readings": [
+      {
+        "label": "Through bearing and rearing children",
+        "rendering": "she will be saved through (the) bearing of children",
+        "grammar": "διά with the genitive of means or attendant circumstance; τῆς generic article; salvation as safe passage or as the woman's role.",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on 1 Timothy",
+            "ref": "Homily 9 on 1 Tim 2:15",
+            "year": 400,
+            "page": "230609",
+            "url": "https://www.newadvent.org/fathers/230609.htm",
+            "quote": "Let her not however grieve. God has given her no small consolation, that of childbearing."
+          }
+        ]
+      },
+      {
+        "label": "Spiritual birth of children",
+        "rendering": "she is saved through spiritual regeneration of children",
+        "grammar": "τεκνογονία interpreted figuratively: the true motherhood is spiritual rebirth.",
+        "fathers": [
+          {
+            "father": "Gregory of Nyssa",
+            "work": "On Virginity",
+            "ref": "on 1 Tim 2:15",
+            "year": 371,
+            "legacy": 57240,
+            "url": "https://catenabible.com/1ti/2/15",
+            "quote": "It is not having children as such that is important but this spiritual regeneration."
+          }
+        ]
+      },
+      {
+        "label": "Through \"the Childbirth\" (Christ)",
+        "rendering": "she will be saved through the (well-known) birth of the Child",
+        "grammar": "The article τῆς is definite: a unique childbearing, the Incarnation (cf. Gen 3:15, Gal 4:4).",
+        "modern": "Some patristic and modern interpreters; NIV note",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses \"saved through the childbearing\" with the article but does not interpret it.",
+    "sources": [
+      "NET Bible note on 1 Tim 2:15",
+      "Wallace, GGBB 224"
+    ]
+  },
+  {
+    "id": "1-tim-3-6-krima-tou-diabolou",
+    "book": "1 Timothy",
+    "chapter": 3,
+    "verse": 6,
+    "words": [
+      "1TI 3:6!6",
+      "1TI 3:6!7",
+      "1TI 3:6!9",
+      "1TI 3:6!10"
+    ],
+    "title": "\"The condemnation of the devil\": whose?",
+    "category": "case",
+    "summary": "τοῦ διαβόλου can be a subjective genitive (a judgment the devil passes), or a genitive of the one condemned (the same condemnation the devil fell under).",
+    "readings": [
+      {
+        "label": "Judgment pronounced by the devil",
+        "rendering": "fall into the judgment the devil brings",
+        "grammar": "subjective genitive: the devil as accuser.",
+        "modern": "Some commentators (e.g. Fee)",
+        "fathers": []
+      },
+      {
+        "label": "The condemnation that befell the devil",
+        "rendering": "fall into the same condemnation as the devil",
+        "grammar": "objective/possessive genitive: the judgment the devil received for pride.",
+        "modern": "NIV, ESV, NRSV",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Catena excerpt (Ancient Christian Commentary)",
+            "ref": "on 1 Tim 3:6",
+            "year": 410,
+            "legacy": 57272,
+            "url": "https://catenabible.com/1ti/3/6",
+            "quote": "but that he is to be condemned with the devil."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses εἰς κρίμα τοῦ διαβόλου as \"condemnation the devil\" without classifying the genitive.",
+    "sources": [
+      "NET Bible note on 1 Tim 3:6",
+      "Wallace, GGBB 114-16"
+    ]
+  },
+  {
+    "id": "1-tim-3-15-stulos",
+    "book": "1 Timothy",
+    "chapter": 3,
+    "verse": 15,
+    "words": [
+      "1TI 3:15!12",
+      "1TI 3:15!14",
+      "1TI 3:15!17",
+      "1TI 3:15!18",
+      "1TI 3:15!19",
+      "1TI 3:15!20",
+      "1TI 3:15!21"
+    ],
+    "title": "\"Pillar and ground of the truth\": of what?",
+    "category": "attachment",
+    "summary": "στῦλος καὶ ἑδραίωμα τῆς ἀληθείας can modify \"the church of the living God\" or begin the confession of v. 16 (the pillar and ground of the truth, and confessedly great, is the mystery of godliness).",
+    "readings": [
+      {
+        "label": "The church is pillar and ground",
+        "rendering": "the church of the living God, the pillar and ground of the truth",
+        "grammar": "The nominatives στῦλος καὶ ἑδραίωμα stand in apposition to ἐκκλησία θεοῦ ζῶντος (ἥτις).",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on 1 Timothy",
+            "ref": "on 1 Tim 3:15",
+            "year": 400,
+            "legacy": 57312,
+            "url": "https://catenabible.com/1ti/3/15",
+            "quote": "That you may know, he says, how you ought to behave yourself in the house of God, which is the Church of the living God, the pillar and ground of the truth. Not like that Jewish house. For it is this that maintains the faith and the preaching of the Word."
+          }
+        ]
+      },
+      {
+        "label": "Introducing v. 16: the mystery is pillar",
+        "rendering": "a pillar and ground of the truth: the mystery of godliness is great",
+        "grammar": "The phrase begins v. 16 as a predicate of τὸ τῆς εὐσεβείας μυστήριον.",
+        "modern": "A minority view (e.g. Lock)",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree places στῦλος καὶ ἑδραίωμα within the relative clause ἥτις ἐστὶν ἐκκλησία, apposed to church.",
+    "sources": [
+      "NET Bible note on 1 Tim 3:15",
+      "Wallace, GGBB 247"
+    ]
+  },
+  {
+    "id": "1-tim-4-10-malista",
+    "book": "1 Timothy",
+    "chapter": 4,
+    "verse": 10,
+    "words": [
+      "1TI 4:10!14",
+      "1TI 4:10!15",
+      "1TI 4:10!16",
+      "1TI 4:10!17",
+      "1TI 4:10!18"
+    ],
+    "title": "\"Savior of all people, especially of believers\": what does malista do?",
+    "category": "construction",
+    "summary": "μάλιστα can mean \"especially\" (believers a subset who benefit most) or \"that is, namely\" (those who believe are in fact the ones saved), which affects whether the verse teaches universal provision or limits salvation to believers.",
+    "readings": [
+      {
+        "label": "\"Especially\": all are saved in some sense, believers in a fuller way",
+        "rendering": "the Savior of all people, especially of those who believe",
+        "grammar": "μάλιστα as a comparative/superlative: believers are a distinguished part of πάντων ἀνθρώπων.",
+        "modern": "NIV, ESV, NRSV",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on 1 Timothy",
+            "ref": "on 1 Tim 4:10",
+            "year": 400,
+            "legacy": 57390,
+            "url": "https://catenabible.com/1ti/4/10",
+            "quote": "But if God is here the Saviour of the unbelieving, much more is He of the faithful hereafter."
+          },
+          {
+            "father": "Gregory of Nyssa",
+            "work": "Answer to Ablabius",
+            "ref": "on 1 Tim 4:10",
+            "year": 380,
+            "legacy": 57388,
+            "url": "https://catenabible.com/1ti/4/10",
+            "quote": "The Savior of all, especially of believers, is spoken of by the apostle as one."
+          }
+        ]
+      },
+      {
+        "label": "\"That is\": the Savior of all, namely believers",
+        "rendering": "the Savior of all, that is, of those who believe",
+        "grammar": "μάλιστα = \"namely\" (explanatory), narrowing πάντων ἀνθρώπων to believers.",
+        "modern": "Skeat; some Reformed commentators",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree glosses μάλιστα as \"especially\".",
+    "sources": [
+      "NET Bible note on 1 Tim 4:10",
+      "Wallace, GGBB 668",
+      "Skeat, \"Especially the Parchments,\" JTS 30 (1979)"
+    ]
+  },
+  {
+    "id": "2-tim-1-12-paratheke-mou",
+    "book": "2 Timothy",
+    "chapter": 1,
+    "verse": 12,
+    "words": [
+      "2TI 1:12!19",
+      "2TI 1:12!20",
+      "2TI 1:12!21",
+      "2TI 1:12!22"
+    ],
+    "title": "\"What I have entrusted\": by whom?",
+    "category": "case",
+    "summary": "τὴν παραθήκην μου can be what I deposited with God (my life, salvation, ministry) or what was deposited with me by God (the gospel, cf. 1:14).",
+    "readings": [
+      {
+        "label": "What I entrusted to him",
+        "rendering": "he is able to guard what I have entrusted to him until that day",
+        "grammar": "μου is a subjective genitive: Paul is the depositor.",
+        "modern": "NIV, NASB, RSV",
+        "fathers": [
+          {
+            "father": "Augustine of Hippo",
+            "work": "Catena excerpt (Ancient Christian Commentary)",
+            "ref": "on 2 Tim 1:12",
+            "year": 420,
+            "legacy": 57747,
+            "url": "https://catenabible.com/2ti/1/12",
+            "quote": "What I have commended to him"
+          }
+        ]
+      },
+      {
+        "label": "What was entrusted to me",
+        "rendering": "he is able to guard what has been entrusted to me until that day",
+        "grammar": "μου is an objective genitive: the deposit (the gospel) is placed with Paul.",
+        "modern": "NET, ESV footnote",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on 2 Timothy",
+            "ref": "on 2 Tim 1:12",
+            "year": 400,
+            "legacy": 57749,
+            "url": "https://catenabible.com/2ti/1/12",
+            "quote": "God, who committed this to us, will preserve it unimpaired. I suffer everything, that I may not be despoiled of this treasure. I am not ashamed of these things, so long as the faith is preserved uninjured."
+          }
+        ]
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree glosses τὴν παραθήκην μου as \"what I have entrusted\".",
+    "sources": [
+      "NET Bible note on 2 Tim 1:12",
+      "Wallace, GGBB 116-17"
+    ]
+  },
+  {
+    "id": "2-tim-2-26-ekeinou",
+    "book": "2 Timothy",
+    "chapter": 2,
+    "verse": 26,
+    "words": [
+      "2TI 2:26!6",
+      "2TI 2:26!8",
+      "2TI 2:26!9",
+      "2TI 2:26!10",
+      "2TI 2:26!11",
+      "2TI 2:26!12",
+      "2TI 2:26!13",
+      "2TI 2:26!14"
+    ],
+    "title": "\"Captured by him to do his will\": who are \"him\" and \"his\"?",
+    "category": "referent",
+    "summary": "αὐτοῦ and ἐκείνου are two different pronouns: they can both refer to the devil (captured by him to do his will), or the first to the devil and the second to God (so that they return to God's will), or the first to God.",
+    "readings": [
+      {
+        "label": "Both the devil",
+        "rendering": "caught by the devil to do his will",
+        "grammar": "αὐτοῦ and ἐκείνου both refer to τοῦ διαβόλου; ἐκεῖνος as a distant demonstrative picking up the devil.",
+        "modern": "NIV, ESV",
+        "fathers": []
+      },
+      {
+        "label": "\"Him\" the devil, \"his\" God",
+        "rendering": "caught by the devil, but (set free) to do God's will",
+        "grammar": "ἐκείνου distinguishes a different referent from αὐτοῦ: God, whose will they are brought back to do.",
+        "modern": "KJV (ambiguous), RV marginal",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on 2 Timothy",
+            "ref": "on 2 Tim 2:26",
+            "year": 400,
+            "legacy": 57932,
+            "url": "https://catenabible.com/2ti/2/26",
+            "quote": "Taken captive by him, he says, to His will. This no one will say relates to doctrine, but to life. For His will is that we live rightly."
+          }
+        ]
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses αὐτοῦ as \"him\" and ἐκείνου as \"his\" without identifying either antecedent.",
+    "sources": [
+      "NET Bible note on 2 Tim 2:26",
+      "Wallace, GGBB 324-6"
+    ]
+  },
+  {
+    "id": "2-tim-3-16-pasa-graphe",
+    "book": "2 Timothy",
+    "chapter": 3,
+    "verse": 16,
+    "words": [
+      "2TI 3:16!1",
+      "2TI 3:16!2",
+      "2TI 3:16!3",
+      "2TI 3:16!4",
+      "2TI 3:16!5"
+    ],
+    "title": "pasa graphē theopneustos kai ōphelimos: predicate or attributive?",
+    "category": "construction",
+    "summary": "With no verb, θεόπνευστος can be a predicate (\"every Scripture is God-breathed and useful\") or attributive (\"every God-breathed Scripture is also useful\"); and πᾶσα can mean \"all\" or \"every\".",
+    "readings": [
+      {
+        "label": "Predicate: all Scripture is God-breathed and profitable",
+        "rendering": "All Scripture is God-breathed and profitable",
+        "grammar": "ἐστίν is understood after γραφή; both θεόπνευστος and ὠφέλιμος are predicates.",
+        "modern": "KJV, RSV, NRSV, ESV, NIV, NASB",
+        "fathers": [
+          {
+            "father": "Gregory of Nyssa",
+            "work": "On the Soul and the Resurrection",
+            "ref": "on 2 Tim 3:16",
+            "year": 380,
+            "legacy": 58013,
+            "url": "https://catenabible.com/2ti/3/16",
+            "quote": "The Scripture is of the Holy Spirit, and its intention is the profit of men."
+          }
+        ]
+      },
+      {
+        "label": "Attributive: every God-breathed Scripture is also profitable",
+        "rendering": "Every Scripture inspired by God is also profitable",
+        "grammar": "θεόπνευστος is attributive; only ὠφέλιμος is predicate (καί = also).",
+        "modern": "NEB, Moffatt",
+        "fathers": []
+      },
+      {
+        "label": "Restrictive: every Scripture that is profitable is inspired",
+        "rendering": "every Scripture suitable for edification is divinely inspired",
+        "grammar": "ὠφέλιμος is read with γραφή as an attributive, θεόπνευστος the predicate (Vulgate order omnis scriptura divinitus inspirata utilis).",
+        "fathers": [
+          {
+            "father": "Tertullian",
+            "work": "On the Apparel of Women",
+            "ref": "on 2 Tim 3:16",
+            "year": 202,
+            "legacy": 58017,
+            "url": "https://catenabible.com/2ti/3/16",
+            "quote": "every Scripture suitable for edification is divinely inspired."
+          }
+        ]
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree glosses \"all scripture inspired by God and profitable\" with both adjectives as predicates.",
+    "sources": [
+      "Wallace, GGBB 313-14",
+      "NET Bible note on 2 Tim 3:16"
+    ]
+  },
+  {
+    "id": "titus-2-11-pasin-anthropois",
+    "book": "Titus",
+    "chapter": 2,
+    "verse": 11,
+    "words": [
+      "TIT 2:11!1",
+      "TIT 2:11!3",
+      "TIT 2:11!4",
+      "TIT 2:11!5",
+      "TIT 2:11!6",
+      "TIT 2:11!7",
+      "TIT 2:11!8",
+      "TIT 2:11!9"
+    ],
+    "title": "\"Appeared to all\" or \"bringing salvation to all\"?",
+    "category": "attachment",
+    "summary": "The dative πᾶσιν ἀνθρώποις and the adjective σωτήριος can be taken together (\"salvation-bringing to all\") or the dative with the verb ἐπεφάνη (\"appeared to all people\").",
+    "readings": [
+      {
+        "label": "\"Appeared to all people\"",
+        "rendering": "the grace of God that brings salvation has appeared to all people",
+        "grammar": "πᾶσιν ἀνθρώποις is the dative of ἐπεφάνη; σωτήριος is attributive to χάρις.",
+        "modern": "KJV, NKJV, Douay",
+        "fathers": []
+      },
+      {
+        "label": "\"Bringing salvation to all\"",
+        "rendering": "the grace of God has appeared, bringing salvation to all people",
+        "grammar": "σωτήριος with πᾶσιν ἀνθρώποις: the grace brings salvation for everyone.",
+        "modern": "RSV, NRSV, ESV, NIV",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree reads Ἐπεφάνη ἡ χάρις τοῦ θεοῦ σωτήριος πᾶσιν ἀνθρώποις as one clause without marking the attachment of the dative.",
+    "sources": [
+      "NET Bible note on Titus 2:11",
+      "Wallace, GGBB 150"
+    ]
+  },
+  {
+    "id": "titus-2-13-granville-sharp",
+    "book": "Titus",
+    "chapter": 2,
+    "verse": 13,
+    "words": [
+      "TIT 2:13!9",
+      "TIT 2:13!10",
+      "TIT 2:13!11",
+      "TIT 2:13!12",
+      "TIT 2:13!13",
+      "TIT 2:13!14",
+      "TIT 2:13!15",
+      "TIT 2:13!16"
+    ],
+    "title": "\"Our great God and Savior Jesus Christ\": one person or two?",
+    "category": "article",
+    "summary": "One article governs \"great God\" and \"Savior\" (Granville Sharp), which makes Jesus Christ both; the alternative is the Father as \"the great God\" and Jesus as \"Savior\". Whichever way the grammar is taken, the Church confesses Christ as true God, of one substance with the Father (Nicaea, 325), and the Fathers read this verse of Christ.",
+    "readings": [
+      {
+        "label": "One person: Jesus Christ is our great God and Savior",
+        "rendering": "the appearing of the glory of our great God and Savior, Jesus Christ",
+        "grammar": "τοῦ μεγάλου θεοῦ καὶ σωτῆρος ἡμῶν Ἰησοῦ Χριστοῦ: one article, personal singular nouns, so one referent; ἐπιφάνεια is used of Christ elsewhere in the Pastorals.",
+        "modern": "NIV, NRSV, ESV, NASB; Wallace",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Titus",
+            "ref": "Homily 5 on Titus 2:13",
+            "year": 400,
+            "page": "23085",
+            "url": "https://www.newadvent.org/fathers/23085.htm",
+            "quote": "Where are those who say that the Son is inferior to the Father? Our great God and Saviour."
+          },
+          {
+            "father": "Theodoret",
+            "work": "Letter 146",
+            "ref": "Letter 146",
+            "year": 449,
+            "page": "2707146",
+            "url": "https://www.newadvent.org/fathers/2707146.htm",
+            "quote": "Here he calls the same both Saviour, and great God, and Jesus Christ."
+          }
+        ]
+      },
+      {
+        "label": "Two persons: the great God (Father) and our Savior Jesus Christ",
+        "rendering": "the appearing of the glory of the great God and of our Savior Jesus Christ",
+        "grammar": "The title μεγάλου θεοῦ is the Father's; Jesus Christ is σωτῆρος separately (KJV wording).",
+        "modern": "KJV, NEB footnote",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree parses τοῦ μεγάλου θεοῦ καὶ σωτῆρος ἡμῶν Ἰησοῦ Χριστοῦ as one noun phrase (\"the great God and savior our Jesus Christ\").",
+    "sources": [
+      "Wallace, GGBB 270-90",
+      "NET Bible note on Titus 2:13"
+    ]
+  },
+  {
+    "id": "titus-3-8-pistos-ho-logos",
+    "book": "Titus",
+    "chapter": 3,
+    "verse": 8,
+    "words": [
+      "TIT 3:8!1",
+      "TIT 3:8!2",
+      "TIT 3:8!3",
+      "TIT 3:8!4",
+      "TIT 3:8!5",
+      "TIT 3:8!6"
+    ],
+    "title": "Titus 3:8: does \"faithful is the saying\" look back or forward?",
+    "category": "punctuation",
+    "summary": "The formula \"faithful is the saying\" can close the previous passage (3:4-7, the gospel summary) or open the instruction that follows (\"I want you to insist on these things\").",
+    "readings": [
+      {
+        "label": "Looks back to 3:4-7",
+        "rendering": "The saying is trustworthy (that salvation by mercy). And concerning these I want you to insist",
+        "grammar": "Πιστὸς ὁ λόγος ends v. 7; καὶ περὶ τούτων begins a new sentence.",
+        "modern": "NIV, ESV, NRSV (paragraph division)",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Titus",
+            "ref": "on Titus 3:8",
+            "year": 400,
+            "legacy": 58321,
+            "url": "https://catenabible.com/tit/3/8",
+            "quote": "These things are true, he says, and this is manifest from what has gone before."
+          }
+        ]
+      },
+      {
+        "label": "Looks forward",
+        "rendering": "This saying is trustworthy: I want you to insist on these things",
+        "grammar": "Πιστὸς ὁ λόγος introduces the exhortation: the \"saying\" is the commandment to do good works.",
+        "modern": "Some older commentators",
+        "fathers": []
+      }
+    ],
+    "macula_follows": 0,
+    "macula_evidence": "The tree sets Πιστὸς ὁ λόγος as its own clause, with καὶ περὶ τούτων βούλομαί a separate sentence.",
+    "sources": [
+      "NET Bible note on Titus 3:8",
+      "Towner, Timothy and Titus"
+    ]
+  },
+  {
+    "id": "philemon-6-koinonia-pisteos",
+    "book": "Philemon",
+    "chapter": 1,
+    "verse": 6,
+    "words": [
+      "PHM 1:6!3",
+      "PHM 1:6!4",
+      "PHM 1:6!5",
+      "PHM 1:6!6",
+      "PHM 1:6!7",
+      "PHM 1:6!9",
+      "PHM 1:6!10"
+    ],
+    "title": "koinōnia tēs pisteōs: what is \"the sharing of your faith\"?",
+    "category": "case",
+    "summary": "The genitive can express generosity growing from faith (source), participation in the faith (objective), or the sharing/witnessing of faith (active). The prepositional phrases that follow (ἐν ἐπιγνώσει) are also variously attached.",
+    "readings": [
+      {
+        "label": "Generosity flowing from faith",
+        "rendering": "that the generous sharing that comes from your faith may become effective",
+        "grammar": "τῆς πίστεως is a genitive of source: κοινωνία = practical generosity, prefiguring the request about Onesimus.",
+        "fathers": [
+          {
+            "father": "John Chrysostom",
+            "work": "Homilies on Philemon",
+            "ref": "on Phlm 6",
+            "year": 400,
+            "legacy": 58382,
+            "url": "https://catenabible.com/phm/1/6",
+            "quote": "If you are a partaker, he says, with respect to the faith, you ought to communicate also with respect to other things."
+          }
+        ]
+      },
+      {
+        "label": "Participation in the faith",
+        "rendering": "that your fellowship in the faith may become effective",
+        "grammar": "τῆς πίστεως is an objective genitive: κοινωνία = shared participation in the common faith.",
+        "modern": "KJV \"communication of thy faith\"; Moule",
+        "fathers": []
+      },
+      {
+        "label": "Sharing (witnessing to) your faith",
+        "rendering": "that your evangelistic sharing of your faith may become effective",
+        "grammar": "κοινωνία = active sharing/imparting; the genitive is objective; ἐν ἐπιγνώσει = through understanding every good thing.",
+        "modern": "NIV \"sharing your faith\"; Lightfoot",
+        "fathers": []
+      }
+    ],
+    "macula_follows": null,
+    "macula_evidence": "The tree glosses ἡ κοινωνία τῆς πίστεώς σου as \"the sharing the faith your\" without classifying the genitive.",
+    "sources": [
+      "NET Bible note on Phlm 6",
+      "Wallace, GGBB 126-7"
+    ]
+  }
+]
