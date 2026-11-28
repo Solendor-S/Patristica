@@ -346,6 +346,13 @@ async function cachedJson<T>(
   return data
 }
 
+const _miscCache = new Map<string, unknown>()
+
+/** Online JSON for People, Clause and Mass data (path under the online base). Bounded LRU. */
+export function fetchOnlineJson<T>(path: string, cacheNull = true): Promise<T | null> {
+  return cachedJson(_miscCache as Map<string, T | null>, 24, path, path, cacheNull)
+}
+
 /**
  * Commentary for ONE verse, from the cached chapter payload. Null when offline
  * or the chapter has no file. Only the matching entries are expanded — callers

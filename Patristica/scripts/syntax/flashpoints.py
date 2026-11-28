@@ -208,7 +208,7 @@ def emit(entries: list[dict]):
     for e in entries:
         obj = {
             "id": e["id"], "book": e["book"], "chapter": e["chapter"], "verse": e["verse"],
-            "words": e.get("words", []), "title": e["title"], "category": e["category"],
+            "words": [macula.app_ref(w) for w in e.get("words", [])], "title": e["title"], "category": e["category"],
             "summary": " ".join(e["summary"].split()),
             "readings": [{
                 **{k: r[k] for k in ("label", "rendering", "grammar") if r.get(k)},

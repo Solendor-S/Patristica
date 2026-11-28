@@ -119,7 +119,7 @@ def parse_tipnr() -> list[dict]:
                 continue
             uniq = f[1].strip()
             form = uniq.split("|")[0].split("@")[0] if "|" in uniq else (f[3].split("=")[0].split(";")[0].strip() or cur["name"])
-            strong = f[2].split("«")[0].strip()
+            strong = re.sub(r"^([GH])0+(?=\d)", r"\1", f[2].split("«")[0].strip())
             if form and form not in [n[0] for n in cur["names"]]:
                 cur["names"].append((form, strong))
             elif strong and (form, strong) not in cur["names"]:

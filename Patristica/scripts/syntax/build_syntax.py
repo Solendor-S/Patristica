@@ -33,7 +33,8 @@ ONLINE = os.path.join("data", "online", "syntax")
 def compact(rows: list[dict]) -> list:
     out = []
     for r in rows:
-        words = [[w[0].split(" ", 1)[1] if " " in w[0] else w[0], w[1], w[2], w[3], w[4]] for w in r["w"]]
+        # OT refs move to English numbering so they line up with the app's verses
+        words = [[macula.app_ref(w[0]).split(" ", 1)[1] if " " in w[0] else w[0], w[1], w[2], w[3], w[4]] for w in r["w"]]
         out.append([r["d"], r["r"], words])
     return out
 
@@ -54,7 +55,8 @@ def build(part: str):
         chapters: dict[int, dict] = {}
         for s in macula.sentences(book):
             rows = macula.outline(s, macula.lang_of(book))
-            verses = [v for v in macula.sentence_verses(rows) if v[0] == book]
+            app_rows = [{**r, "w": [[macula.app_ref(w[0]), *w[1:]] for w in r["w"]]} for r in rows]
+            verses = [v for v in macula.sentence_verses(app_rows) if v[0] == book]
             if not verses:
                 continue
             sid += 1

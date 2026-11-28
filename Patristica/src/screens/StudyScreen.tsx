@@ -37,11 +37,14 @@ import TimelinePanel from './TimelinePanel'
 import WordStudyPanel from './WordStudyPanel'
 import OverviewPanel from './OverviewPanel'
 import MapPanel from './MapPanel'
+import GuidePanel from './GuidePanel'
+import PeoplePanel, { type MapPin } from './PeoplePanel'
+import SyntaxPanel from './SyntaxPanel'
 import { useTheme } from '../context/ThemeContext'
 import type { ThemeColors } from '../theme/themes'
 import type { CommentaryEntry, CrossRef, Note, RootTabParamList } from '../types'
 
-export type StudyTab = 'fathers' | 'crossrefs' | 'parallels' | 'historical' | 'councils' | 'heresies' | 'schisms' | 'creeds' | 'persecution' | 'canon' | 'timeline' | 'words' | 'overview' | 'map' | 'doctrine' | 'aquinas'
+export type StudyTab = 'guide' | 'people' | 'syntax' | 'fathers' | 'crossrefs' | 'parallels' | 'historical' | 'councils' | 'heresies' | 'schisms' | 'creeds' | 'persecution' | 'canon' | 'timeline' | 'words' | 'overview' | 'map' | 'doctrine' | 'aquinas'
 type HistMode = 'verse' | 'browse'
 type FatherMode = 'verse' | 'browse'
 type NavProp = BottomTabNavigationProp<RootTabParamList, 'Study'>
@@ -393,7 +396,9 @@ export default function StudyScreen() {
   const studyVerse = selected ? kjvVerse(translation, selected.book, selected.chapter, selected.verse) ?? 0 : 0
   const navigation = useNavigation<NavProp>()
 
-  const [activeTab, setActiveTab] = useState<StudyTab>('fathers')
+  const [activeTab, setActiveTab] = useState<StudyTab>('guide')
+  const [mapPins, setMapPins] = useState<MapPin[] | null>(null)
+  const [personId, setPersonId] = useState<number | null>(null)
   const [creedJumpTo, setCreedJumpTo] = useState<string | undefined>()
   const [heresyJumpTo, setHeresyJumpTo] = useState<string | undefined>()
   const [councilJumpTo, setCouncilJumpTo] = useState<string | undefined>()
@@ -739,7 +744,10 @@ export default function StudyScreen() {
           contentContainerStyle={styles.tabBarContent}
         >
           {([
+            { key: 'guide',      label: 'Guide' },
             { key: 'words',      label: 'Words' },
+            { key: 'syntax',     label: 'Clause' },
+            { key: 'people',     label: 'People' },
             { key: 'overview',   label: 'Overview' },
             { key: 'fathers',    label: 'Church Fathers', badge: filteredEntries.length || undefined },
             { key: 'crossrefs',  label: 'Cross-Refs',    badge: crossRefs.length || undefined },
@@ -1218,6 +1226,33 @@ export default function StudyScreen() {
         {/* Overview */}
         {activeTab === 'overview' && <OverviewPanel selected={selected} />}
 
+        {/* Passage guide: one card per source */}
+        {activeTab === 'guide' && (
+          <GuidePanel
+            selected={selected}
+            studyVerse={studyVerse}
+            entries={entries}
+            consensus={consensusByTradition}
+            crossRefs={crossRefs}
+            earlyCitations={earlyCitations}
+            onOpenTab={setActiveTab}
+            onOpenPerson={id => { setPersonId(id); setActiveTab('people') }}
+            onGoToRef={goToVerse}
+          />
+        )}
+
+        {/* Clause view (MACULA syntax trees + disputed constructions) */}
+        {activeTab === 'syntax' && <SyntaxPanel selected={selected && { ...selected, verse: studyVerse }} />}
+
+        {/* People & Places */}
+        {activeTab === 'people' && (
+          <PeoplePanel
+            selected={selected && { ...selected, verse: studyVerse }}
+            openId={personId}
+            onShowOnMap={pins => { setMapPins(pins); setActiveTab('map') }}
+          />
+        )}
+
         {/* Councils */}
         {activeTab === 'councils' && (
           <CouncilsPanel
@@ -1280,6 +1315,7 @@ export default function StudyScreen() {
         {activeTab === 'map' && (
           <MapPanel
             selected={selected}
+            places={mapPins}
             onNavigateToFather={(name) => {
               openFather(name)
               setReturnTab('map')

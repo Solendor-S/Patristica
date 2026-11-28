@@ -106,6 +106,7 @@ export type RootTabParamList = {
   Bible: undefined
   Search: undefined
   Study: undefined
+  Mass: undefined
   Library: undefined
   Settings: undefined
 }

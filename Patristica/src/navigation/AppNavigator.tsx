@@ -9,6 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import BibleNavigator from './BibleNavigator'
 import { navigationRef } from './navigationRef'
 import SearchScreen from '../screens/SearchScreen'
+import MassScreen from '../screens/MassScreen'
 import StudyScreen from '../screens/StudyScreen'
 import LibraryScreen from '../screens/LibraryScreen'
 import SettingsScreen from '../screens/SettingsScreen'
@@ -28,6 +29,7 @@ const TAB_ICONS: Record<keyof RootTabParamList, { active: IoniconsName; inactive
   Bible:    { active: 'book',        inactive: 'book-outline' },
   Search:   { active: 'search',      inactive: 'search-outline' },
   Study:    { active: 'library',     inactive: 'library-outline' },
+  Mass:     { active: 'flame',       inactive: 'flame-outline' },
   Library:  { active: 'folder-open', inactive: 'folder-open-outline' },
   Settings: { active: 'settings',    inactive: 'settings-outline' },
 }
@@ -61,6 +63,7 @@ function TabNavigator({ hideStudyTab }: { hideStudyTab?: boolean }) {
       <Tab.Screen name="Study"    component={StudyScreen}
         options={hideStudyTab ? { tabBarButton: () => null } : undefined}
       />
+      <Tab.Screen name="Mass"     component={MassScreen} />
       <Tab.Screen name="Library"  component={LibraryScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>

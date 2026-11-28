@@ -128,6 +128,20 @@ def sentence_verses(rows: list[dict]) -> list[tuple[str, int, int]]:
     return out
 
 
+def app_ref(ref: str) -> str:
+    """MACULA ref ("PSA 45:7!3", Hebrew numbering) -> app/English numbering ("PSA 45:6!3")."""
+    m = REF_RE.match(ref)
+    if not m:
+        return ref
+    book = BOOK_OF[m.group(1)]
+    if book not in OT:
+        return ref
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "mass"))
+    from citations import versify
+    ch, v = versify(book, int(m.group(2)), int(m.group(3)))
+    return f"{m.group(1)} {ch}:{v}!{m.group(4)}"
+
+
 def lang_of(book: str) -> str:
     return "el" if book in NT else "he"
 

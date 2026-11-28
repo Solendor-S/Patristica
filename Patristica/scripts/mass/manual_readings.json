@@ -1,8 +1,34 @@
 {
   "AllSouls": [
-    {"label": "First Reading", "cite": "Wisdom 3:1-9"},
-    {"label": "Responsorial Psalm", "cite": "Psalm 23:1-6"},
-    {"label": "Second Reading", "cite": "Romans 5:5-11"},
-    {"label": "Gospel", "cite": "John 6:37-40"}
+    {
+      "label": "First Reading",
+      "cite": "Wisdom 3:1-9"
+    },
+    {
+      "label": "Responsorial Psalm",
+      "cite": "Psalm 23:1-6"
+    },
+    {
+      "label": "Second Reading",
+      "cite": "Romans 5:5-11"
+    },
+    {
+      "label": "Gospel",
+      "cite": "John 6:37-40"
+    }
+  ],
+  "StsSimonJude": [
+    {
+      "label": "First Reading",
+      "cite": "Ephesians 2:19-22"
+    },
+    {
+      "label": "Responsorial Psalm",
+      "cite": "Psalm 19:2-5"
+    },
+    {
+      "label": "Gospel",
+      "cite": "Luke 6:12-16"
+    }
   ]
 }

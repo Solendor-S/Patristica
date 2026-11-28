@@ -558,6 +558,33 @@
       "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/early-against-heresies-book-5.db",
       "sizeMB": 0.2,
       "version": 1
+    },
+    {
+      "slug": "people",
+      "name": "People & Places",
+      "description": "Every named person and place in the Bible incl. the deuterocanon: references, family, Strong's links and map coordinates (STEPBible TIPNR, OpenBible.info)",
+      "type": "lexicon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/people.db",
+      "sizeMB": 3.4,
+      "version": 1
+    },
+    {
+      "slug": "syntax_nt",
+      "name": "Clause View: Greek NT",
+      "description": "Sentence-structure trees for the whole Greek New Testament (MACULA Greek, Biblica, CC BY 4.0) for offline Clause view",
+      "type": "lexicon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/syntax_nt.db",
+      "sizeMB": 8.5,
+      "version": 1
+    },
+    {
+      "slug": "syntax_ot",
+      "name": "Clause View: Hebrew OT",
+      "description": "Sentence-structure trees for the whole Hebrew Old Testament (MACULA Hebrew, Biblica, CC BY 4.0) for offline Clause view",
+      "type": "lexicon",
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/syntax_ot.db",
+      "sizeMB": 28.3,
+      "version": 1
     }
   ]
 }

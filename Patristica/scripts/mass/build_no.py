@@ -44,6 +44,26 @@ TEMPORAL = re.compile(r"^(OrdWeekday|AdventWeekday|ChristmasWeekday|DayAfterEpip
                       r"\w+OctaveEaster|\w+HolyWeek|AshWednesday|\w+AfterAshWednesday)")
 SUNDAY_LIKE = re.compile(r"^(OrdSunday\d+|Advent\d|Lent\d|Easter\d|PalmSun|Easter|Christmas2|Trinity|ChristKing|"
                          r"HolyFamily|BaptismLord|Pentecost|Epiphany|Ascension|CorpusChristi)$")
+# (title regex, key, cycle: fixed letter / "" / "g1" = first group; None key = skip the row)
+NAMED = [
+    (r"^Ascension of the Lord – ([ABC])", "Ascension", "g1"),
+    (r"Pentecost Sunday: At the Vigil Mass – ABC", "Pentecost_vigil", ""),
+    (r"Pentecost Sunday: ABC At the Vigil", None, ""),
+    (r"Pentecost Sunday: Mass during the Day", "Pentecost", ""),
+    (r"Pentecost Sunday – [BC]", None, ""),
+    (r"Most Holy Trinity - A", "Trinity", "A"),
+    (r"^Trinity Sunday - ([BC])", "Trinity", "g1"),
+    (r"Most Holy Body and Blood", "CorpusChristi", "A"),
+    (r"^Body & Blood / Corpus Christi - ([BC])", "CorpusChristi", "g1"),
+    (r"Solemnity of the Most Sacr", "SacredHeart", "A"),
+    (r"^Sacred Heart - ([BC])", "SacredHeart", "g1"),
+    (r"The Holy Family of Jesus", "HolyFamily", ""),
+    (r"^The Holy Family - [BC]", None, ""),
+    (r"^The Epiphany of the Lord", "Epiphany", ""),
+    (r"The Baptism of the Lord \(Feast\)", "BaptismLord", ""),
+    (r"^The Baptism of the Lord - [BC]", None, ""),
+    (r"Second Sunday after Christmas", "Christmas2", ""),
+]
 LABELS = {"first_reading": "First Reading", "responsorial_psalm": "Responsorial Psalm",
           "second_reading": "Second Reading", "gospel_acclamation": "Gospel Acclamation", "gospel": "Gospel"}
 
@@ -164,8 +184,8 @@ def reading_list(rec: dict) -> list[dict]:
         if not v or v in (".", "x") or "no bibl" in v.lower() or v.startswith("(see"):
             continue
         v = re.sub(r"^†\s*", "", v)
-        v = re.sub(r"\(\s*or\s*,\s*in Year [ABC],[^)]*\)", "", v)
-        v = re.sub(r"\bor,? in Year [ABC],.*$", "", v)
+        v = re.sub(r"\(\s*or\s*,\s*in Y(?:ea)?r ([ABC]),\s*([^)]*)\)", r"or, in Year \1, \2", v)
+        v = re.sub(r"or\s*,?\s*in Y(?:ea)?r ([ABC]),", r"or, in Year \1,", " ".join(v.split()))
         v = re.sub(r"\s*-\s*Vg\b.*$", "", v)
         v = re.sub(r"^(optional|opt\.):\s*", "", v)
         v = re.sub(r"\bor (reading|Psalm) from Year A\b", "", v)
@@ -202,6 +222,15 @@ def temporal_key(d: dt.date, days: dict[str, list[dict]]) -> str | None:
         if m:
             pre = {"OrdSunday": "OrdWeekday", "Lent": "LentWeekday", "Easter": "EasterWeekday", "Advent": "AdventWeekday"}[m.group(1)]
             return f"{pre}{m.group(2)}{DAYS[d.weekday()]}"
+    for weeks in (1, -1, 2, -2):
+        mon = monday + dt.timedelta(days=7 * weeks)
+        for i in range(6):
+            for e in days.get((mon + dt.timedelta(days=i)).isoformat(), []):
+                m = re.match(r"^OrdWeekday(\d+)\w+day$", e["event_key"])
+                if m and (not evs or evs[0].get("liturgical_season") in ("ORDINARY_TIME", "", None)):
+                    n = int(m.group(1)) - weeks
+                    if 1 <= n <= 34:
+                        return f"OrdWeekday{n}{DAYS[d.weekday()]}"
     if d.month in (12, 1):
         nm = d.strftime("%b")
         return f"ChristmasWeekday{nm}{d.day}" if (d.month == 12 or d.day < 7) else f"DayAfterEpiphany{nm}{d.day}"
@@ -247,19 +276,27 @@ def build_lectionary() -> tuple[dict, dict]:
             readings = reading_list(r)
             if "Use at least three" in (r.get("first") or ""):
                 continue  # Easter Vigil prose cell: LitCal has it structured
-            mt = re.search(r"(\d+)\s*(?:st|nd|rd|th)\s+Sunday of (Advent|Lent|Easter)\s*[-–]\s*([ABC])", title)
+            mt = re.search(r"(\d+)\s*(?:st|nd|rd|th)\s+Sunday of (Advent|Lent|Easter)\s*[-–]\s*([ABC])\b", title)
             if mt:
                 put(f"{mt.group(2)}{mt.group(1)}", mt.group(3), readings, "fj")
                 continue
             if re.search(r"Easter Sunday.*Mass of Easter Day", title):
                 put("Easter", "", readings, "fj")
                 continue
-            mp = re.search(r"Palm Sunday.*[-–]\s*([ABC])", title)
+            if "At the Procession" in title:
+                continue
+            hit = next(((m, k, c) for rx, k, c in NAMED for m in [re.search(rx, title)] if m), None)
+            if hit:
+                m, k, c = hit
+                if k:
+                    put(k, m.group(1) if c == "g1" else c, readings, "fj")
+                continue
+            mp = re.search(r"Palm Sunday.*[-–]\s*([ABC])\b", title)
             if mp:
                 put("PalmSun", mp.group(1), readings, "fj")
                 continue
             if "Weekdays" in page:
-                mc = re.match(r"(Dec|Jan)\.?\s+(\d+)", title) or re.match(r"(December|January)\s+(\d+)", title)
+                mc = re.match(r"\[?(Dec|Jan)\.?\s+(\d+)\b", title) or re.match(r"(December|January)\s+(\d+)\b", title)
                 if mc and not ("Dec" in mc.group(1) and int(mc.group(2)) < 29 and int(mc.group(2)) > 16):
                     put(f"ChristmasWeekday{mc.group(1)[:3]}{mc.group(2)}", "", readings, "fj")
             for d in fj_dates(r.get("date", "")):
@@ -303,6 +340,10 @@ def build_lectionary() -> tuple[dict, dict]:
     sanct: dict = {}
     months = {m: i + 1 for i, m in enumerate(["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"])}
     months.update({"Jun": 6, "Jul": 7, "Sep": 9})
+    for r in fj_rows("1998USL-Solemnities"):
+        m = re.match(r"([A-Z][a-z]+)\.?\s+(\d+):\s*(.*)", r["cells"][1] if len(r["cells"]) > 1 else "")
+        if m and m.group(1) in months:
+            sanct.setdefault((months[m.group(1)], int(m.group(2))), []).append((m.group(3), reading_list(r) or None))
     for r in fj_rows("2002USL-Sanctoral"):
         cells = r["cells"]
         m = re.match(r"([A-Z][a-z]+)\.?\s+(\d+)", cells[1] if len(cells) > 1 else "")
@@ -335,8 +376,13 @@ def sunday_cycle(d: dt.date) -> str:
 
 
 def pick_cycle(cite: str, cyc: str) -> str:
-    """'A: Matt 17:1-9 B: Mark 9:2-10 C: Luke 9:28b-36' -> the cycle's citation."""
-    parts = re.split(r"([ABC])[:)]\s*", cite)
+    """'A: Matt 17:1-9 B: Mark 9:2-10 C: Luke 9:28b-36' -> the cycle's citation;
+    'X or, in Year A, Y' -> Y in Year A, else X."""
+    m = re.match(r"^(.*?)\s*or, in Year ([ABC]),\s*(.*)$", cite)
+    if m:
+        x, y = m.group(1).strip(" ;,"), m.group(3).strip(" ;,")
+        return f"{y} | {x}" if cyc == m.group(2) else f"{x} | {y}"
+    parts = re.split(r"\b([ABC])[:)]\s*", cite)
     if len(parts) >= 5 and cyc:
         labelled = dict(zip(parts[1::2], parts[2::2]))
         if cyc in labelled:
@@ -361,7 +407,9 @@ def norm_name(s: str) -> str:
     return re.sub(r"[^a-z]", "", re.sub(r"\b(st|sts|saint|saints|blessed|bl|the|of|and|pope|martyr|martyrs|virgin|bishop|priest|doctor|church|religious|abbot)\b", "", s.lower()))
 
 
-def sanct_readings(sanct, d: dt.date, name: str):
+def sanct_readings(sanct, d: dt.date, name: str, orig: str | None = None):
+    if orig:
+        d = dt.date.fromisoformat(orig)
     rows = sanct.get((d.month, d.day), [])
     if not rows:
         return None
@@ -382,7 +430,7 @@ def apply_national(cal: str, year: int, days: dict[str, list[dict]]):
                 if e["event_key"] == mv["key"]:
                     evs.remove(e)
                     to = f"{year}-{mv['to']}"
-                    days.setdefault(to, []).append({**e, "date": to})
+                    days.setdefault(to, []).append({**e, "date": to, "_orig": e.get("_orig") or e["date"][:10]})
     for sp in nat.get("suppressed", []):
         for evs in days.values():
             evs[:] = [e for e in evs if e["event_key"] != sp["key"]]
@@ -415,7 +463,7 @@ def apply_national(cal: str, year: int, days: dict[str, list[dict]]):
                         to = d + dt.timedelta(days=1) if d.weekday() == 5 else d - dt.timedelta(days=1) if d.weekday() == 0 else None
                         if to:
                             evs.remove(e)
-                            days.setdefault(to.isoformat(), []).append({**e, "date": to.isoformat()})
+                            days.setdefault(to.isoformat(), []).append({**e, "date": to.isoformat(), "_orig": e.get("_orig") or k})
 
 
 def nat_readings(spec):
@@ -453,7 +501,7 @@ def day_entry(d: dt.date, days, lect, sanct, problems):
             return None
         return lookup(lect, tk, wcyc if tk.startswith("OrdWeekday") else "")
 
-    key, cyc = p["event_key"], cycle_of(p)
+    key, cyc = p["event_key"], cycle_of(p) or CYCLE["c"]
     if p["grade"] >= 4 or SUNDAY_LIKE.match(key) or not TEMPORAL.match(key) and p["grade"] >= 4:
         subs = [(k[0].split(":", 1)[1], v[0]) for k, v in lect.items() if k[0].startswith(key + ":") and (k[1] in (cyc, "")) and v[0]]
         if subs:
@@ -466,9 +514,9 @@ def day_entry(d: dt.date, days, lect, sanct, problems):
                 masses.append({"label": {"night": "Mass during the Night", "dawn": "Mass at Dawn", "day": "Mass during the Day",
                                          "evening": "Evening Mass"}.get(sub, sub.title()), "readings": resolve(rl)})
         else:
-            rl = nat_readings(p.get("_nat_readings")) or lookup(lect, key, cyc) or sanct_readings(sanct, d, p["name"]) if p["type"] == "fixed" else lookup(lect, key, cyc)
+            rl = nat_readings(p.get("_nat_readings")) or lookup(lect, key, cyc) or sanct_readings(sanct, d, p["name"], p.get("_orig")) if p["type"] == "fixed" else lookup(lect, key, cyc)
             if rl is None and p.get("_nat_readings") is None and p["type"] == "fixed":
-                rl = sanct_readings(sanct, d, p["name"])
+                rl = sanct_readings(sanct, d, p["name"], p.get("_orig"))
             if rl is None:
                 rl = weekday_readings()
                 if p["grade"] >= 4:
@@ -480,20 +528,20 @@ def day_entry(d: dt.date, days, lect, sanct, problems):
             problems.append(f"{d}: no weekday readings for {tk!r} (main {key})")
         masses.append({"label": "", "readings": resolve(rl)})
         if p["grade"] >= 2 and not TEMPORAL.match(key):
-            own = nat_readings(p.get("_nat_readings")) or (sanct_readings(sanct, d, p["name"]) if p.get("type") == "fixed" else lookup(lect, key, ""))
+            own = nat_readings(p.get("_nat_readings")) or (sanct_readings(sanct, d, p["name"], p.get("_orig")) if p.get("type") == "fixed" else lookup(lect, key, ""))
             if own:
                 masses.append({"label": f"Proper of the {'Memorial' if p['grade'] == 3 else 'Optional Memorial'}",
                                "readings": resolve(own)})
     # solemnity vigil Masses (on the eve) with their own readings
     for e in evs:
         if e.get("is_vigil_mass") and not SUNDAY_LIKE.match(e.get("is_vigil_for", "")):
-            rl = lookup(lect, e["event_key"], cycle_of(e))
+            rl = lookup(lect, e["event_key"], cycle_of(e) or CYCLE["c"])
             if rl:
                 masses.append({"label": f"Vigil Mass: {e['name'].replace(' Vigil Mass', '')}", "readings": resolve(rl)})
     optional = []
     for e in main[1:]:
         if e["grade"] in (2, 3) and not TEMPORAL.match(e["event_key"]):
-            own = nat_readings(e.get("_nat_readings")) or (sanct_readings(sanct, d, e["name"]) if e.get("type") == "fixed" else None)
+            own = nat_readings(e.get("_nat_readings")) or (sanct_readings(sanct, d, e["name"], e.get("_orig")) if e.get("type") == "fixed" else None)
             optional.append({"title": e["name"], "readings": resolve(own)})
     for m in masses:
         if not m["readings"] or not any(r["label"] == "Gospel" and r["alts"] for r in m["readings"]):
