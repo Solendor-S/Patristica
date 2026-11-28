@@ -18,11 +18,25 @@ interface Props { selected: SelectedVerse | null }
 const shortRef = (r: string) => r.slice(r.indexOf(' ') + 1)
 
 /** Flashpoints for a book, indexed by short word ref. */
-function flashIndex(book: string): Map<string, Flashpoint> {
-  const m = new Map<string, Flashpoint>()
-  for (const f of FLASHPOINTS) if (f.book === book) for (const w of f.words) m.set(shortRef(w), f)
-  return m
+// Lookups built once at load: by book, by book + short word ref, by book:chapter:verse.
+const BY_BOOK = new Map<string, Flashpoint[]>()
+const BY_WORD = new Map<string, Map<string, Flashpoint>>()
+const BY_VERSE = new Map<string, Flashpoint[]>()
+for (const f of FLASHPOINTS) {
+  if (!BY_BOOK.has(f.book)) { BY_BOOK.set(f.book, []); BY_WORD.set(f.book, new Map()) }
+  BY_BOOK.get(f.book)!.push(f)
+  const verses = new Set([`${f.chapter}:${f.verse}`])
+  for (const w of f.words) {
+    BY_WORD.get(f.book)!.set(shortRef(w), f)
+    const [c, v] = wordVerse(shortRef(w))
+    verses.add(`${c}:${v}`)
+  }
+  for (const cv of verses) {
+    const k = `${f.book} ${cv}`
+    BY_VERSE.set(k, [...(BY_VERSE.get(k) ?? []), f])
+  }
 }
+const NO_FLASHPOINTS = new Map<string, Flashpoint>()
 
 /** Hebrew morphemes of one word (no space after) shown as one unit; Strong's of the content morpheme. */
 function joinMorphemes(words: SynWord[]): SynWord[] {
@@ -41,9 +55,7 @@ function joinMorphemes(words: SynWord[]): SynWord[] {
 }
 
 export function flashpointsForVerse(book: string, chapter: number, verse: number): Flashpoint[] {
-  return FLASHPOINTS.filter(f => f.book === book && (
-    (f.chapter === chapter && f.verse === verse) ||
-    f.words.some(w => { const [c, v] = wordVerse(shortRef(w)); return c === chapter && v === verse })))
+  return BY_VERSE.get(`${book} ${chapter}:${verse}`) ?? []
 }
 
 export function FlashpointSheet({ fp, onClose }: { fp: Flashpoint | null; onClose: () => void }) {
@@ -112,7 +124,7 @@ export default function SyntaxPanel({ selected }: Props) {
     return () => { off = true }
   }, [selected, loadSyntax])
 
-  const fpIdx = useMemo(() => (selected ? flashIndex(selected.book) : new Map<string, Flashpoint>()), [selected])
+  const fpIdx = (selected && BY_WORD.get(selected.book)) || NO_FLASHPOINTS
   const verseFps = useMemo(() => (selected ? flashpointsForVerse(selected.book, selected.chapter, selected.verse ?? 0) : []), [selected])
   const hebrew = !!selected && BOOK_MAP[selected.book]?.testament === 'OT'
 
@@ -132,7 +144,7 @@ export default function SyntaxPanel({ selected }: Props) {
   )
 
   if (showIndex) {
-    const byBook = FLASHPOINTS.reduce<Record<string, Flashpoint[]>>((acc, f) => { (acc[f.book] ??= []).push(f); return acc }, {})
+    const byBook = Object.fromEntries(BY_BOOK)
     return (
       <View style={{ flex: 1 }}>
         {header}

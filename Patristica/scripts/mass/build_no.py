@@ -390,15 +390,12 @@ def pick_cycle(cite: str, cyc: str) -> str:
     return cite
 
 
-CYCLE = {"c": ""}
-
-
-def resolve(readings):
+def resolve(readings, cyc: str):
     if not readings:
         return None
     out = []
     for r in readings:
-        cite = pick_cycle(r["cite"], CYCLE["c"])
+        cite = pick_cycle(r["cite"], cyc)
         out.append({"label": r["label"], "cite": cite, "alts": parse(cite)})
     return out
 
@@ -435,8 +432,7 @@ def apply_national(cal: str, year: int, days: dict[str, list[dict]]):
         for evs in days.values():
             evs[:] = [e for e in evs if e["event_key"] != sp["key"]]
     cels = list(nat.get("celebrations", []))
-    for region in (nat.get("regions") or {}).values():
-        pass  # regional (e.g. Wales) propers are not applied to the national calendar
+    # regional propers (e.g. Wales, in "regions") are not applied to the national calendar
     for c in cels:
         date = f"{year}-{c['date']}"
         evs = days.setdefault(date, [])
@@ -481,8 +477,10 @@ MANUAL = json.load(open(os.path.join("scripts", "mass", "manual_readings.json"),
 
 
 def day_entry(d: dt.date, days, lect, sanct, problems):
-    CYCLE["c"] = sunday_cycle(d)
-    evs = [e for e in days.get(d.isoformat(), [])]
+    year_cyc = sunday_cycle(d)
+    def res(rl):
+        return resolve(rl, year_cyc)
+    evs = list(days.get(d.isoformat(), []))
     main = [e for e in evs if not e.get("is_vigil_mass")]
     tk = temporal_key(d, days)
     if not main:
@@ -501,8 +499,8 @@ def day_entry(d: dt.date, days, lect, sanct, problems):
             return None
         return lookup(lect, tk, wcyc if tk.startswith("OrdWeekday") else "")
 
-    key, cyc = p["event_key"], cycle_of(p) or CYCLE["c"]
-    if p["grade"] >= 4 or SUNDAY_LIKE.match(key) or not TEMPORAL.match(key) and p["grade"] >= 4:
+    key, cyc = p["event_key"], cycle_of(p) or year_cyc
+    if p["grade"] >= 4 or SUNDAY_LIKE.match(key):
         subs = [(k[0].split(":", 1)[1], v[0]) for k, v in lect.items() if k[0].startswith(key + ":") and (k[1] in (cyc, "")) and v[0]]
         if subs:
             order = {"vigil": 0, "night": 1, "dawn": 2, "day": 3, "evening": 4}
@@ -512,7 +510,7 @@ def day_entry(d: dt.date, days, lect, sanct, problems):
                     continue
                 seen.add(sub)
                 masses.append({"label": {"night": "Mass during the Night", "dawn": "Mass at Dawn", "day": "Mass during the Day",
-                                         "evening": "Evening Mass"}.get(sub, sub.title()), "readings": resolve(rl)})
+                                         "evening": "Evening Mass"}.get(sub, sub.title()), "readings": res(rl)})
         else:
             rl = nat_readings(p.get("_nat_readings")) or lookup(lect, key, cyc) or sanct_readings(sanct, d, p["name"], p.get("_orig")) if p["type"] == "fixed" else lookup(lect, key, cyc)
             if rl is None and p.get("_nat_readings") is None and p["type"] == "fixed":
@@ -521,28 +519,28 @@ def day_entry(d: dt.date, days, lect, sanct, problems):
                 rl = weekday_readings()
                 if p["grade"] >= 4:
                     problems.append(f"{d}: no proper readings for {key} ({p['name']}), using weekday")
-            masses.append({"label": "", "readings": resolve(rl)})
+            masses.append({"label": "", "readings": res(rl)})
     else:
         rl = weekday_readings()
         if rl is None:
             problems.append(f"{d}: no weekday readings for {tk!r} (main {key})")
-        masses.append({"label": "", "readings": resolve(rl)})
+        masses.append({"label": "", "readings": res(rl)})
         if p["grade"] >= 2 and not TEMPORAL.match(key):
             own = nat_readings(p.get("_nat_readings")) or (sanct_readings(sanct, d, p["name"], p.get("_orig")) if p.get("type") == "fixed" else lookup(lect, key, ""))
             if own:
                 masses.append({"label": f"Proper of the {'Memorial' if p['grade'] == 3 else 'Optional Memorial'}",
-                               "readings": resolve(own)})
+                               "readings": res(own)})
     # solemnity vigil Masses (on the eve) with their own readings
     for e in evs:
         if e.get("is_vigil_mass") and not SUNDAY_LIKE.match(e.get("is_vigil_for", "")):
-            rl = lookup(lect, e["event_key"], cycle_of(e) or CYCLE["c"])
+            rl = lookup(lect, e["event_key"], cycle_of(e) or year_cyc)
             if rl:
-                masses.append({"label": f"Vigil Mass: {e['name'].replace(' Vigil Mass', '')}", "readings": resolve(rl)})
+                masses.append({"label": f"Vigil Mass: {e['name'].replace(' Vigil Mass', '')}", "readings": res(rl)})
     optional = []
     for e in main[1:]:
         if e["grade"] in (2, 3) and not TEMPORAL.match(e["event_key"]):
             own = nat_readings(e.get("_nat_readings")) or (sanct_readings(sanct, d, e["name"], e.get("_orig")) if e.get("type") == "fixed" else None)
-            optional.append({"title": e["name"], "readings": resolve(own)})
+            optional.append({"title": e["name"], "readings": res(own)})
     for m in masses:
         if not m["readings"] or not any(r["label"] == "Gospel" and r["alts"] for r in m["readings"]):
             problems.append(f"{d}: mass {m['label']!r} for {key} has no resolvable Gospel")

@@ -30,6 +30,12 @@ interface Props {
   onGoToRef: (r: CrossRef) => void
 }
 
+// Doctrine passages keyed by the verse they expound ("Book C:V"), built once.
+const DOCTRINE_BY_VERSE = new Map<string, (typeof DOCTRINE_ENTRIES)[string]>()
+for (const e of Object.values(DOCTRINE_ENTRIES).flat()) {
+  if (e.verse) DOCTRINE_BY_VERSE.set(e.verse, [...(DOCTRINE_BY_VERSE.get(e.verse) ?? []), e])
+}
+
 /** Everything the app knows about the selected verse, one card per source. */
 export default function GuidePanel({ selected, studyVerse, entries, consensus, crossRefs, earlyCitations, onOpenTab, onOpenPerson, onGoToRef }: Props) {
   const { colors } = useTheme()
@@ -73,7 +79,7 @@ export default function GuidePanel({ selected, studyVerse, entries, consensus, c
   const parallels = parallelsForVerse(selected.book, selected.chapter, studyVerse)
   const parallelCount = parallels.reduce((n, p) => n + p.parallels.length, 0)
   const flashpoints = flashpointsForVerse(selected.book, selected.chapter, studyVerse)
-  const doctrine = Object.values(DOCTRINE_ENTRIES).flat().filter(e => e.verse === ref)
+  const doctrine = DOCTRINE_BY_VERSE.get(ref) ?? []
   const total = Object.values(consensus).reduce((a, b) => a + b, 0)
 
   const card = (icon: keyof typeof Ionicons.glyphMap, title: string, count: number | string, tab: StudyTab | null, body?: React.ReactNode) => (

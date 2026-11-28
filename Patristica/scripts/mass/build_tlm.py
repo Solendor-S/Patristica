@@ -24,11 +24,6 @@ from api import controller  # noqa: E402
 from api.utils import format_propers, get_pregenerated_proper  # noqa: E402
 
 
-def text(body) -> str:
-    # body is [[vernacular, latin]] pairs or a list of strings depending on section
-    return body
-
-
 def day_propers(d: datetime.date) -> list[dict]:
     day = controller.get_day(d, "en")
     pre = get_pregenerated_proper("en", day.get_celebration_id(), day.get_tempora_id())

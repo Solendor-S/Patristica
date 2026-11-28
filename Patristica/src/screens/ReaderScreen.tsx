@@ -259,11 +259,6 @@ function splitHistoricalPresent(seg: Segment): Segment[] {
   return seg.t.split(/(\*)/).filter(Boolean).map(t => t === '*' ? { ...seg, t, hp: true } : { ...seg, t })
 }
 
-// VerseRow is memoised and module-level, so the tap reaches the screen's popup through this listener.
-let historicalPresentListener: (() => void) | null = null
-function explainHistoricalPresent() {
-  historicalPresentListener?.()
-}
 
 function applyItalics(seg: Segment): Segment[] {
   if (!seg.t.includes('{')) return [seg]
@@ -477,7 +472,7 @@ function formatBsbText(stripped: string, foldedOn: boolean): string {
 }
 
 const VerseRow = memo(function VerseRow({
-  verse, text, isSelected, isMirrorSelected, hlColor, onPress, onWordPress, onFnPress, onBsbFnPress, onElxxNotePress, redLetterOn, book, chapter, footnotes, bsbFootnotes, elxxNotes, compareText, compareLabel, isAnnotated, lazyAnnotation, compareIsAnnotated, lazyCompareAnnotation, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter, isEarlyText, onEarlyFnPress, onInlineRefPress, focusMode, crossRefs, onCrossRefPress, isBsb, compareIsBsb, compareBsbFootnotes, bsbFoldedOn = true, otQuoteSpans,
+  verse, text, isSelected, isMirrorSelected, hlColor, onPress, onWordPress, onFnPress, onBsbFnPress, onElxxNotePress, redLetterOn, book, chapter, footnotes, bsbFootnotes, elxxNotes, compareText, compareLabel, isAnnotated, lazyAnnotation, compareIsAnnotated, lazyCompareAnnotation, onStrongsPress, isDss, dssAllReadings, isHebrew, useHeuristicRedLetter, isEarlyText, onEarlyFnPress, onInlineRefPress, focusMode, crossRefs, onCrossRefPress, onHpPress, isBsb, compareIsBsb, compareBsbFootnotes, bsbFoldedOn = true, otQuoteSpans,
 }: {
   verse: number
   text: string
@@ -512,6 +507,8 @@ const VerseRow = memo(function VerseRow({
   focusMode?: boolean
   crossRefs?: CrossRef[]
   onCrossRefPress?: (ref: CrossRef) => void
+  /** NASB historical-present asterisk tapped */
+  onHpPress?: () => void
   isBsb?: boolean
   compareIsBsb?: boolean
   compareBsbFootnotes?: BsbFootnote[]
@@ -739,7 +736,7 @@ const VerseRow = memo(function VerseRow({
       const hasSpace = i < tagged.length - 1
       if (tw.hp) {
         elems.push(
-          <Text key={`w${i}`} onPress={explainHistoricalPresent} suppressHighlighting style={[styles.verseText, styles.verseTextSelected, styles.hpMarker]}>*</Text>
+          <Text key={`w${i}`} onPress={onHpPress} suppressHighlighting style={[styles.verseText, styles.verseTextSelected, styles.hpMarker]}>*</Text>
         )
         return
       }
@@ -822,7 +819,7 @@ const VerseRow = memo(function VerseRow({
                 ) : (
                   <Text style={[styles.verseText, hebrewTextStyle]}>
                     {segments.map((seg, i) => (
-                      <Text key={i} onPress={seg.hp ? explainHistoricalPresent : undefined} suppressHighlighting={seg.hp} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined, seg.hp ? styles.hpMarker : undefined]}>{seg.t}</Text>
+                      <Text key={i} onPress={seg.hp ? onHpPress : undefined} suppressHighlighting={seg.hp} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined, seg.hp ? styles.hpMarker : undefined]}>{seg.t}</Text>
                     ))}
                   </Text>
                 )}
@@ -840,7 +837,7 @@ const VerseRow = memo(function VerseRow({
           ) : (
             <Text style={[styles.verseText, hebrewTextStyle]}>
               {segments.map((seg, i) => (
-                <Text key={i} onPress={seg.hp ? explainHistoricalPresent : undefined} suppressHighlighting={seg.hp} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined, seg.hp ? styles.hpMarker : undefined]}>{seg.t}</Text>
+                <Text key={i} onPress={seg.hp ? onHpPress : undefined} suppressHighlighting={seg.hp} style={[seg.red ? styles.redLetterText : undefined, seg.italic ? styles.italicText : undefined, seg.caps ? styles.capsText : undefined, seg.hp ? styles.hpMarker : undefined]}>{seg.t}</Text>
               ))}
             </Text>
           )}
@@ -860,7 +857,7 @@ const VerseRow = memo(function VerseRow({
         return
       }
       if (seg.hp) {  // NASB "*" marker: not a word, so footnote positions stay aligned
-        elems.push(<Text key={key} onPress={explainHistoricalPresent} suppressHighlighting style={styles.hpMarker}>{token}</Text>)
+        elems.push(<Text key={key} onPress={onHpPress} suppressHighlighting style={styles.hpMarker}>{token}</Text>)
         return
       }
       wordIdx++
@@ -1529,10 +1526,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const [splitCrossRefsByVerse, setSplitCrossRefsByVerse] = useState<Map<number, CrossRef[]>>(new Map())
   const [activeFn, setActiveFn] = useState<Footnote | null>(null)
   const [hpNoteOpen, setHpNoteOpen] = useState(false)
-  useEffect(() => {
-    historicalPresentListener = () => setHpNoteOpen(true)
-    return () => { historicalPresentListener = null }
-  }, [])
+  const openHpNote = useCallback(() => setHpNoteOpen(true), [])
   const [activeBsbFn, setActiveBsbFn] = useState<BsbFootnote | null>(null)
   const [activeElxxNote, setActiveElxxNote] = useState<ElxxNote | null>(null)
   const [activeCrossRef, setActiveCrossRef] = useState<CrossRef | null>(null)
@@ -2429,6 +2423,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       isMirrorSelected={splitOn && activeSplitPane === 'right' && selectedVerse === item.verse}
       hlColor={highlights[item.verse]}
       onPress={selectVerse}
+      onHpPress={openHpNote}
       onWordPress={openConcordance}
       onFnPress={setActiveFn}
       onBsbFnPress={setActiveBsbFn}
@@ -2487,6 +2482,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       isMirrorSelected={activeSplitPane === 'left' && selectedVerse === item.verse}
       hlColor={undefined}
       onPress={selectSplitVerse}
+      onHpPress={openHpNote}
       onWordPress={openConcordance}
       onFnPress={setActiveFn}
       onBsbFnPress={setActiveBsbFn}

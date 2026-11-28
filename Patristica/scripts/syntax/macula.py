@@ -22,6 +22,9 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "mass"))
+from citations import versify  # noqa: E402  (Hebrew -> English verse numbers, STEPBible TVTMS)
+
 ROOT = os.path.join("temp", "src_data")
 GREEK_DIR = os.path.join(ROOT, "macula-greek", "SBLGNT", "lowfat")
 HEBREW_DIR = os.path.join(ROOT, "macula-hebrew", "WLC", "lowfat")
@@ -128,6 +131,7 @@ def sentence_verses(rows: list[dict]) -> list[tuple[str, int, int]]:
     return out
 
 
+@functools.lru_cache(maxsize=None)
 def app_ref(ref: str) -> str:
     """MACULA ref ("PSA 45:7!3", Hebrew numbering) -> app/English numbering ("PSA 45:6!3")."""
     m = REF_RE.match(ref)
@@ -136,8 +140,6 @@ def app_ref(ref: str) -> str:
     book = BOOK_OF[m.group(1)]
     if book not in OT:
         return ref
-    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "mass"))
-    from citations import versify
     ch, v = versify(book, int(m.group(2)), int(m.group(3)))
     return f"{m.group(1)} {ch}:{v}!{m.group(4)}"
 

@@ -394,6 +394,8 @@ export default function StudyScreen() {
   // Commentary and cross-refs are keyed on KJV numbering; 0 matches nothing, which is
   // right for a verse with no KJV equivalent.
   const studyVerse = selected ? kjvVerse(translation, selected.book, selected.chapter, selected.verse) ?? 0 : 0
+  // The selected verse in KJV numbering, for panels keyed on it (stable identity between renders)
+  const studySelected = useMemo(() => selected && { ...selected, verse: studyVerse }, [selected, studyVerse])
   const navigation = useNavigation<NavProp>()
 
   const [activeTab, setActiveTab] = useState<StudyTab>('guide')
@@ -1217,7 +1219,7 @@ export default function StudyScreen() {
         {/* Historical */}
         {activeTab === 'historical' && (
           <HistoricalPanel
-            selected={selected && { ...selected, verse: studyVerse }}
+            selected={studySelected}
             mode={histMode}
             onModeChange={setHistMode}
           />
@@ -1242,12 +1244,12 @@ export default function StudyScreen() {
         )}
 
         {/* Clause view (MACULA syntax trees + disputed constructions) */}
-        {activeTab === 'syntax' && <SyntaxPanel selected={selected && { ...selected, verse: studyVerse }} />}
+        {activeTab === 'syntax' && <SyntaxPanel selected={studySelected} />}
 
         {/* People & Places */}
         {activeTab === 'people' && (
           <PeoplePanel
-            selected={selected && { ...selected, verse: studyVerse }}
+            selected={studySelected}
             openId={personId}
             onShowOnMap={pins => { setMapPins(pins); setActiveTab('map') }}
           />

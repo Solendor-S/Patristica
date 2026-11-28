@@ -235,11 +235,9 @@ export default function PeoplePanel({ selected, onShowOnMap, openId }: Props) {
             {inVerse.some(e => e.kind === 'place') && (
               <TouchableOpacity onPress={() => {
                 people.forChapter(selected!.book, selected!.chapter).then(async list => {
-                  const pins: MapPin[] = []
-                  for (const e of list.filter(x => x.kind === 'place').slice(0, 40)) {
-                    const pr = await people.profile(e.id)
-                    if (pr?.lat != null && pr.lng != null) pins.push({ id: pr.id, name: pr.name, lat: pr.lat, lng: pr.lng, brief: pr.brief })
-                  }
+                  const profiles = await Promise.all(list.filter(x => x.kind === 'place').slice(0, 40).map(e => people.profile(e.id)))
+                  const pins: MapPin[] = profiles.flatMap(pr => pr?.lat != null && pr.lng != null
+                    ? [{ id: pr.id, name: pr.name, lat: pr.lat, lng: pr.lng, brief: pr.brief }] : [])
                   onShowOnMap(pins)
                 })
               }}>

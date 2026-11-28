@@ -17,17 +17,23 @@ export function usePassage() {
   return useCallback(async (segs: Seg[], translation: string): Promise<PassageVerse[]> => {
     // ponytail: API-only translations (ESV/NASB/NKJV) need their proxy fetch; WEBC stands in here.
     const t = API_TRANSLATIONS.has(translation as Translation) ? 'WEBC' : translation
-    const out: PassageVerse[] = []
-    for (const s of segs) {
-      for (let c = s.ch; c <= s.ch2; c++) {
-        const lo = c === s.ch ? s.v1 : 1
-        const hi = c === s.ch2 ? s.v2 : 999
-        const inRange = (v: { verse: number }) => v.verse >= lo && v.verse <= hi
-        let pick = (await chapterText(s.book, c, t).catch(() => [])).filter(inRange)
-        if (pick.length === 0 && t !== 'WEBC') pick = (await chapterText(s.book, c, 'WEBC').catch(() => [])).filter(inRange)
-        out.push(...pick.map(v => ({ book: s.book, chapter: c, verse: v.verse, text: stripUsfm(v.text) })))
-      }
+    // one fetch per distinct chapter (readings like "Isa 63:16-17, 19; 64:2-7" hit the same chapter twice)
+    const pieces = segs.flatMap(s => Array.from({ length: s.ch2 - s.ch + 1 }, (_, i) => {
+      const c = s.ch + i
+      return { book: s.book, c, lo: c === s.ch ? s.v1 : 1, hi: c === s.ch2 ? s.v2 : 999 }
+    }))
+    const chapters = new Map<string, Promise<{ verse: number; text: string }[]>>()
+    const load = (book: string, c: number, tr: string) => {
+      const key = `${tr}|${book}|${c}`
+      if (!chapters.has(key)) chapters.set(key, chapterText(book, c, tr).catch(() => []))
+      return chapters.get(key)!
     }
-    return out
+    const parts = await Promise.all(pieces.map(async ({ book, c, lo, hi }) => {
+      const inRange = (v: { verse: number }) => v.verse >= lo && v.verse <= hi
+      let pick = (await load(book, c, t)).filter(inRange)
+      if (pick.length === 0 && t !== 'WEBC') pick = (await load(book, c, 'WEBC')).filter(inRange)
+      return pick.map(v => ({ book, chapter: c, verse: v.verse, text: stripUsfm(v.text) }))
+    }))
+    return parts.flat()
   }, [chapterText])
 }

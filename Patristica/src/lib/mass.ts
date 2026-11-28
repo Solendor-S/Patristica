@@ -41,19 +41,24 @@ export const LITURGICAL_COLOR: Record<string, string> = {
   red: '#c62828', r: '#c62828', rose: '#e91e63', pink: '#e91e63', p: '#e91e63', black: '#212121', b: '#212121', gold: '#c9a227',
 }
 
-export function isoDate(d: Date): string {
-  const y = d.getFullYear(), m = d.getMonth() + 1, day = d.getDate()
-  return `${y}-${m < 10 ? '0' : ''}${m}-${day < 10 ? '0' : ''}${day}`
-}
+export { isoDate } from '../db/queries'
+
+// Parsed year/month files kept in memory, so stepping between days doesn't re-read and re-parse
+// the whole file from SQLite each time. ponytail: unbounded, but it only ever holds the few files opened.
+const parsed = new Map<string, unknown>()
 
 async function cached<T>(userDb: SQLiteDatabase, path: string): Promise<T | null> {
+  if (parsed.has(path)) return parsed.get(path) as T
   const row = await userDb.getFirstAsync<{ json: string }>('SELECT json FROM mass_cache WHERE key = ?', [path]).catch(() => null)
-  if (row) return JSON.parse(row.json) as T
-  const data = await fetchOnlineJson<T>(path, false)
-  if (data) {
-    await userDb.runAsync('INSERT OR REPLACE INTO mass_cache (key, json, fetched_at) VALUES (?, ?, ?)',
-      [path, JSON.stringify(data), Date.now()]).catch(() => {})
+  let data = row ? JSON.parse(row.json) as T : null
+  if (!data) {
+    data = await fetchOnlineJson<T>(path, false)
+    if (data) {
+      await userDb.runAsync('INSERT OR REPLACE INTO mass_cache (key, json, fetched_at) VALUES (?, ?, ?)',
+        [path, JSON.stringify(data), Date.now()]).catch(() => {})
+    }
   }
+  if (data) parsed.set(path, data)
   return data
 }
 

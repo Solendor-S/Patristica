@@ -24,7 +24,7 @@ export interface EntityProfile extends EntitySummary {
 type ChapterJson = Record<string, [number, string, EntityKind, string][]>
 type ProfileJson = Omit<EntityProfile, 'rel'> & { rel: [string, number, string][] }
 
-let _index: EntitySummary[] | null = null
+let _index: Promise<EntitySummary[]> | null = null
 
 export function usePeople() {
   const { db } = usePackDb(PEOPLE_PACK)
@@ -57,11 +57,13 @@ export function usePeople() {
       const e = await db.getFirstAsync<EntityProfile & { refCount: number }>(
         'SELECT id, uid, name, kind, brief, short, gender, lat, lng, ref_count AS refCount FROM pn_entity WHERE id = ?', [id])
       if (!e) return null
-      const names = await db.getAllAsync<{ form: string; strongs: string }>('SELECT form, strongs FROM pn_name WHERE entity_id = ?', [id])
-      const refs = await db.getAllAsync<{ book: string; chapter: number; verse: number }>(
-        'SELECT book, chapter, verse FROM pn_ref WHERE entity_id = ? ORDER BY rowid', [id])
-      const rel = await db.getAllAsync<EntityRelation>(
-        'SELECT r.rel, e.id, e.name FROM pn_rel r JOIN pn_entity e ON e.id = r.other_id WHERE r.entity_id = ?', [id])
+      const [names, refs, rel] = await Promise.all([
+        db.getAllAsync<{ form: string; strongs: string }>('SELECT form, strongs FROM pn_name WHERE entity_id = ?', [id]),
+        db.getAllAsync<{ book: string; chapter: number; verse: number }>(
+          'SELECT book, chapter, verse FROM pn_ref WHERE entity_id = ? ORDER BY rowid', [id]),
+        db.getAllAsync<EntityRelation>(
+          'SELECT r.rel, e.id, e.name FROM pn_rel r JOIN pn_entity e ON e.id = r.other_id WHERE r.entity_id = ?', [id]),
+      ])
       return { ...e, names: names.map(n => [n.form, n.strongs]), refs: refs.map(r => [r.book, r.chapter, r.verse]), rel }
     }
     const p = await fetchOnlineJson<ProfileJson>(`/people/e/${id}.json`, false)
@@ -69,16 +71,14 @@ export function usePeople() {
   }, [db])
 
   /** All entities, for search / A–Z browse. */
-  const index = useCallback(async (): Promise<EntitySummary[]> => {
-    if (_index) return _index
-    if (db) {
-      _index = await db.getAllAsync<EntitySummary>(
-        'SELECT id, name, kind, brief, ref_count AS refCount FROM pn_entity ORDER BY name')
-    } else {
-      const rows = await fetchOnlineJson<[number, string, EntityKind, string, number][]>('/people/index.json', false)
-      if (!rows) return []
-      _index = rows.map(([id, name, kind, brief, refCount]) => ({ id, name, kind, brief, refCount }))
-    }
+  const index = useCallback((): Promise<EntitySummary[]> => {
+    // cache the in-flight promise (concurrent callers share one load); a failed online load isn't kept
+    _index ??= (db
+      ? db.getAllAsync<EntitySummary>('SELECT id, name, kind, brief, ref_count AS refCount FROM pn_entity ORDER BY name')
+      : fetchOnlineJson<[number, string, EntityKind, string, number][]>('/people/index.json', false).then(rows => {
+          if (!rows) { _index = null; return [] }
+          return rows.map(([id, name, kind, brief, refCount]) => ({ id, name, kind, brief, refCount }))
+        }))
     return _index
   }, [db])
 
@@ -88,18 +88,15 @@ export function usePeople() {
     if (!list.length) return null
     const want = strongs.toUpperCase().replace(/^([GH])0+/, '$1')
     if (db) {
-      for (const e of list) {
-        const hit = await db.getFirstAsync<{ n: number }>(
-          "SELECT 1 AS n FROM pn_name WHERE entity_id = ? AND (UPPER(strongs) = ? OR UPPER(strongs) LIKE ? || '_')", [e.id, want, want])
-        if (hit) return e
-      }
-      return null
+      // strongs are stored normalised at build time (H85, H1008G), so no UPPER() needed
+      const hit = await db.getFirstAsync<{ id: number }>(
+        `SELECT entity_id AS id FROM pn_name WHERE entity_id IN (${list.map(() => '?').join(',')})
+         AND (strongs = ? OR strongs LIKE ? || '_') LIMIT 1`, [...list.map(e => e.id), want, want])
+      return list.find(e => e.id === hit?.id) ?? null
     }
-    for (const e of list) {
-      const p = await profile(e.id)
-      if (p?.names.some(([, s]) => s && s.toUpperCase().replace(/^([GH])0+/, '$1').replace(/[A-Z]$/, '') === want)) return e
-    }
-    return null
+    const profiles = await Promise.all(list.map(e => profile(e.id)))
+    const i = profiles.findIndex(p => p?.names.some(([, s]) => s && s.replace(/[A-Z]$/, '') === want))
+    return i >= 0 ? list[i] : null
   }, [db, forVerse, profile])
 
   return { forVerse, forChapter, profile, index, byStrongs }
