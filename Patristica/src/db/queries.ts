@@ -108,6 +108,7 @@ export const TRANSLATION_PACK_SLUG: Record<string, string> = {
   ASV:   'asv',
   WEB:   'web',
   WEBC:  'webc',
+  PES:   'pes',
   BSB:   'bsb',
   E_LXX: 'elxx',
   A_LXX: 'elxx',

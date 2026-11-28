@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 import { useUserDb } from '../db/UserDbProvider'
 import { ESV_PROXY_URL } from '../lib/esv'
 
-export type Translation = 'KJV' | 'ASV' | 'WEB' | 'WEBC' | 'BSB' | 'ESV' | 'NASB95' | 'NASB20' | 'NKJV' | 'SBLGNT' | 'TAGNT' | 'TR' | 'TR+' | 'KJV+' | 'I_KJV+' | 'TAHOT' | 'WLC' | 'WLC+' | 'DSS' | 'LXX' | 'LXX+' | 'E_LXX' | 'A_LXX'
+export type Translation = 'KJV' | 'ASV' | 'WEB' | 'WEBC' | 'BSB' | 'ESV' | 'NASB95' | 'NASB20' | 'NKJV' | 'SBLGNT' | 'TAGNT' | 'TR' | 'TR+' | 'KJV+' | 'I_KJV+' | 'TAHOT' | 'WLC' | 'WLC+' | 'DSS' | 'LXX' | 'LXX+' | 'E_LXX' | 'A_LXX' | 'PES'
 
 // `apiOnly` marks a translation with no local text at all — fetched live from a
 // third-party API, so it works only in the main reader. Parallel, split, and
@@ -13,6 +13,7 @@ export const TRANSLATIONS: { key: Translation; label: string; full: string; gree
   { key: 'I_KJV+', label: 'I_KJV+', full: "Interlinear KJV+ (Greek/Hebrew word order)" },
   { key: 'ASV',    label: 'ASV',    full: 'American Standard Version' },
   { key: 'WEB',    label: 'WEB',    full: 'World English Bible' },
+  { key: 'PES',    label: 'فارسی',  full: 'Persian Old Version (فارسی, 1895)' },
   { key: 'WEBC',   label: 'WEBC',   full: 'World English Bible Catholic (73 books)' },
   { key: 'BSB',    label: 'BSB',    full: 'Berean Standard Bible' },
   { key: 'ESV',    label: 'ESV',    full: ESV_PROXY_URL ? 'English Standard Version (online only)' : 'English Standard Version (needs a free API key)', apiOnly: true },
@@ -38,6 +39,8 @@ export const OT_ORIGINAL_TRANSLATIONS = new Set<Translation>(['TAHOT', 'WLC', 'W
 export const OT_ONLY_TRANSLATIONS     = new Set<Translation>(['E_LXX', 'A_LXX'])
 export const OT_TRANSLATIONS          = new Set<Translation>([...OT_ORIGINAL_TRANSLATIONS, ...OT_ONLY_TRANSLATIONS])
 export const ANNOTATED_TRANSLATIONS   = new Set<Translation>(['KJV+', 'I_KJV+', 'TR+', 'WLC+', 'LXX+'])
+// Right-to-left texts (Hebrew and Persian)
+export const RTL_TRANSLATIONS = new Set<string>(['DSS', 'WLC', 'TAHOT', 'PES'])
 export const API_TRANSLATIONS         = new Set<Translation>(TRANSLATIONS.filter(t => t.apiOnly).map(t => t.key))
 
 const VALID_TRANSLATIONS = new Set<string>(TRANSLATIONS.map(t => t.key))

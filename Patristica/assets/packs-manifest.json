@@ -63,6 +63,18 @@
       "version": 2
     },
     {
+      "slug": "pes",
+      "name": "Persian Old Version (فارسی)",
+      "description": "The 1895 Persian Old Version, public domain (eBible.org), read right to left",
+      "type": "translation",
+      "translations": [
+        "PES"
+      ],
+      "downloadUrl": "https://github.com/Solendor-S/Patristica/releases/download/packs-v1/pes.db",
+      "sizeMB": 7.4,
+      "version": 1
+    },
+    {
       "slug": "webc",
       "name": "World English Bible Catholic",
       "description": "Modern public domain translation with the 73-book Catholic canon",

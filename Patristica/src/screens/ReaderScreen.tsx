@@ -26,7 +26,7 @@ import { getStrongsConcordance, getPsalmHeading } from '../db/queries'
 import { maybeRequestReview } from '../lib/review'
 import { StrongsConcordanceModal, TranslationVariantsModal } from './WordStudyPanel'
 import { useSelectedVerse } from '../context/SelectedVerseContext'
-import { useTranslation, TRANSLATIONS, GREEK_TRANSLATIONS, OT_ORIGINAL_TRANSLATIONS, OT_ONLY_TRANSLATIONS, OT_TRANSLATIONS, ANNOTATED_TRANSLATIONS, API_TRANSLATIONS } from '../context/TranslationContext'
+import { useTranslation, TRANSLATIONS, GREEK_TRANSLATIONS, OT_ORIGINAL_TRANSLATIONS, OT_ONLY_TRANSLATIONS, OT_TRANSLATIONS, ANNOTATED_TRANSLATIONS, API_TRANSLATIONS, RTL_TRANSLATIONS } from '../context/TranslationContext'
 import { useWordFocus } from '../context/WordFocusContext'
 import { useParallelTranslation } from '../context/ParallelTranslationContext'
 import type { Translation } from '../context/TranslationContext'
@@ -2209,7 +2209,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
   const isOTTrans       = useMemo(() => OT_TRANSLATIONS.has(translation as any), [translation])
   const isAnnotatedTrans = useMemo(() => ANNOTATED_TRANSLATIONS.has(translation as any), [translation])
   const isDss           = translation === 'DSS'
-  const isHebrew        = translation === 'DSS' || translation === 'WLC' || translation === 'TAHOT'
+  const isHebrew        = RTL_TRANSLATIONS.has(translation)  // right-to-left (Hebrew, Persian)
 
   const goChapter = useCallback((delta: number) => {
     if (isApocrypha) {
@@ -2500,7 +2500,7 @@ export default function ReaderScreen({ navigation, route }: Props) {
       onStrongsPress={openStrongs}
       isDss={splitTranslation === 'DSS'}
       dssAllReadings={dssAllReadings}
-      isHebrew={splitTranslation === 'DSS' || splitTranslation === 'WLC' || splitTranslation === 'TAHOT'}
+      isHebrew={RTL_TRANSLATIONS.has(splitTranslation)}
       useHeuristicRedLetter={false}
       isEarlyText={splitIsEarlyText}
       onEarlyFnPress={openEarlyFn}
