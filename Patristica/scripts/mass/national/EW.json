@@ -1,0 +1,525 @@
+{
+ "calendar": "EW",
+ "name": "England & Wales",
+ "params": {
+  "epiphany": "JAN6",
+  "ascension": "THURSDAY",
+  "corpus_christi": "SUNDAY"
+ },
+ "eternal_high_priest": true,
+ "params_note": "params verified against LitCal general calendar 2027/2028 (epiphany=JAN6|SUNDAY_JAN2_JAN8; ascension=THURSDAY|SUNDAY; corpus_christi=THURSDAY|SUNDAY; eternal_high_priest=true|false). LitCal grade ints: 2 optional, 3 memorial, 4 feast, 5 feast of Lord, 6 solemnity. Epiphany is kept on 6 Jan but moves to the Sunday when it falls on Saturday or Monday (1984 rule); LitCal has no such option, so apply holyday_transfer after fetching. Eternal High Priest feast (Thursday after Pentecost, LitCal key JesusChristEternalHighPriest) is in the England calendar per Wikipedia; request eternal_high_priest=true.",
+ "sources": [
+  "https://liturgyoffice.org/Calendar/National/England1.shtml (and England2) - National Calendar for England",
+  "https://liturgyoffice.org/Calendar/National/Wales1.shtml - National Calendar for Wales",
+  "https://liturgyoffice.org/Calendar/Holydays.shtml - holydays and Saturday/Monday transfer rule",
+  "https://en.wikipedia.org/wiki/National_calendars_of_the_Roman_Rite (England table incl. Eternal High Priest; Walsingham memorial in Wales)"
+ ],
+ "celebrations": [
+  {
+   "date": "01-12",
+   "key": "EW_StAelred",
+   "title": "Saint Aelred of Rievaulx, abbot",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "01-19",
+   "key": "EW_StWulstan",
+   "title": "Saint Wulstan, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "02-14",
+   "key": "StsCyrilMethodius",
+   "title": "Saints Cyril, monk, and Methodius, bishop, Patrons of Europe",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StsCyrilMethodius. GRC memorial."
+  },
+  {
+   "date": "03-01",
+   "key": "EW_StDavid",
+   "title": "Saint David, bishop, Patron of Wales",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "Solemnity in Wales (see regions.Wales)."
+  },
+  {
+   "date": "03-17",
+   "key": "StPatrick",
+   "title": "Saint Patrick, bishop, Patron of Ireland",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StPatrick. GRC optional memorial."
+  },
+  {
+   "date": "04-23",
+   "key": "StGeorge",
+   "title": "Saint George, martyr, Patron of England",
+   "grade": "solemnity",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of LitCal StGeorge (GRC optional). England only; Wales has no George entry."
+  },
+  {
+   "date": "04-29",
+   "key": "StCatherineSiena",
+   "title": "Saint Catherine of Siena, virgin and doctor, Patron of Europe",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StCatherineSiena. GRC memorial."
+  },
+  {
+   "date": "05-04",
+   "key": "EW_EnglishMartyrs",
+   "title": "The English Martyrs",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "Raised to feast 2010."
+  },
+  {
+   "date": "05-19",
+   "key": "EW_StDunstan",
+   "title": "Saint Dunstan, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "05-25",
+   "key": "StBedeVenerable",
+   "title": "Saint Bede the Venerable, priest and doctor",
+   "grade": "memorial",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StBedeVenerable. GRC optional memorial."
+  },
+  {
+   "date": "05-27",
+   "key": "StAugustineCanterbury",
+   "title": "Saint Augustine of Canterbury, bishop",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StAugustineCanterbury. GRC optional memorial; raised 2010."
+  },
+  {
+   "date": "06-09",
+   "key": "EW_StColumba",
+   "title": "Saint Columba, abbot",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "06-16",
+   "key": "EW_StRichardChichester",
+   "title": "Saint Richard of Chichester, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "06-20",
+   "key": "EW_StAlban",
+   "title": "Saint Alban, martyr",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "06-22",
+   "key": "StsJohnFisherThomasMore",
+   "title": "Saints John Fisher, bishop, and Thomas More, martyrs",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StsJohnFisherThomasMore. GRC optional."
+  },
+  {
+   "date": "06-23",
+   "key": "EW_StEtheldreda",
+   "title": "Saint Etheldreda (Audrey), virgin",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "07-01",
+   "key": "EW_StOliverPlunkett",
+   "title": "Saint Oliver Plunkett, bishop and martyr",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "07-11",
+   "key": "StBenedict",
+   "title": "Saint Benedict, abbot, Patron of Europe",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StBenedict. GRC memorial."
+  },
+  {
+   "date": "07-23",
+   "key": "StBridget",
+   "title": "Saint Bridget, religious, Patron of Europe",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StBridget. GRC optional memorial."
+  },
+  {
+   "date": "08-09",
+   "key": "StEdithStein",
+   "title": "Saint Teresa Benedicta of the Cross (Edith Stein), virgin and martyr, Patron of Europe",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StEdithStein. GRC optional memorial."
+  },
+  {
+   "date": "08-26",
+   "key": "EW_BlDominicBarberi",
+   "title": "Blessed Dominic of the Mother of God Barberi, priest",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "08-30",
+   "key": "EW_StsClitherowLineWard",
+   "title": "Saints Margaret Clitherow, Anne Line and Margaret Ward, martyrs",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "08-31",
+   "key": "EW_StAidanLindisfarne",
+   "title": "Saint Aidan, bishop, and the Saints of Lindisfarne",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "09-03",
+   "key": "StGregoryGreat",
+   "title": "Saint Gregory the Great, pope and doctor",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StGregoryGreat. GRC memorial; raised 2010."
+  },
+  {
+   "date": "09-04",
+   "key": "EW_StCuthbert",
+   "title": "Saint Cuthbert, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "09-19",
+   "key": "EW_StTheodoreCanterbury",
+   "title": "Saint Theodore of Canterbury, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "09-24",
+   "key": "EW_OurLadyWalsingham",
+   "title": "Our Lady of Walsingham",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "Feast in England; memorial in Wales per Wikipedia."
+  },
+  {
+   "date": "10-09",
+   "key": "StJohnNewman",
+   "title": "Saint John Henry Newman, priest and doctor",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StJohnNewman. GRC optional memorial. Optional memorial in Wales."
+  },
+  {
+   "date": "10-10",
+   "key": "EW_StPaulinusYork",
+   "title": "Saint Paulinus of York, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "10-12",
+   "key": "EW_StWilfrid",
+   "title": "Saint Wilfrid, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "10-13",
+   "key": "EW_StEdwardConfessor",
+   "title": "Saint Edward the Confessor",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "10-26",
+   "key": "EW_StsChadCedd",
+   "title": "Saints Chad and Cedd, bishops",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "11-03",
+   "key": "EW_StWinefride",
+   "title": "Saint Winefride, virgin",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "11-07",
+   "key": "EW_StWillibrord",
+   "title": "Saint Willibrord, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "11-16",
+   "key": "EW_StEdmundAbingdon",
+   "title": "Saint Edmund of Abingdon, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "11-17",
+   "key": "EW_StHilda",
+   "title": "Saint Hilda, abbess",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "11-17",
+   "key": "EW_StHughLincoln",
+   "title": "Saint Hugh of Lincoln, bishop",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null
+  },
+  {
+   "date": "11-17",
+   "key": "StElizabethHungary",
+   "title": "Saint Elizabeth of Hungary, religious",
+   "grade": "optional",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StElizabethHungary. GRC memorial made optional so Hilda/Hugh can be celebrated."
+  },
+  {
+   "date": "12-29",
+   "key": "StThomasBecket",
+   "title": "Saint Thomas Becket, bishop and martyr",
+   "grade": "feast",
+   "replaces_key": null,
+   "readings": null,
+   "note": "RANK CHANGE of existing LitCal event StThomasBecket. GRC optional memorial; raised 2010."
+  }
+ ],
+ "moved": [
+  {
+   "key": "StAdalbert",
+   "to": "04-24",
+   "note": "Optional memorial transferred from 23 Apr (St George solemnity) to 24 Apr, alongside Fidelis."
+  },
+  {
+   "key": "StDenis",
+   "to": "10-10",
+   "note": "Optional alternative on 10 Oct 'transferred from 9 October' (Newman feast)."
+  },
+  {
+   "key": "StJohnLeonardi",
+   "to": "10-10",
+   "note": "Optional alternative on 10 Oct 'transferred from 9 October'."
+  }
+ ],
+ "suppressed": [],
+ "holy_days_transferred": [
+  "Holydays of obligation (Liturgy Office, from Advent 2017): Sundays, Christmas, Epiphany (6 Jan), Ascension (Thursday), Sts Peter and Paul (29 Jun), Assumption (15 Aug), All Saints (1 Nov).",
+  "1984 Bishops' Conference rule: holydays falling on Saturday or Monday are transferred to the Sunday. Applies to Epiphany, StsPeterPaulAp, Assumption, AllSaints. Direction (nearest Sunday: Sat to next day, Mon to previous day) is the usual reading but the page does not spell it out - UNVERIFIED direction. App must apply this after fetching LitCal.",
+  "Ascension stays on Thursday (restored as holyday 2017); Corpus Christi on Sunday since 2006.",
+  "Immaculate Conception, Mary Mother of God, St Joseph are not on the Liturgy Office holyday list so they are not moved."
+ ],
+ "holyday_transfer": {
+  "keys": [
+   "Epiphany",
+   "StsPeterPaulAp",
+   "Assumption",
+   "AllSaints"
+  ],
+  "rule": "if date is Saturday or Monday move to the nearest Sunday"
+ },
+ "regions": {
+  "Wales": {
+   "note": "Wales has its own national calendar (liturgyoffice.org/Calendar/National/Wales1.shtml). It does NOT list the England-only entries above (George, English Martyrs, Dunstan, Bede memorial, Augustine, Gregory feast, Becket feast, etc.). Wales-specific list below; shared feasts of the Patrons of Europe (C&M, Catherine, Benedict, Bridget, Edith Stein) are as in celebrations.",
+   "celebrations": [
+    {
+     "date": "02-09",
+     "key": "CY_StTeilo",
+     "title": "Saint Teilo, bishop",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "03-01",
+     "key": "EW_StDavid",
+     "title": "Saint David, bishop, Patron of Wales",
+     "grade": "solemnity",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "04-20",
+     "key": "CY_StBeuno",
+     "title": "Saint Beuno, abbot",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "05-05",
+     "key": "CY_StAsaph",
+     "title": "Saint Asaph, bishop",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "06-20",
+     "key": "CY_StsAlbanJuliusAaron",
+     "title": "Saints Alban, Julius and Aaron, martyrs",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "07-12",
+     "key": "CY_StJohnJones",
+     "title": "Saint John Jones, martyr",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "07-23",
+     "key": "CY_StsEvansLloyd",
+     "title": "Saints Philip Evans and John Lloyd, martyrs",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "08-03",
+     "key": "CY_StGermanus",
+     "title": "Saint Germanus of Auxerre, bishop",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "08-26",
+     "key": "CY_StDavidLewis",
+     "title": "Saint David Lewis, martyr",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "09-11",
+     "key": "CY_StDeiniol",
+     "title": "Saint Deiniol, bishop",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "10-16",
+     "key": "CY_StRichardGwyn",
+     "title": "Saint Richard Gwyn, martyr",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "10-25",
+     "key": "CY_SixWelshMartyrs",
+     "title": "Six Welsh Martyrs and their companions",
+     "grade": "feast",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "11-03",
+     "key": "EW_StWinefride",
+     "title": "Saint Winefride, virgin",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "11-06",
+     "key": "CY_StIlltud",
+     "title": "Saint Illtud, abbot",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "11-08",
+     "key": "CY_AllSaintsWales",
+     "title": "All Saints of Wales",
+     "grade": "feast",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "11-14",
+     "key": "CY_StDyfrig",
+     "title": "Saint Dyfrig, bishop",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    },
+    {
+     "date": "12-10",
+     "key": "CY_StJohnRoberts",
+     "title": "Saint John Roberts, martyr",
+     "grade": "optional",
+     "replaces_key": null,
+     "readings": null
+    }
+   ],
+   "unverified": "Walsingham memorial in Wales (Wikipedia only); whether Wales also keeps Eternal High Priest."
+  }
+ }
+}

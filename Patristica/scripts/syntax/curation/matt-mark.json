@@ -1,0 +1,1063 @@
+[
+ {
+  "id": "matt-1-25-heos-hou",
+  "book": "Matthew",
+  "chapter": 1,
+  "verse": 25,
+  "words": [
+   "MAT 1:25!5",
+   "MAT 1:25!6"
+  ],
+  "title": "ἕως οὗ (\"until\"): does it imply what happened afterward?",
+  "category": "construction",
+  "summary": "Matthew says Joseph did not know Mary \"until\" she bore a son. ἕως οὗ marks the limit of the negated action, but the grammar does not settle whether the action began afterward. Both readings are grammatically possible, and the question carries the weight of Mary's perpetual virginity.",
+  "readings": [
+   {
+    "label": "\"Until\" marks only the limit: nothing is implied about later",
+    "rendering": "Joseph had no marital relations with her until she bore a son (and nothing is said about afterwards)",
+    "grammar": "ἕως οὗ + aorist indicative states a terminus ad quem for the negative; a negated action up to a point does not entail its occurrence after that point (cf. Gen 8:7)",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Commentary on Matt 1:25 (catenabible.com)",
+      "ref": "Matt 1:25",
+      "year": 390,
+      "quote": "Matthew has here used the word until not that you should suspect that afterward Joseph did know her but to inform you that before the birth the Virgin was wholly untouched by man.",
+      "legacy": 27732,
+      "url": "https://catenabible.com/"
+     },
+     {
+      "father": "Jerome",
+      "work": "Commentary on Matt 1:25 (catenabible.com)",
+      "ref": "Matt 1:25",
+      "year": 400,
+      "quote": "To all this we answer, that the word 'until' is to be understood in two senses in Scripture.",
+      "legacy": 27731,
+      "url": "https://catenabible.com/"
+     }
+    ],
+    "traditions": {
+     "catholic": "Perpetual virginity; \"until\" says nothing about afterwards",
+     "orthodox": "Ever-Virgin; \"until\" says nothing about afterwards"
+    }
+   },
+   {
+    "label": "\"Until\" implies a change afterward",
+    "rendering": "Joseph did not know her until she bore a son, and (the natural implication) did afterward",
+    "grammar": "ἕως οὗ in ordinary usage often implies the negated state ended at the terminus, and \"firstborn\" fits further children",
+    "fathers": [],
+    "traditions": {
+     "protestant": "Divided: many early Reformers kept perpetual virginity; many later Protestants read it as allowing later relations"
+    }
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἕως οὗ is parsed as a temporal conjunction phrase heading a clause; the tree is neutral on what the negation implies afterward",
+  "sources": [
+   "Davies & Allison, Matthew I, on 1:25",
+   "Wallace, GGBB on ἕως",
+   "BDAG ἕως 1.b.β"
+  ]
+ },
+ {
+  "id": "matt-3-11-spirit-and-fire",
+  "book": "Matthew",
+  "chapter": 3,
+  "verse": 11,
+  "words": [
+   "MAT 3:11!27",
+   "MAT 3:11!28",
+   "MAT 3:11!29",
+   "MAT 3:11!30",
+   "MAT 3:11!31"
+  ],
+  "title": "\"Baptize ... with the Holy Spirit and fire\": one baptism or two?",
+  "category": "attachment",
+  "summary": "A single ἐν governs both datives (πνεύματι ἁγίῳ καὶ πυρί), so the grammar allows Spirit and fire to be one baptism (fire as the Spirit's purifying action) or two outcomes (Spirit for the repentant, fire of judgment for the rest, as v.12 suggests).",
+  "readings": [
+   {
+    "label": "One baptism: Spirit-and-fire together",
+    "rendering": "He will baptize you in one act of Spirit-fire (purifying and empowering)",
+    "grammar": "One preposition and one verb governing two coordinated datives; fire as a figure of the Spirit's action",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Commentary on Matt 3:11 (catenabible.com)",
+      "ref": "Matt 3:11",
+      "year": 390,
+      "quote": "and by the specification of fire on the other hand indicating the vehement and uncontrollable quality of His grace.",
+      "legacy": 27903,
+      "url": "https://catenabible.com/"
+     }
+    ]
+   },
+   {
+    "label": "Two baptisms: Spirit for the repentant, fire for judgment",
+    "rendering": "He will baptize the repentant in the Holy Spirit and the unrepentant in fire",
+    "grammar": "Coordinated datives read as two distinct objects of one verb; the context (v.12, chaff burned with unquenchable fire) supplies the judgment sense",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree keeps ἐν πνεύματι ἁγίῳ καὶ πυρί as a flat unit under βαπτίσει; no structure distinguishes the two readings",
+  "sources": [
+   "Davies & Allison, Matthew I, on 3:11",
+   "Wallace, GGBB on single preposition with coordinated nouns"
+  ]
+ },
+ {
+  "id": "matt-5-39-antistenai-to-ponero",
+  "book": "Matthew",
+  "chapter": 5,
+  "verse": 39,
+  "words": [
+   "MAT 5:39!7",
+   "MAT 5:39!8"
+  ],
+  "title": "τῷ πονηρῷ: \"evil\", \"an evil person\" or \"the evil one\"?",
+  "category": "case",
+  "summary": "The dative τῷ πονηρῷ can be masculine (an evil person, or the Evil One) or neuter (evil in the abstract), so the command \"do not resist ...\" has different objects. Translations differ (KJV \"evil\"; NIV \"an evil person\"; some Fathers \"the evil one\").",
+  "readings": [
+   {
+    "label": "Masculine: the evil one (the devil, working through the aggressor)",
+    "rendering": "Do not resist the evil one",
+    "grammar": "Masculine dative singular with the article; the devil is the ultimate opponent, so one does not retaliate against the human aggressor",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Commentary on Matt 5:39 (catenabible.com)",
+      "ref": "Matt 5:39",
+      "year": 390,
+      "quote": "For this reason Jesus has also added, “But I say to you, do not resist the evil one.” He did not say “do not resist your brother” but “the evil one”!",
+      "legacy": 28410,
+      "url": "https://catenabible.com/"
+     },
+     {
+      "father": "Theophylact of Ohrid",
+      "work": "Commentary on Matt 5:39 (catenabible.com)",
+      "ref": "Matt 5:39",
+      "year": 1090,
+      "quote": "\"The evil one\" here means the devil, who works through man.",
+      "legacy": 28411,
+      "url": "https://catenabible.com/"
+     }
+    ]
+   },
+   {
+    "label": "Neuter or generic: evil (or an evil person)",
+    "rendering": "Do not resist evil / an evil person (by retaliating)",
+    "grammar": "Dative of the article with πονηρός as a neuter abstract or generic masculine; the resistance forbidden is revenge",
+    "fathers": [],
+    "modern": "KJV, RSV, NASB (\"evil\"); NIV (\"an evil person\")"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "Gloss \"evil\" leaves gender open; the tree gives no resolution",
+  "sources": [
+   "Wallace, GGBB on substantival adjectives",
+   "Translation margins at Matt 5:39"
+  ]
+ },
+ {
+  "id": "matt-6-13-apo-tou-ponerou",
+  "book": "Matthew",
+  "chapter": 6,
+  "verse": 13,
+  "words": [
+   "MAT 6:13!11",
+   "MAT 6:13!12"
+  ],
+  "title": "ἀπὸ τοῦ πονηροῦ: \"from evil\" or \"from the evil one\"?",
+  "category": "case",
+  "summary": "In the Lord's Prayer τοῦ πονηροῦ is a genitive after ἀπό and can be neuter (evil in general) or masculine (the Evil One), so the last petition has two grammatically possible objects.",
+  "readings": [
+   {
+    "label": "Neuter: from evil",
+    "rendering": "deliver us from evil",
+    "grammar": "τοῦ πονηροῦ as a neuter substantive",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Commentary on Matt 6:13 (catenabible.com)",
+      "ref": "Matt 6:13",
+      "year": 400,
+      "quote": "he will do better to pray for deliverance from the evil of desire to Him to whom we say, “Deliver us from evil.”",
+      "legacy": 28615,
+      "url": "https://catenabible.com/"
+     }
+    ],
+    "modern": "KJV, RSV 1952 (\"evil\")"
+   },
+   {
+    "label": "Masculine: from the evil one",
+    "rendering": "deliver us from the evil one (the devil)",
+    "grammar": "τοῦ πονηροῦ as a masculine substantive (cf. Matt 13:19)",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Commentary on Matt 6:13 (catenabible.com)",
+      "ref": "Matt 6:13",
+      "year": 390,
+      "quote": "Jesus here calls the devil “the wicked one,” commanding us to wage against him a war that knows no truce.",
+      "legacy": 28622,
+      "url": "https://catenabible.com/"
+     }
+    ],
+    "traditions": {
+     "orthodox": "Liturgical and patristic tradition often takes it as \"the evil one\""
+    },
+    "modern": "ESV, NET (\"the evil one\")"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "Gloss \"evil\" keeps both options open; the tree is flat",
+  "sources": [
+   "NET Bible note on Matt 6:13",
+   "BDAG πονηρός",
+   "Wallace, GGBB on the article with adjectives"
+  ]
+ },
+ {
+  "id": "matt-11-12-biazetai",
+  "book": "Matthew",
+  "chapter": 11,
+  "verse": 12,
+  "words": [
+   "MAT 11:12!14",
+   "MAT 11:12!15",
+   "MAT 11:12!16",
+   "MAT 11:12!17",
+   "MAT 11:12!18"
+  ],
+  "title": "βιάζεται: the kingdom \"suffers violence\" or \"advances forcefully\"?",
+  "category": "construction",
+  "summary": "βιάζεται can be parsed as passive (is subjected to violence) or as middle (exerts force, advances forcefully), and βιασταὶ ἁρπάζουσιν can be hostile (violent men seize it) or positive (eager people press in). The choice changes whether the verse describes attacks on the kingdom or its powerful advance.",
+  "readings": [
+   {
+    "label": "Middle: the kingdom forcefully advances; forceful people lay hold of it",
+    "rendering": "From the days of John until now the kingdom of heaven advances with force, and the forceful take hold of it",
+    "grammar": "βιάζεται as middle voice (cf. Luke 16:16 εἰς αὐτὴν βιάζεται); βιασταί as eager seekers",
+    "fathers": [
+     {
+      "father": "Ephrem The Syrian",
+      "work": "Hymns on the Nativity",
+      "ref": "Matt 11:12 (cited)",
+      "year": 360,
+      "quote": "Blessed be the watchful, that have taken by force",
+      "commentary": 39062,
+      "url": "https://www.newadvent.org/fathers/3703.htm"
+     },
+     {
+      "father": "Augustine of Hippo",
+      "work": "Confessions",
+      "ref": "Book VIII",
+      "year": 400,
+      "quote": "The unlearned start up and 'take' heaven,",
+      "commentary": 19486,
+      "url": "https://www.newadvent.org/fathers/110108.htm"
+     }
+    ]
+   },
+   {
+    "label": "Passive: the kingdom suffers violence; violent men seize it",
+    "rendering": "From the days of John until now the kingdom of heaven is being attacked, and violent men plunder it",
+    "grammar": "βιάζεται as passive voice (is violently treated); βιασταί as hostile aggressors",
+    "fathers": [],
+    "modern": "KJV (\"suffereth violence\"), NIV 1984"
+   }
+  ],
+  "macula_follows": 1,
+  "macula_evidence": "MACULA glosses βιάζεται \"suffers violence\" (passive) and takes βιασταί as the subject of ἁρπάζουσιν",
+  "sources": [
+   "Davies & Allison, Matthew II, on 11:12",
+   "BDAG βιάζω",
+   "Wallace, GGBB on middle/passive forms"
+  ]
+ },
+ {
+  "id": "matt-16-18-taute-te-petra",
+  "book": "Matthew",
+  "chapter": 16,
+  "verse": 18,
+  "words": [
+   "MAT 16:18!8",
+   "MAT 16:18!11",
+   "MAT 16:18!12",
+   "MAT 16:18!13"
+  ],
+  "title": "ταύτῃ τῇ πέτρᾳ: what is \"this rock\"?",
+  "category": "referent",
+  "summary": "Πέτρος (masculine) and πέτρᾳ (feminine) differ in form, and the demonstrative ταύτῃ points back to something near in the discourse. The \"rock\" can be Peter himself (and his office), Peter's confession in v.16, or Christ.",
+  "readings": [
+   {
+    "label": "Peter himself",
+    "rendering": "On you, Peter, I will build my Church",
+    "grammar": "πέτρᾳ as wordplay on Πέτρος (Aramaic Kepha for both); ταύτῃ points to the person addressed",
+    "fathers": [
+     {
+      "father": "Cyprian",
+      "work": "Treatise 9 (On the Advantage of Patience)",
+      "ref": "Ch. 9",
+      "year": 256,
+      "quote": "Peter also, upon whom by the Lord's condescension the Church was founded,",
+      "commentary": 3091,
+      "url": "https://www.newadvent.org/fathers/050709.htm"
+     },
+     {
+      "father": "Augustine of Hippo",
+      "work": "Letters",
+      "ref": "Letter 53",
+      "year": 400,
+      "quote": "Peter himself, to whom, as bearing in a figure the whole Church, the Lord said: Upon this rock will I build my Church",
+      "commentary": 20029,
+      "url": "https://www.newadvent.org/fathers/1102053.htm"
+     }
+    ],
+    "traditions": {
+     "catholic": "Peter, and by extension his successors",
+     "orthodox": "Peter as representative of the apostolic college and the episcopate"
+    }
+   },
+   {
+    "label": "Peter's confession (his faith)",
+    "rendering": "On this faith that you have confessed I will build my Church",
+    "grammar": "ταύτῃ refers back to the confession of v.16 (\"You are the Christ\")",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on Matthew",
+      "ref": "Homily 54",
+      "year": 390,
+      "quote": "that is, on the faith of his confession.",
+      "commentary": 49060,
+      "url": "https://www.newadvent.org/fathers/200154.htm"
+     },
+     {
+      "father": "Origen",
+      "work": "Commentary on Matthew",
+      "ref": "Book XII",
+      "year": 245,
+      "quote": "But if you suppose that upon that one Peter only the whole church is built by God, what would you say about John the son of thunder or each one of the Apostles?",
+      "commentary": 7771,
+      "url": "https://www.newadvent.org/fathers/101612.htm"
+     }
+    ],
+    "traditions": {
+     "protestant": "Common Protestant reading (the confession of faith, or Christ)"
+    }
+   },
+   {
+    "label": "Christ himself",
+    "rendering": "On this rock (Christ), which you have confessed, I will build my Church",
+    "grammar": "πέτρᾳ as a title for Christ (1 Cor 10:4); the name Peter derives from petra, not the reverse",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Tractates on John",
+      "ref": "Tractate 124",
+      "year": 416,
+      "quote": "On this rock, therefore, He said, which you have confessed, I will build my Church.",
+      "commentary": 30353,
+      "url": "https://www.newadvent.org/fathers/1701124.htm"
+     }
+    ],
+    "traditions": {
+     "protestant": "Common Reformed and Lutheran reading"
+    }
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree gives ἐπὶ ταύτῃ τῇ πέτρᾳ οἰκοδομήσω as a unit; ταύτῃ is simply attributive and the referent is not encoded",
+  "sources": [
+   "Davies & Allison, Matthew II, on 16:18",
+   "Augustine, Retractations I.21",
+   "Luz, Matthew 8-20, on 16:18"
+  ]
+ },
+ {
+  "id": "matt-16-19-estai-dedemenon",
+  "book": "Matthew",
+  "chapter": 16,
+  "verse": 19,
+  "words": [
+   "MAT 16:19!16",
+   "MAT 16:19!17",
+   "MAT 16:19!28",
+   "MAT 16:19!29"
+  ],
+  "title": "ἔσται δεδεμένον: \"will be bound\" or \"will have been bound\"?",
+  "category": "construction",
+  "summary": "The periphrastic ἔσται + perfect passive participle can be read as a future perfect (\"will have been bound in heaven\": heaven's decision precedes and the earthly act ratifies it) or as a simple future (\"will be bound\": heaven follows earth). The two differ over who acts first.",
+  "readings": [
+   {
+    "label": "Future perfect: already bound in heaven",
+    "rendering": "Whatever you bind on earth will have been bound in heaven",
+    "grammar": "Periphrastic future perfect passive (ἔσται + perfect participle): the earthly act reflects a prior heavenly decision",
+    "fathers": [],
+    "modern": "Argued by Wallace and several modern grammarians"
+   },
+   {
+    "label": "Simple future passive: will be bound",
+    "rendering": "Whatever you bind on earth will be bound in heaven",
+    "grammar": "ἔσται + participle as a stative future, emphasizing the resulting state rather than prior action",
+    "fathers": [],
+    "traditions": {
+     "catholic": "Heaven ratifies the binding done on earth by Peter and the Church"
+    },
+    "modern": "KJV, RSV, NIV"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "Gloss \"be bound\" is neutral on aspect; the periphrasis is encoded only as ἔσται + participle",
+  "sources": [
+   "Wallace, GGBB on the periphrastic future perfect (Matt 16:19)",
+   "Davies & Allison, Matthew II, on 16:19"
+  ]
+ },
+ {
+  "id": "matt-19-9-me-epi-porneia",
+  "book": "Matthew",
+  "chapter": 19,
+  "verse": 9,
+  "words": [
+   "MAT 19:9!7",
+   "MAT 19:9!11",
+   "MAT 19:9!12",
+   "MAT 19:9!13",
+   "MAT 19:9!14",
+   "MAT 19:9!15"
+  ],
+  "title": "μὴ ἐπὶ πορνείᾳ: how far does the exception reach?",
+  "category": "attachment",
+  "summary": "The clause \"except for sexual immorality\" follows \"divorces his wife\" and precedes \"and marries another.\" Grammatically it can attach to the first verb only (divorce is permitted for porneia, but remarriage is still adultery) or to both (divorce and remarriage are then permitted).",
+  "readings": [
+   {
+    "label": "The exception limits only the divorce",
+    "rendering": "Whoever divorces his wife, except for porneia, and marries another commits adultery: divorce for porneia is allowed, remarriage is not",
+    "grammar": "μὴ ἐπὶ πορνείᾳ modifies ἀπολύσῃ alone; καὶ γαμήσῃ ἄλλην is a separate act regardless",
+    "fathers": [],
+    "traditions": {
+     "catholic": "Separation allowed; no remarriage while the spouse lives"
+    }
+   },
+   {
+    "label": "The exception covers both the divorce and the remarriage",
+    "rendering": "Whoever divorces his wife and marries another commits adultery, unless the divorce was for porneia: the one divorcing for porneia may remarry",
+    "grammar": "μὴ ἐπὶ πορνείᾳ attaches to the combined action \"divorce and marry another\"",
+    "fathers": [],
+    "traditions": {
+     "protestant": "Reformers such as Erasmus and Calvin read it as permitting remarriage"
+    },
+    "modern": "ESV, NIV, NRSV"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "The tree places μὴ ἐπὶ πορνείᾳ inside the first conjunct (ἀπολύσῃ ... πορνείᾳ) with καὶ γαμήσῃ ἄλλην as a sibling, which encodes the divorce-only attachment",
+  "sources": [
+   "NET Bible note on Matt 19:9",
+   "Davies & Allison, Matthew III, on 19:9"
+  ]
+ },
+ {
+  "id": "matt-19-28-paliggenesia",
+  "book": "Matthew",
+  "chapter": 19,
+  "verse": 28,
+  "words": [
+   "MAT 19:28!14",
+   "MAT 19:28!15",
+   "MAT 19:28!16",
+   "MAT 19:28!17",
+   "MAT 19:28!18"
+  ],
+  "title": "ἐν τῇ παλιγγενεσίᾳ: does \"in the regeneration\" go with what precedes or follows?",
+  "category": "attachment",
+  "summary": "The phrase \"in the regeneration\" sits between \"you who have followed me\" and \"when the Son of Man sits...\" so it can attach backward (you who followed me in the regeneration) or forward (in the regeneration you will sit on thrones).",
+  "readings": [
+   {
+    "label": "Forward: \"in the regeneration you will sit\"",
+    "rendering": "You who have followed me, in the regeneration, when the Son of Man sits on his throne, will also sit on twelve thrones",
+    "grammar": "ἐν τῇ παλιγγενεσίᾳ modifies καθήσεσθε; paliggenesia as the renewal of all things at the end (cf. Acts 3:21)",
+    "fathers": []
+   },
+   {
+    "label": "Backward: \"you who followed me in the regeneration\"",
+    "rendering": "You who have followed me in the regeneration (spiritual rebirth) will sit on thrones when the Son of Man is enthroned",
+    "grammar": "ἐν τῇ παλιγγενεσίᾳ modifies the participle ἀκολουθήσαντες; paliggenesia as spiritual regeneration in this life",
+    "fathers": [],
+    "modern": "A minority reading, noted in the commentaries"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "The tree attaches ἐν τῇ παλιγγενεσίᾳ to the main verb καθήσεσθε as a sibling of the relative clause, not to ἀκολουθήσαντες",
+  "sources": [
+   "Davies & Allison, Matthew III, on 19:28",
+   "Luz, Matthew 8-20, on 19:28"
+  ]
+ },
+ {
+  "id": "matt-26-26-touto-estin",
+  "book": "Matthew",
+  "chapter": 26,
+  "verse": 26,
+  "words": [
+   "MAT 26:26!18",
+   "MAT 26:26!19",
+   "MAT 26:26!20",
+   "MAT 26:26!21"
+  ],
+  "title": "τοῦτό ἐστιν τὸ σῶμά μου: what does \"this\" refer to, and what does \"is\" mean?",
+  "category": "referent",
+  "summary": "τοῦτο is neuter while ἄρτος is masculine, so the demonstrative does not agree with the bread; it can refer to the bread by implication, to the whole action, or to what Jesus gives. The verb ἐστιν may express identity or signification, and the Church has divided over its force.",
+  "readings": [
+   {
+    "label": "Identity: the bread is the body",
+    "rendering": "This (the bread) is my body",
+    "grammar": "τοῦτο pointing to the bread given; ἐστιν as real identity",
+    "fathers": [
+     {
+      "father": "Ambrose of Milan",
+      "work": "On the Mysteries",
+      "ref": "Ch. 9",
+      "year": 390,
+      "quote": "The Lord Jesus Himself proclaims: This is My Body.",
+      "commentary": 15903,
+      "url": "https://www.newadvent.org/fathers/3405.htm"
+     }
+    ],
+    "traditions": {
+     "catholic": "Real presence; transubstantiation",
+     "orthodox": "Real presence; the bread becomes the Body",
+     "protestant": "Lutheran: real presence (sacramental union)"
+    }
+   },
+   {
+    "label": "Signification: the bread represents the body",
+    "rendering": "This (the bread) is a figure of my body",
+    "grammar": "ἐστιν as \"represents\" (cf. \"the seven heads are seven mountains,\" Rev 17:9)",
+    "fathers": [
+     {
+      "father": "Tertullian",
+      "work": "Against Marcion",
+      "ref": "Book IV, 40",
+      "year": 207,
+      "quote": "He made it His own body, by saying, This is my body, that is, the figure of my body.",
+      "page": "03124",
+      "url": "https://www.newadvent.org/fathers/03124.htm"
+     },
+     {
+      "father": "Origen",
+      "work": "Commentary on Matthew",
+      "ref": "Series 85",
+      "year": 245,
+      "quote": "The bread which God the Word revealed to be his own body is the Word of the sustainer of souls.",
+      "legacy": 70733,
+      "url": "https://historicalchristian.faith/by_father.php?file=Origen%2520of%2520Alexandria%2FCommentary%2520on%2520Matthew%2FIntroduction.html"
+     }
+    ],
+    "traditions": {
+     "protestant": "Reformed and Zwinglian: the bread signifies the body"
+    }
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree keeps τοῦτό ἐστιν τὸ σῶμά μου as one clause; the referent of τοῦτό and the force of ἐστιν are not encoded",
+  "sources": [
+   "Davies & Allison, Matthew III, on 26:26",
+   "Wallace, GGBB on demonstrative agreement"
+  ]
+ },
+ {
+  "id": "matt-26-50-eph-ho-parei",
+  "book": "Matthew",
+  "chapter": 26,
+  "verse": 50,
+  "words": [
+   "MAT 26:50!7",
+   "MAT 26:50!8",
+   "MAT 26:50!9"
+  ],
+  "title": "ἐφ᾽ ὃ πάρει: \"do what you came for\" or \"why are you here?\"",
+  "category": "construction",
+  "summary": "ἐφ᾽ ὃ πάρει has no verb of command; it can be read as a relative clause with an understood imperative (\"[do that] for which you have come\") or as an indirect or elliptical question (\"for what [purpose] have you come?\").",
+  "readings": [
+   {
+    "label": "Relative clause with ellipsis: \"[Do that] for which you have come\"",
+    "rendering": "Friend, do what you came to do",
+    "grammar": "ὃ as a relative pronoun with an imperative understood (cf. John 13:27)",
+    "fathers": [],
+    "modern": "Commonly proposed by modern commentators"
+   },
+   {
+    "label": "Interrogative: \"Why have you come?\"",
+    "rendering": "Friend, why are you here?",
+    "grammar": "ὃ read as standing for τί, the phrase as an elliptical question",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Commentary on Matthew 26:50 (catenabible.com)",
+      "ref": "Matt 26:50",
+      "year": 400,
+      "quote": "I know wherefore thou art come; thou feignest thyself My friend, being indeed My betrayer.",
+      "legacy": 62507,
+      "url": "https://catenabible.com/"
+     }
+    ],
+    "modern": "KJV (\"wherefore art thou come?\")"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree reads Ἑταῖρε ἐφ᾽ ὃ πάρει as one unit with ὃ a relative pronoun; it does not supply the ellipsis",
+  "sources": [
+   "NET Bible note on Matt 26:50",
+   "Davies & Allison, Matthew III, on 26:50"
+  ]
+ },
+ {
+  "id": "matt-28-17-hoi-de-edistasan",
+  "book": "Matthew",
+  "chapter": 28,
+  "verse": 17,
+  "words": [
+   "MAT 28:17!5",
+   "MAT 28:17!6",
+   "MAT 28:17!7"
+  ],
+  "title": "οἱ δὲ ἐδίστασαν: \"some doubted\" or \"they doubted\"?",
+  "category": "construction",
+  "summary": "οἱ δέ after a plural can mean \"but others\" (some doubted, others worshiped) or \"but they\" (the whole group doubted, or hesitated, even as they worshiped). The reading decides whether all of the Eleven doubted.",
+  "readings": [
+   {
+    "label": "Partitive: some of the Eleven doubted",
+    "rendering": "When they saw him they worshiped, but some doubted",
+    "grammar": "οἱ μέν ... οἱ δέ as partitive (some ... others)",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Commentary on Matt 28:17 (catenabible.com)",
+      "ref": "Matt 28:17",
+      "year": 390,
+      "quote": "And if some doubted, herein again admire their truthfulness, how they conceal not even their shortcomings up to the last day.",
+      "legacy": 31296,
+      "url": "https://catenabible.com/"
+     }
+    ],
+    "modern": "ESV, NIV, NRSV (\"some\")"
+   },
+   {
+    "label": "Non-partitive: they all hesitated",
+    "rendering": "When they saw him they worshiped, though they hesitated",
+    "grammar": "οἱ δέ as a resumptive \"but they\" for the whole group; ἐδίστασαν as hesitation rather than unbelief",
+    "fathers": [],
+    "modern": "Proposed by some commentators; cf. the NET margin"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "MACULA glosses οἱ as \"some\" but the tree does not mark a partitive structure; the referent is left to the reader",
+  "sources": [
+   "NET Bible note on Matt 28:17",
+   "Davies & Allison, Matthew III, on 28:17"
+  ]
+ },
+ {
+  "id": "mark-1-1-gospel-of-jesus-christ",
+  "book": "Mark",
+  "chapter": 1,
+  "verse": 1,
+  "words": [
+   "MRK 1:1!3",
+   "MRK 1:1!4",
+   "MRK 1:1!5"
+  ],
+  "title": "τοῦ εὐαγγελίου Ἰησοῦ Χριστοῦ: whose gospel?",
+  "category": "case",
+  "summary": "The genitive Ἰησοῦ Χριστοῦ can be subjective (the good news Jesus proclaimed), objective (the good news about Jesus), or possessive/source (the good news that is Christ's own).",
+  "readings": [
+   {
+    "label": "Subjective or source: the gospel Jesus brings",
+    "rendering": "The beginning of the gospel that Jesus Christ proclaims",
+    "grammar": "Genitive of source or subjective genitive; cf. Mark 1:14-15 (Jesus preaching the gospel of God)",
+    "fathers": []
+   },
+   {
+    "label": "Objective: the gospel about Jesus",
+    "rendering": "The beginning of the good news about Jesus Christ",
+    "grammar": "Objective genitive; the gospel concerns Jesus (cf. Rom 1:3)",
+    "fathers": [],
+    "modern": "Often preferred by modern commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree is a bare verbless phrase; the genitive's function is not encoded",
+  "sources": [
+   "Collins, Mark (Hermeneia), on 1:1",
+   "France, Mark (NIGTC), on 1:1",
+   "Wallace, GGBB on the genitive of subject/object"
+  ]
+ },
+ {
+  "id": "mark-1-1-title-or-sentence",
+  "book": "Mark",
+  "chapter": 1,
+  "verse": 1,
+  "words": [
+   "MRK 1:1!1",
+   "MRK 1:1!2",
+   "MRK 1:1!3",
+   "MRK 1:1!4",
+   "MRK 1:1!5"
+  ],
+  "title": "Mark 1:1: a title, or the opening of a sentence running to v.4?",
+  "category": "punctuation",
+  "summary": "Mark 1:1 has no verb, so it can be a standalone title (\"The beginning of the gospel of Jesus Christ\") or the opening clause of a longer sentence whose main verb comes in v.4 (\"The beginning of the gospel ... was John the Baptist appearing\"). Punctuation is a later addition.",
+  "readings": [
+   {
+    "label": "Verse 1 is a title or heading",
+    "rendering": "Title: The beginning of the gospel of Jesus Christ. (Then: As it is written ... John appeared.)",
+    "grammar": "Verbless nominal sentence taken as a heading or incipit for the book",
+    "fathers": [],
+    "modern": "Common in modern editions and translations"
+   },
+   {
+    "label": "Verse 1 joins verses 2-4",
+    "rendering": "The beginning of the gospel of Jesus Christ (was) as it is written in Isaiah ... John appeared in the wilderness",
+    "grammar": "Verses 1-4 as one long sentence with ἐγένετο Ἰωάννης (v.4) as the main clause",
+    "fathers": [
+     {
+      "father": "Jerome",
+      "work": "Catena Aurea on Mark 1:1",
+      "ref": "Mark 1:1",
+      "year": 400,
+      "quote": "For commencing his Gospel with the voice of the prophetic cry, he shews the order of the election of Levi",
+      "legacy": 4894,
+      "url": "https://www.newadvent.org/fathers/3009.htm"
+     }
+    ]
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "MACULA parses 1:1 as a verbless sentence of its own and begins the next clause at v.2 (Καθὼς γέγραπται) running into v.4, which encodes the title reading",
+  "sources": [
+   "Collins, Mark (Hermeneia), on 1:1-4",
+   "France, Mark (NIGTC), on 1:1-8"
+  ]
+ },
+ {
+  "id": "mark-3-21-hoi-par-autou",
+  "book": "Mark",
+  "chapter": 3,
+  "verse": 21,
+  "words": [
+   "MRK 3:21!3",
+   "MRK 3:21!4",
+   "MRK 3:21!5",
+   "MRK 3:21!9",
+   "MRK 3:21!11",
+   "MRK 3:21!12"
+  ],
+  "title": "οἱ παρ᾽ αὐτοῦ: who \"said he was out of his mind\"?",
+  "category": "referent",
+  "summary": "οἱ παρ᾽ αὐτοῦ (\"those from beside him\") can mean his family (the same group as in v.31) or his associates and neighbours, and the subject of ἔλεγον (\"they were saying\") is unmarked: the family, or others.",
+  "readings": [
+   {
+    "label": "His family",
+    "rendering": "His family heard and went to seize him, for they were saying, \"He is out of his mind\"",
+    "grammar": "οἱ παρ᾽ αὐτοῦ as \"those of his household\"; ἔλεγον with the same subject",
+    "fathers": [
+     {
+      "father": "Jerome",
+      "work": "Commentary on Mark 3:21 (catenabible.com)",
+      "ref": "Mark 3:21",
+      "year": 400,
+      "quote": "In the gospel we read that even his kinsfolk desired to bind him as one of weak mind.",
+      "legacy": 31615,
+      "url": "https://catenabible.com/"
+     }
+    ],
+    "modern": "ESV, NIV, NRSV and most commentators"
+   },
+   {
+    "label": "His associates or others",
+    "rendering": "His associates heard and went to seize him, for people were saying, \"He is out of his mind\"",
+    "grammar": "οἱ παρ᾽ αὐτοῦ as \"those around him\" (followers or neighbours); ἔλεγον with an indefinite subject",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree leaves οἱ παρ᾽ αὐτοῦ as a group under ἀκούσαντες and gives ἔλεγον no explicit subject",
+  "sources": [
+   "France, Mark (NIGTC), on 3:20-21",
+   "Collins, Mark (Hermeneia), on 3:21",
+   "BDAG παρά 3.b"
+  ]
+ },
+ {
+  "id": "mark-4-12-hina",
+  "book": "Mark",
+  "chapter": 4,
+  "verse": 12,
+  "words": [
+   "MRK 4:12!1",
+   "MRK 4:12!13"
+  ],
+  "title": "ἵνα ... μήποτε: purpose, result, or something else?",
+  "category": "construction",
+  "summary": "The ἵνα clause of Mark 4:12 (\"so that seeing they may see and not perceive...\") can be final (God's purpose in the parables), consecutive (the result), or a loose relative (\"who see but do not perceive\"). Matthew's parallel uses ὅτι (13:13), Luke's uses ἵνα (8:10).",
+  "readings": [
+   {
+    "label": "Purpose: in order that",
+    "rendering": "in parables, so that they may not see or understand",
+    "grammar": "ἵνα + subjunctive as telic",
+    "fathers": []
+   },
+   {
+    "label": "Result or relative: with the result that / who",
+    "rendering": "in parables, with the result that they do not see and understand",
+    "grammar": "ἵνα as consecutive, or an Aramaism for a relative; Matthew's ὅτι (13:13) as the parallel",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on Matthew",
+      "ref": "Homily 45",
+      "year": 390,
+      "quote": "Therefore, says He, speak I to them in parables; because they seeing see not.",
+      "commentary": 48891,
+      "url": "https://www.newadvent.org/fathers/200145.htm"
+     }
+    ]
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree leaves ἵνα and μήποτε as adverbial clauses under γίνεται and does not mark purpose or result; the gloss \"so that\" is itself ambiguous",
+  "sources": [
+   "Wallace, GGBB on purpose vs result ἵνα",
+   "Marcus, Mark 1-8, on 4:10-12",
+   "France, Mark (NIGTC), on 4:12"
+  ]
+ },
+ {
+  "id": "mark-7-19-katharizon",
+  "book": "Mark",
+  "chapter": 7,
+  "verse": 19,
+  "words": [
+   "MRK 7:19!15",
+   "MRK 7:19!16",
+   "MRK 7:19!17",
+   "MRK 7:19!18",
+   "MRK 7:19!19",
+   "MRK 7:19!20"
+  ],
+  "title": "καθαρίζων πάντα τὰ βρώματα: whose participle is it?",
+  "category": "attachment",
+  "summary": "The nominative masculine participle καθαρίζων can modify Jesus (Mark's editorial comment: \"Thus he declared all foods clean\") or agree with ἀφεδρών (a latrine that purges all foods). The form of the participle (masculine καθαρίζων or neuter καθαρίζον) is also a textual matter.",
+  "readings": [
+   {
+    "label": "Jesus: \"declaring all foods clean\"",
+    "rendering": "Thus he declared all foods clean",
+    "grammar": "καθαρίζων in the nominative, read as Mark's parenthetical comment on Jesus' saying",
+    "fathers": [
+     {
+      "father": "Origen",
+      "work": "Commentary on Matthew",
+      "ref": "Book XI",
+      "year": 245,
+      "quote": "according to Mark, the Saviour said these things \"making all meats clean,\"",
+      "legacy": 74882,
+      "url": "http://ccel.org/fathers2/ANF-10/anf10-47.htm#P7660_1603367"
+     }
+    ],
+    "modern": "NIV, ESV, NRSV and most modern commentators"
+   },
+   {
+    "label": "The latrine: \"purging all foods\"",
+    "rendering": "...and goes out into the latrine, which purges all foods",
+    "grammar": "καθαρίζων/καθαρίζον with ἀφεδρῶνα; the digestive process purges the food",
+    "fathers": [],
+    "modern": "KJV (\"purging all meats\")"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "MACULA glosses καθαρίζων \"declared ~ clean\", which encodes the Jesus-as-subject reading",
+  "sources": [
+   "France, Mark (NIGTC), on 7:19",
+   "Collins, Mark (Hermeneia), on 7:19"
+  ]
+ },
+ {
+  "id": "mark-11-22-pistin-theou",
+  "book": "Mark",
+  "chapter": 11,
+  "verse": 22,
+  "words": [
+   "MRK 11:22!7",
+   "MRK 11:22!8",
+   "MRK 11:22!9"
+  ],
+  "title": "πίστιν θεοῦ: \"faith in God\" or \"God's faith\"?",
+  "category": "case",
+  "summary": "The genitive θεοῦ after πίστιν can be objective (faith in God), subjective (faith that God has or gives), or a qualitative genitive (a godlike faith).",
+  "readings": [
+   {
+    "label": "Objective genitive: faith in God",
+    "rendering": "Have faith in God",
+    "grammar": "Genitive of the object of faith, the usual rendering",
+    "fathers": [],
+    "modern": "KJV, RSV, NIV, ESV"
+   },
+   {
+    "label": "Subjective or qualitative genitive: God's faith",
+    "rendering": "Have the faith of God (the faith that God has or gives)",
+    "grammar": "Subjective genitive or genitive of source",
+    "fathers": [],
+    "modern": "Discussed in Wallace and the commentaries"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree is a flat clause (Ἔχετε πίστιν θεοῦ) and does not specify the genitive's function",
+  "sources": [
+   "Wallace, GGBB on the objective genitive (Mark 11:22)",
+   "France, Mark (NIGTC), on 11:22"
+  ]
+ },
+ {
+  "id": "mark-13-14-hestekota",
+  "book": "Mark",
+  "chapter": 13,
+  "verse": 14,
+  "words": [
+   "MRK 13:14!4",
+   "MRK 13:14!5",
+   "MRK 13:14!8"
+  ],
+  "title": "τὸ βδέλυγμα ... ἑστηκότα: why a masculine participle?",
+  "category": "referent",
+  "summary": "βδέλυγμα is neuter but the participle ἑστηκότα is masculine, so \"standing\" can be read as personal (a person will stand in the Temple, such as Antichrist or an emperor) or as constructio ad sensum for the abomination itself.",
+  "readings": [
+   {
+    "label": "Personal: \"he\" stands where he ought not",
+    "rendering": "When you see the abomination of desolation standing (he, a person) where he should not",
+    "grammar": "Masculine participle agreeing with a personal referent behind the neuter noun",
+    "fathers": [],
+    "traditions": {
+     "catholic": "Often read as Antichrist or a Roman figure",
+     "orthodox": "Often read as Antichrist"
+    }
+   },
+   {
+    "label": "Impersonal: the abomination as an object or event",
+    "rendering": "When you see the abomination of desolation standing (a desecrating object or act) where it should not",
+    "grammar": "Constructio ad sensum with an anthropomorphic participle; the noun is neuter and the sense need not be a person",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree keeps τὸ βδέλυγμα τῆς ἐρημώσεως ἑστηκότα as one unit and does not comment on the gender mismatch",
+  "sources": [
+   "France, Mark (NIGTC), on 13:14",
+   "Collins, Mark (Hermeneia), on 13:14"
+  ]
+ },
+ {
+  "id": "mark-14-22-touto-estin",
+  "book": "Mark",
+  "chapter": 14,
+  "verse": 22,
+  "words": [
+   "MRK 14:22!14",
+   "MRK 14:22!15",
+   "MRK 14:22!16",
+   "MRK 14:22!17"
+  ],
+  "title": "τοῦτό ἐστιν τὸ σῶμά μου: referent and force of \"is\" (Mark's version)",
+  "category": "referent",
+  "summary": "As in Matthew 26:26, the neuter τοῦτο does not agree with the masculine ἄρτος, so \"this\" can refer to the bread, the action, or what is given; ἐστιν may express identity or signification.",
+  "readings": [
+   {
+    "label": "Identity: the bread is the body",
+    "rendering": "This (the bread) is my body",
+    "grammar": "τοῦτο pointing to the bread; ἐστιν as real identity",
+    "fathers": [
+     {
+      "father": "Ambrose of Milan",
+      "work": "On the Mysteries",
+      "ref": "Ch. 9",
+      "year": 390,
+      "quote": "The Lord Jesus Himself proclaims: This is My Body.",
+      "commentary": 15903,
+      "url": "https://www.newadvent.org/fathers/3405.htm"
+     }
+    ],
+    "traditions": {
+     "catholic": "Real presence; transubstantiation",
+     "orthodox": "Real presence",
+     "protestant": "Lutheran: real presence"
+    }
+   },
+   {
+    "label": "Signification: the bread represents the body",
+    "rendering": "This (the bread) is a figure of my body",
+    "grammar": "ἐστιν as \"represents\"",
+    "fathers": [
+     {
+      "father": "Tertullian",
+      "work": "Against Marcion",
+      "ref": "Book IV, 40",
+      "year": 207,
+      "quote": "He made it His own body, by saying, This is my body, that is, the figure of my body.",
+      "page": "03124",
+      "url": "https://www.newadvent.org/fathers/03124.htm"
+     }
+    ],
+    "traditions": {
+     "protestant": "Reformed and Zwinglian"
+    }
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree reads τοῦτό ἐστιν τὸ σῶμά μου as one clause; the demonstrative's referent and the copula's force are not encoded",
+  "sources": [
+   "Collins, Mark (Hermeneia), on 14:22",
+   "France, Mark (NIGTC), on 14:22"
+  ]
+ },
+ {
+  "id": "mark-15-39-huios-theou",
+  "book": "Mark",
+  "chapter": 15,
+  "verse": 39,
+  "words": [
+   "MRK 15:39!16",
+   "MRK 15:39!17",
+   "MRK 15:39!18",
+   "MRK 15:39!19",
+   "MRK 15:39!20"
+  ],
+  "title": "υἱὸς θεοῦ ἦν: \"a son of God\" or \"the Son of God\"?",
+  "category": "article",
+  "summary": "The anarthrous predicate υἱὸς θεοῦ before the verb can be definite (\"the Son of God\", by Colwell's rule), indefinite (\"a son of God\", as a pagan centurion might say) or qualitative (\"divine\").",
+  "readings": [
+   {
+    "label": "Definite: the Son of God",
+    "rendering": "Truly this man was the Son of God",
+    "grammar": "Anarthrous predicate nominative before the verb read as definite (Colwell's rule); the title answers Mark 1:1",
+    "fathers": [],
+    "modern": "Most modern translations"
+   },
+   {
+    "label": "Indefinite or qualitative: a son of God / divine",
+    "rendering": "Truly this man was a son of God (a divine man)",
+    "grammar": "Anarthrous υἱὸς θεοῦ as indefinite or qualitative; in a Roman mouth the phrase need not carry Christian sense",
+    "fathers": [],
+    "modern": "Proposed by some commentators; appears in some translation margins"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree encodes υἱὸς θεοῦ ἦν as a predicate clause without resolving definiteness",
+  "sources": [
+   "Wallace, GGBB on Colwell's rule and Mark 15:39",
+   "France, Mark (NIGTC), on 15:39",
+   "Collins, Mark (Hermeneia), on 15:39"
+  ]
+ }
+]

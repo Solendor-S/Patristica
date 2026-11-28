@@ -1,0 +1,3440 @@
+{
+ "entities": [
+  {
+   "key": "Nineveh@Tob.1.3",
+   "same_as": "Nineveh@Gen.10.11-Luk",
+   "refs": [
+    "Tobit 1:3",
+    "Tobit 1:10",
+    "Tobit 1:17",
+    "Tobit 1:22",
+    "Tobit 7:3",
+    "Tobit 11:1",
+    "Tobit 11:16",
+    "Tobit 11:17",
+    "Tobit 14:4",
+    "Tobit 14:8",
+    "Tobit 14:10",
+    "Tobit 14:15",
+    "Judith 1:1",
+    "Judith 1:16",
+    "Judith 2:21"
+   ],
+   "names": [
+    "Ninevah"
+   ]
+  },
+  {
+   "key": "Jerusalem@Tob.1.4",
+   "same_as": "Jerusalem@Gen.14.18-Rev",
+   "refs": [
+    "Tobit 1:4",
+    "Tobit 1:6",
+    "Tobit 1:7",
+    "Tobit 5:13",
+    "Tobit 13:8",
+    "Tobit 13:9",
+    "Tobit 13:16",
+    "Tobit 13:17",
+    "Tobit 14:4",
+    "Tobit 14:5",
+    "Judith 1:9",
+    "Judith 4:2",
+    "Judith 4:6",
+    "Judith 4:8",
+    "Judith 4:11",
+    "Judith 4:13",
+    "Judith 5:19",
+    "Judith 9:1",
+    "Judith 10:8",
+    "Judith 11:13",
+    "Judith 11:14",
+    "Judith 11:19",
+    "Judith 13:4",
+    "Judith 15:5",
+    "Judith 15:8",
+    "Judith 15:9",
+    "Judith 16:18",
+    "Judith 16:20",
+    "Esther 1:1",
+    "Esther 2:6",
+    "Esther 10:14",
+    "Daniel 3:28"
+   ]
+  },
+  {
+   "key": "Media@Tob.1.14",
+   "same_as": "Media@2Ki.17.6-Act",
+   "refs": [
+    "Tobit 1:14",
+    "Tobit 1:15",
+    "Tobit 3:7",
+    "Tobit 4:1",
+    "Tobit 4:20",
+    "Tobit 5:5",
+    "Tobit 9:2",
+    "Tobit 11:15",
+    "Tobit 14:4",
+    "Tobit 14:14",
+    "Esther 1:3",
+    "Esther 1:14",
+    "Esther 1:18",
+    "Esther 1:19",
+    "Esther 10:2"
+   ]
+  },
+  {
+   "key": "Assyria@Tob.1.2",
+   "same_as": "Assyria@Gen.2.14-Zec",
+   "refs": [
+    "Tobit 1:2",
+    "Tobit 1:3",
+    "Judith 1:1",
+    "Judith 1:7",
+    "Judith 1:11",
+    "Judith 2:1",
+    "Judith 2:4",
+    "Judith 2:14",
+    "Judith 4:1",
+    "Judith 5:1",
+    "Judith 6:1",
+    "Judith 6:17",
+    "Judith 7:17",
+    "Judith 7:18",
+    "Judith 7:20",
+    "Judith 7:24",
+    "Judith 8:9",
+    "Judith 9:7",
+    "Judith 10:11",
+    "Judith 12:13",
+    "Judith 13:15",
+    "Judith 14:2",
+    "Judith 14:3",
+    "Judith 14:12",
+    "Judith 14:19",
+    "Judith 15:6",
+    "Judith 16:4"
+   ],
+   "names": [
+    "Assyrians",
+    "Asshur"
+   ]
+  },
+  {
+   "key": "Ecbatana@Tob.3.7",
+   "same_as": "Ecbatana@Ezr.6.2",
+   "refs": [
+    "Tobit 3:7",
+    "Tobit 6:5",
+    "Tobit 7:1",
+    "Tobit 14:12",
+    "Tobit 14:14",
+    "Judith 1:1",
+    "Judith 1:2",
+    "Judith 1:14"
+   ]
+  },
+  {
+   "key": "Persia@Est.1.3",
+   "same_as": "Persia@2Ch.36.20-Dan",
+   "refs": [
+    "Esther 1:3",
+    "Esther 1:14",
+    "Esther 1:18",
+    "Esther 1:19",
+    "Esther 8:13",
+    "Esther 10:2",
+    "Judith 1:7",
+    "Judith 16:10"
+   ],
+   "names": [
+    "Persians"
+   ]
+  },
+  {
+   "key": "Galilee@Tob.1.2",
+   "same_as": "Galilee@Jos.12.23-Act",
+   "refs": [
+    "Tobit 1:2",
+    "Judith 1:8",
+    "Judith 15:5"
+   ]
+  },
+  {
+   "key": "Kedesh@Tob.1.2",
+   "same_as": "Kedesh@Jos.12.22-1Ch",
+   "refs": [
+    "Tobit 1:2"
+   ],
+   "names": [
+    "Kedesh Naphtali"
+   ]
+  },
+  {
+   "key": "Naphtali@Tob.1.1",
+   "same_as": "Naphtali@Gen.30.8-Rev",
+   "refs": [
+    "Tobit 1:1",
+    "Tobit 1:2",
+    "Tobit 1:4",
+    "Tobit 1:5",
+    "Tobit 7:3"
+   ]
+  },
+  {
+   "key": "Asher@Tob.1.2",
+   "same_as": "Asher@Gen.30.13-Rev",
+   "refs": [
+    "Tobit 1:2"
+   ]
+  },
+  {
+   "key": "Tigris@Tob.6.1",
+   "same_as": "Tigris@Gen.2.14-Dan",
+   "refs": [
+    "Tobit 6:1",
+    "Judith 1:6",
+    "Judith 2:24"
+   ]
+  },
+  {
+   "key": "Ararat@Tob.1.21",
+   "same_as": "Ararat@Gen.8.4-Jer",
+   "refs": [
+    "Tobit 1:21"
+   ]
+  },
+  {
+   "key": "Elam@Tob.2.10",
+   "same_as": "Elam@Gen.14.1-Act",
+   "refs": [
+    "Tobit 2:10",
+    "Judith 1:6"
+   ],
+   "names": [
+    "Elymais",
+    "Elymaeans"
+   ]
+  },
+  {
+   "key": "Judea@Tob.1.18",
+   "same_as": "Judea@Ezr.9.9-1Th",
+   "refs": [
+    "Tobit 1:18",
+    "Judith 1:12",
+    "Judith 3:9",
+    "Judith 4:1",
+    "Judith 4:3",
+    "Judith 4:7",
+    "Judith 4:13",
+    "Judith 8:21",
+    "Judith 11:19",
+    "Esther 1:1"
+   ]
+  },
+  {
+   "key": "Egypt@Tob.8.3",
+   "same_as": "Egypt@Gen.12.10-Rev",
+   "refs": [
+    "Tobit 8:3",
+    "Judith 1:9",
+    "Judith 1:10",
+    "Judith 1:12",
+    "Judith 5:10",
+    "Judith 5:11",
+    "Judith 5:12",
+    "Judith 6:5",
+    "Esther 4:26"
+   ]
+  },
+  {
+   "key": "Aaron@Tob.1.6",
+   "same_as": "Aaron@Exo.4.14-Heb",
+   "refs": [
+    "Tobit 1:6"
+   ]
+  },
+  {
+   "key": "Levi@Tob.1.7",
+   "same_as": "Levi@Gen.29.34-Rev",
+   "refs": [
+    "Tobit 1:7"
+   ]
+  },
+  {
+   "key": "Abraham@Tob.4.12",
+   "same_as": "Abraham@Gen.11.26-1Pe",
+   "refs": [
+    "Tobit 4:12",
+    "Judith 8:26",
+    "Esther 4:25",
+    "Esther 4:46",
+    "Daniel 3:35"
+   ]
+  },
+  {
+   "key": "Isaac@Tob.4.12",
+   "same_as": "Isaac@Gen.17.19-Jas",
+   "refs": [
+    "Tobit 4:12",
+    "Judith 8:26",
+    "Daniel 3:35"
+   ]
+  },
+  {
+   "key": "Jacob@Tob.4.12",
+   "same_as": "Israel@Gen.25.26-Rev",
+   "refs": [
+    "Tobit 4:12",
+    "Judith 8:26",
+    "Judith 8:1",
+    "Daniel 3:35",
+    "Daniel 3:83"
+   ],
+   "names": [
+    "Jacob",
+    "Israel"
+   ]
+  },
+  {
+   "key": "Noah@Tob.4.12",
+   "same_as": "Noah@Gen.5.29-2Pe",
+   "refs": [
+    "Tobit 4:12"
+   ]
+  },
+  {
+   "key": "Adam@Tob.8.6",
+   "same_as": "Adam@Gen.2.19-Jud",
+   "refs": [
+    "Tobit 8:6"
+   ]
+  },
+  {
+   "key": "Eve@Tob.8.6",
+   "same_as": "Eve@Gen.3.20-1Ti",
+   "refs": [
+    "Tobit 8:6"
+   ]
+  },
+  {
+   "key": "Moses@Tob.6.12",
+   "same_as": "Moses@Exo.2.10-Rev",
+   "refs": [
+    "Tobit 6:12",
+    "Tobit 7:13",
+    "Daniel 13:3",
+    "Daniel 13:62"
+   ]
+  },
+  {
+   "key": "Jonah@Tob.14.4",
+   "same_as": "Jonah@2Ki.14.25-Luk",
+   "refs": [
+    "Tobit 14:4",
+    "Tobit 14:8"
+   ]
+  },
+  {
+   "key": "Amos@Tob.2.6",
+   "same_as": "Amos@Amo.1.1-",
+   "refs": [
+    "Tobit 2:6"
+   ]
+  },
+  {
+   "key": "Sennacherib@Tob.1.15",
+   "same_as": "Sennacherib@2Ki.18.13-Isa",
+   "refs": [
+    "Tobit 1:15",
+    "Tobit 1:18"
+   ]
+  },
+  {
+   "key": "Shalmaneser@Tob.1.2",
+   "same_as": "Shalmaneser@2Ki.17.3-Hos",
+   "refs": [
+    "Tobit 1:2",
+    "Tobit 1:13",
+    "Tobit 1:15",
+    "Tobit 1:16"
+   ],
+   "names": [
+    "Enemessar"
+   ]
+  },
+  {
+   "key": "Esarhaddon@Tob.1.21",
+   "same_as": "Esarhaddon@2Ki.19.37-Isa",
+   "refs": [
+    "Tobit 1:21",
+    "Tobit 1:22"
+   ],
+   "names": [
+    "Sarchedonus"
+   ]
+  },
+  {
+   "key": "Nebuchadnezzar@Tob.14.15",
+   "same_as": "Nebuchadnezzar@2Ki.24.1-Dan",
+   "refs": [
+    "Tobit 14:15",
+    "Judith 1:1",
+    "Judith 1:5",
+    "Judith 1:7",
+    "Judith 1:11",
+    "Judith 1:12",
+    "Judith 2:1",
+    "Judith 2:4",
+    "Judith 2:19",
+    "Judith 3:2",
+    "Judith 3:8",
+    "Judith 4:1",
+    "Judith 6:2",
+    "Judith 6:4",
+    "Judith 11:1",
+    "Judith 11:4",
+    "Judith 11:7",
+    "Judith 11:23",
+    "Judith 12:13",
+    "Judith 14:18",
+    "Esther 1:1",
+    "Esther 2:6",
+    "Daniel 3:91",
+    "Daniel 3:93",
+    "Daniel 3:95"
+   ]
+  },
+  {
+   "key": "Baal@Tob.1.5",
+   "same_as": "Baal@Num.25.3-Rom",
+   "refs": [
+    "Tobit 1:5"
+   ]
+  },
+  {
+   "key": "Tobit@Tob.1.1",
+   "name": "Tobit",
+   "kind": "person",
+   "names": [
+    "Tobit",
+    "Tobias the elder"
+   ],
+   "brief": "Pious Naphtalite exile at Nineveh, father of Tobias",
+   "short": "Tobit, a righteous Israelite of Naphtali deported to Nineveh, gives alms and buries the dead, is blinded, and is healed through his son Tobias.",
+   "refs": [
+    "Tobit 1:1",
+    "Tobit 1:3",
+    "Tobit 3:17",
+    "Tobit 4:1",
+    "Tobit 5:10",
+    "Tobit 5:11",
+    "Tobit 5:17",
+    "Tobit 5:20",
+    "Tobit 7:2",
+    "Tobit 7:4",
+    "Tobit 7:7",
+    "Tobit 10:1",
+    "Tobit 10:6",
+    "Tobit 11:10",
+    "Tobit 11:16",
+    "Tobit 11:17",
+    "Tobit 12:1",
+    "Tobit 13:1",
+    "Tobit 14:1",
+    "Tobit 14:13"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Tobias@Tob.1.9"
+    },
+    {
+     "rel": "spouse",
+     "key": "Anna@Tob.1.9"
+    },
+    {
+     "rel": "father",
+     "key": "Tobiel@Tob.1.1"
+    }
+   ]
+  },
+  {
+   "key": "Anna@Tob.1.9",
+   "name": "Anna",
+   "kind": "person",
+   "names": [
+    "Anna"
+   ],
+   "brief": "Tobit's wife, Tobias's mother",
+   "short": "Anna, Tobit's wife of his own kindred, works to support the family during his blindness and watches anxiously for Tobias's return.",
+   "refs": [
+    "Tobit 1:9",
+    "Tobit 1:20",
+    "Tobit 2:1",
+    "Tobit 2:11",
+    "Tobit 5:17",
+    "Tobit 11:5",
+    "Tobit 11:9",
+    "Tobit 14:12"
+   ],
+   "gender": "Female",
+   "relations": [
+    {
+     "rel": "spouse",
+     "key": "Tobit@Tob.1.1"
+    },
+    {
+     "rel": "child",
+     "key": "Tobias@Tob.1.9"
+    }
+   ]
+  },
+  {
+   "key": "Tobias@Tob.1.9",
+   "name": "Tobias",
+   "kind": "person",
+   "names": [
+    "Tobias",
+    "Tobiah"
+   ],
+   "brief": "Son of Tobit who journeys with Raphael and marries Sarah",
+   "short": "Tobias, son of Tobit and Anna, travels to Media with the angel Raphael, binds the demon Asmodaeus, marries Sarah, and heals his father's blindness.",
+   "refs": [
+    "Tobit 1:9",
+    "Tobit 1:20",
+    "Tobit 2:1",
+    "Tobit 3:17",
+    "Tobit 4:2",
+    "Tobit 5:1",
+    "Tobit 5:7",
+    "Tobit 5:16",
+    "Tobit 6:17",
+    "Tobit 7:5",
+    "Tobit 7:8",
+    "Tobit 7:9",
+    "Tobit 7:11",
+    "Tobit 7:13",
+    "Tobit 8:1",
+    "Tobit 8:4",
+    "Tobit 8:5",
+    "Tobit 9:1",
+    "Tobit 9:6",
+    "Tobit 10:7",
+    "Tobit 10:9",
+    "Tobit 10:12",
+    "Tobit 11:1",
+    "Tobit 11:2",
+    "Tobit 11:7",
+    "Tobit 11:15",
+    "Tobit 11:19",
+    "Tobit 12:1",
+    "Tobit 14:11",
+    "Tobit 14:12"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Tobit@Tob.1.1"
+    },
+    {
+     "rel": "mother",
+     "key": "Anna@Tob.1.9"
+    },
+    {
+     "rel": "spouse",
+     "key": "Sarah@Tob.3.7"
+    }
+   ]
+  },
+  {
+   "key": "Tobiel@Tob.1.1",
+   "name": "Tobiel",
+   "kind": "person",
+   "names": [
+    "Tobiel"
+   ],
+   "brief": "Ancestor of Tobit",
+   "short": "Tobiel is the first named forebear in Tobit's genealogy, a member of the tribe of Naphtali.",
+   "refs": [
+    "Tobit 1:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Tobit@Tob.1.1"
+    }
+   ]
+  },
+  {
+   "key": "Ananiel@Tob.1.1",
+   "name": "Ananiel",
+   "kind": "person",
+   "names": [
+    "Ananiel"
+   ],
+   "brief": "Ancestor of Tobit",
+   "short": "Ananiel appears in Tobit's genealogy, son of Aduel.",
+   "refs": [
+    "Tobit 1:1"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Aduel@Tob.1.1",
+   "name": "Aduel",
+   "kind": "person",
+   "names": [
+    "Aduel"
+   ],
+   "brief": "Ancestor of Tobit",
+   "short": "Aduel appears in Tobit's genealogy, son of Gabael.",
+   "refs": [
+    "Tobit 1:1"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Gabael@Tob.1.1",
+   "name": "Gabael (ancestor)",
+   "kind": "person",
+   "names": [
+    "Gabael"
+   ],
+   "brief": "Ancestor of Tobit",
+   "short": "Gabael appears in Tobit's genealogy, son of Asiel.",
+   "refs": [
+    "Tobit 1:1"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Asiel@Tob.1.1",
+   "name": "Asiel",
+   "kind": "person",
+   "names": [
+    "Asiel"
+   ],
+   "brief": "Ancestor of Tobit",
+   "short": "Asiel is the earliest forebear named in Tobit's genealogy, of the tribe of Naphtali.",
+   "refs": [
+    "Tobit 1:1"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Deborah@Tob.1.8",
+   "name": "Deborah",
+   "kind": "person",
+   "names": [
+    "Deborah"
+   ],
+   "brief": "Tobit's grandmother who raised him",
+   "short": "Deborah is Tobit's father's mother, who commanded him in giving the third tithe after he was orphaned.",
+   "refs": [
+    "Tobit 1:8"
+   ],
+   "gender": "Female"
+  },
+  {
+   "key": "Anael@Tob.1.21",
+   "name": "Anael",
+   "kind": "person",
+   "names": [
+    "Anael"
+   ],
+   "brief": "Tobit's brother, father of Achiacharus",
+   "short": "Anael is Tobit's brother, named as the father of Achiacharus.",
+   "refs": [
+    "Tobit 1:21"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Achiacharus@Tob.1.21"
+    }
+   ]
+  },
+  {
+   "key": "Achiacharus@Tob.1.21",
+   "name": "Achiacharus",
+   "kind": "person",
+   "names": [
+    "Achiacharus",
+    "Ahikar"
+   ],
+   "brief": "Tobit's nephew, chief minister at Nineveh",
+   "short": "Achiacharus, Tobit's nephew, is made chief of accounts under King Esarhaddon and supports Tobit in his blindness.",
+   "refs": [
+    "Tobit 1:21",
+    "Tobit 1:22",
+    "Tobit 2:10",
+    "Tobit 11:18",
+    "Tobit 14:10"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Anael@Tob.1.21"
+    }
+   ]
+  },
+  {
+   "key": "Nasbas@Tob.11.18",
+   "name": "Nasbas",
+   "kind": "person",
+   "names": [
+    "Nasbas"
+   ],
+   "brief": "Achiacharus's nephew, guest at Tobias's wedding",
+   "short": "Nasbas is the nephew of Achiacharus, who comes with him to Tobias's wedding feast.",
+   "refs": [
+    "Tobit 11:18"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Gabael@Tob.1.14",
+   "name": "Gabael of Rages",
+   "kind": "person",
+   "names": [
+    "Gabael"
+   ],
+   "brief": "Tobit's debtor at Rages who returns the silver",
+   "short": "Gabael, brother of Gabrias at Rages in Media, holds Tobit's ten talents of silver and returns it to Tobias.",
+   "refs": [
+    "Tobit 1:14",
+    "Tobit 4:1",
+    "Tobit 4:20",
+    "Tobit 5:6",
+    "Tobit 9:2",
+    "Tobit 9:5",
+    "Tobit 10:2"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "sibling",
+     "key": "Gabrias@Tob.1.14"
+    }
+   ]
+  },
+  {
+   "key": "Gabrias@Tob.1.14",
+   "name": "Gabrias",
+   "kind": "person",
+   "names": [
+    "Gabrias"
+   ],
+   "brief": "Brother of Gabael of Rages",
+   "short": "Gabrias is the brother of Gabael, through whom Tobit's silver was deposited.",
+   "refs": [
+    "Tobit 1:14",
+    "Tobit 4:20"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "sibling",
+     "key": "Gabael@Tob.1.14"
+    }
+   ]
+  },
+  {
+   "key": "Raguel@Tob.3.7",
+   "name": "Raguel",
+   "kind": "person",
+   "names": [
+    "Raguel"
+   ],
+   "brief": "Sarah's father, Tobit's kinsman at Ecbatana",
+   "short": "Raguel of Ecbatana, a kinsman of Tobit, is Sarah's father and gives her in marriage to Tobias.",
+   "refs": [
+    "Tobit 3:7",
+    "Tobit 3:17",
+    "Tobit 6:10",
+    "Tobit 6:12",
+    "Tobit 7:1",
+    "Tobit 7:2",
+    "Tobit 7:3",
+    "Tobit 7:6",
+    "Tobit 7:9",
+    "Tobit 7:12",
+    "Tobit 7:16",
+    "Tobit 8:9",
+    "Tobit 8:11",
+    "Tobit 8:15",
+    "Tobit 8:20",
+    "Tobit 9:3",
+    "Tobit 10:7",
+    "Tobit 10:10",
+    "Tobit 11:1",
+    "Tobit 14:12"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Sarah@Tob.3.7"
+    },
+    {
+     "rel": "spouse",
+     "key": "Edna@Tob.7.2"
+    }
+   ]
+  },
+  {
+   "key": "Edna@Tob.7.2",
+   "name": "Edna",
+   "kind": "person",
+   "names": [
+    "Edna"
+   ],
+   "brief": "Raguel's wife, Sarah's mother",
+   "short": "Edna, wife of Raguel and mother of Sarah, welcomes Tobias and blesses the marriage.",
+   "refs": [
+    "Tobit 7:2",
+    "Tobit 7:8",
+    "Tobit 7:14",
+    "Tobit 7:16",
+    "Tobit 8:12",
+    "Tobit 10:12",
+    "Tobit 11:1"
+   ],
+   "gender": "Female",
+   "relations": [
+    {
+     "rel": "spouse",
+     "key": "Raguel@Tob.3.7"
+    },
+    {
+     "rel": "child",
+     "key": "Sarah@Tob.3.7"
+    }
+   ]
+  },
+  {
+   "key": "Sarah@Tob.3.7",
+   "name": "Sarah",
+   "kind": "person",
+   "names": [
+    "Sarah",
+    "Sara"
+   ],
+   "brief": "Daughter of Raguel, wife of Tobias",
+   "short": "Sarah, afflicted by the demon Asmodaeus who killed her seven husbands, is freed through prayer and marries Tobias.",
+   "refs": [
+    "Tobit 3:7",
+    "Tobit 3:17",
+    "Tobit 6:10",
+    "Tobit 7:1",
+    "Tobit 7:8",
+    "Tobit 7:13",
+    "Tobit 10:10",
+    "Tobit 10:12",
+    "Tobit 11:17",
+    "Tobit 12:12",
+    "Tobit 12:14"
+   ],
+   "gender": "Female",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Raguel@Tob.3.7"
+    },
+    {
+     "rel": "mother",
+     "key": "Edna@Tob.7.2"
+    },
+    {
+     "rel": "spouse",
+     "key": "Tobias@Tob.1.9"
+    }
+   ]
+  },
+  {
+   "key": "Raphael@Tob.3.17",
+   "name": "Raphael",
+   "kind": "other",
+   "names": [
+    "Raphael",
+    "Azarias"
+   ],
+   "brief": "Angel sent by God to heal Tobit and Sarah",
+   "short": "The archangel Raphael travels with Tobias disguised as Azarias, then reveals himself as one of the seven angels who present the prayers of the saints.",
+   "refs": [
+    "Tobit 3:17",
+    "Tobit 5:4",
+    "Tobit 5:12",
+    "Tobit 6:6",
+    "Tobit 6:13",
+    "Tobit 7:8",
+    "Tobit 8:2",
+    "Tobit 9:1",
+    "Tobit 9:2",
+    "Tobit 9:5",
+    "Tobit 11:2",
+    "Tobit 11:7",
+    "Tobit 12:15"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Asmodaeus@Tob.3.8",
+   "name": "Asmodaeus",
+   "kind": "other",
+   "names": [
+    "Asmodaeus"
+   ],
+   "brief": "Evil spirit who kills Sarah's husbands",
+   "short": "Asmodaeus, the evil spirit loving Sarah, killed her seven husbands before being driven off and bound by Raphael.",
+   "refs": [
+    "Tobit 3:8",
+    "Tobit 3:17"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Ananias@Tob.5.12",
+   "name": "Ananias the great",
+   "kind": "person",
+   "names": [
+    "Ananias"
+   ],
+   "brief": "Name Raphael gives as his father",
+   "short": "Ananias, called great, is the false father Raphael invents for himself as Azarias; Tobit says he knew him.",
+   "refs": [
+    "Tobit 5:12",
+    "Tobit 5:13"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Jathan@Tob.5.13",
+   "name": "Jathan",
+   "kind": "person",
+   "names": [
+    "Jathan"
+   ],
+   "brief": "Kinsman Tobit remembers, son of Shemaiah",
+   "short": "Jathan is a son of Shemaiah the great, remembered by Tobit from journeys to Jerusalem.",
+   "refs": [
+    "Tobit 5:13"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Shemaiah@Tob.5.13"
+    }
+   ]
+  },
+  {
+   "key": "Shemaiah@Tob.5.13",
+   "name": "Shemaiah",
+   "kind": "person",
+   "names": [
+    "Shemaiah"
+   ],
+   "brief": "Father of Ananias and Jathan",
+   "short": "Shemaiah the great is named by Tobit as father of Ananias and Jathan.",
+   "refs": [
+    "Tobit 5:13"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Manasses@Tob.14.10",
+   "name": "Manasses",
+   "kind": "person",
+   "names": [
+    "Manasses"
+   ],
+   "brief": "Man who gave alms and escaped Aman's snare",
+   "short": "Manasses, who gave alms, is cited in Tobit's dying counsel as escaping the death trap set by Aman.",
+   "refs": [
+    "Tobit 14:10"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Aman@Tob.14.10",
+   "name": "Aman",
+   "kind": "person",
+   "names": [
+    "Aman"
+   ],
+   "brief": "Wicked man who plotted against Achiacharus",
+   "short": "Aman, who tried to ruin Achiacharus, is cited in Tobit's last words as having fallen into his own snare.",
+   "refs": [
+    "Tobit 14:10"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Ahasuerus@Tob.14.15",
+   "name": "Ahasuerus (Tobit)",
+   "kind": "person",
+   "names": [
+    "Ahasuerus"
+   ],
+   "brief": "King who with Nebuchadnezzar destroyed Nineveh",
+   "short": "Ahasuerus, named beside Nebuchadnezzar, helped capture Nineveh; likely the Median king Cyaxares.",
+   "refs": [
+    "Tobit 14:15"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Rages@Tob.1.14",
+   "name": "Rages",
+   "kind": "place",
+   "names": [
+    "Rages",
+    "Ragau"
+   ],
+   "brief": "Median city where Tobit left silver with Gabael",
+   "short": "Rages, a city of Media, is where Tobit deposited his ten talents and where Gabael lived; also called Ragau in Judith.",
+   "refs": [
+    "Tobit 1:14",
+    "Tobit 4:1",
+    "Tobit 4:20",
+    "Tobit 5:5",
+    "Tobit 6:9",
+    "Tobit 6:12",
+    "Tobit 9:2",
+    "Judith 1:5",
+    "Judith 1:15"
+   ],
+   "lat": 35.59,
+   "lng": 51.43
+  },
+  {
+   "key": "Thisbe@Tob.1.2",
+   "name": "Thisbe",
+   "kind": "place",
+   "names": [
+    "Thisbe"
+   ],
+   "brief": "Galilean town of Tobit's origin",
+   "short": "Thisbe, south-east of Kedesh Naphtali in Galilee, is the hometown from which Tobit was carried into captivity.",
+   "refs": [
+    "Tobit 1:2"
+   ]
+  },
+  {
+   "key": "Pentecost@Tob.2.1",
+   "name": "Pentecost",
+   "kind": "other",
+   "names": [
+    "Pentecost"
+   ],
+   "brief": "Feast of Weeks at which Tobit's meal was prepared",
+   "short": "Pentecost, the holy feast of Weeks, is the day on which Tobit sent Tobias to find a poor man to share his dinner.",
+   "refs": [
+    "Tobit 2:1"
+   ]
+  },
+  {
+   "key": "Euphrates@Jdt.1.6",
+   "same_as": "Euphrates@Gen.2.14-Rev",
+   "refs": [
+    "Judith 1:6",
+    "Judith 2:24"
+   ]
+  },
+  {
+   "key": "Samaria@Jdt.1.9",
+   "same_as": "Samaria@1Ki.13.32-Act",
+   "refs": [
+    "Judith 1:9",
+    "Judith 4:4"
+   ]
+  },
+  {
+   "key": "Jordan@Jdt.1.9",
+   "same_as": "Jordan@Gen.13.10-Jhn",
+   "refs": [
+    "Judith 1:9",
+    "Judith 5:15"
+   ]
+  },
+  {
+   "key": "Goshen@Jdt.1.9",
+   "same_as": "Goshen@Gen.45.10-Exo",
+   "refs": [
+    "Judith 1:9"
+   ]
+  },
+  {
+   "key": "Rameses@Jdt.1.9",
+   "same_as": "Rameses@Gen.47.11-Num",
+   "refs": [
+    "Judith 1:9"
+   ]
+  },
+  {
+   "key": "Tahpanhes@Jdt.1.9",
+   "same_as": "Tahpanhes@Jer.2.16-Ezk",
+   "refs": [
+    "Judith 1:9"
+   ]
+  },
+  {
+   "key": "Kadesh@Jdt.1.9",
+   "same_as": "Kadesh@Gen.14.7-Psa",
+   "refs": [
+    "Judith 1:9",
+    "Judith 5:14"
+   ],
+   "names": [
+    "Kadesh Barnea"
+   ]
+  },
+  {
+   "key": "Tanis@Jdt.1.10",
+   "same_as": "Zoan@Num.13.22-Ezk",
+   "refs": [
+    "Judith 1:10"
+   ],
+   "names": [
+    "Tanis"
+   ]
+  },
+  {
+   "key": "Memphis@Jdt.1.10",
+   "same_as": "Memphis@Isa.19.13-Hos",
+   "refs": [
+    "Judith 1:10"
+   ]
+  },
+  {
+   "key": "Cush@Jdt.1.10",
+   "same_as": "Cush@Gen.2.13-Act",
+   "refs": [
+    "Judith 1:10",
+    "Esther 3:12",
+    "Esther 3:13",
+    "Esther 8:9",
+    "Esther 8:13"
+   ],
+   "names": [
+    "Ethiopia"
+   ]
+  },
+  {
+   "key": "Damascus@Jdt.1.7",
+   "same_as": "Damascus@Gen.14.15-Gal",
+   "refs": [
+    "Judith 1:7",
+    "Judith 1:12",
+    "Judith 2:27",
+    "Judith 15:5"
+   ]
+  },
+  {
+   "key": "Cilicia@Jdt.1.7",
+   "same_as": "Cilicia@Act.6.9-Gal",
+   "refs": [
+    "Judith 1:7",
+    "Judith 1:12",
+    "Judith 2:21",
+    "Judith 2:25"
+   ]
+  },
+  {
+   "key": "Lebanon@Jdt.1.7",
+   "same_as": "Lebanon@Deu.1.7-Zec",
+   "refs": [
+    "Judith 1:7"
+   ],
+   "names": [
+    "Libanus"
+   ]
+  },
+  {
+   "key": "Carmel@Jdt.1.8",
+   "same_as": "Carmel_Mount@1Ki.18.19-2Ki",
+   "refs": [
+    "Judith 1:8"
+   ]
+  },
+  {
+   "key": "Gilead@Jdt.1.8",
+   "same_as": "Gilead@Gen.31.21-Zec",
+   "refs": [
+    "Judith 1:8",
+    "Judith 15:5"
+   ]
+  },
+  {
+   "key": "Syria@Jdt.1.12",
+   "same_as": "Syria@Jdg.10.6-Gal",
+   "refs": [
+    "Judith 1:12",
+    "Judith 8:26"
+   ]
+  },
+  {
+   "key": "Arabia@Jdt.2.25",
+   "same_as": "Arabia@2Sa.23.35-Gal",
+   "refs": [
+    "Judith 2:25"
+   ]
+  },
+  {
+   "key": "Mesopotamia@Jdt.2.24",
+   "same_as": "Mesopotamia@Gen.24.10-Act",
+   "refs": [
+    "Judith 2:24",
+    "Judith 5:7",
+    "Judith 5:8",
+    "Judith 8:26"
+   ]
+  },
+  {
+   "key": "Midian@Jdt.2.26",
+   "same_as": "Midian@Gen.36.35-Act",
+   "refs": [
+    "Judith 2:26"
+   ]
+  },
+  {
+   "key": "Japheth@Jdt.2.25",
+   "same_as": "Japheth@Gen.5.32-1Ch",
+   "refs": [
+    "Judith 2:25"
+   ]
+  },
+  {
+   "key": "Ishmael@Jdt.2.23",
+   "same_as": "Ishmael@Gen.16.11-Psa",
+   "refs": [
+    "Judith 2:23"
+   ]
+  },
+  {
+   "key": "Sidon@Jdt.2.28",
+   "same_as": "Sidon@Gen.10.19-Act",
+   "refs": [
+    "Judith 2:28"
+   ]
+  },
+  {
+   "key": "Tyre@Jdt.2.28",
+   "same_as": "Tyre@Jos.19.29-Act",
+   "refs": [
+    "Judith 2:28"
+   ]
+  },
+  {
+   "key": "Azotus@Jdt.2.28",
+   "same_as": "Ashdod@Jos.11.22-Act",
+   "refs": [
+    "Judith 2:28"
+   ],
+   "names": [
+    "Azotus"
+   ]
+  },
+  {
+   "key": "Ascalon@Jdt.2.28",
+   "same_as": "Ashkelon@Jos.13.3-Zec",
+   "refs": [
+    "Judith 2:28"
+   ],
+   "names": [
+    "Ascalon"
+   ]
+  },
+  {
+   "key": "Jericho@Jdt.4.4",
+   "same_as": "Jericho@Num.22.1-Heb",
+   "refs": [
+    "Judith 4:4"
+   ]
+  },
+  {
+   "key": "Dothan@Jdt.3.9",
+   "same_as": "Dothan@Gen.37.17-2Ki",
+   "refs": [
+    "Judith 3:9",
+    "Judith 4:6",
+    "Judith 7:3",
+    "Judith 7:18",
+    "Judith 8:3"
+   ],
+   "names": [
+    "Dothaim",
+    "Dotaea"
+   ]
+  },
+  {
+   "key": "Scythopolis@Jdt.3.10",
+   "same_as": "Beth-shean@Jos.17.11-1Ch",
+   "refs": [
+    "Judith 3:10"
+   ],
+   "names": [
+    "Scythopolis"
+   ]
+  },
+  {
+   "key": "Geba@Jdt.3.10",
+   "same_as": "Geba@Jos.18.24-Zec",
+   "refs": [
+    "Judith 3:10"
+   ]
+  },
+  {
+   "key": "Ammon@Jdt.1.12",
+   "same_as": "Ammon@Gen.19.38-Zep",
+   "refs": [
+    "Judith 1:12",
+    "Judith 5:2",
+    "Judith 5:5",
+    "Judith 6:5",
+    "Judith 7:17",
+    "Judith 7:18",
+    "Judith 14:5"
+   ]
+  },
+  {
+   "key": "Moab@Jdt.1.12",
+   "same_as": "Moab@Gen.19.37b-Zep",
+   "refs": [
+    "Judith 1:12",
+    "Judith 5:2",
+    "Judith 5:22",
+    "Judith 6:1",
+    "Judith 7:8"
+   ]
+  },
+  {
+   "key": "Edom@Jdt.7.8",
+   "same_as": "Edom@Gen.32.3-Mal",
+   "refs": [
+    "Judith 7:8",
+    "Judith 7:18"
+   ],
+   "names": [
+    "children of Esau"
+   ]
+  },
+  {
+   "key": "Canaan@Jdt.5.3",
+   "same_as": "Canaan@Gen.10.18-Act",
+   "refs": [
+    "Judith 5:3",
+    "Judith 5:9",
+    "Judith 5:10"
+   ]
+  },
+  {
+   "key": "Heshbon@Jdt.5.15",
+   "same_as": "Heshbon@Num.21.25-Jer",
+   "refs": [
+    "Judith 5:15"
+   ]
+  },
+  {
+   "key": "Sinai@Jdt.5.14",
+   "same_as": "Sinai@Exo.3.1-Gal",
+   "refs": [
+    "Judith 5:14"
+   ]
+  },
+  {
+   "key": "Laban@Jdt.8.26",
+   "same_as": "Laban@Gen.24.29-",
+   "refs": [
+    "Judith 8:26"
+   ]
+  },
+  {
+   "key": "Simeon@Jdt.6.15",
+   "same_as": "Simeon@Gen.29.33-Rev",
+   "refs": [
+    "Judith 6:15",
+    "Judith 9:2"
+   ]
+  },
+  {
+   "key": "Hades@Dan.3.88",
+   "name": "Hades",
+   "kind": "other",
+   "names": [
+    "Hades"
+   ],
+   "brief": "Realm of the dead in the Song of the Three",
+   "short": "Hades is the realm of the dead from which the three young men say God has rescued them.",
+   "refs": [
+    "Daniel 3:88"
+   ]
+  },
+  {
+   "key": "Judith@Jdt.8.1",
+   "name": "Judith",
+   "kind": "person",
+   "names": [
+    "Judith"
+   ],
+   "brief": "Widow of Bethulia who beheads Holofernes",
+   "short": "Judith, a pious and beautiful widow of Bethulia, enters the Assyrian camp and kills Holofernes, delivering her town and Israel.",
+   "refs": [
+    "Judith 8:1",
+    "Judith 8:4",
+    "Judith 8:9",
+    "Judith 8:32",
+    "Judith 9:1",
+    "Judith 10:10",
+    "Judith 10:23",
+    "Judith 11:5",
+    "Judith 12:2",
+    "Judith 12:4",
+    "Judith 12:14",
+    "Judith 12:16",
+    "Judith 12:18",
+    "Judith 13:2",
+    "Judith 13:3",
+    "Judith 13:4",
+    "Judith 13:11",
+    "Judith 14:1",
+    "Judith 14:7",
+    "Judith 14:8",
+    "Judith 14:14",
+    "Judith 14:17",
+    "Judith 15:8",
+    "Judith 15:11",
+    "Judith 16:1",
+    "Judith 16:2",
+    "Judith 16:7",
+    "Judith 16:19",
+    "Judith 16:20",
+    "Judith 16:21",
+    "Judith 16:25"
+   ],
+   "gender": "Female",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Merari@Jdt.8.1"
+    },
+    {
+     "rel": "spouse",
+     "key": "Manasses@Jdt.8.2"
+    }
+   ]
+  },
+  {
+   "key": "Merari@Jdt.8.1",
+   "name": "Merari (Judith's father)",
+   "kind": "person",
+   "names": [
+    "Merari"
+   ],
+   "brief": "Judith's father",
+   "short": "Merari is named as Judith's father in her genealogy.",
+   "refs": [
+    "Judith 8:1",
+    "Judith 16:7"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Judith@Jdt.8.1"
+    },
+    {
+     "rel": "father",
+     "key": "Ox@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Ox@Jdt.8.1",
+   "name": "Ox",
+   "kind": "person",
+   "names": [
+    "Ox"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Ox appears in Judith's genealogy as father of Merari.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Joseph@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Joseph@Jdt.8.1",
+   "name": "Joseph (Judith's ancestor)",
+   "kind": "person",
+   "names": [
+    "Joseph"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Joseph appears in Judith's genealogy as father of Ox.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Oziel@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Oziel@Jdt.8.1",
+   "name": "Oziel",
+   "kind": "person",
+   "names": [
+    "Oziel"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Oziel appears in Judith's genealogy as father of Joseph.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Elkiah@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Elkiah@Jdt.8.1",
+   "name": "Elkiah",
+   "kind": "person",
+   "names": [
+    "Elkiah"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Elkiah appears in Judith's genealogy as father of Oziel.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Ananias@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Ananias@Jdt.8.1",
+   "name": "Ananias (Judith's ancestor)",
+   "kind": "person",
+   "names": [
+    "Ananias"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Ananias appears in Judith's genealogy as father of Elkiah.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Gideon@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Gideon@Jdt.8.1",
+   "name": "Gideon (Judith's ancestor)",
+   "kind": "person",
+   "names": [
+    "Gideon"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Gideon appears in Judith's genealogy as father of Ananias, not the judge of that name.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Raphaim@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Raphaim@Jdt.8.1",
+   "name": "Raphaim",
+   "kind": "person",
+   "names": [
+    "Raphaim"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Raphaim appears in Judith's genealogy as father of Gideon.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Ahitub@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Ahitub@Jdt.8.1",
+   "name": "Ahitub (Judith's ancestor)",
+   "kind": "person",
+   "names": [
+    "Ahitub"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Ahitub appears in Judith's genealogy as father of Raphaim.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Elihu@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Elihu@Jdt.8.1",
+   "name": "Elihu",
+   "kind": "person",
+   "names": [
+    "Elihu"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Elihu appears in Judith's genealogy as father of Ahitub.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Eliab@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Eliab@Jdt.8.1",
+   "name": "Eliab (Judith's ancestor)",
+   "kind": "person",
+   "names": [
+    "Eliab"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Eliab appears in Judith's genealogy as father of Elihu.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Nathanael@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Nathanael@Jdt.8.1",
+   "name": "Nathanael (Judith's ancestor)",
+   "kind": "person",
+   "names": [
+    "Nathanael"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Nathanael appears in Judith's genealogy as father of Eliab.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Salamiel@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Salamiel@Jdt.8.1",
+   "name": "Salamiel",
+   "kind": "person",
+   "names": [
+    "Salamiel"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Salamiel appears in Judith's genealogy as father of Nathanael.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Salasadai@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Salasadai@Jdt.8.1",
+   "name": "Salasadai",
+   "kind": "person",
+   "names": [
+    "Salasadai"
+   ],
+   "brief": "Ancestor of Judith",
+   "short": "Salasadai appears in Judith's genealogy as son of Israel and father of Salamiel.",
+   "refs": [
+    "Judith 8:1"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Manasses@Jdt.8.2",
+   "name": "Manasses (Judith's husband)",
+   "kind": "person",
+   "names": [
+    "Manasses"
+   ],
+   "brief": "Judith's late husband, died in the barley harvest",
+   "short": "Manasses, of Judith's tribe, died of sunstroke at the barley harvest, leaving her a wealthy widow.",
+   "refs": [
+    "Judith 8:2",
+    "Judith 8:7",
+    "Judith 10:3",
+    "Judith 16:22",
+    "Judith 16:23",
+    "Judith 16:24"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "spouse",
+     "key": "Judith@Jdt.8.1"
+    }
+   ]
+  },
+  {
+   "key": "Holofernes@Jdt.2.4",
+   "name": "Holofernes",
+   "kind": "person",
+   "names": [
+    "Holofernes"
+   ],
+   "brief": "Assyrian general killed by Judith",
+   "short": "Holofernes, chief general of Nebuchadnezzar, leads the campaign to the west and is beheaded by Judith in his tent.",
+   "refs": [
+    "Judith 2:4",
+    "Judith 2:14",
+    "Judith 3:5",
+    "Judith 4:1",
+    "Judith 5:1",
+    "Judith 5:22",
+    "Judith 5:24",
+    "Judith 6:1",
+    "Judith 6:10",
+    "Judith 6:17",
+    "Judith 7:1",
+    "Judith 7:6",
+    "Judith 7:16",
+    "Judith 7:26",
+    "Judith 10:13",
+    "Judith 10:17",
+    "Judith 10:18",
+    "Judith 10:20",
+    "Judith 10:21",
+    "Judith 11:1",
+    "Judith 11:20",
+    "Judith 11:22",
+    "Judith 12:3",
+    "Judith 12:5",
+    "Judith 12:6",
+    "Judith 12:7",
+    "Judith 12:10",
+    "Judith 12:13",
+    "Judith 12:15",
+    "Judith 12:16",
+    "Judith 12:17",
+    "Judith 12:20",
+    "Judith 13:2",
+    "Judith 13:6",
+    "Judith 13:9",
+    "Judith 13:15",
+    "Judith 14:3",
+    "Judith 14:6",
+    "Judith 14:11",
+    "Judith 14:13",
+    "Judith 14:14",
+    "Judith 14:18",
+    "Judith 15:11",
+    "Judith 16:19"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Bagoas@Jdt.12.11",
+   "name": "Bagoas",
+   "kind": "person",
+   "names": [
+    "Bagoas"
+   ],
+   "brief": "Holofernes's eunuch and servant",
+   "short": "Bagoas, the eunuch in charge of Holofernes's affairs, arranges Judith's banquet and finds his master's headless body.",
+   "refs": [
+    "Judith 12:11",
+    "Judith 12:13",
+    "Judith 12:15",
+    "Judith 13:1",
+    "Judith 13:3",
+    "Judith 14:14"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Achior@Jdt.5.5",
+   "name": "Achior",
+   "kind": "person",
+   "names": [
+    "Achior"
+   ],
+   "brief": "Ammonite leader who warns Holofernes about Israel",
+   "short": "Achior, leader of the Ammonites, tells Holofernes of Israel's history and God, is handed over to Bethulia, and later converts.",
+   "refs": [
+    "Judith 5:5",
+    "Judith 5:22",
+    "Judith 6:1",
+    "Judith 6:2",
+    "Judith 6:5",
+    "Judith 6:10",
+    "Judith 6:13",
+    "Judith 6:16",
+    "Judith 6:20",
+    "Judith 11:9",
+    "Judith 14:5",
+    "Judith 14:6",
+    "Judith 14:10"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Arphaxad@Jdt.1.1",
+   "name": "Arphaxad",
+   "kind": "person",
+   "names": [
+    "Arphaxad"
+   ],
+   "brief": "Median king defeated by Nebuchadnezzar",
+   "short": "Arphaxad, king of the Medes who built Ecbatana, is overcome and killed by Nebuchadnezzar in the mountains of Ragau.",
+   "refs": [
+    "Judith 1:1",
+    "Judith 1:5",
+    "Judith 1:13",
+    "Judith 1:15"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Arioch@Jdt.1.6",
+   "name": "Arioch",
+   "kind": "person",
+   "names": [
+    "Arioch"
+   ],
+   "brief": "King of the Elymaeans in Judith",
+   "short": "Arioch is the king of the Elymaeans whose plain is named among the allies of Nebuchadnezzar.",
+   "refs": [
+    "Judith 1:6"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Chelod@Jdt.1.6",
+   "name": "Chelod",
+   "kind": "person",
+   "names": [
+    "Chelod"
+   ],
+   "brief": "Ancestor of the Chelodite nations",
+   "short": "The sons of Chelod are among the nations summoned to Nebuchadnezzar's war.",
+   "refs": [
+    "Judith 1:6"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Ozias@Jdt.6.15",
+   "name": "Ozias",
+   "kind": "person",
+   "names": [
+    "Ozias"
+   ],
+   "brief": "Chief magistrate of Bethulia",
+   "short": "Ozias, son of Micah of the tribe of Simeon, is a ruler of Bethulia who receives Achior and agrees to a five-day delay before surrender.",
+   "refs": [
+    "Judith 6:15",
+    "Judith 6:16",
+    "Judith 6:21",
+    "Judith 7:23",
+    "Judith 7:30",
+    "Judith 8:9",
+    "Judith 8:10",
+    "Judith 8:28",
+    "Judith 8:35",
+    "Judith 10:6",
+    "Judith 13:18",
+    "Judith 14:6",
+    "Judith 15:4"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Micah@Jdt.6.15"
+    }
+   ]
+  },
+  {
+   "key": "Micah@Jdt.6.15",
+   "name": "Micah",
+   "kind": "person",
+   "names": [
+    "Micah"
+   ],
+   "brief": "Father of Ozias",
+   "short": "Micah is named as the father of Ozias.",
+   "refs": [
+    "Judith 6:15"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Ozias@Jdt.6.15"
+    }
+   ]
+  },
+  {
+   "key": "Chabris@Jdt.6.15",
+   "name": "Chabris",
+   "kind": "person",
+   "names": [
+    "Chabris"
+   ],
+   "brief": "Elder of Bethulia, son of Gothoniel",
+   "short": "Chabris is one of the three elders of Bethulia with Ozias and Charmis.",
+   "refs": [
+    "Judith 6:15",
+    "Judith 8:10",
+    "Judith 10:6"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Gothoniel@Jdt.6.15"
+    }
+   ]
+  },
+  {
+   "key": "Gothoniel@Jdt.6.15",
+   "name": "Gothoniel",
+   "kind": "person",
+   "names": [
+    "Gothoniel"
+   ],
+   "brief": "Father of Chabris",
+   "short": "Gothoniel is named as the father of Chabris.",
+   "refs": [
+    "Judith 6:15"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Chabris@Jdt.6.15"
+    }
+   ]
+  },
+  {
+   "key": "Charmis@Jdt.6.15",
+   "name": "Charmis",
+   "kind": "person",
+   "names": [
+    "Charmis"
+   ],
+   "brief": "Elder of Bethulia, son of Melchiel",
+   "short": "Charmis is one of the three elders of Bethulia with Ozias and Chabris.",
+   "refs": [
+    "Judith 6:15",
+    "Judith 8:10",
+    "Judith 10:6"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Melchiel@Jdt.6.15"
+    }
+   ]
+  },
+  {
+   "key": "Melchiel@Jdt.6.15",
+   "name": "Melchiel",
+   "kind": "person",
+   "names": [
+    "Melchiel"
+   ],
+   "brief": "Father of Charmis",
+   "short": "Melchiel is named as the father of Charmis.",
+   "refs": [
+    "Judith 6:15"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Charmis@Jdt.6.15"
+    }
+   ]
+  },
+  {
+   "key": "Joakim@Jdt.4.6",
+   "name": "Joakim the high priest",
+   "kind": "person",
+   "names": [
+    "Joakim"
+   ],
+   "brief": "High priest at Jerusalem during the crisis",
+   "short": "Joakim, high priest at Jerusalem, orders the defence of the hill passes and later comes to honour Judith.",
+   "refs": [
+    "Judith 4:6",
+    "Judith 4:8",
+    "Judith 4:14",
+    "Judith 15:8"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Bethulia@Jdt.4.6",
+   "name": "Bethulia",
+   "kind": "place",
+   "names": [
+    "Bethulia"
+   ],
+   "brief": "Hill town besieged by Holofernes, home of Judith",
+   "short": "Bethulia, a fortified town opposite Esdraelon overlooking the pass to Judea, is besieged by Holofernes; its site is unidentified.",
+   "refs": [
+    "Judith 4:6",
+    "Judith 6:10",
+    "Judith 6:11",
+    "Judith 6:14",
+    "Judith 7:1",
+    "Judith 7:3",
+    "Judith 7:6",
+    "Judith 7:13",
+    "Judith 7:20",
+    "Judith 8:3",
+    "Judith 8:11",
+    "Judith 10:6",
+    "Judith 11:9",
+    "Judith 12:7",
+    "Judith 13:10",
+    "Judith 15:3",
+    "Judith 15:6",
+    "Judith 16:21",
+    "Judith 16:23"
+   ]
+  },
+  {
+   "key": "Esdraelon@Jdt.1.8",
+   "name": "Esdraelon",
+   "kind": "place",
+   "names": [
+    "Esdraelon"
+   ],
+   "brief": "Great plain of Jezreel",
+   "short": "Esdraelon, the plain of Jezreel in northern Israel, is where Holofernes camps near Dothan and Bethulia faces it.",
+   "refs": [
+    "Judith 1:8",
+    "Judith 3:9",
+    "Judith 4:6",
+    "Judith 7:3"
+   ],
+   "lat": 32.58,
+   "lng": 35.3
+  },
+  {
+   "key": "Antilibanus@Jdt.1.7",
+   "name": "Antilibanus",
+   "kind": "place",
+   "names": [
+    "Antilibanus"
+   ],
+   "brief": "Eastern Lebanon mountain range",
+   "short": "Antilibanus is the mountain range east of Lebanon, named among the regions summoned by Nebuchadnezzar.",
+   "refs": [
+    "Judith 1:7"
+   ],
+   "lat": 33.8,
+   "lng": 36.1
+  },
+  {
+   "key": "Put@Jdt.2.23",
+   "name": "Put",
+   "kind": "place",
+   "names": [
+    "Put"
+   ],
+   "brief": "Land plundered by Holofernes",
+   "short": "Put, likely Libya or a nearby region, is plundered along with Lud in Holofernes's campaign.",
+   "refs": [
+    "Judith 2:23"
+   ]
+  },
+  {
+   "key": "Lud@Jdt.2.23",
+   "name": "Lud",
+   "kind": "place",
+   "names": [
+    "Lud"
+   ],
+   "brief": "Land plundered by Holofernes",
+   "short": "Lud, probably in Asia Minor, is plundered together with Put by Holofernes.",
+   "refs": [
+    "Judith 2:23"
+   ]
+  },
+  {
+   "key": "Bectileth@Jdt.2.21",
+   "name": "Bectileth",
+   "kind": "place",
+   "names": [
+    "Bectileth"
+   ],
+   "brief": "Plain where Holofernes's army encamps",
+   "short": "Bectileth is a plain three days from Nineveh near the mountains of Upper Cilicia.",
+   "refs": [
+    "Judith 2:21"
+   ]
+  },
+  {
+   "key": "Arbonai@Jdt.2.24",
+   "name": "Arbonai",
+   "kind": "place",
+   "names": [
+    "Arbonai"
+   ],
+   "brief": "River crossed by Holofernes",
+   "short": "The river Arbonai lies on Holofernes's route to Mesopotamia and the sea.",
+   "refs": [
+    "Judith 2:24"
+   ]
+  },
+  {
+   "key": "Hydaspes@Jdt.1.6",
+   "name": "Hydaspes",
+   "kind": "place",
+   "names": [
+    "Hydaspes"
+   ],
+   "brief": "River in the east in Judith",
+   "short": "The Hydaspes is named among the rivers of Nebuchadnezzar's summoned territories.",
+   "refs": [
+    "Judith 1:6"
+   ]
+  },
+  {
+   "key": "Chellians@Jdt.2.23",
+   "name": "Chellians",
+   "kind": "place",
+   "names": [
+    "Chellians"
+   ],
+   "brief": "Land south of the wilderness plundered by Holofernes",
+   "short": "The land of the Chellians lies on the southern edge of the wilderness in Holofernes's campaign.",
+   "refs": [
+    "Judith 2:23"
+   ]
+  },
+  {
+   "key": "Betane@Jdt.1.9",
+   "name": "Betane",
+   "kind": "place",
+   "names": [
+    "Betane"
+   ],
+   "brief": "Place named in Nebuchadnezzar's summons",
+   "short": "Betane is named among the places beyond Jordan to which Nebuchadnezzar sent messengers.",
+   "refs": [
+    "Judith 1:9"
+   ]
+  },
+  {
+   "key": "Chellus@Jdt.1.9",
+   "name": "Chellus",
+   "kind": "place",
+   "names": [
+    "Chellus"
+   ],
+   "brief": "Place named in Nebuchadnezzar's summons",
+   "short": "Chellus is named among the places in the summoning list near Kadesh.",
+   "refs": [
+    "Judith 1:9"
+   ]
+  },
+  {
+   "key": "Beth-horon@Jdt.4.4",
+   "name": "Beth-horon (Judith)",
+   "kind": "place",
+   "names": [
+    "Beth-horon"
+   ],
+   "brief": "Pass town warned to defend against Assyria",
+   "short": "Beth-horon, a pass town northwest of Jerusalem, is among the places Israel alerts.",
+   "refs": [
+    "Judith 4:4"
+   ]
+  },
+  {
+   "key": "Konae@Jdt.4.4",
+   "name": "Konae",
+   "kind": "place",
+   "names": [
+    "Konae"
+   ],
+   "brief": "Place warned to defend against Assyria",
+   "short": "Konae is named among the places Israel alerts to the Assyrian advance.",
+   "refs": [
+    "Judith 4:4"
+   ]
+  },
+  {
+   "key": "Belmaim@Jdt.4.4",
+   "name": "Belmaim",
+   "kind": "place",
+   "names": [
+    "Belmaim"
+   ],
+   "brief": "Town alerted to the invasion near Dothan",
+   "short": "Belmaim is alerted to the invasion and later the Assyrians control the spring-fed ridge there.",
+   "refs": [
+    "Judith 4:4",
+    "Judith 7:3"
+   ]
+  },
+  {
+   "key": "Choba@Jdt.4.4",
+   "name": "Choba",
+   "kind": "place",
+   "names": [
+    "Choba",
+    "Chobai"
+   ],
+   "brief": "Place warned to defend against Assyria",
+   "short": "Choba (Chobai) is a town warned of the Assyrian advance, and the place to which the Assyrians were pursued.",
+   "refs": [
+    "Judith 4:4",
+    "Judith 15:4",
+    "Judith 15:5"
+   ]
+  },
+  {
+   "key": "Aesora@Jdt.4.4",
+   "name": "Aesora",
+   "kind": "place",
+   "names": [
+    "Aesora"
+   ],
+   "brief": "Place warned to defend against Assyria",
+   "short": "Aesora is named among the places Israel alerts.",
+   "refs": [
+    "Judith 4:4"
+   ]
+  },
+  {
+   "key": "Salem@Jdt.4.4",
+   "name": "Salem (valley)",
+   "kind": "place",
+   "names": [
+    "Salem"
+   ],
+   "brief": "Valley named in Israel's defence",
+   "short": "The valley of Salem is named among the places alerted to hold the passes.",
+   "refs": [
+    "Judith 4:4"
+   ]
+  },
+  {
+   "key": "Betomesthaim@Jdt.4.6",
+   "name": "Betomesthaim",
+   "kind": "place",
+   "names": [
+    "Betomesthaim",
+    "Betomasthaim"
+   ],
+   "brief": "Town near Bethulia opposite Esdraelon",
+   "short": "Betomesthaim lies opposite Esdraelon near Dothan; its people are warned and later help pursue the Assyrians.",
+   "refs": [
+    "Judith 4:6",
+    "Judith 15:4"
+   ]
+  },
+  {
+   "key": "Cyamon@Jdt.7.3",
+   "name": "Cyamon",
+   "kind": "place",
+   "names": [
+    "Cyamon"
+   ],
+   "brief": "Place opposite Esdraelon",
+   "short": "Cyamon is named as lying opposite Esdraelon in the army's encampment.",
+   "refs": [
+    "Judith 7:3"
+   ]
+  },
+  {
+   "key": "Chola@Jdt.15.4",
+   "name": "Chola",
+   "kind": "place",
+   "names": [
+    "Chola"
+   ],
+   "brief": "Place named in the pursuit of the Assyrians",
+   "short": "Chola is among the places beyond which the Israelites chased the fleeing army.",
+   "refs": [
+    "Judith 15:4"
+   ]
+  },
+  {
+   "key": "Ekrebel@Jdt.7.18",
+   "name": "Ekrebel",
+   "kind": "place",
+   "names": [
+    "Ekrebel"
+   ],
+   "brief": "Place near the brook Mochmur",
+   "short": "Ekrebel is a location where Edom and Ammon camped near the brook Mochmur.",
+   "refs": [
+    "Judith 7:18"
+   ]
+  },
+  {
+   "key": "Chusi@Jdt.7.18",
+   "name": "Chusi",
+   "kind": "place",
+   "names": [
+    "Chusi"
+   ],
+   "brief": "Place near the brook Mochmur",
+   "short": "Chusi lies near Ekrebel, on the brook Mochmur.",
+   "refs": [
+    "Judith 7:18"
+   ]
+  },
+  {
+   "key": "Mochmur@Jdt.7.18",
+   "name": "Mochmur",
+   "kind": "place",
+   "names": [
+    "Mochmur"
+   ],
+   "brief": "Brook near Ekrebel and Chusi",
+   "short": "The brook Mochmur is where the Edomite and Ammonite allies camped.",
+   "refs": [
+    "Judith 7:18"
+   ]
+  },
+  {
+   "key": "Zion@Jdt.9.13",
+   "name": "Zion",
+   "kind": "place",
+   "names": [
+    "Zion"
+   ],
+   "brief": "Holy mountain of Jerusalem",
+   "short": "Zion is the holy mountain of God, named in Judith's prayer.",
+   "refs": [
+    "Judith 9:13"
+   ],
+   "lat": 31.774,
+   "lng": 35.229
+  },
+  {
+   "key": "Titans@Jdt.16.7",
+   "name": "Titans",
+   "kind": "other",
+   "names": [
+    "Titans"
+   ],
+   "brief": "Mythic giants in Judith's song",
+   "short": "The Titans are named in Judith's song to say Holofernes did not fall to mighty sons of Titans.",
+   "refs": [
+    "Judith 16:7"
+   ]
+  },
+  {
+   "key": "Esther@Est.2.7",
+   "same_as": "Esther@Est.2.7-",
+   "refs": [
+    "Esther 2:7",
+    "Esther 2:8",
+    "Esther 2:10",
+    "Esther 2:11",
+    "Esther 2:15",
+    "Esther 2:16",
+    "Esther 2:17",
+    "Esther 2:18",
+    "Esther 2:20",
+    "Esther 2:22",
+    "Esther 4:5",
+    "Esther 4:8",
+    "Esther 4:10",
+    "Esther 4:12",
+    "Esther 4:13",
+    "Esther 4:15",
+    "Esther 4:17",
+    "Esther 4:29",
+    "Esther 5:1",
+    "Esther 5:3",
+    "Esther 5:4",
+    "Esther 5:5",
+    "Esther 5:6",
+    "Esther 6:14",
+    "Esther 7:2",
+    "Esther 7:6",
+    "Esther 8:1",
+    "Esther 8:2",
+    "Esther 8:4",
+    "Esther 8:5",
+    "Esther 8:7",
+    "Esther 8:13",
+    "Esther 9:12",
+    "Esther 9:13",
+    "Esther 9:29",
+    "Esther 9:31",
+    "Esther 9:32",
+    "Esther 10:6"
+   ]
+  },
+  {
+   "key": "Mordecai@Est.2.5",
+   "same_as": "Mordecai@Est.2.5-",
+   "refs": [
+    "Esther 1:1",
+    "Esther 2:5",
+    "Esther 2:10",
+    "Esther 2:11",
+    "Esther 2:15",
+    "Esther 2:19",
+    "Esther 2:20",
+    "Esther 2:21",
+    "Esther 2:22",
+    "Esther 2:23",
+    "Esther 3:2",
+    "Esther 3:3",
+    "Esther 3:4",
+    "Esther 3:5",
+    "Esther 3:7",
+    "Esther 4:1",
+    "Esther 4:4",
+    "Esther 4:5",
+    "Esther 4:7",
+    "Esther 4:10",
+    "Esther 4:12",
+    "Esther 4:13",
+    "Esther 4:15",
+    "Esther 4:17",
+    "Esther 5:9",
+    "Esther 5:13",
+    "Esther 5:14",
+    "Esther 6:2",
+    "Esther 6:3",
+    "Esther 6:4",
+    "Esther 6:10",
+    "Esther 6:11",
+    "Esther 6:12",
+    "Esther 6:13",
+    "Esther 7:9",
+    "Esther 7:10",
+    "Esther 8:1",
+    "Esther 8:2",
+    "Esther 8:13",
+    "Esther 8:15",
+    "Esther 9:3",
+    "Esther 9:20",
+    "Esther 9:23",
+    "Esther 9:25",
+    "Esther 9:27",
+    "Esther 9:29",
+    "Esther 9:31",
+    "Esther 10:3",
+    "Esther 10:4"
+   ]
+  },
+  {
+   "key": "Haman@Est.3.1",
+   "same_as": "Haman@Est.3.1-",
+   "refs": [
+    "Esther 1:1",
+    "Esther 1:10",
+    "Esther 3:1",
+    "Esther 3:4",
+    "Esther 3:5",
+    "Esther 3:7",
+    "Esther 3:10",
+    "Esther 3:11",
+    "Esther 3:12",
+    "Esther 3:13",
+    "Esther 3:15",
+    "Esther 4:7",
+    "Esther 4:8",
+    "Esther 4:22",
+    "Esther 4:45",
+    "Esther 5:4",
+    "Esther 5:5",
+    "Esther 5:8",
+    "Esther 5:9",
+    "Esther 5:12",
+    "Esther 5:14",
+    "Esther 6:4",
+    "Esther 6:5",
+    "Esther 6:6",
+    "Esther 6:10",
+    "Esther 6:11",
+    "Esther 6:12",
+    "Esther 6:13",
+    "Esther 6:14",
+    "Esther 7:1",
+    "Esther 7:6",
+    "Esther 7:7",
+    "Esther 7:8",
+    "Esther 7:9",
+    "Esther 7:10",
+    "Esther 8:1",
+    "Esther 8:2",
+    "Esther 8:3",
+    "Esther 8:5",
+    "Esther 8:7",
+    "Esther 8:13",
+    "Esther 9:10",
+    "Esther 9:13",
+    "Esther 9:14",
+    "Esther 9:24",
+    "Esther 10:7"
+   ]
+  },
+  {
+   "key": "Ahasuerus@Est.1.1",
+   "same_as": "Ahasuerus@Ezr.4.6-Dan",
+   "refs": [
+    "Esther 1:1",
+    "Esther 1:2",
+    "Esther 1:9",
+    "Esther 1:10",
+    "Esther 1:17",
+    "Esther 2:16",
+    "Esther 2:21",
+    "Esther 3:1",
+    "Esther 3:6",
+    "Esther 3:7",
+    "Esther 3:8",
+    "Esther 3:12",
+    "Esther 3:13",
+    "Esther 6:2",
+    "Esther 8:1",
+    "Esther 8:12",
+    "Esther 8:13",
+    "Esther 9:20",
+    "Esther 10:3"
+   ]
+  },
+  {
+   "key": "Hammedatha@Est.3.1",
+   "same_as": "Hammedatha@Est.3.1-",
+   "refs": [
+    "Esther 1:1",
+    "Esther 3:1",
+    "Esther 8:13",
+    "Esther 9:10",
+    "Esther 9:24"
+   ]
+  },
+  {
+   "key": "Vashti@Est.1.9",
+   "same_as": "Vashti@Est.1.9-",
+   "refs": [
+    "Esther 1:9",
+    "Esther 1:12",
+    "Esther 1:13",
+    "Esther 1:15",
+    "Esther 1:16",
+    "Esther 2:1",
+    "Esther 2:4"
+   ]
+  },
+  {
+   "key": "Memucan@Est.1.16",
+   "same_as": "Memucan@Est.1.14-",
+   "refs": [
+    "Esther 1:16",
+    "Esther 1:21"
+   ]
+  },
+  {
+   "key": "Hegai@Est.2.8",
+   "same_as": "Hegai@Est.2.3-",
+   "refs": [
+    "Esther 2:8",
+    "Esther 2:14"
+   ]
+  },
+  {
+   "key": "Hathach@Est.4.5",
+   "same_as": "Hathach@Est.4.5-",
+   "refs": [
+    "Esther 4:5",
+    "Esther 4:9",
+    "Esther 4:10",
+    "Esther 4:12",
+    "Esther 4:13"
+   ]
+  },
+  {
+   "key": "Zeresh@Est.5.10",
+   "same_as": "Zeresh@Est.5.10-",
+   "refs": [
+    "Esther 5:10",
+    "Esther 5:14",
+    "Esther 6:13"
+   ]
+  },
+  {
+   "key": "Jair@Est.1.1",
+   "same_as": "Jair@Est.2.5",
+   "refs": [
+    "Esther 1:1",
+    "Esther 2:5"
+   ],
+   "names": [
+    "Jairus"
+   ]
+  },
+  {
+   "key": "Shimei@Est.1.1",
+   "same_as": "Shimei@Est.2.5",
+   "refs": [
+    "Esther 1:1",
+    "Esther 2:5"
+   ]
+  },
+  {
+   "key": "Kish@Est.1.1",
+   "same_as": "Kish@Est.2.5",
+   "refs": [
+    "Esther 1:1",
+    "Esther 2:5"
+   ]
+  },
+  {
+   "key": "Jehoiachin@Est.1.1",
+   "same_as": "Jehoiachin@2Ki.24.6-Mat",
+   "refs": [
+    "Esther 1:1"
+   ],
+   "names": [
+    "Jeconiah"
+   ]
+  },
+  {
+   "key": "Abihail@Est.2.7",
+   "same_as": "Abihail@Est.2.15-",
+   "refs": [
+    "Esther 2:7",
+    "Esther 2:15",
+    "Esther 9:29"
+   ],
+   "names": [
+    "Aminadab"
+   ]
+  },
+  {
+   "key": "Susa@Est.1.1",
+   "same_as": "Susa@Ezr.4.9-Dan",
+   "refs": [
+    "Esther 1:1",
+    "Esther 1:2",
+    "Esther 2:3",
+    "Esther 2:5",
+    "Esther 2:8",
+    "Esther 3:15",
+    "Esther 4:8",
+    "Esther 4:16",
+    "Esther 8:13",
+    "Esther 8:14",
+    "Esther 8:15",
+    "Esther 9:6",
+    "Esther 9:11",
+    "Esther 9:12",
+    "Esther 9:15",
+    "Esther 9:18"
+   ]
+  },
+  {
+   "key": "Babylon@Est.1.1",
+   "same_as": "Babylon@Gen.10.10-Rev",
+   "refs": [
+    "Esther 1:1",
+    "Esther 2:6",
+    "Daniel 13:1",
+    "Daniel 13:5",
+    "Daniel 14:3",
+    "Daniel 14:23",
+    "Daniel 14:28",
+    "Daniel 14:34",
+    "Daniel 14:35",
+    "Daniel 14:36",
+    "Daniel 3:97"
+   ],
+   "names": [
+    "Babylonians"
+   ]
+  },
+  {
+   "key": "Canaan@Dan.13.56",
+   "same_as": "Canaan@Gen.9.18-1Ch",
+   "refs": [
+    "Daniel 13:56"
+   ]
+  },
+  {
+   "key": "India@Est.1.1",
+   "name": "India",
+   "kind": "place",
+   "names": [
+    "India"
+   ],
+   "brief": "Eastern limit of the Persian empire",
+   "short": "India marks the eastern edge of Ahasuerus's realm, from India to Ethiopia.",
+   "refs": [
+    "Esther 1:1",
+    "Esther 3:12",
+    "Esther 3:13",
+    "Esther 8:9",
+    "Esther 8:13"
+   ]
+  },
+  {
+   "key": "Nisan@Est.1.1",
+   "name": "Nisan",
+   "kind": "other",
+   "names": [
+    "Nisan"
+   ],
+   "brief": "First month of the Jewish year",
+   "short": "Nisan is the first month, in which Mordecai's dream is dated and the decree for the Jews is written.",
+   "refs": [
+    "Esther 1:1",
+    "Esther 8:9"
+   ]
+  },
+  {
+   "key": "Adar@Est.2.16",
+   "name": "Adar",
+   "kind": "other",
+   "names": [
+    "Adar"
+   ],
+   "brief": "Twelfth month, appointed for the Jews' deliverance",
+   "short": "Adar is the twelfth month; the fourteenth and fifteenth are kept as days of Purim.",
+   "refs": [
+    "Esther 2:16",
+    "Esther 3:7",
+    "Esther 3:13",
+    "Esther 8:12",
+    "Esther 8:13",
+    "Esther 9:1",
+    "Esther 9:15",
+    "Esther 9:16",
+    "Esther 9:19",
+    "Esther 9:21",
+    "Esther 9:22",
+    "Esther 10:13"
+   ]
+  },
+  {
+   "key": "Purim@Est.9.26",
+   "name": "Purim",
+   "kind": "other",
+   "names": [
+    "Purim"
+   ],
+   "brief": "Festival commemorating the deliverance of the Jews",
+   "short": "Purim is the feast on 14-15 Adar celebrating Esther and Mordecai's deliverance; the final colophon calls this letter the letter of Purim.",
+   "refs": [
+    "Esther 9:26",
+    "Esther 9:28",
+    "Esther 9:29",
+    "Esther 10:14"
+   ]
+  },
+  {
+   "key": "Bazan@Est.1:10",
+   "name": "Bazan",
+   "kind": "person",
+   "names": [
+    "Bazan"
+   ],
+   "brief": "Royal chamberlain of Ahasuerus",
+   "short": "One of the king's seven chamberlains named in the Greek text of Esther.",
+   "refs": [
+    "Esther 1:10"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Tharrha@Est.1:1",
+   "name": "Tharrha",
+   "kind": "person",
+   "names": [
+    "Tharrha"
+   ],
+   "brief": "Royal chamberlain of Ahasuerus",
+   "short": "One of the king's seven chamberlains named in the Greek text of Esther.",
+   "refs": [
+    "Esther 1:1",
+    "Esther 1:10"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Baraze@Est.1:10",
+   "name": "Baraze",
+   "kind": "person",
+   "names": [
+    "Baraze"
+   ],
+   "brief": "Royal chamberlain of Ahasuerus",
+   "short": "One of the king's seven chamberlains named in the Greek text of Esther.",
+   "refs": [
+    "Esther 1:10"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Zatholtha@Est.1:10",
+   "name": "Zatholtha",
+   "kind": "person",
+   "names": [
+    "Zatholtha"
+   ],
+   "brief": "Royal chamberlain of Ahasuerus",
+   "short": "One of the king's seven chamberlains named in the Greek text of Esther.",
+   "refs": [
+    "Esther 1:10"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Abataza@Est.1:10",
+   "name": "Abataza",
+   "kind": "person",
+   "names": [
+    "Abataza"
+   ],
+   "brief": "Royal chamberlain of Ahasuerus",
+   "short": "One of the king's seven chamberlains named in the Greek text of Esther.",
+   "refs": [
+    "Esther 1:10"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Tharaba@Est.1:10",
+   "name": "Tharaba",
+   "kind": "person",
+   "names": [
+    "Tharaba"
+   ],
+   "brief": "Royal chamberlain of Ahasuerus",
+   "short": "One of the king's seven chamberlains named in the Greek text of Esther.",
+   "refs": [
+    "Esther 1:10"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Gabatha@Est.1:1",
+   "name": "Gabatha",
+   "kind": "person",
+   "names": [
+    "Gabatha"
+   ],
+   "brief": "Conspiring eunuch in Mordecai's dream account",
+   "short": "Named in the Greek text of Esther as a servant or noble of King Ahasuerus.",
+   "refs": [
+    "Esther 1:1"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Arkesaeus@Est.1:14",
+   "name": "Arkesaeus",
+   "kind": "person",
+   "names": [
+    "Arkesaeus"
+   ],
+   "brief": "Persian and Median prince",
+   "short": "Named in the Greek text of Esther as a servant or noble of King Ahasuerus.",
+   "refs": [
+    "Esther 1:14"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Sarsathaeus@Est.1:14",
+   "name": "Sarsathaeus",
+   "kind": "person",
+   "names": [
+    "Sarsathaeus"
+   ],
+   "brief": "Persian and Median prince",
+   "short": "Named in the Greek text of Esther as a servant or noble of King Ahasuerus.",
+   "refs": [
+    "Esther 1:14"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Malisear@Est.1:14",
+   "name": "Malisear",
+   "kind": "person",
+   "names": [
+    "Malisear"
+   ],
+   "brief": "Persian and Median prince",
+   "short": "Named in the Greek text of Esther as a servant or noble of King Ahasuerus.",
+   "refs": [
+    "Esther 1:14"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Bugathan@Est.7:9",
+   "name": "Bugathan",
+   "kind": "person",
+   "names": [
+    "Bugathan"
+   ],
+   "brief": "Chamberlain who reports Haman's gallows",
+   "short": "Named in the Greek text of Esther as a servant or noble of King Ahasuerus.",
+   "refs": [
+    "Esther 7:9"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Phasga@Est.9:7",
+   "name": "Phasga",
+   "kind": "person",
+   "names": [
+    "Phasga"
+   ],
+   "brief": "Son of Haman, killed at Susa",
+   "short": "One of Haman's ten sons killed by the Jews at Susa.",
+   "refs": [
+    "Esther 9:7"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Haman@Est.3.1"
+    }
+   ]
+  },
+  {
+   "key": "Delphon@Est.9:7",
+   "name": "Delphon",
+   "kind": "person",
+   "names": [
+    "Delphon"
+   ],
+   "brief": "Son of Haman, killed at Susa",
+   "short": "One of Haman's ten sons killed by the Jews at Susa.",
+   "refs": [
+    "Esther 9:7"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Haman@Est.3.1"
+    }
+   ]
+  },
+  {
+   "key": "Pharsannes@Est.9:7",
+   "name": "Pharsannes",
+   "kind": "person",
+   "names": [
+    "Pharsannes"
+   ],
+   "brief": "Son of Haman, killed at Susa",
+   "short": "One of Haman's ten sons killed by the Jews at Susa.",
+   "refs": [
+    "Esther 9:7"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Haman@Est.3.1"
+    }
+   ]
+  },
+  {
+   "key": "Pharadatha@Est.9:8",
+   "name": "Pharadatha",
+   "kind": "person",
+   "names": [
+    "Pharadatha"
+   ],
+   "brief": "Son of Haman, killed at Susa",
+   "short": "One of Haman's ten sons killed by the Jews at Susa.",
+   "refs": [
+    "Esther 9:8"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Haman@Est.3.1"
+    }
+   ]
+  },
+  {
+   "key": "Barea@Est.9:8",
+   "name": "Barea",
+   "kind": "person",
+   "names": [
+    "Barea"
+   ],
+   "brief": "Son of Haman, killed at Susa",
+   "short": "One of Haman's ten sons killed by the Jews at Susa.",
+   "refs": [
+    "Esther 9:8"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Haman@Est.3.1"
+    }
+   ]
+  },
+  {
+   "key": "Sarbaca@Est.9:8",
+   "name": "Sarbaca",
+   "kind": "person",
+   "names": [
+    "Sarbaca"
+   ],
+   "brief": "Son of Haman, killed at Susa",
+   "short": "One of Haman's ten sons killed by the Jews at Susa.",
+   "refs": [
+    "Esther 9:8"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Haman@Est.3.1"
+    }
+   ]
+  },
+  {
+   "key": "Marmasima@Est.9:9",
+   "name": "Marmasima",
+   "kind": "person",
+   "names": [
+    "Marmasima"
+   ],
+   "brief": "Son of Haman, killed at Susa",
+   "short": "One of Haman's ten sons killed by the Jews at Susa.",
+   "refs": [
+    "Esther 9:9"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Haman@Est.3.1"
+    }
+   ]
+  },
+  {
+   "key": "Ruphaeus@Est.9:9",
+   "name": "Ruphaeus",
+   "kind": "person",
+   "names": [
+    "Ruphaeus"
+   ],
+   "brief": "Son of Haman, killed at Susa",
+   "short": "One of Haman's ten sons killed by the Jews at Susa.",
+   "refs": [
+    "Esther 9:9"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Haman@Est.3.1"
+    }
+   ]
+  },
+  {
+   "key": "Arsaeus@Est.9:9",
+   "name": "Arsaeus",
+   "kind": "person",
+   "names": [
+    "Arsaeus"
+   ],
+   "brief": "Son of Haman, killed at Susa",
+   "short": "One of Haman's ten sons killed by the Jews at Susa.",
+   "refs": [
+    "Esther 9:9"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Haman@Est.3.1"
+    }
+   ]
+  },
+  {
+   "key": "Zabuthaeus@Est.9:9",
+   "name": "Zabuthaeus",
+   "kind": "person",
+   "names": [
+    "Zabuthaeus"
+   ],
+   "brief": "Son of Haman, killed at Susa",
+   "short": "One of Haman's ten sons killed by the Jews at Susa.",
+   "refs": [
+    "Esther 9:9"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Haman@Est.3.1"
+    }
+   ]
+  },
+  {
+   "key": "Dositheus@Est.10.14",
+   "name": "Dositheus",
+   "kind": "person",
+   "names": [
+    "Dositheus"
+   ],
+   "brief": "Priest who brought the Greek Esther to Egypt",
+   "short": "Dositheus, who claimed to be a priest and Levite, brought the Greek letter of Purim to Egypt with his son Ptolemeus.",
+   "refs": [
+    "Esther 10:14"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Ptolemeus@Est.10.14"
+    }
+   ]
+  },
+  {
+   "key": "Ptolemeus@Est.10.14",
+   "name": "Ptolemeus (son of Dositheus)",
+   "kind": "person",
+   "names": [
+    "Ptolemeus"
+   ],
+   "brief": "Son of Dositheus, accompanied his father",
+   "short": "Ptolemeus, son of Dositheus, came with him to deliver the Greek Esther; the colophon also names Ptolemeus the king and Lysimachus's father by this name.",
+   "refs": [
+    "Esther 10:14"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Dositheus@Est.10.14"
+    }
+   ]
+  },
+  {
+   "key": "Cleopatra@Est.10.14",
+   "name": "Cleopatra",
+   "kind": "person",
+   "names": [
+    "Cleopatra"
+   ],
+   "brief": "Queen of Egypt in the colophon of Greek Esther",
+   "short": "Cleopatra, with Ptolemeus, is named in dating the arrival of the Greek Esther in the fourth year of their reign.",
+   "refs": [
+    "Esther 10:14"
+   ],
+   "gender": "Female"
+  },
+  {
+   "key": "Lysimachus@Est.10.14",
+   "name": "Lysimachus",
+   "kind": "person",
+   "names": [
+    "Lysimachus"
+   ],
+   "brief": "Jerusalem translator of the Greek Esther",
+   "short": "Lysimachus, son of Ptolemeus in Jerusalem, is credited with interpreting the letter of Purim.",
+   "refs": [
+    "Esther 10:14"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Daniel@Dan.13.45",
+   "same_as": "Daniel@Ezk.14.14-Mrk",
+   "refs": [
+    "Daniel 13:45",
+    "Daniel 13:51",
+    "Daniel 13:55",
+    "Daniel 13:59",
+    "Daniel 13:61",
+    "Daniel 13:64",
+    "Daniel 14:2",
+    "Daniel 14:4",
+    "Daniel 14:7",
+    "Daniel 14:9",
+    "Daniel 14:12",
+    "Daniel 14:14",
+    "Daniel 14:16",
+    "Daniel 14:17",
+    "Daniel 14:19",
+    "Daniel 14:22",
+    "Daniel 14:24",
+    "Daniel 14:25",
+    "Daniel 14:26",
+    "Daniel 14:27",
+    "Daniel 14:29",
+    "Daniel 14:30",
+    "Daniel 14:32",
+    "Daniel 14:37",
+    "Daniel 14:38",
+    "Daniel 14:39",
+    "Daniel 14:40",
+    "Daniel 14:41"
+   ]
+  },
+  {
+   "key": "Azariah@Dan.3.25",
+   "same_as": "Azariah@Dan.1.6-",
+   "refs": [
+    "Daniel 3:25",
+    "Daniel 3:49",
+    "Daniel 3:88"
+   ],
+   "names": [
+    "Azarias",
+    "Abednego"
+   ]
+  },
+  {
+   "key": "Hananiah@Dan.3.88",
+   "same_as": "Hananiah@Dan.1.6-",
+   "refs": [
+    "Daniel 3:88"
+   ],
+   "names": [
+    "Shadrach"
+   ]
+  },
+  {
+   "key": "Mishael@Dan.3.88",
+   "same_as": "Mishael@Dan.1.6-",
+   "refs": [
+    "Daniel 3:88"
+   ],
+   "names": [
+    "Meshach"
+   ]
+  },
+  {
+   "key": "Cyrus@Dan.14.1",
+   "same_as": "Cyrus@2Ch.36.22-Dan",
+   "refs": [
+    "Daniel 14:1"
+   ]
+  },
+  {
+   "key": "Habakkuk@Dan.14.33",
+   "same_as": "Habakkuk@Hab.1.1-",
+   "refs": [
+    "Daniel 14:33",
+    "Daniel 14:34",
+    "Daniel 14:35",
+    "Daniel 14:37",
+    "Daniel 14:39"
+   ]
+  },
+  {
+   "key": "Joakim@Dan.13.1",
+   "name": "Joakim (Susanna's husband)",
+   "kind": "person",
+   "names": [
+    "Joakim"
+   ],
+   "brief": "Wealthy Jew of Babylon, husband of Susanna",
+   "short": "Joakim, a rich and honoured Jew in Babylon, is the husband of Susanna and owner of the garden where the elders accost her.",
+   "refs": [
+    "Daniel 13:1",
+    "Daniel 13:4",
+    "Daniel 13:6",
+    "Daniel 13:28",
+    "Daniel 13:29",
+    "Daniel 13:63"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "spouse",
+     "key": "Susanna@Dan.13.2"
+    }
+   ]
+  },
+  {
+   "key": "Susanna@Dan.13.2",
+   "name": "Susanna",
+   "kind": "person",
+   "names": [
+    "Susanna"
+   ],
+   "brief": "Righteous wife falsely accused by two elders",
+   "short": "Susanna, daughter of Helkias, is falsely accused by two lecherous elders, but is rescued by the young Daniel's cross-examination.",
+   "refs": [
+    "Daniel 13:2",
+    "Daniel 13:22",
+    "Daniel 13:24",
+    "Daniel 13:27",
+    "Daniel 13:28",
+    "Daniel 13:29",
+    "Daniel 13:42",
+    "Daniel 13:63"
+   ],
+   "gender": "Female",
+   "relations": [
+    {
+     "rel": "father",
+     "key": "Helkias@Dan.13.2"
+    },
+    {
+     "rel": "spouse",
+     "key": "Joakim@Dan.13.1"
+    }
+   ]
+  },
+  {
+   "key": "Helkias@Dan.13.2",
+   "name": "Helkias",
+   "kind": "person",
+   "names": [
+    "Helkias"
+   ],
+   "brief": "Father of Susanna",
+   "short": "Helkias is the father of Susanna, who with his wife praises God for her vindication.",
+   "refs": [
+    "Daniel 13:2",
+    "Daniel 13:29",
+    "Daniel 13:63"
+   ],
+   "gender": "Male",
+   "relations": [
+    {
+     "rel": "child",
+     "key": "Susanna@Dan.13.2"
+    }
+   ]
+  },
+  {
+   "key": "Astyages@Dan.14.1",
+   "name": "Astyages",
+   "kind": "person",
+   "names": [
+    "Astyages"
+   ],
+   "brief": "King gathered to his fathers before Cyrus",
+   "short": "Astyages, the last Median king, is named at the opening of Bel and the Dragon as succeeded by Cyrus the Persian.",
+   "refs": [
+    "Daniel 14:1"
+   ],
+   "gender": "Male"
+  },
+  {
+   "key": "Bel@Dan.14.3",
+   "name": "Bel",
+   "kind": "other",
+   "names": [
+    "Bel"
+   ],
+   "brief": "Babylonian idol exposed by Daniel",
+   "short": "Bel, the idol of the Babylonians, is revealed as a fraud when ashes on the temple floor show the footprints of its priests.",
+   "refs": [
+    "Daniel 14:3",
+    "Daniel 14:4",
+    "Daniel 14:6",
+    "Daniel 14:9",
+    "Daniel 14:10",
+    "Daniel 14:11",
+    "Daniel 14:12",
+    "Daniel 14:14",
+    "Daniel 14:18",
+    "Daniel 14:22"
+   ]
+  },
+  {
+   "key": "Dragon@Dan.14.23",
+   "name": "The Dragon",
+   "kind": "other",
+   "names": [
+    "The Dragon"
+   ],
+   "brief": "Serpent worshiped at Babylon, killed by Daniel",
+   "short": "The dragon is a living creature worshipped in Babylon, which Daniel kills by feeding it cakes of pitch, fat and hair.",
+   "refs": [
+    "Daniel 14:23",
+    "Daniel 14:24",
+    "Daniel 14:26",
+    "Daniel 14:27"
+   ]
+  }
+ ]
+}
