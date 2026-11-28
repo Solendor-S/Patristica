@@ -1,0 +1,1485 @@
+[
+ {
+  "id": "john-1-1c-theos-article",
+  "book": "John",
+  "chapter": 1,
+  "verse": 1,
+  "words": [
+   "JHN 1:1!14",
+   "JHN 1:1!15",
+   "JHN 1:1!16",
+   "JHN 1:1!17"
+  ],
+  "title": "John 1:1c: \"the Word was God\" without the article",
+  "category": "article",
+  "summary": "Theos is anarthrous and stands before the verb as predicate, while ho theos in 1:1b has the article. Greek grammar allows this word order to mark the predicate as definite (identity), qualitative (the Word has the nature of God) or indefinite/derivative (\"a god\", \"divine\"), and each has been argued from the missing article.",
+  "readings": [
+   {
+    "label": "Qualitative: the Word is fully God by nature",
+    "rendering": "and the Word was God (what God was, the Word was)",
+    "grammar": "Anarthrous predicate nominative placed before the copula stresses quality or nature rather than identity; the article on the subject marks which noun is the subject.",
+    "modern": "Most modern commentators and translations (RSV, NAB, ESV, NET); Wallace, GGBB 266-9",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on the Gospel of John",
+      "ref": "Homily 4",
+      "year": 391,
+      "page": "240104",
+      "url": "https://www.newadvent.org/fathers/240104.htm",
+      "quote": "so here, although the article is not annexed to the Son, the Son is not on that account a less God."
+     }
+    ]
+   },
+   {
+    "label": "Derivative or lesser: God by participation, not \"the God\"",
+    "rendering": "and the Word was divine / a god (in a derived sense)",
+    "grammar": "The absence of the article is read as marking a lower, derived sense of theos than the articular ho theos (the unoriginate God).",
+    "fathers": [
+     {
+      "father": "Origen",
+      "work": "Commentary on John",
+      "ref": "Book II, ch. 2",
+      "year": 232,
+      "page": "101502",
+      "url": "https://www.newadvent.org/fathers/101502.htm",
+      "quote": "but that all beyond the Very God is made God by participation in His divinity, and is not to be called simply God (with the article), but rather God (without article)."
+     }
+    ]
+   },
+   {
+    "label": "Definite: the Word is identical with God",
+    "rendering": "the Word was the God (no distinction of person)",
+    "grammar": "The anarthrous predicate is read as definite (convertible with the subject); used by modalist readers to deny a personal distinction.",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "Tree gives θεὸς as predicate of ἦν with ὁ λόγος as subject; it does not encode whether the predicate is definite, qualitative or indefinite.",
+  "sources": [
+   "Wallace, GGBB 266-9",
+   "NET Bible note on John 1:1",
+   "Origen, Comm. John II.2"
+  ]
+ },
+ {
+  "id": "john-1-3-ho-gegonen",
+  "book": "John",
+  "chapter": 1,
+  "verse": 3,
+  "words": [
+   "JHN 1:3!11",
+   "JHN 1:3!12",
+   "JHN 1:4!1",
+   "JHN 1:4!2"
+  ],
+  "title": "John 1:3-4: where does the sentence break at \"that which has come to be\"?",
+  "category": "punctuation",
+  "summary": "The earliest manuscripts carry no punctuation. Ho gegonen (\"what has come to be\") can close v. 3 (\"without him not one thing came to be that has come to be\") or open v. 4 (\"what has come to be, in him was life\"). The choice changes whether life is predicated of creation or of the Word.",
+  "readings": [
+   {
+    "label": "Close v. 3 with ho gegonen: \"not one thing that has come to be\"",
+    "rendering": "without him not one thing came into being that has come into being. In him was life, and the life was the light of men",
+    "grammar": "Ho gegonen is a relative clause attached to oude hen; en autō zōē ēn begins a new sentence.",
+    "modern": "NA28, UBS and most modern translations (RSV, ESV, NIV)",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on the Gospel of John",
+      "ref": "Homily 5",
+      "year": 391,
+      "page": "240105",
+      "url": "https://www.newadvent.org/fathers/240105.htm",
+      "quote": "For we will not put the full stop after not anything, as the heretics do."
+     }
+    ]
+   },
+   {
+    "label": "Stop after oude hen; v. 4 begins \"what has come to be, in him was life\"",
+    "rendering": "without him not one thing came into being. What has come to be in him was life, and the life was the light of men",
+    "grammar": "Ho gegonen is the subject of a new clause whose predicate is en autō zōē ēn.",
+    "modern": "Common in the second to fourth centuries; recorded as an alternative in NRSV margin",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Tractates on the Gospel of John",
+      "ref": "Tractate 1 (on John 1:1-4)",
+      "year": 417,
+      "page": "1701003",
+      "url": "https://www.newadvent.org/fathers/1701003.htm",
+      "quote": "Because that which was made in Him was life; and before it was made there was life."
+     },
+     {
+      "father": "Clement Of Alexandria",
+      "work": "Fragments",
+      "ref": "on 1 John 1:2",
+      "year": 200,
+      "commentary": 1972,
+      "url": "https://www.newadvent.org/fathers/0211.htm",
+      "quote": "And what was made, in Him was life, and the life was the light of men."
+     }
+    ]
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "ὃ γέγονεν is parsed as a relative clause (<rel>) hanging off οὐδὲ ἕν, and John 1:4 opens with ἐν αὐτῷ ζωὴ ἦν as a new clause.",
+  "sources": [
+   "NET Bible note on John 1:3",
+   "Metzger, Textual Commentary on John 1:3-4",
+   "Brown, Gospel according to John (AB) 6"
+  ]
+ },
+ {
+  "id": "john-1-9-erchomenon",
+  "book": "John",
+  "chapter": 1,
+  "verse": 9,
+  "words": [
+   "JHN 1:9!1",
+   "JHN 1:9!3",
+   "JHN 1:9!9",
+   "JHN 1:9!10"
+  ],
+  "title": "John 1:9 erchomenon: the light that comes, or every man who comes?",
+  "category": "attachment",
+  "summary": "Erchomenon can agree with phos (\"the true light was coming into the world\", a periphrastic ēn erchomenon) or with anthropon (\"enlightens every man who comes into the world\"). Both are grammatical.",
+  "readings": [
+   {
+    "label": "With anthropon: \"every man coming into the world\"",
+    "rendering": "the true light, which enlightens every man coming into the world",
+    "grammar": "Accusative participle in agreement with πάντα ἄνθρωπον; cf. the rabbinic idiom \"all who come into the world\".",
+    "modern": "Vulgate, KJV, NIV (1984)",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on the Gospel of John",
+      "ref": "Homily 8",
+      "year": 391,
+      "page": "240108",
+      "url": "https://www.newadvent.org/fathers/240108.htm",
+      "quote": "If He lights every man that comes into the world, how is it that so many continue unenlightened?"
+     },
+     {
+      "father": "Tertullian",
+      "work": "Against Praxeas",
+      "ref": "ch. 12",
+      "year": 213,
+      "page": "0317",
+      "url": "https://www.newadvent.org/fathers/0317.htm",
+      "quote": "Immediately there appears the Word, that true light, which lights man on his coming into the world,"
+     }
+    ]
+   },
+   {
+    "label": "With phos via ēn: \"the true light was coming into the world\"",
+    "rendering": "the true light, which enlightens everyone, was coming into the world",
+    "grammar": "Periphrastic imperfect ἦν ἐρχόμενον agreeing with φῶς, with ὃ φωτίζει πάντα ἄνθρωπον as a relative clause.",
+    "modern": "RSV, NRSV, NAB, ESV (margin alternatives)",
+    "fathers": [
+     {
+      "father": "Origen",
+      "work": "Commentary on John",
+      "ref": "Book I",
+      "year": 232,
+      "page": "101501",
+      "url": "https://www.newadvent.org/fathers/101501.htm",
+      "quote": "The true light, which lightens every man, was coming into the world."
+     }
+    ]
+   }
+  ],
+  "macula_follows": 1,
+  "macula_evidence": "ἦν[1] ... ἐρχόμενον[10] εἰς τὸν κόσμον is parsed as one clause (periphrastic 'was coming'), with ὃ φωτίζει πάντα ἄνθρωπον as a <rel> clause on τὸ φῶς.",
+  "sources": [
+   "NET Bible note on John 1:9",
+   "Wallace, GGBB 647",
+   "Carson, John, 123"
+  ]
+ },
+ {
+  "id": "john-1-18-monogenes-theos",
+  "book": "John",
+  "chapter": 1,
+  "verse": 18,
+  "words": [
+   "JHN 1:18!5",
+   "JHN 1:18!6",
+   "JHN 1:18!7",
+   "JHN 1:18!8"
+  ],
+  "title": "John 1:18 monogenēs theos: adjective, or noun in apposition?",
+  "category": "construction",
+  "summary": "On the reading monogenes theos (a separate textual question), the grammar is still open: monogenes may be an adjective (\"the only-begotten God\") or a substantive with theos in apposition (\"the Unique One, God\").",
+  "readings": [
+   {
+    "label": "Adjectival: \"the only-begotten God\"",
+    "rendering": "the only-begotten God, who is in the bosom of the Father",
+    "grammar": "μονογενὴς modifies θεός as an attributive adjective.",
+    "fathers": [
+     {
+      "father": "Clement Of Alexandria",
+      "work": "Stromata",
+      "ref": "Book V, ch. 12",
+      "year": 200,
+      "page": "02105",
+      "url": "https://www.newadvent.org/fathers/02105.htm",
+      "quote": "The only-begotten God, who is in the bosom of the Father, He has declared Him,"
+     },
+     {
+      "father": "Gregory of Nyssa",
+      "work": "Against Eunomius",
+      "ref": "Book II",
+      "year": 382,
+      "page": "290102",
+      "url": "https://www.newadvent.org/fathers/290102.htm",
+      "quote": "But the Only-begotten God, Who is in the bosom of the Father is excellent, and beyond all excellency"
+     }
+    ]
+   },
+   {
+    "label": "Appositional: \"the Unique One, God\"",
+    "rendering": "the Unique One, who is God, who is in the bosom of the Father",
+    "grammar": "μονογενής is a substantivised adjective (\"the unique one\"); θεός stands in apposition to it.",
+    "modern": "NET (\"the only one, himself God\"); Wallace, GGBB 241-3",
+    "fathers": []
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "μονογενὴς θεὸς is glossed 'one and only God' as a single noun group with ὁ ὤν as a <rel> clause.",
+  "sources": [
+   "NET Bible note on John 1:18",
+   "Wallace, GGBB 241-3",
+   "Metzger, Textual Commentary on John 1:18"
+  ]
+ },
+ {
+  "id": "john-5-39-eraunate",
+  "book": "John",
+  "chapter": 5,
+  "verse": 39,
+  "words": [
+   "JHN 5:39!1",
+   "JHN 5:39!4",
+   "JHN 5:39!6"
+  ],
+  "title": "John 5:39 eraunate: \"Search\" or \"You search\"?",
+  "category": "construction",
+  "summary": "Eraunate is the same form in the present imperative and the present indicative. The imperative exhorts study of Scripture; the indicative observes that the audience already search it and still miss its testimony to Christ.",
+  "readings": [
+   {
+    "label": "Imperative: \"Search the Scriptures\"",
+    "rendering": "Search the Scriptures, because you think that in them you have eternal life",
+    "grammar": "Second-person plural present imperative, with ὅτι giving the reason for the command.",
+    "modern": "Vulgate (scrutamini), KJV, RSV, NIV",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on the Gospel of John",
+      "ref": "Homily 41",
+      "year": 391,
+      "page": "240141",
+      "url": "https://www.newadvent.org/fathers/240141.htm",
+      "quote": "He said not, Read the Scriptures, but, Search the Scriptures."
+     }
+    ]
+   },
+   {
+    "label": "Indicative: \"You search the Scriptures\"",
+    "rendering": "You search the Scriptures because you think that in them you have eternal life, yet it is they that testify of me",
+    "grammar": "Second-person plural present indicative; the following καὶ links the statement to the rebuke \"you will not come to me\".",
+    "modern": "Cyril of Alexandria; Westcott; NEB margin",
+    "fathers": [
+     {
+      "father": "Cyril of Alexandria",
+      "work": "Commentary on John",
+      "ref": "on John 5:39",
+      "year": 425,
+      "legacy": 60486,
+      "url": "http://orthodoxwiki.org/Cyril_of_Alexandria",
+      "quote": "We will then, looking to what is more profitable and agreeable to what preceded, read it not imperatively, but rather as in connection and with a comma."
+     }
+    ]
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "Ἐραυνᾶτε τὰς γραφάς is the main clause with ὅτι as an <adv> reason clause, treated as an imperative.",
+  "sources": [
+   "NET Bible note on John 5:39",
+   "Cornelius a Lapide on John 5:39",
+   "Wallace, GGBB 485"
+  ]
+ },
+ {
+  "id": "john-7-37-38-his-belly",
+  "book": "John",
+  "chapter": 7,
+  "verse": 37,
+  "words": [
+   "JHN 7:37!19",
+   "JHN 7:37!23",
+   "JHN 7:38!2",
+   "JHN 7:38!5",
+   "JHN 7:38!13"
+  ],
+  "title": "John 7:37-38: whose belly, and what does \"as the Scripture said\" modify?",
+  "category": "punctuation",
+  "summary": "No punctuation marks where \"let him drink\" ends. Either ho pisteuon begins a new sentence (\"He who believes in me, as Scripture said, out of his belly...\") with autou the believer, or it completes the invitation (\"let him drink who believes in me\") and autou refers to Christ. A third option keeps the believer's belly but attaches \"as Scripture said\" back to the believing.",
+  "readings": [
+   {
+    "label": "Believer's belly; \"as Scripture said\" introduces the quotation",
+    "rendering": "Let him who is thirsty come to me and drink. He who believes in me, as Scripture said, out of his belly will flow rivers of living water",
+    "grammar": "Ὁ πιστεύων is a nominative pendens resumed by αὐτοῦ (the believer); καθὼς εἶπεν ἡ γραφή points forward to the rivers saying.",
+    "modern": "RSV, NIV, NASB, ESV text",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Tractates on the Gospel of John",
+      "ref": "Tractate 32",
+      "year": 417,
+      "page": "1701032",
+      "url": "https://www.newadvent.org/fathers/1701032.htm",
+      "quote": "There is therefore an inner thirst and an inner belly, because there is an inner man."
+     }
+    ]
+   },
+   {
+    "label": "Believer's belly; \"as Scripture said\" belongs to \"believes in me\"",
+    "rendering": "He who believes in me, as Scripture said: rivers of living water will flow out of his belly (Christ's own word, not a Scripture quotation)",
+    "grammar": "Stop after εἶπεν ἡ γραφή: the clause ποταμοὶ ... ῥεύσουσιν is an assertion of Christ.",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on the Gospel of John",
+      "ref": "Homily 51",
+      "year": 391,
+      "page": "240151",
+      "url": "https://www.newadvent.org/fathers/240151.htm",
+      "quote": "Here we must place a stop, so that the, rivers shall flow from his belly, may be an assertion of Christ."
+     }
+    ]
+   },
+   {
+    "label": "Christ's belly: the believer drinks, and the rivers flow from Christ",
+    "rendering": "Let him who is thirsty come to me, and let him who believes in me drink. As Scripture said, out of his [Christ's] belly will flow rivers of living water",
+    "grammar": "Ὁ πιστεύων is the subject of πινέτω; αὐτοῦ refers to the speaker.",
+    "modern": "NRSV margin; Brown, Gospel of John (AB) 1.320-4",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "Tree: ὁ πιστεύων εἰς ἐμέ and the καθὼς clause are siblings before the main clause ποταμοὶ ... ῥεύσουσιν, with αὐτοῦ resumptive; it parses v. 38 as a new sentence but does not decide the referent of αὐτοῦ.",
+  "sources": [
+   "NET Bible note on John 7:38",
+   "Brown, Gospel according to John (AB) 1.320-4",
+   "Carson, John, 321-4"
+  ]
+ },
+ {
+  "id": "john-8-25-ten-archen",
+  "book": "John",
+  "chapter": 8,
+  "verse": 25,
+  "words": [
+   "JHN 8:25!11",
+   "JHN 8:25!12",
+   "JHN 8:25!13",
+   "JHN 8:25!14"
+  ],
+  "title": "John 8:25 tēn archēn ho ti kai lalō: three ways to read it",
+  "category": "construction",
+  "summary": "Ten archen can be a predicate (\"[I am] the Beginning\"), an adverbial accusative (\"from the beginning\", i.e. \"what I have been telling you from the beginning\") or part of a question (\"why do I speak to you at all?\"). Each yields a different answer to \"Who are you?\"",
+  "readings": [
+   {
+    "label": "Predicate: \"[I am] the Beginning\"",
+    "rendering": "The Beginning, which I also say to you",
+    "grammar": "Τὴν ἀρχήν as accusative predicate with an understood 'I am', and ὅ τι καὶ λαλῶ as a relative clause.",
+    "modern": "Vulgate (principium qui et loquor vobis), Douay-Rheims",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Tractates on the Gospel of John",
+      "ref": "Tractate 38",
+      "year": 417,
+      "page": "1701038",
+      "url": "https://www.newadvent.org/fathers/1701038.htm",
+      "quote": "Believe me [to be] the beginning, that you may not die in your sins."
+     }
+    ]
+   },
+   {
+    "label": "Adverbial: \"from the beginning\"",
+    "rendering": "What I have been telling you from the beginning",
+    "grammar": "Τὴν ἀρχήν as adverbial accusative (\"at all, from the start\") with ὅ τι as 'what'.",
+    "modern": "NASB; ESV margin",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on the Gospel of John",
+      "ref": "Homily 53",
+      "year": 391,
+      "legacy": 37988,
+      "url": "http://orthodoxwiki.org/Chrysostom",
+      "quote": "What then says Christ? The same that I told you from the beginning."
+     }
+    ]
+   },
+   {
+    "label": "Interrogative: \"Why do I speak to you at all?\"",
+    "rendering": "Why am I even speaking to you at all?",
+    "grammar": "Ὅ τι read as interrogative, with τὴν ἀρχήν meaning \"at all\" in a rhetorical question.",
+    "modern": "NRSV (\"Why do I speak to you at all?\")",
+    "fathers": []
+   }
+  ],
+  "macula_follows": 1,
+  "macula_evidence": "τὴν ἀρχήν sits inside a <rel> clause 'what the beginning also saying you', treated as adverbial accusative rather than as a predicate nominal.",
+  "sources": [
+   "NET Bible note on John 8:25",
+   "Brown, Gospel according to John (AB) 1.347-8",
+   "Moule, Idiom Book 130"
+  ]
+ },
+ {
+  "id": "john-9-3-punctuation",
+  "book": "John",
+  "chapter": 9,
+  "verse": 3,
+  "words": [
+   "JHN 9:3!10",
+   "JHN 9:3!11",
+   "JHN 9:3!12",
+   "JHN 9:4!1",
+   "JHN 9:4!2"
+  ],
+  "title": "John 9:3-4: does the purpose clause end the sentence or begin the next?",
+  "category": "punctuation",
+  "summary": "\"But that the works of God might be displayed in him\" is elliptical. It may end Jesus' answer (with 9:4 a new sentence, \"We must work...\") or stand as the purpose of 9:4 (\"so that the works of God might be displayed in him, we must work the works of him who sent me\"). The difference is whether the blindness was ordained for display, or whether the display is the aim of the disciples' working.",
+  "readings": [
+   {
+    "label": "Full stop after \"in him\"",
+    "rendering": "Neither this man nor his parents sinned, but [he was born blind] so that the works of God might be displayed in him. We must work the works of him who sent me while it is day",
+    "grammar": "Ἀλλ' ἵνα φανερωθῇ is an elliptical clause completing v. 3; v. 4 opens with δεῖ.",
+    "modern": "NA28, RSV, ESV, NIV",
+    "fathers": []
+   },
+   {
+    "label": "Comma after \"in him\": the clause goes with v. 4",
+    "rendering": "Neither this man nor his parents sinned. But so that the works of God might be displayed in him, we must work the works of him who sent me while it is day",
+    "grammar": "Ἵνα φανερωθῇ gives the purpose of δεῖ ἡμᾶς ἐργάζεσθαι in v. 4.",
+    "modern": "Noted by some commentators and in margins",
+    "fathers": []
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "9:3 ends with the ἵνα clause under ἀπεκρίθη, and 9:4 starts a separate clause with δεῖ ... <s> ἡμᾶς ἐργάζεσθαι.",
+  "sources": [
+   "NET Bible note on John 9:3-4",
+   "Beasley-Murray, John (WBC)",
+   "Carson, John, 361"
+  ]
+ },
+ {
+  "id": "john-14-1-pisteuete",
+  "book": "John",
+  "chapter": 14,
+  "verse": 1,
+  "words": [
+   "JHN 14:1!6",
+   "JHN 14:1!13"
+  ],
+  "title": "John 14:1 pisteuete ... pisteuete: imperatives or indicatives?",
+  "category": "construction",
+  "summary": "Pisteuete is identical in the present indicative and imperative, so the verse can read as two commands, two statements, or a statement and a command. Each shifts how Jesus' words to the troubled disciples are heard.",
+  "readings": [
+   {
+    "label": "Two imperatives",
+    "rendering": "Believe in God; believe also in me",
+    "grammar": "Both πιστεύετε are present imperatives, continuing the μὴ ταρασσέσθω command.",
+    "modern": "RSV, NRSV, ESV, NIV",
+    "fathers": [
+     {
+      "father": "Hilary of Poitiers",
+      "work": "On the Trinity",
+      "ref": "Book IX",
+      "year": 360,
+      "commentary": 41929,
+      "url": "https://www.newadvent.org/fathers/330209.htm",
+      "quote": "Take as an instance the command, Believe in God, and believe also in Me."
+     }
+    ]
+   },
+   {
+    "label": "Indicative, then imperative",
+    "rendering": "You believe in God; believe also in me",
+    "grammar": "First πιστεύετε indicative (a premise), second imperative (the conclusion).",
+    "modern": "Vulgate (creditis ... et in me credite), Douay-Rheims",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on the Gospel of John",
+      "ref": "Homily 69",
+      "year": 391,
+      "commentary": 57361,
+      "url": "https://www.newadvent.org/fathers/240169.htm",
+      "quote": "Anyhow, conversing with the disciples, He did speak thus: You believe in the Father, believe also on Me"
+     }
+    ]
+   },
+   {
+    "label": "Two indicatives",
+    "rendering": "You believe in God, and you believe in me",
+    "grammar": "Both πιστεύετε are present indicatives, a statement of their existing faith offered as the ground for calm.",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree displays the two πιστεύετε clauses as coordinate main clauses without encoding mood.",
+  "sources": [
+   "NET Bible note on John 14:1",
+   "Carson, John, 487",
+   "Brown, Gospel according to John (AB) 2.618"
+  ]
+ },
+ {
+  "id": "john-19-35-ekeinos",
+  "book": "John",
+  "chapter": 19,
+  "verse": 35,
+  "words": [
+   "JHN 19:35!2",
+   "JHN 19:35!3",
+   "JHN 19:35!12",
+   "JHN 19:35!13"
+  ],
+  "title": "John 19:35 ekeinos oiden: who is \"that one\"?",
+  "category": "referent",
+  "summary": "Ekeinos (\"that one\") normally points away from the subject. It can mean the eyewitness himself (speaking of himself in the third person) or another person, whether Jesus or God, who guarantees the testimony.",
+  "readings": [
+   {
+    "label": "The eyewitness himself",
+    "rendering": "and he [the eyewitness] knows that he tells the truth, that you also may believe",
+    "grammar": "Ἐκεῖνος is used of the eyewitness as a solemn self-reference rather than of a different person.",
+    "modern": "Most commentators; NIV, NET",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Tractates on the Gospel of John",
+      "ref": "Tractate 120",
+      "year": 417,
+      "page": "1701120",
+      "url": "https://www.newadvent.org/fathers/1701120.htm",
+      "quote": "for he knows who has seen, that he who has not seen might believe his testimony."
+     }
+    ]
+   },
+   {
+    "label": "Another person: Christ or God as guarantor",
+    "rendering": "and that One [Christ, or God] knows that he [the witness] speaks the truth",
+    "grammar": "Ἐκεῖνος points to a third party, since it normally contrasts with the previous subject.",
+    "modern": "Some commentators (e.g., Hoskyns, Barrett)",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἐκεῖνος[12] is the subject of οἶδεν with an ὅτι-clause object; the tree gives no referent.",
+  "sources": [
+   "NET Bible note on John 19:35",
+   "Brown, Gospel according to John (AB) 2.936",
+   "Carson, John, 626"
+  ]
+ },
+ {
+  "id": "john-20-17-me-mou-haptou",
+  "book": "John",
+  "chapter": 20,
+  "verse": 17,
+  "words": [
+   "JHN 20:17!4",
+   "JHN 20:17!5",
+   "JHN 20:17!6",
+   "JHN 20:17!9"
+  ],
+  "title": "John 20:17 mē mou haptou: \"stop clinging\" or \"do not touch\"?",
+  "category": "construction",
+  "summary": "Mē + present imperative (haptou) can be read as a command to stop an action already begun (\"stop clinging to me\"), or as a general prohibition (\"do not touch me\"). The explanatory gar (\"for I have not yet ascended\") is then the reason Mary need not hold on, or the reason contact is refused.",
+  "readings": [
+   {
+    "label": "Stop clinging",
+    "rendering": "Stop clinging to me, for I have not yet ascended to the Father",
+    "grammar": "Μὴ + present imperative of ἅπτομαι (middle), here \"cling to\", marks an action under way (Wallace, GGBB 724).",
+    "modern": "NIV (\"Do not hold on to me\"), NET",
+    "fathers": []
+   },
+   {
+    "label": "Do not touch me",
+    "rendering": "Do not touch me, for I have not yet ascended to the Father",
+    "grammar": "Μὴ + present imperative as a general prohibition with ἅπτομαι \"touch\".",
+    "modern": "Vulgate (noli me tangere), KJV, Douay-Rheims",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "Tree glosses ἅπτου as 'cling to' but does not mark the aspect distinction; neutral on the grammatical reading.",
+  "sources": [
+   "NET Bible note on John 20:17",
+   "Wallace, GGBB 724",
+   "Brown, Gospel according to John (AB) 2.992-3"
+  ]
+ },
+ {
+  "id": "john-20-23-apheontai",
+  "book": "John",
+  "chapter": 20,
+  "verse": 23,
+  "words": [
+   "JHN 20:23!3",
+   "JHN 20:23!6",
+   "JHN 20:23!10",
+   "JHN 20:23!11"
+  ],
+  "title": "John 20:23 apheontai / kekratēntai: \"are forgiven\" or \"have been forgiven\"?",
+  "category": "construction",
+  "summary": "Apheontai and kekratentai are perfect passives. Read as a perfect of resulting state, forgiveness follows the apostles' act of forgiving or retaining. Read as a true perfect, the main clauses state a prior divine act (\"they have already been forgiven\") that the disciples declare.",
+  "readings": [
+   {
+    "label": "Result: forgiveness follows the apostles' act",
+    "rendering": "if you forgive anyone's sins, they are forgiven them; if you retain anyone's, they are retained",
+    "grammar": "Perfect passive as a state resulting from the aorist subjunctive ἀφῆτε in an ἂν-clause.",
+    "modern": "Vulgate (remissa sunt), KJV, Douay-Rheims, RSV",
+    "fathers": []
+   },
+   {
+    "label": "Declarative: it has already been done in heaven",
+    "rendering": "if you forgive anyone's sins, they have already been forgiven; if you retain anyone's, they have already been retained",
+    "grammar": "Perfect denotes completed prior action; the apostles announce what God has already done.",
+    "modern": "NET note; Wallace, GGBB 573-4",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree places ἀφέωνται and κεκράτηνται as main clauses after ἄν-subjunctive adverbial clauses and does not encode tense force.",
+  "sources": [
+   "NET Bible note on John 20:23",
+   "Wallace, GGBB 573-4",
+   "Brown, Gospel according to John (AB) 2.1039-41"
+  ]
+ },
+ {
+  "id": "john-20-28-kyrios-mou",
+  "book": "John",
+  "chapter": 20,
+  "verse": 28,
+  "words": [
+   "JHN 20:28!6",
+   "JHN 20:28!7",
+   "JHN 20:28!8",
+   "JHN 20:28!9",
+   "JHN 20:28!10",
+   "JHN 20:28!11",
+   "JHN 20:28!12"
+  ],
+  "title": "John 20:28 ho kyrios mou kai ho theos mou: address to Jesus, or exclamation?",
+  "category": "case",
+  "summary": "Both articular nominatives work as vocatives. The sentence can be read as direct address to Jesus (\"You are my Lord and my God\") or as an exclamation of astonishment directed to God, not predicated of Jesus.",
+  "readings": [
+   {
+    "label": "Confession to Jesus",
+    "rendering": "My Lord and my God! (said to him, of him)",
+    "grammar": "Nominative with article used as vocative, εἶπεν αὐτῷ directing the speech to Jesus.",
+    "modern": "Most scholars; RSV, NIV, ESV, NAB",
+    "fathers": [
+     {
+      "father": "Athanasius",
+      "work": "Letters",
+      "ref": "Letter 61",
+      "year": 371,
+      "commentary": 19213,
+      "url": "https://www.newadvent.org/fathers/2806061.htm",
+      "quote": "let them reverence Thomas, who handled the Crucified and pronounced Him Lord and God."
+     }
+    ]
+   },
+   {
+    "label": "Exclamation of wonder, not a statement about Jesus",
+    "rendering": "[Looking at him, Thomas cried out] My Lord and my God!",
+    "grammar": "An exclamatory nominative of astonishment addressed to God, with αὐτῷ read as the occasion rather than the addressee.",
+    "modern": "Theodore of Mopsuestia; some Socinian and Arian readers",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree shows εἶπεν αὐτῷ followed by the two articular nominatives as quoted speech without labelling vocative or predicate.",
+  "sources": [
+   "NET Bible note on John 20:28",
+   "Wallace, GGBB 58-9",
+   "Brown, Gospel according to John (AB) 2.1046-7"
+  ]
+ },
+ {
+  "id": "john-21-15-pleon-touton",
+  "book": "John",
+  "chapter": 21,
+  "verse": 15,
+  "words": [
+   "JHN 21:15!12",
+   "JHN 21:15!13",
+   "JHN 21:15!14",
+   "JHN 21:15!15"
+  ],
+  "title": "John 21:15 pleon touton: more than whom or what?",
+  "category": "referent",
+  "summary": "Touton is a genitive of comparison, masculine or neuter. \"More than these\" can mean \"more than these others love me\" (subject comparison), \"more than you love these men\" (object comparison) or \"more than you love these things\" (boats, nets, fishing).",
+  "readings": [
+   {
+    "label": "More than the other disciples love me",
+    "rendering": "Do you love me more than these others do?",
+    "grammar": "Τούτων as masculine genitive of comparison, with the other disciples as subject of the understood verb.",
+    "modern": "Vulgate (plus his); Douay-Rheims",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Sermons on the New Testament",
+      "ref": "Sermon 97",
+      "year": 410,
+      "page": "160397",
+      "url": "https://www.newadvent.org/fathers/160397.htm",
+      "quote": "that is, Do you love Me more than these here do? He was speaking of the other disciples;"
+     }
+    ]
+   },
+   {
+    "label": "More than you love the other disciples",
+    "rendering": "Do you love me more than you love these men?",
+    "grammar": "Τούτων as masculine genitive of comparison, with the disciples as object of the understood verb.",
+    "fathers": []
+   },
+   {
+    "label": "More than you love these things",
+    "rendering": "Do you love me more than you love these things (boats, nets, fish)?",
+    "grammar": "Τούτων as neuter genitive of comparison, pointing at the fishing gear and catch.",
+    "modern": "Some commentators; noted in several translations",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree gives ἀγαπᾷς με πλέον τούτων flat with no referent for τούτων.",
+  "sources": [
+   "NET Bible note on John 21:15",
+   "Brown, Gospel according to John (AB) 2.1103-4",
+   "Carson, John, 676"
+  ]
+ },
+ {
+  "id": "john-8-44-patar-autou",
+  "book": "John",
+  "chapter": 8,
+  "verse": 44,
+  "words": [
+   "JHN 8:44!42",
+   "JHN 8:44!43",
+   "JHN 8:44!45",
+   "JHN 8:44!46",
+   "JHN 8:44!47"
+  ],
+  "title": "John 8:44 kai ho patēr autou: \"the father of it\" or \"his father\"?",
+  "category": "referent",
+  "summary": "Autou may be neuter (\"of the lie\", so the devil is the father of falsehood) or masculine (\"of him\", the liar's father also called a liar). Gnostic and Manichaean readers used the second to posit a father of the devil.",
+  "readings": [
+   {
+    "label": "\"The father of the lie\"",
+    "rendering": "he is a liar and the father of it [falsehood]",
+    "grammar": "Αὐτοῦ refers back to τὸ ψεῦδος (neuter).",
+    "modern": "Nearly all modern translations (RSV, NIV, ESV, NAB)",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Tractates on the Gospel of John",
+      "ref": "Tractate 42",
+      "year": 417,
+      "legacy": 38087,
+      "url": "http://orthodoxwiki.org/Augustine_of_Hippo",
+      "quote": "and therefore he is the father of a lie, as God is the Father of the truth."
+     }
+    ]
+   },
+   {
+    "label": "\"His father\" (the devil's father)",
+    "rendering": "he is a liar and so is his father",
+    "grammar": "Αὐτοῦ read as masculine, referring to the liar, with ὁ πατήρ as a second subject.",
+    "modern": "KJV margin; Gnostic and Manichaean readers",
+    "fathers": []
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "The tree glosses the final αὐτοῦ as 'it' (neuter, ψεῦδος), 'and the father it'.",
+  "sources": [
+   "NET Bible note on John 8:44",
+   "Brown, Gospel according to John (AB) 1.358",
+   "BDAG on ψεύστης"
+  ]
+ },
+ {
+  "id": "luke-1-35-to-gennomenon-hagion",
+  "book": "Luke",
+  "chapter": 1,
+  "verse": 35,
+  "words": [
+   "LUK 1:35!19",
+   "LUK 1:35!20",
+   "LUK 1:35!21",
+   "LUK 1:35!22",
+   "LUK 1:35!23"
+  ],
+  "title": "Luke 1:35 to gennōmenon hagion: \"the holy child\" or \"called holy\"?",
+  "category": "attachment",
+  "summary": "Hagion may be an attributive adjective on to gennomenon (\"the holy thing born will be called Son of God\") or a predicate adjective of klethesetai (\"the one born will be called holy, Son of God\"). Each changes which title belongs to Jesus.",
+  "readings": [
+   {
+    "label": "Attributive: \"the holy offspring will be called Son of God\"",
+    "rendering": "therefore the holy one to be born will be called the Son of God",
+    "grammar": "Ἅγιον modifies τὸ γεννώμενον; υἱὸς θεοῦ is the predicate of κληθήσεται.",
+    "modern": "Vulgate (quod nascetur sanctum), RSV, NIV, ESV, NAB",
+    "fathers": [
+     {
+      "father": "Irenaeus of Lyons",
+      "work": "Against Heresies",
+      "ref": "Book III, ch. 21",
+      "year": 180,
+      "commentary": 4533,
+      "url": "https://www.newadvent.org/fathers/0103321.htm",
+      "quote": "therefore also that holy thing which shall be born of you shall be called the Son of God;"
+     }
+    ]
+   },
+   {
+    "label": "Predicate: \"will be called holy, the Son of God\"",
+    "rendering": "therefore the child to be born will be called holy, the Son of God",
+    "grammar": "Ἅγιον is the predicate of κληθήσεται, with υἱὸς θεοῦ in apposition; gennomenon is a substantive.",
+    "modern": "NRSV margin; NET alternative",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "Tree gives τὸ γεννώμενον ἅγιον κληθήσεται υἱὸς θεοῦ as one flat clause without marking attributive versus predicate ἅγιον.",
+  "sources": [
+   "NET Bible note on Luke 1:35",
+   "Brown, Birth of the Messiah 291-2",
+   "Fitzmyer, Luke (AB) 1.350"
+  ]
+ },
+ {
+  "id": "luke-2-2-prote",
+  "book": "Luke",
+  "chapter": 2,
+  "verse": 2,
+  "words": [
+   "LUK 2:2!2",
+   "LUK 2:2!3",
+   "LUK 2:2!5",
+   "LUK 2:2!8"
+  ],
+  "title": "Luke 2:2 prōtē: \"first census\" or \"census before Quirinius\"?",
+  "category": "construction",
+  "summary": "Prote can be an ordinal (\"this was the first census, while Quirinius was governing\") or a comparative of priority taking a genitive (\"this census took place before Quirinius governed\"). The second reading removes the apparent clash with Josephus, who dates Quirinius' census to AD 6.",
+  "readings": [
+   {
+    "label": "\"This was the first census\"",
+    "rendering": "This was the first registration, when Quirinius was governor of Syria",
+    "grammar": "Πρώτη as an ordinal agreeing with ἀπογραφή, contrasting this census with the later one (Acts 5:37).",
+    "modern": "RSV, NIV, NAB, ESV",
+    "fathers": []
+   },
+   {
+    "label": "\"Before Quirinius was governing\"",
+    "rendering": "This registration took place before Quirinius was governor of Syria",
+    "grammar": "Πρώτη as a comparative of priority (\"earlier than\") with ἡγεμονεύοντος Κυρηνίου as a genitive of comparison.",
+    "modern": "NET margin; Wallace, GGBB 302",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "Tree gives πρώτη as a modifier within the main clause and the genitive absolute separately; it does not decide between ordinal and comparative.",
+  "sources": [
+   "NET Bible note on Luke 2:2",
+   "Nolland, Luke 1-9:20 (WBC) 100-2",
+   "Fitzmyer, Luke (AB) 1.400-1"
+  ]
+ },
+ {
+  "id": "luke-2-14-eudokias",
+  "book": "Luke",
+  "chapter": 2,
+  "verse": 14,
+  "words": [
+   "LUK 2:14!8",
+   "LUK 2:14!10",
+   "LUK 2:14!11"
+  ],
+  "title": "Luke 2:14 anthrōpois eudokias: whose good will?",
+  "category": "case",
+  "summary": "Eudokias is a genitive that may express God's favour (\"men of his good pleasure\") or human good will (\"men of good will\"). The first makes peace a gift God bestows on those he favours; the second makes it depend on right disposition in men.",
+  "readings": [
+   {
+    "label": "God's favour: \"men on whom his favour rests\"",
+    "rendering": "on earth peace among men with whom he is pleased",
+    "grammar": "Genitive of source/possessor (Semitic 'men of his good pleasure'), with εὐδοκία as God's gracious choice.",
+    "modern": "RSV, NRSV, NIV, ESV, NAB (2011)",
+    "fathers": [
+     {
+      "father": "Cyril of Jerusalem",
+      "work": "Catechetical Lectures",
+      "ref": "Lecture 12",
+      "year": 350,
+      "commentary": 38536,
+      "url": "https://www.newadvent.org/fathers/310112.htm",
+      "quote": "Glory to God in the highest, and on earth peace among men of His good pleasure"
+     }
+    ]
+   },
+   {
+    "label": "Human good will: \"men of good will\"",
+    "rendering": "on earth peace to men of good will",
+    "grammar": "Genitive of quality: εὐδοκία as the men's own right disposition (Vulgate hominibus bonae voluntatis).",
+    "modern": "Vulgate; Douay-Rheims; NAB (1970)",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Expositions on the Psalms",
+      "ref": "Psalm 126",
+      "year": 415,
+      "commentary": 36709,
+      "url": "https://www.newadvent.org/fathers/1801126.htm",
+      "quote": "Said the Angels, Peace on earth unto rich men? No, but, Peace on earth unto men of a good will."
+     }
+    ]
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "Tree shows ἐν ἀνθρώποις εὐδοκίας as one phrase ('among men pleased') without distinguishing subjective from objective genitive.",
+  "sources": [
+   "NET Bible note on Luke 2:14",
+   "Fitzmyer, Luke (AB) 1.410-12",
+   "Metzger, Textual Commentary on Luke 2:14"
+  ]
+ },
+ {
+  "id": "luke-2-49-en-tois-tou-patros",
+  "book": "Luke",
+  "chapter": 2,
+  "verse": 49,
+  "words": [
+   "LUK 2:49!12",
+   "LUK 2:49!13",
+   "LUK 2:49!14",
+   "LUK 2:49!15",
+   "LUK 2:49!16"
+  ],
+  "title": "Luke 2:49 en tois tou patros mou: \"in my Father's house\" or \"about my Father's affairs\"?",
+  "category": "article",
+  "summary": "Ἐν τοῖς τοῦ πατρός μου has a neuter plural article with a genitive and no noun. It can be read as \"in the places of my Father\" (house) or \"among the things of my Father\" (business or affairs). Both make Jesus claim a unique relation to God as Father.",
+  "readings": [
+   {
+    "label": "In my Father's house",
+    "rendering": "Did you not know that I must be in my Father's house?",
+    "grammar": "Neuter plural article + genitive as ellipsis for 'places', 'house'.",
+    "modern": "NIV 2011, NRSV",
+    "fathers": [
+     {
+      "father": "Cyril of Jerusalem",
+      "work": "Catechetical Lectures",
+      "ref": "Lecture 7",
+      "year": 350,
+      "commentary": 38336,
+      "url": "https://www.newadvent.org/fathers/310107.htm",
+      "quote": "but shall believe Christ, who says concerning the temple, Did you not know that I must be in My Father's house"
+     }
+    ]
+   },
+   {
+    "label": "About my Father's business",
+    "rendering": "Did you not know that I must be about my Father's affairs?",
+    "grammar": "Neuter plural article + genitive as 'the things of', with ἐν meaning 'in the sphere of'.",
+    "modern": "KJV, NASB",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "Tree renders ἐν τοῖς τοῦ πατρός μου as 'in the of the father's my' without supplying a noun.",
+  "sources": [
+   "NET Bible note on Luke 2:49",
+   "Nolland, Luke 1-9:20 (WBC) 130",
+   "BDAG on ἐν"
+  ]
+ },
+ {
+  "id": "luke-7-47-hoti",
+  "book": "Luke",
+  "chapter": 7,
+  "verse": 47,
+  "words": [
+   "LUK 7:47!5",
+   "LUK 7:47!11",
+   "LUK 7:47!12",
+   "LUK 7:47!17"
+  ],
+  "title": "Luke 7:47 hoti ēgapēsen polu: is her love the cause or the evidence of forgiveness?",
+  "category": "construction",
+  "summary": "Hoti can be causal (\"her sins are forgiven because she loved much\") or evidential (\"her sins are forgiven, as shown by the fact that she loved much\"). The parable of the two debtors (vv. 41-43) and the closing clause (\"he to whom little is forgiven loves little\") are used for the second.",
+  "readings": [
+   {
+    "label": "Causal: love is the ground of forgiveness",
+    "rendering": "her many sins are forgiven because she loved much",
+    "grammar": "Ὅτι introduces the reason for ἀφέωνται; ἠγάπησεν is the cause of the forgiveness.",
+    "modern": "KJV, Douay-Rheims",
+    "fathers": [
+     {
+      "father": "Ambrose of Milan",
+      "work": "Letters",
+      "ref": "Letter 40",
+      "year": 388,
+      "commentary": 17005,
+      "url": "https://www.newadvent.org/fathers/340940.htm",
+      "quote": "Wherefore I say unto you, her sins which are many are forgiven, since she loved much."
+     }
+    ]
+   },
+   {
+    "label": "Evidential: love shows that she has been forgiven",
+    "rendering": "her many sins have been forgiven, as her great love shows",
+    "grammar": "Ὅτι as 'for' giving proof of a state: forgiveness is prior and love the visible response (cf. the parable).",
+    "modern": "NIV, NET, ESV; Marshall, Luke (NIGTC) 313",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Expositions on the Psalms",
+      "ref": "Psalm 111",
+      "year": 415,
+      "commentary": 35982,
+      "url": "https://www.newadvent.org/fathers/1801111.htm",
+      "quote": "for he loves most, to whom most is forgiven."
+     },
+     {
+      "father": "Jerome",
+      "work": "Letters",
+      "ref": "Letter 122",
+      "year": 406,
+      "commentary": 44705,
+      "url": "https://www.newadvent.org/fathers/3001122.htm",
+      "quote": "To whom much is forgiven, the same loves much."
+     }
+    ]
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The ὅτι clause is an <adv> on ἀφέωνται, glossed 'for'; the tree does not decide whether it is causal or evidential.",
+  "sources": [
+   "NET Bible note on Luke 7:47",
+   "Marshall, Luke (NIGTC) 313",
+   "Fitzmyer, Luke (AB) 1.689-90"
+  ]
+ },
+ {
+  "id": "luke-16-16-biazetai",
+  "book": "Luke",
+  "chapter": 16,
+  "verse": 16,
+  "words": [
+   "LUK 16:16!14",
+   "LUK 16:16!16",
+   "LUK 16:16!19"
+  ],
+  "title": "Luke 16:16 biazetai: middle or passive?",
+  "category": "construction",
+  "summary": "Biazetai is middle/passive. As a middle it reads \"everyone forces his way into it\" (eagerly, even violently). As a passive it reads \"everyone is pressed into it\" or \"it is violently treated\" (cf. Matt 11:12). Neither form nor context settles which was meant.",
+  "readings": [
+   {
+    "label": "Middle: everyone presses eagerly into it",
+    "rendering": "everyone forces his way into it",
+    "grammar": "Middle voice of βιάζομαι with πᾶς ... εἰς αὐτήν as the subject entering with intensity.",
+    "modern": "RSV, NRSV, ESV, NIV",
+    "fathers": [
+     {
+      "father": "Cyril of Alexandria",
+      "work": "Commentary on Luke",
+      "ref": "on Luke 16:16",
+      "year": 430,
+      "legacy": 35731,
+      "url": "http://orthodoxwiki.org/Cyril_of_Alexandria",
+      "quote": "Whoever hears and loves the sacred message takes it by force."
+     }
+    ]
+   },
+   {
+    "label": "Passive: everyone is pressed into it",
+    "rendering": "everyone is pressed into it (by the preaching)",
+    "grammar": "Passive of βιάζομαι: the many are being urged or compelled by the proclamation.",
+    "modern": "NET margin; Fitzmyer, Luke (AB) 2.1117-18",
+    "fathers": []
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "βιάζεται is glossed 'urgently pressed' with πᾶς εἰς αὐτήν as subject, consistent with a middle sense (everyone presses in).",
+  "sources": [
+   "NET Bible note on Luke 16:16",
+   "Fitzmyer, Luke (AB) 2.1117-18",
+   "Marshall, Luke (NIGTC) 628-9"
+  ]
+ },
+ {
+  "id": "luke-18-11-pros-heauton",
+  "book": "Luke",
+  "chapter": 18,
+  "verse": 11,
+  "words": [
+   "LUK 18:11!3",
+   "LUK 18:11!4",
+   "LUK 18:11!5",
+   "LUK 18:11!7"
+  ],
+  "title": "Luke 18:11 pros heauton: \"prayed with himself\" or \"stood by himself\"?",
+  "category": "attachment",
+  "summary": "Pros heauton can attach to the participle (\"standing by himself/apart\") or to the finite verb (\"prayed to/about/with himself\"). The first stresses the Pharisee's separation from the tax collector; the second his self-directed prayer.",
+  "readings": [
+   {
+    "label": "With \"prayed\": praying to/with himself",
+    "rendering": "The Pharisee stood and prayed thus with himself",
+    "grammar": "Πρὸς ἑαυτόν modifies προσηύχετο, \"in his heart\" or \"to himself\".",
+    "modern": "KJV, RSV, ESV, NIV (\"about himself\")",
+    "fathers": []
+   },
+   {
+    "label": "With \"standing\": standing apart by himself",
+    "rendering": "The Pharisee, standing by himself, prayed thus",
+    "grammar": "Πρὸς ἑαυτόν modifies σταθείς, \"by himself/apart\".",
+    "modern": "NRSV margin; Fitzmyer, Luke (AB) 2.1185-6",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree puts σταθεὶς πρὸς ἑαυτὸν ταῦτα προσηύχετο in one clause without resolving whether πρὸς ἑαυτόν attaches to the participle or the finite verb.",
+  "sources": [
+   "NET Bible note on Luke 18:11",
+   "Fitzmyer, Luke (AB) 2.1185-6",
+   "Metzger, Textual Commentary on Luke 18:11"
+  ]
+ },
+ {
+  "id": "luke-22-20-ekchynnomenon",
+  "book": "Luke",
+  "chapter": 22,
+  "verse": 20,
+  "words": [
+   "LUK 22:20!10",
+   "LUK 22:20!11",
+   "LUK 22:20!17",
+   "LUK 22:20!22"
+  ],
+  "title": "Luke 22:20 ekchynnomenon: what is poured out, the cup or the blood?",
+  "category": "case",
+  "summary": "In the long text, ekchynnomenon is a neuter dative singular participle agreeing with poterion (cup), not with haimati (blood, also dative). It can be read as modifying the cup (by metonymy, its contents are poured out) or as logically modifying the blood despite the agreement.",
+  "readings": [
+   {
+    "label": "Modifies the cup (metonymy)",
+    "rendering": "This cup, which is poured out for you, is the new covenant in my blood",
+    "grammar": "Participle in agreement with τὸ ποτήριον; the container stands for its contents.",
+    "modern": "NET note; Marshall, Luke (NIGTC) 806-7",
+    "fathers": []
+   },
+   {
+    "label": "Modifies the blood",
+    "rendering": "This cup is the new covenant in my blood, which is poured out for you",
+    "grammar": "Ἐκχυννόμενον belongs logically to τῷ αἵματι, irregularly agreeing with the other noun (a recognised solecism).",
+    "modern": "NIV, RSV, ESV (text)",
+    "fathers": []
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "The relative clause τὸ ὑπὲρ ὑμῶν ἐκχυννόμενον is attached under τοῦτο τὸ ποτήριον in the tree, i.e. to the cup.",
+  "sources": [
+   "NET Bible note on Luke 22:20",
+   "Marshall, Luke (NIGTC) 806-7",
+   "Fitzmyer, Luke (AB) 2.1401"
+  ]
+ },
+ {
+  "id": "luke-23-43-semeron",
+  "book": "Luke",
+  "chapter": 23,
+  "verse": 43,
+  "words": [
+   "LUK 23:43!4",
+   "LUK 23:43!6",
+   "LUK 23:43!7",
+   "LUK 23:43!10"
+  ],
+  "title": "Luke 23:43 sēmeron: \"I tell you today\" or \"today you will be\"?",
+  "category": "punctuation",
+  "summary": "No punctuation marks where the comma goes. \"Today\" may close the solemn introduction (\"Amen I say to you today: you will be with me in Paradise\") or begin the promise (\"I say to you, today you will be with me in Paradise\"). The first removes the claim that the thief entered Paradise that day.",
+  "readings": [
+   {
+    "label": "\"Today you will be with me in Paradise\"",
+    "rendering": "Truly I say to you, today you will be with me in Paradise",
+    "grammar": "Σήμερον goes with ἔσῃ; ἀμήν σοι λέγω is a complete formula.",
+    "modern": "NA28, RSV, ESV, NIV, NAB",
+    "fathers": [
+     {
+      "father": "John Cassian",
+      "work": "Conferences",
+      "ref": "Conference 1",
+      "year": 426,
+      "page": "350801",
+      "url": "https://www.newadvent.org/fathers/350801.htm",
+      "quote": "At least we must avoid, and shun with the utmost horror, that wicked punctuation of the heretics, who, as they do not believe that Christ could be found in Paradise on the same day on which He descended into hell, thus punctuate Verily, I say unto you today, and making a stop apply you shall be with Me in Paradise"
+     }
+    ]
+   },
+   {
+    "label": "\"I say to you today: you will be with me in Paradise\"",
+    "rendering": "Truly I say to you today, you will be with me in Paradise",
+    "grammar": "Σήμερον goes with λέγω, a Semitic idiom of solemn emphasis.",
+    "modern": "NWT; some Syriac witnesses",
+    "fathers": []
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "σήμερον[7] μετ ἐμοῦ ἔσῃ is parsed as one clause, separate from ἀμήν σοι λέγω.",
+  "sources": [
+   "NET Bible note on Luke 23:43",
+   "Fitzmyer, Luke (AB) 2.1510-11",
+   "Marshall, Luke (NIGTC) 873"
+  ]
+ },
+ {
+  "id": "acts-2-38-eis-aphesin",
+  "book": "Acts",
+  "chapter": 2,
+  "verse": 38,
+  "words": [
+   "ACT 2:38!5",
+   "ACT 2:38!7",
+   "ACT 2:38!15",
+   "ACT 2:38!16"
+  ],
+  "title": "Acts 2:38 eis aphesin: for forgiveness, or because of it?",
+  "category": "construction",
+  "summary": "Eis can express purpose or result (\"for\", \"unto\" forgiveness) or a causal-referential sense (\"with reference to\", \"because of\"). The plural metanoesate and third-person singular baptistheto also leave open whether forgiveness is tied to repentance alone or to repentance and baptism together.",
+  "readings": [
+   {
+    "label": "Purpose/result: baptism is for the forgiveness of sins",
+    "rendering": "Repent, and be baptized every one of you in the name of Jesus Christ for the forgiveness of your sins",
+    "grammar": "Εἰς + accusative of purpose/goal, governing βαπτισθήτω (and μετανοήσατε).",
+    "modern": "Vulgate (in remissionem), RSV, NAB, ESV",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on the Acts of the Apostles",
+      "ref": "Homily 7",
+      "year": 400,
+      "commentary": 49904,
+      "url": "https://www.newadvent.org/fathers/210107.htm",
+      "quote": "If you are to receive a gift, if baptism conveys remission, why delay?"
+     }
+    ]
+   },
+   {
+    "label": "Causal/referential: baptized because of forgiveness already received",
+    "rendering": "Repent, and be baptized every one of you ... on the basis of the forgiveness of your sins",
+    "grammar": "Εἰς as 'on account of', 'with reference to', so baptism follows forgiveness.",
+    "modern": "Some Baptist and evangelical commentators",
+    "fathers": []
+   },
+   {
+    "label": "Forgiveness attaches to repentance; baptism is parenthetical",
+    "rendering": "Repent for forgiveness of your sins (and let each of you be baptized in the name of Jesus Christ), and you will receive the Holy Spirit",
+    "grammar": "Μετανοήσατε and ὑμῶν are second-person plural, while βαπτισθήτω ἕκαστος is third-person singular; εἰς ἄφεσιν goes with the plural imperative.",
+    "modern": "Wallace, GGBB 389; NET note",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree puts μετανοήσατε and βαπτισθήτω ... εἰς ἄφεσιν in successive coordinate clauses with εἰς ἄφεσιν inside the baptism clause; it does not encode the force of εἰς.",
+  "sources": [
+   "NET Bible note on Acts 2:38",
+   "Wallace, GGBB 369-71, 389",
+   "BDAG on εἰς"
+  ]
+ },
+ {
+  "id": "acts-9-7-akouontes-tes-phones",
+  "book": "Acts",
+  "chapter": 9,
+  "verse": 7,
+  "words": [
+   "ACT 9:7!9",
+   "ACT 9:7!11",
+   "ACT 9:7!12",
+   "ACT 9:7!15"
+  ],
+  "title": "Acts 9:7 akouontes tēs phōnēs: \"heard the voice\" or \"heard the sound\"?",
+  "category": "case",
+  "summary": "Akouo takes the genitive here and the accusative in 22:9 (\"did not hear the voice\"). One tradition reads the genitive as hearing the sound and the accusative as understanding the words, harmonising the accounts. Others hold both cases can mean simply \"hear\" and that 22:9 means they did not understand.",
+  "readings": [
+   {
+    "label": "Genitive = heard a sound; accusative = understood words",
+    "rendering": "They heard the sound (of a voice) but saw no one; in 22:9 they did not catch the words",
+    "grammar": "Akouo with genitive of the thing perceived (sound), accusative for content understood, a distinction held by some older grammarians.",
+    "modern": "Older commentators; Haydock (Douay) note",
+    "fathers": []
+   },
+   {
+    "label": "No distinction: they heard the voice; 22:9 means they did not understand",
+    "rendering": "They heard the voice (without understanding what was said)",
+    "grammar": "Akouo + genitive or accusative are interchangeable in Koine (BDF §173).",
+    "modern": "BDF §173; Wallace, GGBB 133-4; NET",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree shows ἀκούοντες τῆς φωνῆς as an adverbial participle clause but does not encode a case-based distinction.",
+  "sources": [
+   "NET Bible note on Acts 9:7",
+   "Wallace, GGBB 133-4",
+   "BDF §173"
+  ]
+ },
+ {
+  "id": "acts-13-48-tetagmenoi",
+  "book": "Acts",
+  "chapter": 13,
+  "verse": 48,
+  "words": [
+   "ACT 13:48!14",
+   "ACT 13:48!15",
+   "ACT 13:48!16",
+   "ACT 13:48!17"
+  ],
+  "title": "Acts 13:48 tetagmenoi: appointed by God, or disposed?",
+  "category": "construction",
+  "summary": "Ēsan tetagmenoi is a periphrastic pluperfect passive/middle. As a passive (\"appointed\", \"ordained\") it points to God's prior assignment to eternal life; as a middle (\"had disposed themselves\") it describes the hearers' own readiness.",
+  "readings": [
+   {
+    "label": "Passive: appointed (by God) to eternal life",
+    "rendering": "as many as had been appointed to eternal life believed",
+    "grammar": "Periphrastic pluperfect passive of τάσσω with an implied divine agent.",
+    "modern": "RSV, NIV, ESV, NAB",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "On Rebuke and Grace",
+      "ref": "ch. 14",
+      "year": 427,
+      "commentary": 28067,
+      "url": "https://www.newadvent.org/fathers/1513.htm",
+      "quote": "Who could be ordained to eternal life save by the gift of perseverance?"
+     },
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on the Acts of the Apostles",
+      "ref": "Homily 30",
+      "year": 400,
+      "commentary": 50775,
+      "url": "https://www.newadvent.org/fathers/210130.htm",
+      "quote": "i.e., set apart for God."
+     }
+    ]
+   },
+   {
+    "label": "Middle: had disposed themselves to eternal life",
+    "rendering": "as many as were disposed toward eternal life believed",
+    "grammar": "Middle (reflexive) sense: they had set themselves toward eternal life.",
+    "modern": "Some Arminian and older commentators",
+    "fathers": []
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "τεταγμένοι is parsed with ἦσαν as 'were appointed' (passive) in the relative clause.",
+  "sources": [
+   "NET Bible note on Acts 13:48",
+   "Wallace, GGBB 438"
+  ]
+ },
+ {
+  "id": "acts-19-2-pisteusantes",
+  "book": "Acts",
+  "chapter": 19,
+  "verse": 2,
+  "words": [
+   "ACT 19:2!8",
+   "ACT 19:2!9"
+  ],
+  "title": "Acts 19:2 pisteusantes: \"when\" or \"after\" you believed?",
+  "category": "construction",
+  "summary": "Elabete pisteusantes pairs two aorists. The participle may express action coincident with the main verb (\"did you receive the Spirit when you believed?\") or antecedent action (\"after you believed\"). The first implies reception at conversion; the second a distinct later reception.",
+  "readings": [
+   {
+    "label": "Coincident: \"when you believed\"",
+    "rendering": "Did you receive the Holy Spirit when you believed?",
+    "grammar": "Aorist participle of attendant circumstance, coincident with the aorist ἐλάβετε.",
+    "modern": "NIV, NET, NRSV; Wallace, GGBB 624",
+    "fathers": []
+   },
+   {
+    "label": "Antecedent: \"after you believed\"",
+    "rendering": "Did you receive the Holy Spirit after you believed?",
+    "grammar": "Aorist participle of antecedent action (the usual default before an aorist verb).",
+    "modern": "KJV (\"since\"); Pentecostal and some Catholic commentators",
+    "fathers": []
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree shows ἐλάβετε πιστεύσαντες as verb plus adverbial participle without tense-force labelling.",
+  "sources": [
+   "NET Bible note on Acts 19:2",
+   "Wallace, GGBB 624-5",
+   "Fitzmyer, Acts (AB) 643"
+  ]
+ },
+ {
+  "id": "acts-20-28-tou-idiou",
+  "book": "Acts",
+  "chapter": 20,
+  "verse": 28,
+  "words": [
+   "ACT 20:28!23",
+   "ACT 20:28!25",
+   "ACT 20:28!26",
+   "ACT 20:28!27"
+  ],
+  "title": "Acts 20:28 tou haimatos tou idiou: \"his own blood\" or \"the blood of his Own\"?",
+  "category": "article",
+  "summary": "Tou idiou with tou haimatos can be adjectival (\"his own blood\", so God purchased the church with his own blood) or substantive (\"the blood of his Own [Son]\", cf. Rom 8:32). The textual question theou/kyriou is separate.",
+  "readings": [
+   {
+    "label": "Adjectival: \"through his own blood\"",
+    "rendering": "the church of God, which he obtained through his own blood",
+    "grammar": "Ἰδίου as attributive adjective modifying αἵματος, with θεοῦ as antecedent (the blood of God).",
+    "modern": "Most modern translations (RSV, ESV, NIV)",
+    "fathers": [
+     {
+      "father": "Tertullian",
+      "work": "To His Wife",
+      "ref": "Book II",
+      "year": 205,
+      "legacy": 65410,
+      "url": "https://historicalchristian.faith/by_father.php?file=Tertullian%2FTo%2520His%2520Wife%2FBook%25202.html",
+      "quote": "and what kind of price? The blood of God."
+     }
+    ]
+   },
+   {
+    "label": "Substantive: \"through the blood of his Own [One]\"",
+    "rendering": "the church of God, which he obtained through the blood of his Own",
+    "grammar": "Ὁ ἴδιος as a substantive (\"the Own/Beloved\"), paralleled by Rom 8:32; avoids saying God shed blood.",
+    "modern": "NET margin; Metzger, Textual Commentary on Acts 20:28",
+    "fathers": []
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "τοῦ αἵματος τοῦ ἰδίου glossed 'with the blood the his own' with ἰδίου as a modifier of αἵματος (adjectival).",
+  "sources": [
+   "NET Bible note on Acts 20:28",
+   "Wallace, GGBB 289-90",
+   "Metzger, Textual Commentary on Acts 20:28"
+  ]
+ }
+]

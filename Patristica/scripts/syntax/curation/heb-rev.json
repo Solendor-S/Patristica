@@ -1,0 +1,2508 @@
+[
+ {
+  "id": "heb-1-8-ho-theos",
+  "book": "Hebrews",
+  "chapter": 1,
+  "verse": 8,
+  "words": [
+   "HEB 1:8!5",
+   "HEB 1:8!6",
+   "HEB 1:8!7",
+   "HEB 1:8!8",
+   "HEB 1:8!9"
+  ],
+  "title": "ho thronos sou ho theos: vocative or predicate?",
+  "category": "case",
+  "summary": "In the quoted Psalm 45:6, ho theos can be read as a vocative address to the Son (\"Your throne, O God\") or as a nominative predicate (\"God is your throne\"). The nominative-form vocative is a regular Greek pattern, and the same ambiguity exists in the Hebrew of the Psalm.",
+  "readings": [
+   {
+    "label": "Vocative: \"Your throne, O God\"",
+    "rendering": "But of the Son: \"Your throne, O God, is forever and ever\"",
+    "grammar": "ὁ θεός as nominative-form vocative of direct address (Septuagintal pattern)",
+    "fathers": [
+     {
+      "father": "Cyril of Jerusalem",
+      "work": "Catechetical Lectures",
+      "ref": "Lecture 11.15",
+      "year": 350,
+      "url": "https://www.newadvent.org/fathers/310111.htm",
+      "quote": "Hear also a second testimony to Christ's Deity, that which has just now been read, Your throne, O God, is for ever and ever.",
+      "commentary": 38455
+     },
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on Matthew",
+      "ref": "Homily 65",
+      "year": 390,
+      "url": "https://www.newadvent.org/fathers/200165.htm",
+      "quote": "At least Paul puts it as a peculiar privilege of the Only-Begotten, saying, To which of the angels said He at any time, Sit on my right hand?",
+      "commentary": 49290
+     }
+    ],
+    "modern": "KJV, NASB, ESV, NIV, NRSV and most commentators and grammarians"
+   },
+   {
+    "label": "Predicate nominative: \"God is your throne\"",
+    "rendering": "God is your throne forever and ever (or: your throne is God)",
+    "grammar": "ὁ θεός as subject or predicate nominative with ὁ θρόνος σου",
+    "fathers": [],
+    "modern": "NEB text; RSV and NRSV margin"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "ὁ θεός is parsed as a separate vocative ('O God') heading its own line, apart from ὁ θρόνος σου εἰς τὸν αἰῶνα.",
+  "sources": [
+   "NET Bible note on Heb 1:8",
+   "Wallace, GGBB 59 (vocative)",
+   "Harris, Jesus as God, ch. 9"
+  ]
+ },
+ {
+  "id": "heb-2-9-dia-to-pathema",
+  "book": "Hebrews",
+  "chapter": 2,
+  "verse": 9,
+  "words": [
+   "HEB 2:9!7",
+   "HEB 2:9!10",
+   "HEB 2:9!11",
+   "HEB 2:9!12",
+   "HEB 2:9!13",
+   "HEB 2:9!14",
+   "HEB 2:9!18"
+  ],
+  "title": "\"because of the suffering of death\": with 'made lower' or with 'crowned'?",
+  "category": "attachment",
+  "summary": "The phrase dia to pathema tou thanatou sits between two participles, 'made a little lower than the angels' and 'crowned with glory and honor'. It can attach to either, which changes whether suffering is the reason for the exaltation or the purpose of the humiliation.",
+  "readings": [
+   {
+    "label": "With 'crowned': exalted because of His suffering",
+    "rendering": "we see Jesus, who was made a little lower than the angels, crowned with glory and honor because of the suffering of death",
+    "grammar": "διὰ + accusative as cause, modifying ἐστεφανωμένον (cf. Phil 2:8-9)",
+    "fathers": [],
+    "modern": "ESV, NIV, NRSV and most modern commentators"
+   },
+   {
+    "label": "With 'made lower': humbled so as to suffer death",
+    "rendering": "we see Jesus, who for the suffering of death was made a little lower than the angels, crowned with glory and honor",
+    "grammar": "διὰ + accusative as purpose or result, modifying ἠλαττωμένον",
+    "fathers": [],
+    "modern": "KJV ('for the suffering of death, crowned'); some older commentators"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "διὰ τὸ πάθημα τοῦ θανάτου is grouped with δόξῃ καὶ τιμῇ ἐστεφανωμένον inside the same object phrase after Ἰησοῦν.",
+  "sources": [
+   "NET Bible note on Heb 2:9",
+   "Lane, Hebrews 1-8, WBC"
+  ]
+ },
+ {
+  "id": "heb-2-10-agagonta",
+  "book": "Hebrews",
+  "chapter": 2,
+  "verse": 10,
+  "words": [
+   "HEB 2:10!3",
+   "HEB 2:10!13",
+   "HEB 2:10!14",
+   "HEB 2:10!17",
+   "HEB 2:10!18",
+   "HEB 2:10!19"
+  ],
+  "title": "agagonta: who is 'bringing many sons to glory'?",
+  "category": "attachment",
+  "summary": "The aorist participle agagonta is accusative singular. It can modify autō (God) in the preceding clause ('it was fitting for Him ... in bringing many sons') or it can modify ton archegon ('the pioneer who led many sons').",
+  "readings": [
+   {
+    "label": "Modifies God: God brings many sons to glory",
+    "rendering": "it was fitting for Him, ... in bringing many sons to glory, to make the pioneer of their salvation perfect through sufferings",
+    "grammar": "ἀγαγόντα agrees in sense with αὐτῷ (God), accusative by attraction to the accusative subject of the infinitive",
+    "fathers": [],
+    "modern": "ESV, NASB, NIV, NRSV"
+   },
+   {
+    "label": "Modifies the pioneer: Christ brings many sons to glory",
+    "rendering": "to make perfect through sufferings the pioneer of their salvation, who leads many sons to glory",
+    "grammar": "ἀγαγόντα in apposition to / modifying τὸν ἀρχηγόν",
+    "fathers": [],
+    "modern": "Some older commentators; the KJV word order leaves it open"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "The participial phrase πολλοὺς υἱοὺς εἰς δόξαν ἀγαγόντα is nested as an adverbial under αὐτῷ (the 'for whom ... through whom' clause), apart from τὸν ἀρχηγόν.",
+  "sources": [
+   "NET Bible note on Heb 2:10",
+   "Wallace, GGBB 631"
+  ]
+ },
+ {
+  "id": "heb-4-13-pros-hon-logos",
+  "book": "Hebrews",
+  "chapter": 4,
+  "verse": 13,
+  "words": [
+   "HEB 4:13!16",
+   "HEB 4:13!17",
+   "HEB 4:13!18",
+   "HEB 4:13!19",
+   "HEB 4:13!20"
+  ],
+  "title": "pros hon hemin ho logos: 'to whom we must give account' or 'with whom we have to do'?",
+  "category": "construction",
+  "summary": "The idiom pros hon hemin ho logos is elliptical. Logos can mean 'account' (we must give account to Him) or 'word, matter' (the one with whom our business or discourse lies), and pros can be 'to' or 'concerning'.",
+  "readings": [
+   {
+    "label": "Accounting: 'to whom we must give account'",
+    "rendering": "to whom we must give account",
+    "grammar": "πρὸς ὃν = 'to whom'; λόγος as reckoning (cf. Heb 13:17)",
+    "fathers": [],
+    "modern": "ESV, NIV, NRSV"
+   },
+   {
+    "label": "Business or discourse: 'with whom we have to do' / 'of whom we speak'",
+    "rendering": "with whom we have to do (or: of whom we are speaking)",
+    "grammar": "πρὸς ὃν = 'with / concerning whom'; λόγος as matter or discourse",
+    "fathers": [],
+    "modern": "KJV, NASB ('with whom we have to do')"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The relative clause πρὸς ὃν ἡμῖν ὁ λόγος hangs as a relative under πάντα γυμνὰ; the tree leaves the senses of πρός and λόγος open.",
+  "sources": [
+   "NET Bible note on Heb 4:13",
+   "BDAG λόγος 2"
+  ]
+ },
+ {
+  "id": "heb-6-4-6-participles",
+  "book": "Hebrews",
+  "chapter": 6,
+  "verse": 4,
+  "words": [
+   "HEB 6:4!5",
+   "HEB 6:6!2",
+   "HEB 6:6!7",
+   "HEB 6:6!14"
+  ],
+  "title": "Hebrews 6:4-6: 'if they fall away' or 'having fallen away'? 'crucifying' as cause or condition?",
+  "category": "construction",
+  "summary": "The aorist participle parapesontas ('having fallen away') is grammatically coordinate with the earlier participles ('enlightened, tasted ...'), so it can describe actual apostates or be read hypothetically ('if they fall away'). The present participles anastaurountas and paradeigmatizontas ('crucifying again, holding Him up to contempt') can be causal, temporal ('so long as they crucify'), or the manner by which renewal is made impossible.",
+  "readings": [
+   {
+    "label": "Actual falling away; 'crucifying' as cause or manner",
+    "rendering": "it is impossible to renew again to repentance those who have fallen away, since they are crucifying the Son of God again",
+    "grammar": "παραπεσόντας coordinate with the preceding aorist attributive participles (a real event); ἀνασταυροῦντας as causal / manner participle",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Commentary on Hebrews",
+      "ref": "Hebrews 6:6",
+      "year": 403,
+      "url": "http://orthodoxwiki.org/Chrysostom",
+      "quote": "For he did not say, impossible to be renewed unto repentance, and stop, but added how impossible, [by] crucifying afresh.",
+      "legacy": 44277
+     }
+    ],
+    "modern": "ESV, NASB, NRSV, NAB: 'and then have fallen away'"
+   },
+   {
+    "label": "Hypothetical 'if'; 'crucifying' as temporal ('while')",
+    "rendering": "it is impossible to renew them again to repentance if they fall away, while they crucify the Son of God again",
+    "grammar": "παραπεσόντας as conditional participle; ἀνασταυροῦντας as temporal (renewal impossible only while they persist)",
+    "fathers": [],
+    "modern": "KJV and NIV (1984): 'if they fall away'"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "παραπεσόντας is one of a chain of coordinate attributive participles under τοὺς (vv. 4-6) with no conditional marker; the tree encodes it as another description of the same people.",
+  "sources": [
+   "NET Bible note on Heb 6:6",
+   "Wallace, GGBB 632-3 (participles)",
+   "Lane, Hebrews 1-8, WBC"
+  ]
+ },
+ {
+  "id": "heb-9-14-dia-pneumatos-aioniou",
+  "book": "Hebrews",
+  "chapter": 9,
+  "verse": 14,
+  "words": [
+   "HEB 9:14!7",
+   "HEB 9:14!8",
+   "HEB 9:14!9",
+   "HEB 9:14!10",
+   "HEB 9:14!11",
+   "HEB 9:14!12"
+  ],
+  "title": "dia pneumatos aioniou: the Holy Spirit or Christ's own spirit?",
+  "category": "referent",
+  "summary": "Without an article or possessive, 'through eternal spirit' can refer to the Holy Spirit through whom Christ offered Himself, or to Christ's own eternal spirit or divine nature (contrasted with His 'blood' and flesh), or to the spiritual rather than ritual character of the offering.",
+  "readings": [
+   {
+    "label": "The Holy Spirit",
+    "rendering": "who through the eternal Spirit offered Himself without blemish to God",
+    "grammar": "πνεύματος αἰωνίου as the Holy Spirit (agent or sphere of the offering)",
+    "fathers": [
+     {
+      "father": "Ambrose of Milan",
+      "work": "On the Holy Spirit",
+      "ref": "Book I.99",
+      "year": 381,
+      "url": "https://www.newadvent.org/fathers/34021.htm",
+      "quote": "But the Apostle also shows that the Holy Spirit is eternal, for: If the blood of bulls and of goats, and the sprinkling the ashes of an heifer sanctifies to the purifying of the flesh, how much more the blood of Christ, Who through the eternal Spirit offered Himself without spot to God? Hebrews 9:13-14 Therefore the Spirit is eternal.",
+      "commentary": 15364
+     },
+     {
+      "father": "John Chrysostom",
+      "work": "Commentary on Hebrews",
+      "ref": "Hebrews 9:14",
+      "year": 403,
+      "url": "http://orthodoxwiki.org/Chrysostom",
+      "quote": "Who (he says) through the Holy Spirit offered Himself without spot to God, that is, the victim was without blemish, pure from sins. For this is [the meaning of] through the Holy Spirit, not through fire, nor through any other things.",
+      "legacy": 44407
+     }
+    ],
+    "modern": "KJV, ESV, NASB, NIV, NRSV (capital S)"
+   },
+   {
+    "label": "Christ's own eternal spirit (divine nature or the spirit of the act)",
+    "rendering": "who through His own eternal spirit offered Himself",
+    "grammar": "πνεύματος αἰωνίου as Christ's own spirit, not the third Person",
+    "fathers": [],
+    "modern": "A minority of modern commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "διὰ πνεύματος αἰωνίου sits inside the ὃς ... προσήνεγκεν relative clause as a prepositional phrase; the tree does not say whose spirit.",
+  "sources": [
+   "NET Bible note on Heb 9:14",
+   "Attridge, Hebrews (Hermeneia)"
+  ]
+ },
+ {
+  "id": "heb-10-12-eis-to-dienekes",
+  "book": "Hebrews",
+  "chapter": 10,
+  "verse": 12,
+  "words": [
+   "HEB 10:12!6",
+   "HEB 10:12!7",
+   "HEB 10:12!8",
+   "HEB 10:12!9",
+   "HEB 10:12!10",
+   "HEB 10:12!11"
+  ],
+  "title": "eis to dienekes: 'one sacrifice for all time' or 'sat down for ever'?",
+  "category": "attachment",
+  "summary": "The phrase eis to dienekes ('for all time, continually') can attach backward to 'offered one sacrifice for sins' or forward to 'sat down at the right hand of God'. It affects whether the once-for-all sufficiency of the offering or the permanence of the session is emphasised.",
+  "readings": [
+   {
+    "label": "With the offering: 'offered one sacrifice for sins for all time'",
+    "rendering": "But when this man had offered one sacrifice for sins for all time, He sat down at the right hand of God",
+    "grammar": "εἰς τὸ διηνεκές modifies προσενέγκας",
+    "fathers": [],
+    "modern": "KJV, ESV, NASB, NIV, NRSV"
+   },
+   {
+    "label": "With the sitting: 'sits for ever'",
+    "rendering": "But this man, offering one sacrifice for sins, sits for ever at the right hand of God",
+    "grammar": "εἰς τὸ διηνεκές modifies ἐκάθισεν",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on Hebrews",
+      "ref": "Homily 13.8",
+      "year": 403,
+      "url": "https://www.newadvent.org/fathers/240213.htm",
+      "quote": "For He executed it once, and thenceforward sat down.",
+      "commentary": 58087
+     }
+    ],
+    "modern": "Vulgate (in sempiternum sedet) and Douay-Rheims ('for ever sitteth')"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "εἰς τὸ διηνεκές is grouped inside the participial phrase μίαν θυσίαν ὑπὲρ ἁμαρτιῶν προσενέγκας, not under ἐκάθισεν.",
+  "sources": [
+   "NET Bible note on Heb 10:12",
+   "Ellingworth, Hebrews (NIGTC)"
+  ]
+ },
+ {
+  "id": "heb-10-20-tout-estin-sarkos",
+  "book": "Hebrews",
+  "chapter": 10,
+  "verse": 20,
+  "words": [
+   "HEB 10:20!4",
+   "HEB 10:20!8",
+   "HEB 10:20!9",
+   "HEB 10:20!10",
+   "HEB 10:20!11",
+   "HEB 10:20!12",
+   "HEB 10:20!13",
+   "HEB 10:20!14",
+   "HEB 10:20!15"
+  ],
+  "title": "'through the veil, that is, His flesh': what is 'His flesh'?",
+  "category": "attachment",
+  "summary": "Touto estin tes sarkos autou can stand in apposition to 'the veil' (the veil is His flesh) or be construed with the preceding 'way' (the new way opened through His flesh). The first makes the flesh the barrier opened by His death; the second makes it the means of access.",
+  "readings": [
+   {
+    "label": "Apposition: the veil is His flesh",
+    "rendering": "the new and living way He opened for us through the veil, that is, His flesh",
+    "grammar": "τῆς σαρκὸς αὐτοῦ in apposition to τοῦ καταπετάσματος (touto estin glossing the veil)",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on Hebrews",
+      "ref": "Homily 15",
+      "year": 403,
+      "url": "https://www.newadvent.org/fathers/240215.htm",
+      "quote": "Through the veil, that is, His flesh.",
+      "commentary": 58130
+     }
+    ],
+    "modern": "KJV, NIV, ESV (as rendered)"
+   },
+   {
+    "label": "Flesh as the means: way opened through His flesh",
+    "rendering": "the new and living way ... through the veil, that is, by means of His flesh (cf. Heb 10:10)",
+    "grammar": "τῆς σαρκὸς αὐτοῦ construed with ὁδὸν / ἐνεκαίνισεν as the means",
+    "fathers": [],
+    "modern": "A minority of commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "τοῦτ' ἔστιν τῆς σαρκὸς αὐτοῦ is a gloss nested inside the clause 'ἣν ἐνεκαίνισεν ... ὁδὸν ... διὰ τοῦ καταπετάσματος'; the tree does not fix what it modifies.",
+  "sources": [
+   "NET Bible note on Heb 10:20",
+   "Lane, Hebrews 9-13, WBC"
+  ]
+ },
+ {
+  "id": "heb-10-38-ek-pisteos",
+  "book": "Hebrews",
+  "chapter": 10,
+  "verse": 38,
+  "words": [
+   "HEB 10:38!3",
+   "HEB 10:38!4",
+   "HEB 10:38!5",
+   "HEB 10:38!6",
+   "HEB 10:38!7"
+  ],
+  "title": "ho dikaios mou ek pisteos zesetai: 'by faith' with 'righteous' or with 'live'?",
+  "category": "attachment",
+  "summary": "The phrase ek pisteos can modify the verb ('the righteous shall live by faith') or the subject ('the one righteous by faith shall live'), the same split as in Rom 1:17 and Gal 3:11.",
+  "readings": [
+   {
+    "label": "With the verb: 'the righteous shall live by faith'",
+    "rendering": "but My righteous one shall live by faith",
+    "grammar": "ἐκ πίστεως adverbial to ζήσεται",
+    "fathers": [],
+    "modern": "KJV, ESV, NASB, NIV, NRSV; the usual reading in Hebrews"
+   },
+   {
+    "label": "With the subject: 'the one righteous by faith shall live'",
+    "rendering": "but the one who is righteous by faith shall live",
+    "grammar": "ἐκ πίστεως adjectival to ὁ δίκαιος",
+    "fathers": [],
+    "modern": "Argued in discussions of Rom 1:17; a minority view for Hebrews"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ὁ δίκαιός μου ἐκ πίστεως ζήσεται is a single flat clause in the tree; ἐκ πίστεως is not subordinated to either word.",
+  "sources": [
+   "NET Bible note on Heb 10:38",
+   "Lane, Hebrews 9-13, WBC"
+  ]
+ },
+ {
+  "id": "heb-11-3-me-ek-phainomenon",
+  "book": "Hebrews",
+  "chapter": 11,
+  "verse": 3,
+  "words": [
+   "HEB 11:3!8",
+   "HEB 11:3!9",
+   "HEB 11:3!10",
+   "HEB 11:3!11",
+   "HEB 11:3!12",
+   "HEB 11:3!13",
+   "HEB 11:3!14",
+   "HEB 11:3!15"
+  ],
+  "title": "me ek phainomenon: what does the negative modify?",
+  "category": "construction",
+  "summary": "The clause eis to me ek phainomenon to blepomenon gegonenai can be read as 'so that what is seen was made from things not visible' (me joined to the phrase) or 'so that what is seen was not made from things that are visible' (me negating the whole clause). The first allows an invisible source; the second denies visible pre-existing matter.",
+  "readings": [
+   {
+    "label": "Not made from visible things",
+    "rendering": "so that what is seen was not made out of things that are visible",
+    "grammar": "μὴ negates the clause: denial of pre-existing visible matter",
+    "fathers": [
+     {
+      "father": "Athanasius",
+      "work": "On the Incarnation of the Word",
+      "ref": "Chapter 3",
+      "year": 335,
+      "url": "https://www.newadvent.org/fathers/2802.htm",
+      "quote": "To which also Paul refers when he says, By Hebrews 11:3 faith we understand that the worlds have been framed by the Word of God, so that what is seen has not been made out of things which do appear.",
+      "commentary": 17821
+     },
+     {
+      "father": "John Chrysostom",
+      "work": "Commentary on Hebrews",
+      "ref": "Hebrews 11:3",
+      "year": 403,
+      "url": "http://orthodoxwiki.org/Chrysostom",
+      "quote": "It is manifest, he says, that God made the things which are, out of things which are not, things which appear, out of things which appear not, things which subsist, out of things which subsist not.",
+      "legacy": 44515
+     }
+    ],
+    "modern": "KJV, ESV, NASB, NIV"
+   },
+   {
+    "label": "Made from things not visible",
+    "rendering": "so that what is seen was made from things that are not visible",
+    "grammar": "μὴ attached to ἐκ φαινομένων as one phrase 'from non-appearing things'",
+    "fathers": [],
+    "modern": "RSV, NRSV"
+   }
+  ],
+  "macula_follows": 1,
+  "macula_evidence": "μὴ ἐκ φαινομένων is grouped as one phrase before τὸ βλεπόμενον ... γεγονέναι, i.e. μή is attached to ἐκ φαινομένων, not to the infinitive.",
+  "sources": [
+   "NET Bible note on Heb 11:3",
+   "Attridge, Hebrews (Hermeneia)"
+  ]
+ },
+ {
+  "id": "heb-12-2-anti-prokeimenes",
+  "book": "Hebrews",
+  "chapter": 12,
+  "verse": 2,
+  "words": [
+   "HEB 12:2!10",
+   "HEB 12:2!11",
+   "HEB 12:2!12",
+   "HEB 12:2!13",
+   "HEB 12:2!14",
+   "HEB 12:2!15",
+   "HEB 12:2!16"
+  ],
+  "title": "anti tes prokeimenes charas: 'for the joy' or 'instead of the joy'?",
+  "category": "construction",
+  "summary": "Anti with the genitive ordinarily means 'in place of', but can also mean 'for the sake of' or 'in exchange for'. The readings differ on whether Jesus endured the cross with the joy as His goal or gave up a joy that lay before Him in order to take the cross.",
+  "readings": [
+   {
+    "label": "Goal: 'for the joy set before Him'",
+    "rendering": "who for the joy that was set before Him endured the cross",
+    "grammar": "ἀντί = 'on account of, for the sake of' (goal)",
+    "fathers": [],
+    "modern": "KJV, ESV, NASB, NIV, NRSV; the majority reading"
+   },
+   {
+    "label": "Substitution: 'instead of the joy set before Him'",
+    "rendering": "who, instead of the joy that was set before Him, endured the cross",
+    "grammar": "ἀντί = 'in place of' (renunciation of a joy already available)",
+    "fathers": [],
+    "modern": "A minority of commentators; recorded as a possibility in the NET note"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἀντὶ τῆς προκειμένης αὐτῷ χαρᾶς is a prepositional phrase under ὑπέμεινεν; the tree does not decide the sense of ἀντί.",
+  "sources": [
+   "NET Bible note on Heb 12:2",
+   "BDAG ἀντί",
+   "Ellingworth, Hebrews (NIGTC)"
+  ]
+ },
+ {
+  "id": "heb-12-17-auten",
+  "book": "Hebrews",
+  "chapter": 12,
+  "verse": 17,
+  "words": [
+   "HEB 12:17!9",
+   "HEB 12:17!11",
+   "HEB 12:17!19",
+   "HEB 12:17!20"
+  ],
+  "title": "Esau 'sought it with tears': what is the antecedent of auten?",
+  "category": "referent",
+  "summary": "The feminine pronoun auten after ekzetesas can refer to 'repentance' (metanoias, the nearest feminine noun) or to 'the blessing' (eulogian, also feminine). The reading decides whether Esau sought repentance (his own or a change of Isaac's mind) or the blessing itself.",
+  "readings": [
+   {
+    "label": "The blessing: Esau sought the blessing with tears",
+    "rendering": "he found no chance to repent, though he sought the blessing with tears",
+    "grammar": "αὐτήν = τὴν εὐλογίαν (the object of θέλων κληρονομῆσαι)",
+    "fathers": [],
+    "modern": "NIV, NRSV"
+   },
+   {
+    "label": "Repentance: Esau sought repentance with tears",
+    "rendering": "he found no place for repentance, though he sought it (repentance) with tears",
+    "grammar": "αὐτήν = μετανοίας (the nearest feminine antecedent)",
+    "fathers": [],
+    "modern": "KJV and ESV ('sought it') leave the English open"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἐκζητήσας αὐτήν is nested in a καίπερ adverbial clause; the tree does not resolve the antecedent.",
+  "sources": [
+   "NET Bible note on Heb 12:17",
+   "Lane, Hebrews 9-13, WBC"
+  ]
+ },
+ {
+  "id": "heb-13-8-yesterday-today",
+  "book": "Hebrews",
+  "chapter": 13,
+  "verse": 8,
+  "words": [
+   "HEB 13:8!3",
+   "HEB 13:8!4",
+   "HEB 13:8!5",
+   "HEB 13:8!6",
+   "HEB 13:8!7",
+   "HEB 13:8!8",
+   "HEB 13:8!9",
+   "HEB 13:8!10",
+   "HEB 13:8!11"
+  ],
+  "title": "Jesus Christ 'yesterday and today the same, and for ever'",
+  "category": "punctuation",
+  "summary": "With no punctuation in the autographs, the verse can be read as one threefold phrase ('the same yesterday, and today, and forever') or as 'the same yesterday and today, and [so] for ever', with the final phrase as a separate coordinate clause.",
+  "readings": [
+   {
+    "label": "One phrase: 'the same yesterday, today and for ever'",
+    "rendering": "Jesus Christ is the same yesterday and today and for ever",
+    "grammar": "ἐχθὲς καὶ σήμερον ὁ αὐτὸς καὶ εἰς τοὺς αἰῶνας as a single predicate",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Commentary on Hebrews",
+      "ref": "Hebrews 13:8",
+      "year": 403,
+      "url": "http://orthodoxwiki.org/Chrysostom",
+      "quote": "In these words, Jesus Christ the same yesterday and today and for ever, yesterday means all the time that is past: today, the present: for ever, the endless which is to come.",
+      "legacy": 44680
+     }
+    ],
+    "modern": "KJV, ESV, NASB, NIV, NRSV"
+   },
+   {
+    "label": "Two stages: 'yesterday and today the same, and for ever'",
+    "rendering": "Jesus Christ is the same yesterday and today, and for ever [He is]",
+    "grammar": "καὶ εἰς τοὺς αἰῶνας as a separate coordinate clause or adverbial",
+    "fathers": [],
+    "modern": "A minority of commentators"
+   }
+  ],
+  "macula_follows": 1,
+  "macula_evidence": "The tree breaks after ὁ αὐτός: 'Ἰησοῦς Χριστὸς ἐχθὲς καὶ σήμερον ὁ αὐτός' is one outline, 'καὶ εἰς τοὺς αἰῶνας' a second.",
+  "sources": [
+   "NET Bible note on Heb 13:8",
+   "Lane, Hebrews 9-13, WBC"
+  ]
+ },
+ {
+  "id": "heb-13-20-en-haimati",
+  "book": "Hebrews",
+  "chapter": 13,
+  "verse": 20,
+  "words": [
+   "HEB 13:20!7",
+   "HEB 13:20!10",
+   "HEB 13:20!11",
+   "HEB 13:20!16",
+   "HEB 13:20!17",
+   "HEB 13:20!18",
+   "HEB 13:20!19"
+  ],
+  "title": "en haimati diathekes aioniou: with 'brought up' or with 'shepherd'?",
+  "category": "attachment",
+  "summary": "The phrase 'by the blood of the eternal covenant' can attach to 'brought up from the dead' (God raised Him on the basis of His blood), or to 'the great shepherd of the sheep' (shepherd by virtue of the covenant blood).",
+  "readings": [
+   {
+    "label": "With 'brought up': raised by the blood of the covenant",
+    "rendering": "who brought up from the dead, by the blood of the eternal covenant, the great shepherd of the sheep, our Lord Jesus",
+    "grammar": "ἐν αἵματι adverbial to ἀναγαγών",
+    "fathers": [],
+    "modern": "ESV, NASB, NRSV; the common reading"
+   },
+   {
+    "label": "With 'the great shepherd': shepherd by covenant blood",
+    "rendering": "that great shepherd of the sheep through the blood of the eternal covenant",
+    "grammar": "ἐν αἵματι adnominal to τὸν ποιμένα τὸν μέγαν",
+    "fathers": [],
+    "modern": "A minority of commentators; the KJV 'through the blood' is ambiguous"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "ἐν αἵματι διαθήκης αἰωνίου sits inside the participial phrase beginning ὁ ἀναγαγών, which the tree keeps as one unit.",
+  "sources": [
+   "NET Bible note on Heb 13:20",
+   "Lane, Hebrews 9-13, WBC"
+  ]
+ },
+ {
+  "id": "jas-2-1-tes-doxes",
+  "book": "James",
+  "chapter": 2,
+  "verse": 1,
+  "words": [
+   "JAS 2:1!8",
+   "JAS 2:1!9",
+   "JAS 2:1!10",
+   "JAS 2:1!11",
+   "JAS 2:1!12",
+   "JAS 2:1!13",
+   "JAS 2:1!14",
+   "JAS 2:1!15"
+  ],
+  "title": "ten pistin tou kyriou hemon Iesou Christou tes doxes: what does 'of glory' modify?",
+  "category": "attachment",
+  "summary": "The closing genitive tes doxes ('of the glory') has no clear anchor. It can describe the Lord (\"our Lord Jesus Christ, the Lord of glory\"), stand in apposition to Jesus Christ (\"Jesus Christ, the Glory\", the Shekinah), or modify 'faith' (\"the glorious faith\").",
+  "readings": [
+   {
+    "label": "With 'Lord': the Lord of glory",
+    "rendering": "the faith of our Lord Jesus Christ, the Lord of glory",
+    "grammar": "τῆς δόξης as attributive genitive supplied from τοῦ κυρίου (cf. 1 Cor 2:8)",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Letters",
+      "ref": "Letter 167",
+      "year": 415,
+      "url": "https://www.newadvent.org/fathers/1102167.htm",
+      "quote": "My brethren, he says, have not the faith of our Lord Jesus Christ, the Lord of Glory, with respect of persons.",
+      "commentary": 20884
+     }
+    ],
+    "modern": "KJV, ESV ('the Lord of glory'); NASB, NRSV ('our glorious Lord')"
+   },
+   {
+    "label": "Apposition: Jesus Christ, the Glory",
+    "rendering": "the faith of our Lord Jesus Christ, the Glory",
+    "grammar": "τῆς δόξης in apposition to Ἰησοῦ Χριστοῦ (Christ as the divine Glory)",
+    "fathers": [],
+    "modern": "Some commentators"
+   },
+   {
+    "label": "With 'faith': the glorious faith",
+    "rendering": "the glorious faith of our Lord Jesus Christ",
+    "grammar": "τῆς δόξης modifying τὴν πίστιν (adjectival genitive)",
+    "fathers": [],
+    "modern": "A minority of commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree gives the whole verse as one flat line; τῆς δόξης is not attached to a head.",
+  "sources": [
+   "NET Bible note on Jas 2:1",
+   "Davids, James (NIGTC)",
+   "Moo, James (PNTC)"
+  ]
+ },
+ {
+  "id": "jas-2-14-he-pistis",
+  "book": "James",
+  "chapter": 2,
+  "verse": 14,
+  "words": [
+   "JAS 2:14!6",
+   "JAS 2:14!16",
+   "JAS 2:14!17",
+   "JAS 2:14!18"
+  ],
+  "title": "James 2:14: 'can faith save him' or 'can that faith save him'?",
+  "category": "article",
+  "summary": "The article in he pistis can be anaphoric, pointing back to the faith just mentioned ('can that faith save him?', the workless faith that someone merely says he has), or generic ('can faith save?'). The first limits the denial to empty profession; the second can be read as a statement about faith as such.",
+  "readings": [
+   {
+    "label": "Anaphoric: 'can that faith save him?'",
+    "rendering": "What good is it if someone says he has faith but has no works? Can that faith save him?",
+    "grammar": "ἡ πίστις as anaphoric article referring to the πίστις of the protasis",
+    "fathers": [],
+    "modern": "ESV, NASB ('that faith'), NIV ('such faith'); Wallace, GGBB 219"
+   },
+   {
+    "label": "Generic: 'can faith save him?'",
+    "rendering": "Can faith save him?",
+    "grammar": "ἡ πίστις as generic or abstract article",
+    "fathers": [],
+    "modern": "KJV, NRSV ('Can faith save you?')"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "ἡ πίστις is the subject of δύναται, preceded by the protasis 'πίστιν ἔχειν'; the tree codes no special anaphoric marking.",
+  "sources": [
+   "NET Bible note on Jas 2:14",
+   "Wallace, GGBB 219",
+   "Moo, James (PNTC)"
+  ]
+ },
+ {
+  "id": "jas-2-18-speaker-boundary",
+  "book": "James",
+  "chapter": 2,
+  "verse": 18,
+  "words": [
+   "JAS 2:18!2",
+   "JAS 2:18!3",
+   "JAS 2:18!4",
+   "JAS 2:18!5",
+   "JAS 2:18!6",
+   "JAS 2:18!7",
+   "JAS 2:18!8",
+   "JAS 2:18!9"
+  ],
+  "title": "James 2:18: where does the objector's speech end?",
+  "category": "punctuation",
+  "summary": "The Greek has no quotation marks. Someone (tis) says 'You have faith and I have works'; the objector's voice can end there (James replies 'Show me your faith apart from works'), or it can continue through 'show me your faith without works, and I will show you my faith by my works' (James then replies in v. 19).",
+  "readings": [
+   {
+    "label": "Objection ends after 'I have works'",
+    "rendering": "But someone will say, \"You have faith and I have works.\" Show me your faith apart from your works, and I will show you my faith by my works.",
+    "grammar": "ἐρεῖ τις introduces only v18a; v18b is James's reply",
+    "fathers": [],
+    "modern": "ESV, NIV, NRSV (quotation closes after 'I have works')"
+   },
+   {
+    "label": "Objection runs through the whole verse",
+    "rendering": "\"You have faith, and I have works. Show me your faith apart from works, and I will show you my faith by my works.\"",
+    "grammar": "ἐρεῖ τις governs the whole of v18; James responds only from v19",
+    "fathers": [],
+    "modern": "KJV, NASB (quotation runs on through 'by my works')"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree makes 'ἐρεῖ τις' a main clause and the following clauses its content, without marking where the quotation ends.",
+  "sources": [
+   "NET Bible note on Jas 2:18",
+   "Moo, James (PNTC)"
+  ]
+ },
+ {
+  "id": "jas-4-5-pneuma",
+  "book": "James",
+  "chapter": 4,
+  "verse": 5,
+  "words": [
+   "JAS 4:5!8",
+   "JAS 4:5!9",
+   "JAS 4:5!10",
+   "JAS 4:5!11",
+   "JAS 4:5!12",
+   "JAS 4:5!13",
+   "JAS 4:5!14",
+   "JAS 4:5!15",
+   "JAS 4:5!16"
+  ],
+  "title": "James 4:5: who yearns jealously: God for the spirit, or the spirit within us?",
+  "category": "referent",
+  "summary": "Pneuma can be the object of 'yearns' (God yearns jealously for the spirit He made to dwell in us) or the subject (the spirit He made to dwell in us yearns enviously). 'Spirit' may be the human spirit or the Holy Spirit, and 'phthonos' can be good or bad jealousy.",
+  "readings": [
+   {
+    "label": "God yearns jealously for the spirit He made to dwell in us",
+    "rendering": "He yearns jealously over the spirit that He has made to dwell in us",
+    "grammar": "τὸ πνεῦμα as accusative object of ἐπιποθεῖ, with God as the implied subject",
+    "fathers": [],
+    "modern": "ESV, NIV, NASB, NRSV (text)"
+   },
+   {
+    "label": "The spirit within us yearns enviously",
+    "rendering": "The spirit that He has made to dwell in us yearns jealously (or enviously)",
+    "grammar": "τὸ πνεῦμα as nominative subject of ἐπιποθεῖ",
+    "fathers": [],
+    "modern": "KJV ('the spirit that dwelleth in us lusteth to envy'); ESV and NRSV margins"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "τὸ πνεῦμα is placed after ἐπιποθεῖ inside the quoted clause with ὃ κατῴκισεν as a relative; the tree does not decide subject versus object.",
+  "sources": [
+   "NET Bible note on Jas 4:5",
+   "Moo, James (PNTC) 184-6"
+  ]
+ },
+ {
+  "id": "jas-5-14-aleipsantes",
+  "book": "James",
+  "chapter": 5,
+  "verse": 14,
+  "words": [
+   "JAS 5:14!11",
+   "JAS 5:14!14",
+   "JAS 5:14!15",
+   "JAS 5:14!16",
+   "JAS 5:14!17",
+   "JAS 5:14!18",
+   "JAS 5:14!19",
+   "JAS 5:14!20",
+   "JAS 5:14!21"
+  ],
+  "title": "James 5:14: 'anointing him with oil in the name of the Lord'",
+  "category": "construction",
+  "summary": "The aorist participle aleipsantes can be antecedent ('having anointed, let them pray') or coincident with the prayer ('praying and anointing', the anointing as part of the prayer). The phrase 'in the name of the Lord' can attach to the anointing or to the prayer, and the oil can be medicinal or symbolic.",
+  "readings": [
+   {
+    "label": "Anointing as a sacramental or ritual act performed in the Lord's name",
+    "rendering": "let them pray over him, anointing him with oil in the name of the Lord",
+    "grammar": "ἀλείψαντες as coincident participle of means; ἐν τῷ ὀνόματι with the anointing",
+    "fathers": [],
+    "modern": "Catholic tradition (the Anointing of the Sick)",
+    "traditions": {
+     "catholic": "A sacrament (Council of Trent, Session 14)"
+    }
+   },
+   {
+    "label": "Anointing as medicinal or merely accompanying act",
+    "rendering": "let them pray over him, having anointed him with oil (as medicine or sign), in the name of the Lord",
+    "grammar": "ἀλείψαντες as antecedent participle; ἐν τῷ ὀνόματι with the prayer",
+    "fathers": [],
+    "modern": "Many Protestant commentators",
+    "traditions": {
+     "protestant": "Oil as a medicinal or symbolic act accompanying prayer, or a gift of healing that has ceased (e.g. Calvin, Institutes 4.19)"
+    }
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἀλείψαντες αὐτὸν ἐλαίῳ ἐν τῷ ὀνόματι τοῦ κυρίου is one adverbial participial phrase under προσευξάσθωσαν; the tree does not separate ἐν τῷ ὀνόματι from either verb.",
+  "sources": [
+   "NET Bible note on Jas 5:14",
+   "Moo, James (PNTC)",
+   "Wallace, GGBB 624"
+  ]
+ },
+ {
+  "id": "jas-5-16-energoumene",
+  "book": "James",
+  "chapter": 5,
+  "verse": 16,
+  "words": [
+   "JAS 5:16!12",
+   "JAS 5:16!13",
+   "JAS 5:16!14",
+   "JAS 5:16!15",
+   "JAS 5:16!16"
+  ],
+  "title": "James 5:16: energoumene as 'effective', 'working', or 'when it is made to work'",
+  "category": "construction",
+  "summary": "Energoumene is a present participle that can be middle ('working, effective'), passive ('when it is worked, energised', by God or by the Spirit), adjectival ('effective prayer') or adverbial ('when it is exerted').",
+  "readings": [
+   {
+    "label": "Middle / adjectival: 'a righteous man's prayer is powerful and effective'",
+    "rendering": "The prayer of a righteous person has great power as it is working",
+    "grammar": "ἐνεργουμένη as middle participle used adjectivally or adverbially",
+    "fathers": [],
+    "modern": "ESV, NASB, NIV, NRSV"
+   },
+   {
+    "label": "Passive: 'when it is energised' (by God)",
+    "rendering": "The prayer of a righteous person, when energised (by God), avails much",
+    "grammar": "ἐνεργουμένη as passive participle with God as the unexpressed agent",
+    "fathers": [],
+    "modern": "Some older commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "πολὺ ἰσχύει δέησις δικαίου ἐνεργουμένη is one flat clause; the tree does not mark the voice or function of the participle.",
+  "sources": [
+   "NET Bible note on Jas 5:16",
+   "Moo, James (PNTC)"
+  ]
+ },
+ {
+  "id": "jas-5-20-autou",
+  "book": "James",
+  "chapter": 5,
+  "verse": 20,
+  "words": [
+   "JAS 5:20!3",
+   "JAS 5:20!4",
+   "JAS 5:20!5",
+   "JAS 5:20!9",
+   "JAS 5:20!10",
+   "JAS 5:20!11",
+   "JAS 5:20!12"
+  ],
+  "title": "James 5:20: whose soul is saved: the sinner's or the converter's?",
+  "category": "referent",
+  "summary": "The pronoun autou after psychen ('will save his soul from death') can refer to the converted sinner (his soul is rescued) or to the one who turned him back (he secures his own salvation and the covering of sins).",
+  "readings": [
+   {
+    "label": "The sinner's soul is saved",
+    "rendering": "the one who turns a sinner from the error of his way will save the sinner's soul from death and cover a multitude of sins",
+    "grammar": "αὐτοῦ = the ἁμαρτωλός (nearest antecedent); 'covering sins' also his",
+    "fathers": [],
+    "modern": "Most commentators"
+   },
+   {
+    "label": "The converter's own soul",
+    "rendering": "the one who turns a sinner back will save his own soul from death",
+    "grammar": "αὐτοῦ = ὁ ἐπιστρέψας (the grammatical subject)",
+    "fathers": [],
+    "modern": "Some commentators; KJV and ESV ('his soul') keep the English ambiguous"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ψυχὴν αὐτοῦ is the object of σώσει inside the ὅτι-clause whose subject is ὁ ἐπιστρέψας; the tree does not resolve the pronoun.",
+  "sources": [
+   "NET Bible note on Jas 5:20",
+   "Moo, James (PNTC)"
+  ]
+ },
+ {
+  "id": "1pe-1-6-en-ho",
+  "book": "1 Peter",
+  "chapter": 1,
+  "verse": 6,
+  "words": [
+   "1PE 1:6!1",
+   "1PE 1:6!2",
+   "1PE 1:6!3"
+  ],
+  "title": "1 Peter 1:6: en ho agalliasthe: 'in which' refers to what?",
+  "category": "referent",
+  "summary": "The relative en ho ('in which you rejoice') has several possible antecedents in vv. 3-5: God, 'the last time', the salvation, or the whole preceding statement. The verb agalliasthe can be indicative (you rejoice) or imperative (rejoice!).",
+  "readings": [
+   {
+    "label": "The salvation or last time just described",
+    "rendering": "In this you rejoice",
+    "grammar": "ἐν ᾧ = in (the prospect of) the salvation / the last time (neuter relative, whole preceding thought)",
+    "fathers": [],
+    "modern": "ESV, NASB, NIV, NRSV ('in this')"
+   },
+   {
+    "label": "God (masculine)",
+    "rendering": "In whom you rejoice",
+    "grammar": "ἐν ᾧ = ἐν θεῷ (the nearest masculine antecedent, cf. v. 3)",
+    "fathers": [],
+    "modern": "A minority of commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἐν ᾧ is the head of the main clause; the tree gives no antecedent for the relative.",
+  "sources": [
+   "NET Bible note on 1 Pet 1:6",
+   "Michaels, 1 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "1pe-1-11-tina-e-poion",
+  "book": "1 Peter",
+  "chapter": 1,
+  "verse": 11,
+  "words": [
+   "1PE 1:11!2",
+   "1PE 1:11!3",
+   "1PE 1:11!4",
+   "1PE 1:11!5",
+   "1PE 1:11!6"
+  ],
+  "title": "1 Peter 1:11: eis tina e poion kairon: 'what person or time' or 'what time'?",
+  "category": "construction",
+  "summary": "Tina and poion are both accusative and can be read separately ('what person or what time') or together as modifiers of kairon ('what time or what kind of time'). The first has the prophets searching for the person of the Messiah as well as the time.",
+  "readings": [
+   {
+    "label": "Two objects: 'what person or what time'",
+    "rendering": "searching what person or what time the Spirit of Christ in them was indicating",
+    "grammar": "τίνα as a separate substantive (person) beside ποῖον καιρόν",
+    "fathers": [],
+    "modern": "ESV, NASB, NRSV ('what person or time')"
+   },
+   {
+    "label": "One phrase: 'what time or what kind of time'",
+    "rendering": "inquiring about the time and circumstances (what, or what manner of, time)",
+    "grammar": "τίνα and ποῖον both modify καιρόν",
+    "fathers": [],
+    "modern": "KJV ('what, or what manner of time'); NIV ('the time and circumstances')"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "εἰς τίνα ἢ ποῖον καιρόν is a single phrase under ἐραυνῶντες; the tree does not split τίνα from καιρόν.",
+  "sources": [
+   "NET Bible note on 1 Pet 1:11",
+   "Michaels, 1 Peter (WBC) 42-3"
+  ]
+ },
+ {
+  "id": "1pe-2-8-eis-ho-etethesan",
+  "book": "1 Peter",
+  "chapter": 2,
+  "verse": 8,
+  "words": [
+   "1PE 2:8!8",
+   "1PE 2:8!10",
+   "1PE 2:8!11",
+   "1PE 2:8!12",
+   "1PE 2:8!13",
+   "1PE 2:8!14",
+   "1PE 2:8!15"
+  ],
+  "title": "1 Peter 2:8: eis ho kai etethesan: what were they 'appointed' to?",
+  "category": "referent",
+  "summary": "The relative eis ho ('to which also they were appointed') can look back to 'stumble' (they were destined to stumble), to 'disobeying the word' (disobedience was their appointed end), or to the whole situation. The reading governs whether divine appointment is to the disobedience or to the stumbling that follows from it.",
+  "readings": [
+   {
+    "label": "Appointed to stumble",
+    "rendering": "they stumble because they disobey the word, and to this they were also appointed",
+    "grammar": "εἰς ὃ = εἰς τὸ προσκόπτειν (stumbling, as the result)",
+    "fathers": [],
+    "modern": "ESV, NRSV ('as they were destined to do'), NIV; KJV ('whereunto also they were appointed')"
+   },
+   {
+    "label": "Appointed to the penalty, not the sin",
+    "rendering": "they stumble by disobeying the word, and to this fate (the punishment of unbelief) they were appointed",
+    "grammar": "εἰς ὃ = the destiny (judgment) that follows disobedience, not the disobedience itself",
+    "fathers": [],
+    "modern": "Commentators who deny that the text teaches predestination to sin"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "εἰς ὃ καὶ ἐτέθησαν follows ἀπειθοῦντες as a separate adverbial; the tree gives no antecedent for ὅ.",
+  "sources": [
+   "NET Bible note on 1 Pet 2:8",
+   "Michaels, 1 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "1pe-3-18-pneumati",
+  "book": "1 Peter",
+  "chapter": 3,
+  "verse": 18,
+  "words": [
+   "1PE 3:18!16",
+   "1PE 3:18!17",
+   "1PE 3:18!18",
+   "1PE 3:18!19",
+   "1PE 3:18!20",
+   "1PE 3:18!21"
+  ],
+  "title": "1 Peter 3:18: sarki ... pneumati: 'in the spirit' or 'by the Spirit'?",
+  "category": "case",
+  "summary": "The datives sarki and pneumati are balanced by men ... de. They can both be datives of sphere ('put to death in the flesh, made alive in the spirit') or the second an instrumental dative of agent ('made alive by the Spirit'). The reading affects whether 'spirit' is the human or divine nature of Christ or the Holy Spirit.",
+  "readings": [
+   {
+    "label": "Sphere: 'in the flesh / in the spirit'",
+    "rendering": "put to death in the flesh, made alive in the spirit",
+    "grammar": "σαρκί and πνεύματι as datives of sphere",
+    "fathers": [],
+    "modern": "ESV, NASB, NRSV ('in the spirit')"
+   },
+   {
+    "label": "Agent: 'by the Spirit'",
+    "rendering": "put to death in the flesh, but made alive by the Spirit",
+    "grammar": "πνεύματι as dative of agent or means (the Holy Spirit)",
+    "fathers": [],
+    "modern": "KJV, NIV 1984 ('by the Spirit')"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree gives the first clause but leaves θανατωθεὶς μὲν σαρκί ζῳοποιηθεὶς δὲ πνεύματι as a flat pair; the case function is not encoded.",
+  "sources": [
+   "NET Bible note on 1 Pet 3:18",
+   "Wallace, GGBB (datives of sphere and agency)"
+  ]
+ },
+ {
+  "id": "1pe-3-19-en-ho",
+  "book": "1 Peter",
+  "chapter": 3,
+  "verse": 19,
+  "words": [
+   "1PE 3:19!1",
+   "1PE 3:19!2",
+   "1PE 3:19!3",
+   "1PE 3:19!7",
+   "1PE 3:19!8",
+   "1PE 3:19!9"
+  ],
+  "title": "1 Peter 3:19: en ho: 'in which' means what?",
+  "category": "referent",
+  "summary": "En ho ('in which') can refer back to the spirit (Christ, in the spirit, after death went and preached to the spirits in prison), or it can be a loose 'in which time/state' connector with the preaching done by the pre-incarnate Christ (through Noah). The reading governs who 'the spirits' are and when the preaching took place.",
+  "readings": [
+   {
+    "label": "After death: Christ's spirit descended and preached to the dead",
+    "rendering": "in which spirit He also went and preached to the spirits in prison",
+    "grammar": "ἐν ᾧ = ἐν πνεύματι (Christ's spirit, after His death); the preaching is the descent to the underworld",
+    "fathers": [
+     {
+      "father": "Irenaeus of Lyons",
+      "work": "Against Heresies",
+      "ref": "Book IV.27.2",
+      "year": 180,
+      "url": "https://www.newadvent.org/fathers/0103427.htm",
+      "quote": "It was for this reason, too, that the Lord descended into the regions beneath the earth, preaching His advent there also, and [declaring] the remission of sins received by those who believe in Him.",
+      "commentary": 4945
+     },
+     {
+      "father": "Clement Of Alexandria",
+      "work": "Stromata",
+      "ref": "Book VI",
+      "year": 200,
+      "url": "https://historicalchristian.faith/by_father.php?file=Clement%2520of%2520Alexandria%2FThe%2520Stromata%2520Book%25206.html",
+      "quote": "Do not [the Scriptures] show that the Lord preached the Gospel to those that perished in the flood, or rather had been chained, and to those kept \"in ward and guard\"?",
+      "legacy": 68136
+     },
+     {
+      "father": "Origen",
+      "work": "Commentary on John",
+      "ref": "Book VI",
+      "year": 230,
+      "url": "https://www.newadvent.org/fathers/101506.htm",
+      "quote": "Now I consider that the inhumanisation when the Son of God assumes flesh and bones is one of His shoes, and that the other is the descent to Hades, whatever that Hades be, and the journey with the Spirit to the prison.",
+      "commentary": 7037
+     }
+    ],
+    "modern": "Much of the early Church; many modern commentators",
+    "traditions": {
+     "catholic": "Linked to the Creed's 'descended into hell' (the Harrowing of Hell)",
+     "orthodox": "Linked to the descent to Hades depicted in the Resurrection icon"
+    }
+   },
+   {
+    "label": "Before the Incarnation: Christ preached through Noah",
+    "rendering": "in which Spirit He also went and preached, through Noah, to the people who are now spirits in prison",
+    "grammar": "ἐν ᾧ = ἐν πνεύματι (the pre-existent Christ in the Spirit); the audience are those living in Noah's day",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Letters",
+      "ref": "Letter 164",
+      "year": 414,
+      "url": "https://www.newadvent.org/fathers/1102164.htm",
+      "quote": "For although he had not yet come in the flesh, as He came when afterwards He showed Himself upon earth, and conversed with men, Baruch 3:37 nevertheless he certainly came often to this earth, from the beginning of the human race, whether to rebuke the wicked, as Cain, and before that, Adam and his wife, when they sinned, or to comfort the good, or to admonish both, so that some should to their salvation believe, others should to their condemnation refuse to believe — coming then not in the flesh but in the spirit, speaking by suitable manifestations of Himself to such persons and in such manner as seemed good to Him.",
+      "commentary": 20806
+     }
+    ],
+    "modern": "Augustine; Grudem and some evangelical commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἐν ᾧ πορευθεὶς ἐκήρυξεν is a main clause with ἐν ᾧ as a prepositional phrase; the antecedent of ᾧ is not coded.",
+  "sources": [
+   "NET Bible note on 1 Pet 3:19",
+   "Dalton, Christ's Proclamation to the Spirits",
+   "Grudem, 1 Peter (TNTC), Appendix"
+  ]
+ },
+ {
+  "id": "1pe-3-21-ho-antitypon",
+  "book": "1 Peter",
+  "chapter": 3,
+  "verse": 21,
+  "words": [
+   "1PE 3:21!1",
+   "1PE 3:21!4",
+   "1PE 3:21!6",
+   "1PE 3:21!7"
+  ],
+  "title": "1 Peter 3:21: ho ... antitypon ... baptisma: what corresponds to what?",
+  "category": "referent",
+  "summary": "The neuter relative ho ('which') points back to the flood water. Antitypon can be the predicate of ho ('which water, as antitype, now saves you: baptism') or an adjective agreeing with baptisma ('baptism, the corresponding thing, now saves you'). The first makes the flood water the type of baptism; the second makes baptism the counterpart of the whole event of the ark.",
+  "readings": [
+   {
+    "label": "The water as type: baptism is its antitype",
+    "rendering": "to which water baptism now corresponds as antitype and saves you",
+    "grammar": "ὃ = ὕδωρ; ἀντίτυπον as predicate of ὃ; βάπτισμα in apposition",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "On Baptism, Against the Donatists",
+      "ref": "Book V",
+      "year": 400,
+      "url": "https://www.newadvent.org/fathers/14085.htm",
+      "quote": "For Peter says that in the Ark of Noah, \"few, that is, eight souls, were saved by water.",
+      "commentary": 24663
+     }
+    ],
+    "modern": "KJV ('the like figure whereunto even baptism doth also now save us'); NIV"
+   },
+   {
+    "label": "Baptism as the corresponding thing",
+    "rendering": "baptism, which corresponds to this, now saves you",
+    "grammar": "ἀντίτυπον attributive or appositive adjective with βάπτισμα; ὃ resumptive",
+    "fathers": [],
+    "modern": "ESV, NASB, NRSV"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree presents 'ὃ καὶ ὑμᾶς νῦν σῴζει ἀντίτυπον βάπτισμα' as one clause with a flat head; antitype and subject are not distinguished.",
+  "sources": [
+   "NET Bible note on 1 Pet 3:21",
+   "Michaels, 1 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "1pe-3-21-eperotema",
+  "book": "1 Peter",
+  "chapter": 3,
+  "verse": 21,
+  "words": [
+   "1PE 3:21!13",
+   "1PE 3:21!14",
+   "1PE 3:21!15",
+   "1PE 3:21!16",
+   "1PE 3:21!17"
+  ],
+  "title": "1 Peter 3:21: syneideseos agathes eperotema: 'answer', 'pledge' or 'appeal'?",
+  "category": "case",
+  "summary": "Eperotema can mean 'answer, response' (to the baptismal interrogation), 'pledge, promise', or 'appeal, request' to God for a clean conscience. The genitive syneideseos can be objective (the appeal for a good conscience) or subjective/qualitative (the answer from a good conscience).",
+  "readings": [
+   {
+    "label": "Answer or pledge of a good conscience",
+    "rendering": "the answer (or pledge) of a good conscience toward God",
+    "grammar": "ἐπερώτημα = 'response' to the baptismal questioning; συνειδήσεως ἀγαθῆς as genitive of source/quality",
+    "fathers": [
+     {
+      "father": "Tertullian",
+      "work": "On the Resurrection of the Flesh",
+      "ref": "Chapter 48",
+      "year": 210,
+      "url": "https://www.newadvent.org/fathers/0316.htm",
+      "quote": "For it is not the soul which is sanctified by the baptismal bath: its sanctification comes from the answer.",
+      "commentary": 13593
+     },
+     {
+      "father": "Augustine of Hippo",
+      "work": "Answer to Petilian",
+      "ref": "Book III",
+      "year": 400,
+      "url": "https://www.newadvent.org/fathers/14093.htm",
+      "quote": "But if you answered my question with truthful hearts, you were placed in a state of salvation, not by the putting away of the filth of the flesh, but by the answer of a good conscience towards God; 1 Peter 3:21 not by a fellow-servant, but by the Lord; not by the herald, but by the judge.",
+      "commentary": 25279
+     }
+    ],
+    "modern": "KJV ('answer'); NIV ('pledge')"
+   },
+   {
+    "label": "Appeal to God for a good conscience",
+    "rendering": "an appeal to God for a good conscience",
+    "grammar": "ἐπερώτημα = 'request' (the legal sense); συνειδήσεως ἀγαθῆς as objective genitive",
+    "fathers": [],
+    "modern": "ESV, NASB, NRSV ('appeal')"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree lists συνειδήσεως ἀγαθῆς ἐπερώτημα εἰς θεόν in one phrase; the sense of the noun and the genitive are not coded.",
+  "sources": [
+   "NET Bible note on 1 Pet 3:21",
+   "BDAG ἐπερώτημα",
+   "Michaels, 1 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "1pe-4-6-nekrois",
+  "book": "1 Peter",
+  "chapter": 4,
+  "verse": 6,
+  "words": [
+   "1PE 4:6!1",
+   "1PE 4:6!2",
+   "1PE 4:6!3",
+   "1PE 4:6!4",
+   "1PE 4:6!5",
+   "1PE 4:6!6"
+  ],
+  "title": "1 Peter 4:6: 'the gospel was preached also to the dead': which dead?",
+  "category": "referent",
+  "summary": "Nekrois (dative plural, anarthrous) can mean those now physically dead who heard the gospel while alive, those in Hades who heard it after death (cf. 3:19), or those spiritually dead who are called to life. The aorist euengelisthe leaves the time of preaching unfixed.",
+  "readings": [
+   {
+    "label": "Now dead, who heard the gospel while alive",
+    "rendering": "the gospel was preached even to those who are now dead",
+    "grammar": "νεκροῖς as 'those who have since died'; preaching in their lifetime",
+    "fathers": [],
+    "modern": "NIV ('those who are now dead'); many modern commentators"
+   },
+   {
+    "label": "In Hades: the gospel preached after death",
+    "rendering": "the gospel was preached to the dead in Hades",
+    "grammar": "νεκροῖς as the dead at the time of preaching",
+    "fathers": [
+     {
+      "father": "Clement Of Alexandria",
+      "work": "Stromata",
+      "ref": "Book VI",
+      "year": 200,
+      "url": "https://historicalchristian.faith/by_father.php?file=Clement%2520of%2520Alexandria%2FThe%2520Stromata%2520Book%25206.html",
+      "quote": "Wherefore the Lord preached the Gospel to those in Hades.",
+      "legacy": 68136
+     }
+    ],
+    "modern": "Many early Fathers"
+   },
+   {
+    "label": "Spiritually dead: those unbelieving in this life",
+    "rendering": "the gospel has been preached to the spiritually dead",
+    "grammar": "νεκροῖς as spiritually dead (cf. Eph 2:1; Matt 8:22)",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Letters",
+      "ref": "Letter 164",
+      "year": 414,
+      "url": "https://www.newadvent.org/fathers/1102164.htm",
+      "quote": "For it may be that the apostle intended by the word dead to denote unbelievers, as being spiritually dead, like those of whom it was said, Let the dead bury their dead, Matthew 8:22 and by the word living to denote those who believe in Him, having not heard in vain the call, Awake, you that sleep, and arise from the dead, and Christ shall give you light; Ephesians 5:14 of whom also the Lord said: The hour is coming, and now is, when the dead shall hear the voice of the Son of God, and they that hear shall live.",
+      "commentary": 20813
+     }
+    ],
+    "modern": "Augustine; a few later commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "εἰς τοῦτο καὶ νεκροῖς εὐηγγελίσθη is a main clause; νεκροῖς is an unmarked dative with no tree-level distinction.",
+  "sources": [
+   "NET Bible note on 1 Pet 4:6",
+   "Michaels, 1 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "1pe-4-8-agape-kalypsei",
+  "book": "1 Peter",
+  "chapter": 4,
+  "verse": 8,
+  "words": [
+   "1PE 4:8!10",
+   "1PE 4:8!11",
+   "1PE 4:8!12",
+   "1PE 4:8!13"
+  ],
+  "title": "1 Peter 4:8: 'love covers a multitude of sins': whose sins?",
+  "category": "construction",
+  "summary": "The genitive plethos hamartion has no possessive, so the sins can be those of the one loved (forgiveness extended), the lover's own (love as a ground of divine forgiveness), or sins in general in the community (love prevents their spread). The verb kalypsei can be 'conceals' or 'atones for'.",
+  "readings": [
+   {
+    "label": "Love covers the sins of others",
+    "rendering": "love covers the multitude of the beloved's sins",
+    "grammar": "ἁμαρτιῶν = the sins of others, covered by forgiveness or charity",
+    "fathers": [
+     {
+      "father": "John Chrysostom",
+      "work": "Homilies on the Statues",
+      "ref": "Homily 20",
+      "year": 387,
+      "url": "https://www.newadvent.org/fathers/190120.htm",
+      "quote": "For as charity covers a multitude of sins, 1 Peter 4:8 so enmity gives a being to sins that do not exist, and all persons henceforth, are deemed worthy of credit who turn accusers; who rejoice in the ills of others, and blaze abroad what is disgraceful in their conduct.",
+      "commentary": 59020
+     }
+    ],
+    "modern": "ESV, NIV, NRSV; most modern commentators (cf. Prov 10:12)"
+   },
+   {
+    "label": "Love covers the sins of the one who loves",
+    "rendering": "love causes one's own sins to be covered (by God)",
+    "grammar": "ἁμαρτιῶν = the lover's own sins, covered by God because of love",
+    "fathers": [
+     {
+      "father": "John Cassian",
+      "work": "Conferences",
+      "ref": "Conference 11",
+      "year": 426,
+      "url": "https://www.newadvent.org/fathers/350811.htm",
+      "quote": "Love also fears no destruction from sins, for love never fails; 1 Corinthians 13:8 and again: love covers a multitude of sins. 1 Peter 4:8 And therefore the blessed Apostle confines the whole sum of salvation in the attainment of those three virtues, saying Now abides faith, hope, love, these three.",
+      "commentary": 47196
+     }
+    ],
+    "modern": "Some Fathers (cf. Cassian on charity); a minority of modern commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἀγάπη καλύπτει πλῆθος ἁμαρτιῶν is a one-line ὅτι clause; the tree does not specify whose sins.",
+  "sources": [
+   "NET Bible note on 1 Pet 4:8",
+   "Michaels, 1 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "1pe-5-13-synekklete",
+  "book": "1 Peter",
+  "chapter": 5,
+  "verse": 13,
+  "words": [
+   "1PE 5:13!3",
+   "1PE 5:13!4",
+   "1PE 5:13!5",
+   "1PE 5:13!6"
+  ],
+  "title": "1 Peter 5:13: he en Babyloni synekklete: who is 'she who is in Babylon'?",
+  "category": "referent",
+  "summary": "The feminine adjective synekklete ('co-elect') is used without a noun. It can supply 'church' (the community in Babylon), 'wife' (Peter's wife) or 'sister/woman' (a Christian woman of Babylon). 'Babylon' is also debated (literal city, Rome, or Egypt), but the grammatical question is the ellipsis.",
+  "readings": [
+   {
+    "label": "Church (understood noun)",
+    "rendering": "the church that is in Babylon, chosen together with you, sends greetings",
+    "grammar": "ἡ συνεκλεκτή = ἡ ἐκκλησία (feminine noun understood)",
+    "fathers": [
+     {
+      "father": "Eusebius of Caesarea",
+      "work": "Church History",
+      "ref": "Book II",
+      "year": 325,
+      "url": "https://www.newadvent.org/fathers/250102.htm",
+      "quote": "And Peter makes mention of Mark in his first epistle which they say that he wrote in Rome itself, as is indicated by him, when he calls the city, by a figure, Babylon, as he does in the following words: The church that is at Babylon, elected together with you, salutes you; and so does Marcus my son.",
+      "commentary": 39268
+     }
+    ],
+    "modern": "KJV, ESV, NASB, NIV, NRSV; the majority view"
+   },
+   {
+    "label": "A woman: Peter's wife or a sister in Christ",
+    "rendering": "she who is in Babylon, chosen together with you, greets you",
+    "grammar": "ἡ συνεκλεκτή = a woman (wife or fellow believer)",
+    "fathers": [],
+    "modern": "A minority of commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἡ ἐν Βαβυλῶνι συνεκλεκτή is the subject of ἀσπάζεται; the tree does not supply a head noun.",
+  "sources": [
+   "NET Bible note on 1 Pet 5:13",
+   "Michaels, 1 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "2pe-1-1-granville-sharp",
+  "book": "2 Peter",
+  "chapter": 1,
+  "verse": 1,
+  "words": [
+   "2PE 1:1!15",
+   "2PE 1:1!16",
+   "2PE 1:1!17",
+   "2PE 1:1!18",
+   "2PE 1:1!19",
+   "2PE 1:1!20",
+   "2PE 1:1!21"
+  ],
+  "title": "tou theou hemon kai soteros Iesou Christou: one person or two?",
+  "category": "article",
+  "summary": "A single article governs two singular, non-proper nouns joined by kai ('our God and Saviour'), and the usual Granville Sharp pattern then names one person: 'our God and Saviour, Jesus Christ'. Because 'Saviour' is used as a title and 'God' could stand for the Father, some read two persons: 'our God and [the] Saviour Jesus Christ'.",
+  "readings": [
+   {
+    "label": "One person: Jesus Christ is 'our God and Saviour'",
+    "rendering": "the righteousness of our God and Saviour Jesus Christ",
+    "grammar": "Granville Sharp's rule: τοῦ θεοῦ ... καὶ σωτῆρος under one article, both nouns of Jesus Christ",
+    "fathers": [],
+    "modern": "ESV, NIV, NASB, NRSV, NAB; most grammarians (Wallace, GGBB 270-1)"
+   },
+   {
+    "label": "Two persons: God (the Father) and our Saviour Jesus Christ",
+    "rendering": "the righteousness of our God and of the Saviour Jesus Christ",
+    "grammar": "θεοῦ and σωτῆρος as distinct referents",
+    "fathers": [],
+    "modern": "Some older commentators"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "τοῦ θεοῦ ἡμῶν καὶ σωτῆρος Ἰησοῦ Χριστοῦ is parsed as a single noun phrase under one article, with Ἰησοῦ Χριστοῦ in apposition.",
+  "sources": [
+   "NET Bible note on 2 Pet 1:1",
+   "Wallace, GGBB 270-1",
+   "Bauckham, Jude, 2 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "2pe-1-19-en-tais-kardiais",
+  "book": "2 Peter",
+  "chapter": 1,
+  "verse": 19,
+  "words": [
+   "2PE 1:19!10",
+   "2PE 1:19!22",
+   "2PE 1:19!23",
+   "2PE 1:19!24",
+   "2PE 1:19!25",
+   "2PE 1:19!26",
+   "2PE 1:19!27"
+  ],
+  "title": "2 Peter 1:19: 'in your hearts' belongs to what?",
+  "category": "attachment",
+  "summary": "The phrase en tais kardiais hymon can attach to the closing clause ('until the day dawns and the morning star rises in your hearts') or to the preceding 'pay attention' ('you do well to pay attention in your hearts as to a lamp ... until the day dawns, and the morning star rises').",
+  "readings": [
+   {
+    "label": "With the rising of the morning star: it rises in your hearts",
+    "rendering": "until the day dawns and the morning star rises in your hearts",
+    "grammar": "ἐν ταῖς καρδίαις ὑμῶν adverbial to ἀνατείλῃ (inner illumination)",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Letters",
+      "ref": "Letter 130",
+      "year": 412,
+      "url": "https://www.newadvent.org/fathers/1102130.htm",
+      "quote": "In the darkness, then, of this world, in which we are pilgrims absent from the Lord as long as we walk by faith and not by sight, 2 Corinthians 5:6-7 the Christian soul ought to feel itself desolate, and continue in prayer, and learn to fix the eye of faith on the word of the divine sacred Scriptures, as on a light shining in a dark place, until the day dawn, and the day-star arise in our hearts.",
+      "commentary": 20677
+     }
+    ],
+    "modern": "ESV, NASB, NIV, NRSV; most commentators"
+   },
+   {
+    "label": "With 'pay attention': attend to the prophetic word in your hearts",
+    "rendering": "you do well to pay attention in your hearts to the prophetic word as to a lamp ... until the day dawns and the morning star rises",
+    "grammar": "ἐν ταῖς καρδίαις ὑμῶν adverbial to προσέχοντες",
+    "fathers": [],
+    "modern": "A few commentators"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "ἐν ταῖς καρδίαις ὑμῶν closes the ἕως οὗ ... φωσφόρος ἀνατείλῃ clause, so the tree attaches it to the rising.",
+  "sources": [
+   "NET Bible note on 2 Pet 1:19",
+   "Bauckham, Jude, 2 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "2pe-1-20-idias-epilyseos",
+  "book": "2 Peter",
+  "chapter": 1,
+  "verse": 20,
+  "words": [
+   "2PE 1:20!5",
+   "2PE 1:20!6",
+   "2PE 1:20!7",
+   "2PE 1:20!8",
+   "2PE 1:20!9",
+   "2PE 1:20!10",
+   "2PE 1:20!11"
+  ],
+  "title": "2 Peter 1:20: idias epilyseos: whose 'own interpretation'?",
+  "category": "case",
+  "summary": "The genitive idias epilyseos ('of one's own interpretation') can be a predicate genitive of source or possession. 'Own' can refer to the reader (no prophecy of scripture is a matter of private reading), to the prophet (no prophecy originated in the prophet's own explanation), or to scripture itself (Scripture is not self-interpreting in isolation). Ginetai can mean 'comes about from' or 'is a matter of'.",
+  "readings": [
+   {
+    "label": "The reader's own interpretation",
+    "rendering": "no prophecy of Scripture is a matter of one's own private interpretation",
+    "grammar": "ἰδίας ἐπιλύσεως as predicate genitive: the reader's own explanation",
+    "fathers": [],
+    "modern": "ESV, NASB, NRSV; the classical Protestant-versus-Catholic debate reads it this way",
+    "traditions": {
+     "catholic": "Cited to support interpretation within the Church's teaching authority",
+     "protestant": "Cited in discussions of private judgment; read by many as about origin, not readers"
+    }
+   },
+   {
+    "label": "The prophet's own origination",
+    "rendering": "no prophecy of Scripture came about by the prophet's own explanation",
+    "grammar": "ἰδίας ἐπιλύσεως as genitive of source, with the following v. 21 ('men spoke from God') as the contrast",
+    "fathers": [],
+    "modern": "NIV ('came about by the prophet's own interpretation')"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "πᾶσα προφητεία γραφῆς ἰδίας ἐπιλύσεως οὐ γίνεται is a single flat ὅτι-clause; the genitives are not distinguished.",
+  "sources": [
+   "NET Bible note on 2 Pet 1:20",
+   "Bauckham, Jude, 2 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "1jn-2-12-hoti",
+  "book": "1 John",
+  "chapter": 2,
+  "verse": 12,
+  "words": [
+   "1JN 2:12!1",
+   "1JN 2:12!4"
+  ],
+  "title": "1 John 2:12-14: 'I write ... that' or 'I write ... because'?",
+  "category": "construction",
+  "summary": "Hoti after 'I write' (and 'I wrote') can be causal ('because your sins are forgiven') or declarative ('that your sins are forgiven'). The repeated pattern in vv. 12-14 makes either reading plausible.",
+  "readings": [
+   {
+    "label": "Causal: 'because'",
+    "rendering": "I am writing to you, little children, because your sins are forgiven",
+    "grammar": "ὅτι as causal conjunction (the reason John writes)",
+    "fathers": [],
+    "modern": "KJV, ESV, NASB, NIV, NRSV; most commentators"
+   },
+   {
+    "label": "Declarative: 'that'",
+    "rendering": "I am writing to you, little children, that your sins are forgiven",
+    "grammar": "ὅτι as content-clause marker (what John writes)",
+    "fathers": [],
+    "modern": "Some commentators"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "ὅτι ἀφέωνται ὑμῖν αἱ ἁμαρτίαι is an adverbial clause under Γράψω ὑμῖν.",
+  "sources": [
+   "NET Bible note on 1 John 2:12",
+   "Brown, Epistles of John (AB)"
+  ]
+ },
+ {
+  "id": "1jn-2-29-ex-autou",
+  "book": "1 John",
+  "chapter": 2,
+  "verse": 29,
+  "words": [
+   "1JN 2:29!5",
+   "1JN 2:29!13",
+   "1JN 2:29!14",
+   "1JN 2:29!15"
+  ],
+  "title": "1 John 2:29: 'born of him': born of whom?",
+  "category": "referent",
+  "summary": "In 2:28-29 the third-person pronouns slide between God the Father and Christ. 'He is righteous' and 'born of Him' can refer to God, or to Christ ('the Righteous One', 2:1), or the first to Christ and the second to God.",
+  "readings": [
+   {
+    "label": "Born of God",
+    "rendering": "everyone who practises righteousness has been born of Him (God)",
+    "grammar": "ἐξ αὐτοῦ = ἐκ τοῦ θεοῦ (cf. 3:9 ἐκ τοῦ θεοῦ γεγέννηται)",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Homilies on the First Epistle of John",
+      "ref": "Homily 4",
+      "year": 407,
+      "url": "https://www.newadvent.org/fathers/170204.htm",
+      "quote": "Therefore, see what follows, my brethren, in the Epistle: because this is what it would have us lay to heart, that we may overcome the devil indeed, but not of ourselves.",
+      "commentary": 30514
+     }
+    ],
+    "modern": "ESV, NASB, NIV, NRSV ('born of him' with God as referent)"
+   },
+   {
+    "label": "Born of Christ",
+    "rendering": "everyone who practises righteousness has been born of Him (Christ, the Righteous One)",
+    "grammar": "αὐτοῦ = Christ (the antecedent of 'he is righteous', cf. 2:1)",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Homilies on the First Epistle of John",
+      "ref": "Homily 4",
+      "year": 407,
+      "url": "https://www.newadvent.org/fathers/170204.htm",
+      "quote": "Therefore, see what follows, my brethren, in the Epistle: because this is what it would have us lay to heart, that we may overcome the devil indeed, but not of ourselves.",
+      "commentary": 30514
+     }
+    ],
+    "modern": "Some commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree encodes only the clauses; ἐξ αὐτοῦ is a bare pronominal phrase with no antecedent.",
+  "sources": [
+   "NET Bible note on 1 John 2:29",
+   "Brown, Epistles of John (AB)"
+  ]
+ },
+ {
+  "id": "1jn-3-9-ou-dynatai-hamartanein",
+  "book": "1 John",
+  "chapter": 3,
+  "verse": 9,
+  "words": [
+   "1JN 3:9!8",
+   "1JN 3:9!9",
+   "1JN 3:9!17",
+   "1JN 3:9!18",
+   "1JN 3:9!19"
+  ],
+  "title": "1 John 3:9: 'cannot sin': habitual, perfect, or conditional?",
+  "category": "construction",
+  "summary": "Poiei and hamartanein are present-tense verbs. They can be read as iterative ('does not keep on sinning, cannot go on sinning'), as gnomic and absolute (a born-again person cannot sin at all), or as describing the nature of the seed ('in so far as he is born of God he cannot sin'). The present-iterative reading is the common grammarian's solution.",
+  "readings": [
+   {
+    "label": "Iterative present: does not habitually sin",
+    "rendering": "No one born of God makes a practice of sinning, for His seed abides in him, and he cannot keep on sinning",
+    "grammar": "οὐ ποιεῖ / οὐ δύναται ἁμαρτάνειν as iterative-customary presents",
+    "fathers": [],
+    "modern": "ESV, NASB, NIV, NRSV ('does not sin' vs 'keep on sinning' is debated); Wallace, GGBB 521-2"
+   },
+   {
+    "label": "Absolute / by nature: sinless in so far as born of God",
+    "rendering": "no one born of God sins, because God's seed is in him; in so far as he is born of God he cannot sin",
+    "grammar": "οὐ δύναται ἁμαρτάνειν as absolute, qualified by the 'in so far as' of his new birth",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "Merits and Remission of Sin, and Infant Baptism",
+      "ref": "Book II",
+      "year": 412,
+      "url": "https://www.newadvent.org/fathers/15012.htm",
+      "quote": "And hence in the passage, Whosoever is born of God does not sin, and he cannot sin, for His seed remains in him, 1 John 3:9 and in every other passage of like import, they much deceive themselves by an inadequate consideration of the Scriptures.",
+      "commentary": 25719
+     }
+    ],
+    "modern": "KJV ('doth not commit sin'); Catholic and Orthodox commentary on the double nature"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "οὐ ποιεῖ ... οὐ δύναται ἁμαρτάνειν are separate main clauses; the tree does not mark aspect.",
+  "sources": [
+   "NET Bible note on 1 John 3:9",
+   "Wallace, GGBB 521-2",
+   "Brown, Epistles of John (AB) 'Appendix' on sinlessness"
+  ]
+ },
+ {
+  "id": "1jn-3-19-hoti-hoti",
+  "book": "1 John",
+  "chapter": 3,
+  "verse": 19,
+  "words": [
+   "1JN 3:20!1",
+   "1JN 3:20!2",
+   "1JN 3:20!3",
+   "1JN 3:20!7",
+   "1JN 3:20!8"
+  ],
+  "title": "1 John 3:19-20: how do the two hoti clauses relate?",
+  "category": "construction",
+  "summary": "The sequence 'persuade our heart before Him, hoti if our heart condemns us, hoti God is greater' is syntactically awkward. The first hoti can mean 'whatever' (ho ti), 'that', or 'because', and the second can be 'that' or 'because'. The result differs: God's greater knowledge is a comfort (He knows our sincerity) or a warning (He knows our hearts' failings).",
+  "readings": [
+   {
+    "label": "Comfort: reassure the heart because God is greater",
+    "rendering": "we shall reassure our hearts before Him, whenever our heart condemns us; for God is greater than our heart and knows all things",
+    "grammar": "first ὅτι as 'whatever' or 'in that', second ὅτι causal: God's greatness grounds the reassurance",
+    "fathers": [],
+    "modern": "ESV, NASB, NRSV; the usual reading"
+   },
+   {
+    "label": "Warning: the heart's condemnation is a mild echo of God's greater judgment",
+    "rendering": "we shall persuade our heart, that if our heart condemns us, God is greater (and so more severe)",
+    "grammar": "ὅτι ... ὅτι as dependent clauses of knowledge; 'greater' as in judgment",
+    "fathers": [],
+    "modern": "A minority of commentators"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "ὅτι ἐὰν καταγινώσκῃ ἡμῶν ἡ καρδία is an adverbial clause under πείσομεν; the second ὅτι μείζων ἐστὶν ὁ θεός is parsed as a separate object clause, giving a reassurance reading.",
+  "sources": [
+   "NET Bible note on 1 John 3:20",
+   "Brown, Epistles of John (AB)",
+   "Brooke, Johannine Epistles (ICC)"
+  ]
+ },
+ {
+  "id": "1jn-5-16-dosei",
+  "book": "1 John",
+  "chapter": 5,
+  "verse": 16,
+  "words": [
+   "1JN 5:16!2",
+   "1JN 5:16!3",
+   "1JN 5:16!12",
+   "1JN 5:16!13",
+   "1JN 5:16!14",
+   "1JN 5:16!15",
+   "1JN 5:16!16",
+   "1JN 5:16!17",
+   "1JN 5:16!18"
+  ],
+  "title": "1 John 5:16: 'he will ask and He will give him life': who gives, and to whom?",
+  "category": "referent",
+  "summary": "The subject of dosei is unexpressed: God (the one asked) gives life, or the praying believer 'gives' life by his intercession. The dative autō ('to him') then is the sinning brother, or the one who prays, or 'to those who sin not unto death' (tois hamartanousin), a second dative that can be in apposition.",
+  "readings": [
+   {
+    "label": "God gives life to the sinning brother",
+    "rendering": "he will ask, and God will give him life, to those who commit sin that is not leading to death",
+    "grammar": "δώσει with God as implicit subject; αὐτῷ = τὸν ἀδελφόν; τοῖς ἁμαρτάνουσιν in apposition",
+    "fathers": [],
+    "modern": "ESV, NASB, NIV, NRSV ('God will give'); the common reading"
+   },
+   {
+    "label": "The intercessor gives life",
+    "rendering": "he will ask, and he will give him life",
+    "grammar": "δώσει with the praying believer as subject (intercession as the means of life)",
+    "fathers": [],
+    "modern": "A minority; found in older commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "αἰτήσει καὶ δώσει ζωήν αὐτῷ is parsed without an overt subject for δώσει, and τοῖς ἁμαρτάνουσιν is a relative-slot gloss.",
+  "sources": [
+   "NET Bible note on 1 John 5:16",
+   "Brown, Epistles of John (AB)"
+  ]
+ },
+ {
+  "id": "1jn-5-18-ho-gennetheis",
+  "book": "1 John",
+  "chapter": 5,
+  "verse": 18,
+  "words": [
+   "1JN 5:18!12",
+   "1JN 5:18!13",
+   "1JN 5:18!14",
+   "1JN 5:18!15",
+   "1JN 5:18!16",
+   "1JN 5:18!17",
+   "1JN 5:18!18"
+  ],
+  "title": "1 John 5:18: 'the one begotten of God keeps him': who is 'the one begotten' and who is 'him'?",
+  "category": "referent",
+  "summary": "The aorist participle ho gennetheis ('the one who was begotten') contrasts with the perfect ho gegennemenos. It can mean Christ ('the one begotten of God keeps him', the believer) or the believer ('he who was born of God keeps himself'). Autos is a variant reading, but the pronoun reading is itself disputed.",
+  "readings": [
+   {
+    "label": "Christ keeps the believer",
+    "rendering": "the One who was born of God (Christ) keeps him (the believer), and the evil one does not touch him",
+    "grammar": "ὁ γεννηθεὶς = the Son; αὐτόν = the one born of God (believer)",
+    "fathers": [],
+    "modern": "ESV, NIV, NASB, NRSV; the majority view",
+    "traditions": {
+     "catholic": "Christ preserves the believer",
+     "orthodox": "Christ preserves the believer",
+     "protestant": "Christ preserves the believer"
+    }
+   },
+   {
+    "label": "The believer keeps himself",
+    "rendering": "the one born of God keeps himself (or: guards himself), and the evil one does not touch him",
+    "grammar": "ὁ γεννηθεὶς = the believer; αὐτόν reflexive (ἑαυτόν)",
+    "fathers": [],
+    "modern": "KJV ('keepeth himself'; based on the Textus Receptus variant)"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ὁ γεννηθεὶς ἐκ τοῦ θεοῦ τηρεῖ αὐτόν is a single clause; the tree does not identify either referent.",
+  "sources": [
+   "NET Bible note on 1 John 5:18",
+   "Brown, Epistles of John (AB)"
+  ]
+ },
+ {
+  "id": "1jn-5-20-houtos",
+  "book": "1 John",
+  "chapter": 5,
+  "verse": 20,
+  "words": [
+   "1JN 5:20!26",
+   "1JN 5:20!27",
+   "1JN 5:20!28",
+   "1JN 5:20!29",
+   "1JN 5:20!30",
+   "1JN 5:20!31",
+   "1JN 5:20!32",
+   "1JN 5:20!33",
+   "1JN 5:20!34",
+   "1JN 5:20!35"
+  ],
+  "title": "1 John 5:20: houtos estin ho alethinos theos: to whom does 'this' refer?",
+  "category": "referent",
+  "summary": "The demonstrative houtos ('this one') can refer to the nearest antecedent, Jesus Christ ('in His Son Jesus Christ. This is the true God and eternal life') or back to the one 'who is true' (the Father). The grammar (nearest antecedent) favours Christ; the immediate context ('the true one' = the Father) favours the Father.",
+  "readings": [
+   {
+    "label": "Jesus Christ: 'This one is the true God'",
+    "rendering": "in His Son Jesus Christ. This is the true God and eternal life",
+    "grammar": "οὗτος = Ἰησοῦς Χριστός (nearest antecedent, with predicate θεός)",
+    "fathers": [
+     {
+      "father": "Ambrose of Milan",
+      "work": "On the Christian Faith",
+      "ref": "Book I",
+      "year": 380,
+      "url": "https://www.newadvent.org/fathers/34041.htm",
+      "quote": "He is very God, and Life Eternal. 1 John 5:20 John calls Him true Son of God and very God.",
+      "commentary": 14583
+     },
+     {
+      "father": "Hilary of Poitiers",
+      "work": "On the Trinity",
+      "ref": "Book VI.46",
+      "year": 359,
+      "url": "https://www.newadvent.org/fathers/330206.htm",
+      "quote": "When the Father says of His Son, This is , and the Son of Himself, It is He that talks with You John 9:37, and when Peter confesses You are , and John assures us, This is the true God 1 John 5:20, and Paul is never weary of proclaiming Him as God's own Son, I can conceive of no other motive for this denial than hatred.",
+      "commentary": 41787
+     }
+    ],
+    "modern": "ESV, NASB, NIV, NRSV, NAB; most Fathers and modern commentators (Wallace, Harris)"
+   },
+   {
+    "label": "The Father: 'He (the true one) is the true God'",
+    "rendering": "in His Son Jesus Christ. He (the Father) is the true God and eternal life",
+    "grammar": "οὗτος = ὁ ἀληθινός (the Father, the 'true one' of v. 20a)",
+    "fathers": [],
+    "modern": "A minority of commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "οὗτός ἐστιν ὁ ἀληθινὸς θεὸς καὶ ζωὴ αἰώνιος stands as its own clause after the participial 'ἐν τῷ υἱῷ αὐτοῦ Ἰησοῦ Χριστῷ'; the tree does not fix the antecedent.",
+  "sources": [
+   "NET Bible note on 1 John 5:20",
+   "Harris, Jesus as God, ch. 12",
+   "Wallace, GGBB 332"
+  ]
+ },
+ {
+  "id": "2jn-1-1-eklekte-kyria",
+  "book": "2 John",
+  "chapter": 1,
+  "verse": 1,
+  "words": [
+   "2JN 1:1!3",
+   "2JN 1:1!4",
+   "2JN 1:1!7",
+   "2JN 1:1!8"
+  ],
+  "title": "2 John 1: eklekte kyria: 'the elect lady', a proper name, or a church?",
+  "category": "case",
+  "summary": "The address can be 'to the elect lady' (a woman and her children), 'to Kyria' or 'to the elect Kyria' (proper name), 'to the lady Electa', or to a church personified as a lady with her children (members).",
+  "readings": [
+   {
+    "label": "Elect lady (a woman)",
+    "rendering": "to the elect lady and her children",
+    "grammar": "ἐκλεκτῇ κυρίᾳ as adjective + noun in the dative; a real woman",
+    "fathers": [],
+    "modern": "KJV, ESV, NASB, NRSV; some older commentators"
+   },
+   {
+    "label": "A church personified",
+    "rendering": "to the elect lady, i.e. the church, and its children",
+    "grammar": "ἐκλεκτῇ κυρίᾳ as a figurative address (cf. 1 Pet 5:13; 2 John 13)",
+    "fathers": [],
+    "modern": "Many commentators, ancient and modern"
+   },
+   {
+    "label": "Proper name",
+    "rendering": "to Kyria (or Electa) and her children",
+    "grammar": "ἐκλεκτῇ κυρίᾳ as a proper name",
+    "fathers": [],
+    "modern": "A minority of commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "Ὁ πρεσβύτερος ἐκλεκτῇ κυρίᾳ καὶ τοῖς τέκνοις αὐτῆς: the tree treats the dative as one indirect-object group without identifying it.",
+  "sources": [
+   "NET Bible note on 2 John 1",
+   "Brown, Epistles of John (AB)"
+  ]
+ },
+ {
+  "id": "2jn-1-6-en-aute",
+  "book": "2 John",
+  "chapter": 1,
+  "verse": 6,
+  "words": [
+   "2JN 1:6!4",
+   "2JN 1:6!5",
+   "2JN 1:6!13",
+   "2JN 1:6!14",
+   "2JN 1:6!21",
+   "2JN 1:6!22",
+   "2JN 1:6!23"
+  ],
+  "title": "2 John 6: en aute: walk in what?",
+  "category": "referent",
+  "summary": "The feminine autē can refer to 'the commandment' (entole) or to 'love' (agape). Both are feminine and appear in the same verse.",
+  "readings": [
+   {
+    "label": "Walk in the commandment",
+    "rendering": "this is the commandment, as you have heard from the beginning, that you walk in it",
+    "grammar": "ἐν αὐτῇ = ἐν τῇ ἐντολῇ (nearest feminine antecedent)",
+    "fathers": [],
+    "modern": "ESV, NASB, NIV, NRSV; the common reading"
+   },
+   {
+    "label": "Walk in love",
+    "rendering": "this is love, that we walk according to His commandments; this is the commandment, that you walk in it (love)",
+    "grammar": "ἐν αὐτῇ = ἐν τῇ ἀγάπῃ",
+    "fathers": [],
+    "modern": "A minority of commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἵνα ἐν αὐτῇ περιπατῆτε is a ἵνα-clause of its own; αὐτῇ has no coded antecedent.",
+  "sources": [
+   "NET Bible note on 2 John 6",
+   "Brown, Epistles of John (AB)"
+  ]
+ },
+ {
+  "id": "jud-1-1-en-theo",
+  "book": "Jude",
+  "chapter": 1,
+  "verse": 1,
+  "words": [
+   "JUD 1:1!9",
+   "JUD 1:1!10",
+   "JUD 1:1!11",
+   "JUD 1:1!12"
+  ],
+  "title": "Jude 1: en theo patri egapemenois: 'loved in God' or 'loved by God'?",
+  "category": "case",
+  "summary": "The perfect participle egapemenois ('beloved') with en theo patri can take en as sphere (loved in God the Father), agency (loved by God the Father), or the dative alone as agent. Egapemenois is itself a textual question (ἡγιασμένοις), but the grammar of en is the same.",
+  "readings": [
+   {
+    "label": "Agent: 'loved by God the Father'",
+    "rendering": "to those who are called, beloved by God the Father and kept for Jesus Christ",
+    "grammar": "ἐν θεῷ as dative of agency, parallel to Ἰησοῦ Χριστῷ τετηρημένοις",
+    "fathers": [],
+    "modern": "NIV ('loved by God the Father')"
+   },
+   {
+    "label": "Sphere: 'beloved in God the Father'",
+    "rendering": "to those who are called, beloved in God the Father and kept for Jesus Christ",
+    "grammar": "ἐν θεῷ as locative sphere of the Father's love",
+    "fathers": [],
+    "modern": "KJV, ESV, NASB, NRSV ('beloved in God the Father')"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἐν θεῷ πατρὶ ἠγαπημένοις is a participial phrase with no function marked for the preposition.",
+  "sources": [
+   "NET Bible note on Jude 1",
+   "Bauckham, Jude, 2 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "jud-1-4-granville-sharp",
+  "book": "Jude",
+  "chapter": 1,
+  "verse": 4,
+  "words": [
+   "JUD 1:4!22",
+   "JUD 1:4!23",
+   "JUD 1:4!24",
+   "JUD 1:4!25",
+   "JUD 1:4!26",
+   "JUD 1:4!27",
+   "JUD 1:4!28",
+   "JUD 1:4!29",
+   "JUD 1:4!30"
+  ],
+  "title": "Jude 4: ton monon despoten kai kyrion hemon Iesoun Christon: one person or two?",
+  "category": "article",
+  "summary": "The single article before despoten kai kyrion ('our only Master and Lord') governs both nouns, and Jesus Christ stands in apposition: 'our only Master and Lord, Jesus Christ'. Because 'only' (monon) could point to God the Father as the sole Master, some read two persons: 'the only Master [God] and our Lord Jesus Christ'.",
+  "readings": [
+   {
+    "label": "One person: Jesus Christ is our only Master and Lord",
+    "rendering": "denying our only Master and Lord, Jesus Christ",
+    "grammar": "Granville Sharp: one article τὸν over δεσπότην καὶ κύριον, with Ἰησοῦν Χριστόν as appositive",
+    "fathers": [],
+    "modern": "ESV, NASB, NIV, NRSV, NAB; most modern commentators (Wallace, GGBB 273)"
+   },
+   {
+    "label": "Two persons: the only Master (God) and our Lord Jesus Christ",
+    "rendering": "denying the only Master, God, and our Lord Jesus Christ",
+    "grammar": "δεσπότην = God the Father; κύριον ἡμῶν Ἰησοῦν Χριστόν as a second object",
+    "fathers": [],
+    "modern": "KJV ('the only Lord God, and our Lord Jesus Christ' follows a textual variant); older commentators"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "τὸν μόνον δεσπότην καὶ κύριον ἡμῶν Ἰησοῦν Χριστὸν is parsed as one object phrase under ἀρνούμενοι, with a single article.",
+  "sources": [
+   "NET Bible note on Jude 4",
+   "Wallace, GGBB 273",
+   "Bauckham, Jude, 2 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "jud-1-5-hapax-panta",
+  "book": "Jude",
+  "chapter": 1,
+  "verse": 5,
+  "words": [
+   "JUD 1:5!5",
+   "JUD 1:5!6",
+   "JUD 1:5!7",
+   "JUD 1:5!8",
+   "JUD 1:5!15",
+   "JUD 1:5!16",
+   "JUD 1:5!17"
+  ],
+  "title": "Jude 5: hapax panta: 'once for all', 'once knowing', or 'once saved'?",
+  "category": "attachment",
+  "summary": "Hapax can modify eidotas ('though you once knew all this' / 'you have known it once for all'), panta ('all things once for all'), or sosas ('who once saved a people out of Egypt'). The choice shifts whether Jude stresses the readers' prior knowledge or the first rescue before the later judgment.",
+  "readings": [
+   {
+    "label": "With 'knowing': you know all this once for all",
+    "rendering": "though you were once fully informed (or: you know it once for all)",
+    "grammar": "ἅπαξ adverb modifying εἰδότας (once for all / at one time)",
+    "fathers": [
+     {
+      "father": "Jerome",
+      "work": "Letters",
+      "ref": "Letter 46",
+      "year": 386,
+      "url": "https://www.newadvent.org/fathers/3001046.htm",
+      "quote": "The apostle Jude, the brother of James, writes thus in his catholic epistle: I will, therefore, put you in remembrance, though ye once knew this how that Jesus, having saved the people out of the land of Egypt, afterward destroyed them that believed not.",
+      "commentary": 43018
+     }
+    ],
+    "modern": "ESV ('although you once fully knew it'), NIV ('even though you already know all this'), NRSV"
+   },
+   {
+    "label": "With 'saved': Jesus once saved a people from Egypt",
+    "rendering": "that Jesus, who once saved a people out of Egypt, afterward destroyed those who did not believe",
+    "grammar": "ἅπαξ modifying σώσας (the first rescue contrasted with τὸ δεύτερον)",
+    "fathers": [
+     {
+      "father": "Clement Of Alexandria",
+      "work": "Commentary on Jude",
+      "ref": "Jude 1:5",
+      "year": 200,
+      "url": "http://orthodoxwiki.org/Clement_of_Alexandria",
+      "quote": "\"For I would have you know \"says Jude, \"that God, having once saved His people from the land of Egypt, afterwards destroyed them that believed not; and the angels which kept not their first estate, but left their own habitation, He hath reserved to the judgment of the great day, in everlasting chains under darkness of the savage angels.\"",
+      "legacy": 44864
+     }
+    ],
+    "modern": "KJV ('how that the Lord, having saved the people out of the land of Egypt'); NASB ('once for all' with 'knowing')"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "ἅπαξ πάντα is grouped inside the εἰδότας ὑμᾶς ἅπαξ πάντα phrase before ὅτι, so the tree ties ἅπαξ to εἰδότας.",
+  "sources": [
+   "NET Bible note on Jude 5",
+   "Bauckham, Jude, 2 Peter (WBC)"
+  ]
+ },
+ {
+  "id": "rev-1-1-apokalypsis-iesou",
+  "book": "Revelation",
+  "chapter": 1,
+  "verse": 1,
+  "words": [
+   "REV 1:1!1",
+   "REV 1:1!2",
+   "REV 1:1!3"
+  ],
+  "title": "Apokalypsis Iesou Christou: revelation from or about Jesus?",
+  "category": "case",
+  "summary": "The genitive 'of Jesus Christ' can be subjective (the revelation Jesus gives, v. 1b 'which God gave to him') or objective (a revelation whose content is Jesus), or both. The immediate relative clause ('which God gave him to show His servants') favours origin.",
+  "readings": [
+   {
+    "label": "Subjective: the revelation Jesus gives",
+    "rendering": "The revelation given by Jesus Christ, which God gave Him to show His servants",
+    "grammar": "Ἰησοῦ Χριστοῦ as subjective genitive (source of the revelation)",
+    "fathers": [],
+    "modern": "ESV, NASB, NIV, NRSV (most take the first reading)"
+   },
+   {
+    "label": "Objective: the revelation about Jesus",
+    "rendering": "The unveiling of Jesus Christ (He is its content)",
+    "grammar": "Ἰησοῦ Χριστοῦ as objective genitive (content)",
+    "fathers": [],
+    "modern": "Some commentators; the plenary genitive (both) is also proposed"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "The tree makes Ἀποκάλυψις Ἰησοῦ Χριστοῦ the head with ἣν ἔδωκεν αὐτῷ ὁ θεός as a relative clause; the genitive is not classified.",
+  "sources": [
+   "NET Bible note on Rev 1:1",
+   "Beale, Revelation (NIGTC)",
+   "Wallace, GGBB 113-4 (plenary genitive)"
+  ]
+ },
+ {
+  "id": "rev-3-14-arche-tes-ktiseos",
+  "book": "Revelation",
+  "chapter": 3,
+  "verse": 14,
+  "words": [
+   "REV 3:14!19",
+   "REV 3:14!20",
+   "REV 3:14!21",
+   "REV 3:14!22",
+   "REV 3:14!23",
+   "REV 3:14!24"
+  ],
+  "title": "he arche tes ktiseos tou theou: 'beginning' as source, first, or ruler?",
+  "category": "case",
+  "summary": "The genitive tes ktiseos can be partitive (Christ is the first of the creation, the first created), or of source / agent (the originator or beginning-source of God's creation), and arche can be 'ruler' (cf. Col 1:18).",
+  "readings": [
+   {
+    "label": "Source or origin: the beginning of creation as its originator",
+    "rendering": "the origin (source, ruler) of God's creation",
+    "grammar": "ἡ ἀρχή = originator; τῆς κτίσεως as objective genitive, not partitive",
+    "fathers": [
+     {
+      "father": "Ephrem The Syrian",
+      "work": "Hymns on the Nativity",
+      "ref": "Hymn 4",
+      "year": 370,
+      "url": "https://www.newadvent.org/fathers/3703.htm",
+      "quote": "In You will I begin to speak, You Head that began all created things.",
+      "commentary": 39076
+     }
+    ],
+    "modern": "ESV, NASB, NRSV ('the beginning of God's creation'); NIV ('ruler of God's creation')",
+    "traditions": {
+     "catholic": "Christ as source of creation",
+     "orthodox": "Christ as source of creation"
+    }
+   },
+   {
+    "label": "Partitive: the first of God's created things",
+    "rendering": "the first created being of God's creation",
+    "grammar": "τῆς κτίσεως as partitive genitive: Christ belongs to creation (Arian reading)",
+    "fathers": [],
+    "modern": "The Arian reading"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἡ ἀρχὴ τῆς κτίσεως τοῦ θεοῦ is a flat noun phrase in apposition to ὁ Ἀμήν ...; the genitive is not classified.",
+  "sources": [
+   "NET Bible note on Rev 3:14",
+   "Beale, Revelation (NIGTC)",
+   "Wallace, GGBB 104-6"
+  ]
+ },
+ {
+  "id": "rev-13-8-apo-katabolhs",
+  "book": "Revelation",
+  "chapter": 13,
+  "verse": 8,
+  "words": [
+   "REV 13:8!12",
+   "REV 13:8!13",
+   "REV 13:8!14",
+   "REV 13:8!15",
+   "REV 13:8!16",
+   "REV 13:8!17",
+   "REV 13:8!18",
+   "REV 13:8!19",
+   "REV 13:8!20",
+   "REV 13:8!21",
+   "REV 13:8!22",
+   "REV 13:8!23",
+   "REV 13:8!24",
+   "REV 13:8!25",
+   "REV 13:8!26",
+   "REV 13:8!27"
+  ],
+  "title": "Rev 13:8: 'from the foundation of the world': the Lamb slain, or the names written?",
+  "category": "attachment",
+  "summary": "The prepositional phrase apo katabolis kosmou can attach to 'slain' ('the Lamb slain from the foundation of the world') or to 'written' ('whose name has not been written in the book of life from the foundation of the world'). Cf. Rev 17:8, where it clearly goes with 'written'.",
+  "readings": [
+   {
+    "label": "With 'written': names written from the foundation",
+    "rendering": "all whose names have not been written from the foundation of the world in the book of life of the Lamb who was slain",
+    "grammar": "ἀπὸ καταβολῆς κόσμου adverbial to γέγραπται (cf. Rev 17:8)",
+    "fathers": [
+     {
+      "father": "Bede",
+      "work": "Commentary on Revelation",
+      "ref": "Revelation 13:8",
+      "year": 730,
+      "url": "http://orthodoxwiki.org/Bede",
+      "quote": "beginning: &quot;A lamb,&quot; that is, as Peter says, &quot;without spot, who verily was fore-ordained before the foundations of the world, but was manifested in these last times.&quot; Another version has translated it, &quot;the lamb sealed from the beginning of the world.&quot; It may also be understood by transposition, that the names of the saints were written from the beginning in the book of life.",
+      "legacy": 45592
+     }
+    ],
+    "modern": "NASB margin, ESV (margin), NIV (margin), NRSV (margin) and many modern commentators"
+   },
+   {
+    "label": "With 'slain': the Lamb slain from the foundation of the world",
+    "rendering": "the Lamb that was slain from the foundation of the world",
+    "grammar": "ἀπὸ καταβολῆς κόσμου adnominal to τοῦ ἐσφαγμένου",
+    "fathers": [],
+    "modern": "KJV, ESV, NASB, NIV (text)"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "ἀπὸ καταβολῆς κόσμου stands at the level of the clause οὗ οὐ γέγραπται ... τοῦ ἀρνίου, not under τοῦ ἐσφαγμένου, so the tree attaches it to 'written'.",
+  "sources": [
+   "NET Bible note on Rev 13:8",
+   "Beale, Revelation (NIGTC)",
+   "Aune, Revelation (WBC)"
+  ]
+ },
+ {
+  "id": "rev-13-18-arithmos-anthropou",
+  "book": "Revelation",
+  "chapter": 13,
+  "verse": 18,
+  "words": [
+   "REV 13:18!13",
+   "REV 13:18!14",
+   "REV 13:18!15",
+   "REV 13:18!16"
+  ],
+  "title": "Rev 13:18: arithmos anthropou: 'a man's number' or 'the number of a person'?",
+  "category": "case",
+  "summary": "The anarthrous genitive anthropou ('of a man') can be qualitative ('a human number', a number ordinary people can count) or possessive/descriptive ('the number of a certain man', an individual person). The reading underlies the gematria tradition.",
+  "readings": [
+   {
+    "label": "Individual: the number of a particular man",
+    "rendering": "it is the number of a man (a person)",
+    "grammar": "ἀνθρώπου as possessive/descriptive genitive: a specific person",
+    "fathers": [],
+    "modern": "ESV ('the number of a man'), NASB, KJV; the gematria approach (Irenaeus, Victorinus)"
+   },
+   {
+    "label": "Qualitative: a human number",
+    "rendering": "it is a human number (counted by ordinary reckoning)",
+    "grammar": "ἀνθρώπου as qualitative genitive: 'of human kind'",
+    "fathers": [],
+    "modern": "NIV ('man's number'), NRSV; Wallace discusses"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἀριθμὸς γὰρ ἀνθρώπου ἐστίν is a short γάρ-clause; the genitive is not classified.",
+  "sources": [
+   "NET Bible note on Rev 13:18",
+   "Beale, Revelation (NIGTC)"
+  ]
+ },
+ {
+  "id": "rev-14-13-ap-arti",
+  "book": "Revelation",
+  "chapter": 14,
+  "verse": 13,
+  "words": [
+   "REV 14:13!9",
+   "REV 14:13!10",
+   "REV 14:13!11",
+   "REV 14:13!12",
+   "REV 14:13!13",
+   "REV 14:13!14",
+   "REV 14:13!15",
+   "REV 14:13!16",
+   "REV 14:13!17",
+   "REV 14:13!18"
+  ],
+  "title": "Rev 14:13: 'blessed are the dead who die in the Lord from now on'",
+  "category": "punctuation",
+  "summary": "Ap arti ('from now on') can attach to the participle 'who die in the Lord' ('blessed are those who die in the Lord from now on') or to 'blessed' ('blessed from now on'), or even stand with the following nai ('Yes' says the Spirit). The attachment decides whether martyrs from that point are blessed or the blessing begins then.",
+  "readings": [
+   {
+    "label": "With 'die': those who die in the Lord from now on",
+    "rendering": "Blessed are the dead who die in the Lord from now on",
+    "grammar": "ἀπ' ἄρτι modifies ἀποθνῄσκοντες",
+    "fathers": [],
+    "modern": "ESV, NASB, NIV (with comma), NRSV; the KJV punctuation ('from henceforth')"
+   },
+   {
+    "label": "With 'blessed' or 'yes': 'blessed are the dead who die in the Lord. From now on, yes ...'",
+    "rendering": "Blessed are the dead who die in the Lord. From now on, yes, says the Spirit, they may rest",
+    "grammar": "ἀπ' ἄρτι separated from the participle and joined to ναί or to μακάριοι",
+    "fathers": [],
+    "modern": "Some commentators"
+   }
+  ],
+  "macula_follows": 0,
+  "macula_evidence": "ἀπ' ἄρτι closes the relative phrase οἱ ἐν κυρίῳ ἀποθνῄσκοντες, and ναί λέγει τὸ πνεῦμα begins a new outline, so the tree ties it to 'die'.",
+  "sources": [
+   "NET Bible note on Rev 14:13",
+   "Beale, Revelation (NIGTC)"
+  ]
+ },
+ {
+  "id": "rev-19-10-martyria-iesou",
+  "book": "Revelation",
+  "chapter": 19,
+  "verse": 10,
+  "words": [
+   "REV 19:10!29",
+   "REV 19:10!30",
+   "REV 19:10!31",
+   "REV 19:10!32",
+   "REV 19:10!33",
+   "REV 19:10!34",
+   "REV 19:10!35",
+   "REV 19:10!36",
+   "REV 19:10!37"
+  ],
+  "title": "Rev 19:10: he martyria Iesou: testimony of or about Jesus?",
+  "category": "case",
+  "summary": "The genitive 'of Jesus' can be subjective (the testimony Jesus bears, or that He gives) or objective (testimony about Jesus). The second clause 'the Spirit of prophecy' can then be the means or content of that testimony.",
+  "readings": [
+   {
+    "label": "Subjective: Jesus' own testimony",
+    "rendering": "the testimony of Jesus (which He bears) is the spirit of prophecy",
+    "grammar": "Ἰησοῦ as subjective genitive (the testimony Jesus gives, given through prophets)",
+    "fathers": [],
+    "modern": "ESV, NASB, NIV, NRSV ('the testimony of Jesus' with both options open)"
+   },
+   {
+    "label": "Objective: testimony about Jesus",
+    "rendering": "the testimony to Jesus is the spirit of prophecy",
+    "grammar": "Ἰησοῦ as objective genitive: prophecy bears witness to Jesus",
+    "fathers": [
+     {
+      "father": "Bede",
+      "work": "Commentary on Revelation",
+      "ref": "Revelation 19:10",
+      "year": 730,
+      "url": "http://orthodoxwiki.org/Bede",
+      "quote": "prophecy: For whatever the Spirit of prophecy said, is the testimony of Jesus, Who receives testimony from the law and the prophets.",
+      "legacy": 45796
+     }
+    ],
+    "modern": "Many modern commentators"
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "ἡ γὰρ μαρτυρία Ἰησοῦ ἐστιν τὸ πνεῦμα τῆς προφητείας is a single γάρ-clause; the genitive is not classified.",
+  "sources": [
+   "NET Bible note on Rev 19:10",
+   "Beale, Revelation (NIGTC)"
+  ]
+ },
+ {
+  "id": "rev-20-4-ezesan",
+  "book": "Revelation",
+  "chapter": 20,
+  "verse": 4,
+  "words": [
+   "REV 20:4!51",
+   "REV 20:4!52",
+   "REV 20:4!53",
+   "REV 20:4!54",
+   "REV 20:4!55",
+   "REV 20:4!56",
+   "REV 20:4!57",
+   "REV 20:4!58"
+  ],
+  "title": "Rev 20:4: ezesan: 'came to life' (bodily) or 'lived' (spiritually)?",
+  "category": "construction",
+  "summary": "The aorist ezesan ('they lived') can be ingressive ('came to life', a resurrection) or constative/descriptive ('lived and reigned', a state during the thousand years). The first reading makes the 'first resurrection' bodily (premillennial); the second can describe the souls' life in heaven or the Church's present reign (amillennial).",
+  "readings": [
+   {
+    "label": "Ingressive: they came to life (bodily resurrection) and reigned",
+    "rendering": "they came to life and reigned with Christ for a thousand years",
+    "grammar": "ἔζησαν as ingressive aorist: resurrection before the millennium",
+    "fathers": [
+     {
+      "father": "Justin Martyr",
+      "work": "Dialogue with Trypho",
+      "ref": "Chapter 81",
+      "year": 160,
+      "page": "01286",
+      "url": "https://www.newadvent.org/fathers/01286.htm",
+      "quote": "And further, there was a certain man with us, whose name was John, one of the apostles of Christ, who prophesied, by a revelation that was made to him, that those who believed in our Christ would dwell a thousand years in Jerusalem; and that thereafter the general, and, in short, the eternal resurrection and judgment of all men would likewise take place."
+     }
+    ],
+    "modern": "ESV, NASB, NIV, NRSV ('came to life'); the premillennial tradition (Papias, Justin, Irenaeus)"
+   },
+   {
+    "label": "Constative: they lived and reigned (spiritual / heavenly life)",
+    "rendering": "they lived and reigned with Christ for a thousand years",
+    "grammar": "ἔζησαν as constative aorist: the life of the souls or the Church now",
+    "fathers": [
+     {
+      "father": "Augustine of Hippo",
+      "work": "The City of God",
+      "ref": "Book XX.9",
+      "year": 426,
+      "url": "https://www.newadvent.org/fathers/120120.htm",
+      "quote": "It is then of this kingdom militant, in which conflict with the enemy is still maintained, and war carried on with warring lusts, or government laid upon them as they yield, until we come to that most peaceful kingdom in which we shall reign without an enemy, and it is of this first resurrection in the present life, that the Apocalypse speaks in the words just quoted.",
+      "commentary": 22215
+     }
+    ],
+    "modern": "KJV ('they lived and reigned'); Augustine and the amillennial tradition",
+    "traditions": {
+     "catholic": "Augustinian amillennial reading; the 'first resurrection' as baptism/the Church's life",
+     "orthodox": "Symbolic reading of the thousand years, not a literal reign",
+     "protestant": "Premillennial (literal) and amillennial (Augustinian) both widely held"
+    }
+   }
+  ],
+  "macula_follows": null,
+  "macula_evidence": "καὶ ἔζησαν καὶ ἐβασίλευσαν μετὰ τοῦ χριστοῦ χίλια ἔτη coordinates the two aorists; the tree gives no aspect distinction for ἔζησαν.",
+  "sources": [
+   "NET Bible note on Rev 20:4",
+   "Beale, Revelation (NIGTC)",
+   "Wallace, GGBB 558-9 (ingressive aorist)"
+  ]
+ }
+]
